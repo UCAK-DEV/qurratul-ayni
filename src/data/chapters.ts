@@ -1,4 +1,3 @@
-// src/data/chapters.ts
 export interface Chapter {
   id: string;
   titleAr: string;
@@ -13,7 +12,7 @@ export const CHAPTERS: Chapter[] = [
     id: "1",
     titleAr: "التوحيد",
     titleFr: "L'Unicité de Dieu",
-    desc: "Les fondements de l'unicité divine et la connaissance de Dieu.",
+    desc: "Découvrez les secrets de l'Unicité Divine (Tawhid) et la connaissance profonde du Créateur.",
     audioUrl: "/audio/unicite.mp3",
     content: [
       { ar: "لا معبود بحق إلا الله", fr: "Nul n'est digne d'adoration en dehors de Dieu." },
@@ -24,11 +23,10 @@ export const CHAPTERS: Chapter[] = [
     id: "2",
     titleAr: "العبادات",
     titleFr: "Les Adorations",
-    desc: "Guide sur la prière, le jeûne et les piliers de la foi.",
+    desc: "Un guide spirituel sur les piliers de l'Islam et la purification de l'âme par l'acte.",
     audioUrl: "/audio/adorations.mp3",
     content: [
       { ar: "الصلاة عماد الدين", fr: "La prière est le pilier de la religion." }
     ]
-  },
-  // Ajoutez les autres parties ici...
+  }
 ];
