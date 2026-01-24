@@ -1,173 +1,186 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { CHAPTERS, Chapter } from '@/data/chapters';
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [results, setResults] = useState<Chapter[]>([]);
+  
   const pathname = usePathname();
+  const router = useRouter();
+  const searchRef = useRef<HTMLDivElement>(null);
 
-  // Gestion du scroll pour l'esthétique dynamique
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (searchQuery.length > 1) {
+      const filtered = CHAPTERS.filter(c => 
+        c.titleFr.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        c.titleAr.includes(searchQuery) ||
+        c.desc.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setResults(filtered);
+    } else {
+      setResults([]);
+    }
+  }, [searchQuery]);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setIsSearchOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const navLinks = [
     { name: 'Accueil', path: '/accueil' },
-    { name: 'L\'Œuvre', path: '/partie/1' },
-    { name: 'Auteur', path: '#auteur' },
+    { name: 'Bibliothèque', path: '/accueil#chapters' },
   ];
 
   return (
-    <nav 
-      className={`fixed top-0 w-full z-[100] transition-all duration-500 ${
-        isScrolled 
-          ? 'py-4 bg-emerald-950/40 backdrop-blur-xl border-b border-white/5' 
-          : 'py-8 bg-transparent'
-      }`}
-    >
-      <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
+    <nav className={`fixed top-0 w-full z-[100] transition-all duration-500 ${
+      isScrolled ? 'py-4 bg-emerald-950/60 backdrop-blur-2xl border-b border-white/5 shadow-2xl' : 'py-8 bg-transparent'
+    }`}>
+      <div className="container mx-auto px-6 md:px-12 flex items-center justify-between relative">
         
-        {/* LOGO : Style Minimaliste Luxe */}
-        <Link href="/" className="group flex items-center gap-3 outline-none">
-          <div className="relative">
-            <motion.div 
-              animate={{ rotate: isScrolled ? 0 : 45 }}
-              className="w-10 h-10 border-2 border-gold rounded-xl flex items-center justify-center overflow-hidden"
-            >
-              <span className="material-symbols-rounded text-gold text-2xl group-hover:scale-110 transition-transform">
-                auto_stories
-              </span>
-            </motion.div>
-            {isScrolled && (
-              <motion.div 
-                layoutId="dot"
-                className="absolute -top-1 -right-1 w-3 h-3 bg-gold rounded-full border-2 border-emerald-950" 
-              />
-            )}
+        {/* LOGO */}
+        <Link href="/" className="flex items-center gap-3 z-50">
+          <div className="w-10 h-10 border border-gold rounded-lg flex items-center justify-center bg-gold/5 group hover:bg-gold/10 transition-colors">
+            <span className="material-symbols-rounded text-gold group-hover:scale-110 transition-transform">auto_stories</span>
           </div>
-          <div className="flex flex-col">
-            <span className="text-xl font-bold tracking-[0.2em] text-white uppercase leading-none">
-              Qurratul <span className="text-gold">Ayni</span>
-            </span>
-            <span className="text-[10px] text-white/40 tracking-[0.3em] uppercase font-medium">
-              Immersion Spirituelle
-            </span>
+          <div className="hidden sm:flex flex-col">
+            <span className="text-lg font-bold tracking-widest text-white leading-none uppercase">Qurratul <span className="text-gold">Ayni</span></span>
+            <span className="text-[9px] text-white/30 uppercase tracking-[0.3em]">Enseignements Sacrés</span>
           </div>
         </Link>
 
-        {/* DESKTOP MENU */}
-        <div className="hidden md:flex items-center gap-12">
-          <ul className="flex items-center gap-8">
+        {/* ACTIONS & NAVIGATION */}
+        <div className="flex items-center gap-4 md:gap-10">
+          <ul className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
               <li key={link.name}>
-                <Link 
-                  href={link.path}
-                  className="relative text-xs uppercase tracking-[0.2em] font-bold transition-colors group"
-                >
-                  <span className={`${pathname === link.path ? 'text-gold' : 'text-white/60 group-hover:text-white'}`}>
-                    {link.name}
-                  </span>
+                <Link href={link.path} className={`text-[10px] uppercase tracking-[0.2em] font-bold transition-all relative ${
+                  pathname === link.path ? 'text-gold' : 'text-white/50 hover:text-white'
+                }`}>
+                  {link.name}
                   {pathname === link.path && (
-                    <motion.div 
-                      layoutId="nav-underline"
-                      className="absolute -bottom-2 left-0 w-full h-[2px] bg-gold shadow-[0_0_8px_#c9a961]" 
-                    />
+                    <motion.div layoutId="activeNav" className="absolute -bottom-1 left-0 w-full h-[1px] bg-gold" />
                   )}
                 </Link>
               </li>
             ))}
           </ul>
 
-          {/* Langue & Action */}
-          <div className="flex items-center gap-6 border-l border-white/10 pl-8">
-             <div className="flex bg-white/5 p-1 rounded-full border border-white/10">
-              {['FR', 'AR'].map((lang) => (
-                <button 
-                  key={lang} 
-                  className={`px-3 py-1.5 text-[10px] font-black rounded-full transition-all ${
-                    lang === 'FR' ? 'bg-gold text-emerald-950 shadow-lg' : 'text-white/40 hover:text-white'
-                  }`}
-                >
-                  {lang}
-                </button>
-              ))}
-            </div>
-            <motion.button 
-              whileHover={{ scale: 1.05 }}
-              className="bg-white/5 hover:bg-white/10 p-2.5 rounded-full border border-white/10 text-white transition-all"
+          {/* Système de Recherche Dynamique - STYLE OPTIMISÉ */}
+          <div className="relative" ref={searchRef}>
+            <motion.div 
+              initial={false}
+              animate={{ 
+                width: isSearchOpen ? 'clamp(180px, 40vw, 320px)' : '42px',
+                borderColor: isSearchOpen ? 'rgba(201, 169, 97, 0.5)' : 'rgba(255, 255, 255, 0.1)'
+              }}
+              className="h-10 bg-white/5 border rounded-full flex items-center overflow-hidden transition-colors shadow-inner"
             >
-              <span className="material-symbols-rounded text-xl">search</span>
-            </motion.button>
-          </div>
-        </div>
+              <button 
+                onClick={() => setIsSearchOpen(!isSearchOpen)}
+                className={`w-10 h-10 flex-shrink-0 flex items-center justify-center transition-colors ${
+                  isSearchOpen ? 'text-gold' : 'text-white/40 hover:text-white'
+                }`}
+              >
+                <span className={`material-symbols-rounded text-xl ${isSearchOpen ? 'drop-shadow-[0_0_8px_rgba(201,169,97,0.8)]' : ''}`}>
+                  {isSearchOpen ? 'close' : 'search'}
+                </span>
+              </button>
+              <input 
+                type="text"
+                placeholder="Rechercher..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => setIsSearchOpen(true)}
+                className="bg-transparent border-none outline-none text-xs text-white w-full pr-4 placeholder:text-white/20"
+              />
+            </motion.div>
 
-        {/* MOBILE TOGGLE */}
-        <button 
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 z-50"
-        >
-          <motion.div 
-            animate={{ rotate: isMobileMenuOpen ? 45 : 0, y: isMobileMenuOpen ? 8 : 0 }}
-            className="w-6 h-0.5 bg-gold rounded-full" 
-          />
-          <motion.div 
-            animate={{ opacity: isMobileMenuOpen ? 0 : 1 }}
-            className="w-6 h-0.5 bg-gold rounded-full" 
-          />
-          <motion.div 
-            animate={{ rotate: isMobileMenuOpen ? -45 : 0, y: isMobileMenuOpen ? -8 : 0 }}
-            className="w-6 h-0.5 bg-gold rounded-full" 
-          />
-        </button>
-      </div>
-
-      {/* MOBILE MENU OVERLAY */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, x: '100%' }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed inset-0 bg-emerald-950 z-[40] flex flex-col justify-center px-10 gap-12"
-          >
-            <div className="flex flex-col gap-8">
-              {navLinks.map((link, i) => (
+            {/* Dropdown de résultats */}
+            <AnimatePresence>
+              {isSearchOpen && searchQuery.length > 1 && (
                 <motion.div
-                  key={link.name}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.1 }}
+                  initial={{ opacity: 0, y: 15, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 15, scale: 0.95 }}
+                  className="absolute top-14 right-0 w-[300px] sm:w-[450px] bg-emerald-950/95 backdrop-blur-3xl border border-white/10 rounded-3xl overflow-hidden shadow-[0_25px_60px_rgba(0,0,0,0.8)] z-50"
                 >
-                  <Link 
-                    href={link.path}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="text-4xl font-bold text-white hover:text-gold transition-colors flex items-center gap-4"
-                  >
-                    <span className="text-gold/20 text-lg font-mono">0{i+1}</span>
-                    {link.name}
-                  </Link>
+                  <div className="p-5 max-h-[450px] overflow-y-auto custom-scrollbar">
+                    <div className="flex items-center justify-between mb-4 px-2">
+                      <p className="text-[10px] uppercase tracking-widest text-gold/60 font-bold">Exploration</p>
+                      <p className="text-[10px] text-white/20">{results.length} résultats</p>
+                    </div>
+                    {results.length > 0 ? (
+                      <div className="space-y-1">
+                        {results.map((chapter) => (
+                          <button
+                            key={chapter.id}
+                            onClick={() => {
+                              router.push(`/partie/${chapter.id}`);
+                              setIsSearchOpen(false);
+                            }}
+                            className="w-full flex items-center gap-4 p-4 rounded-2xl hover:bg-white/5 transition-all text-left group border border-transparent hover:border-white/5"
+                          >
+                            <div className="w-10 h-10 rounded-xl bg-gold/5 flex items-center justify-center text-gold font-bold group-hover:bg-gold/20 transition-colors">
+                              {chapter.id}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h4 className="text-white text-sm font-bold truncate group-hover:text-gold transition-colors">{chapter.titleFr}</h4>
+                              <p className="text-white/40 text-[10px] truncate font-amiri tracking-wider">{chapter.titleAr}</p>
+                            </div>
+                            <span className="material-symbols-rounded text-white/10 group-hover:text-gold text-sm transition-colors">arrow_forward_ios</span>
+                          </button>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="py-12 text-center">
+                        <span className="material-symbols-rounded text-white/10 text-4xl mb-2">find_in_page</span>
+                        <p className="text-white/40 text-xs italic font-light px-6">Aucun chapitre ne correspond à votre recherche spirituelle.</p>
+                      </div>
+                    )}
+                  </div>
                 </motion.div>
-              ))}
-            </div>
+              )}
+            </AnimatePresence>
+          </div>
 
-            <div className="pt-12 border-t border-white/5 space-y-6">
-              <p className="text-white/20 uppercase tracking-widest text-xs">Langue de l'interface</p>
-              <div className="flex gap-4">
-                {['Français', 'Arabe', 'Wolof'].map((l) => (
-                  <button key={l} className="text-white font-bold text-sm hover:text-gold">{l}</button>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          <div className="hidden sm:flex bg-white/5 p-1 rounded-full border border-white/10 ml-2">
+            {['FR', 'AR'].map((l) => (
+              <button key={l} className={`px-3 py-1 text-[9px] font-black rounded-full transition-all ${
+                l === 'FR' ? 'text-white' : 'text-white/20 hover:text-white/50'
+              }`}>{l}</button>
+            ))}
+          </div>
+
+          <button 
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden text-white/60 hover:text-white transition-colors"
+          >
+            <span className="material-symbols-rounded text-2xl">
+              {isMobileMenuOpen ? 'close' : 'menu'}
+            </span>
+          </button>
+        </div>
+      </div>
     </nav>
   );
 };
