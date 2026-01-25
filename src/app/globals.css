@@ -1,48 +1,93 @@
 @import "tailwindcss";
 
 @theme {
-  --color-emerald-950: #020504;
-  --color-emerald-900: #050a08;
+  /* Définition des couleurs et polices personnalisées */
+  --color-emerald-950: var(--bg-deep);
   --color-gold: #c9a961;
   --color-gold-light: #e2c27d;
   --font-serif: "Playfair Display", serif;
   --font-amiri: "Amiri", serif;
 }
 
-/* ... vos styles existants ... */
-
-.glass-card {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(201, 169, 97, 0.1);
+:root {
+  /* Variables pour le Mode Jour (Clair) */
+  --bg-deep: #f8fafc;
+  --bg-card: rgba(255, 255, 255, 0.8);
+  --text-primary: #020617;
+  --text-secondary: #475569;
+  --border-gold: rgba(201, 169, 97, 0.2);
+  --selection-bg: rgba(201, 169, 97, 0.3);
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Variables pour le Mode Nuit (Sombre) */
+    --bg-deep: #020504;
+    --bg-card: rgba(255, 255, 255, 0.03);
+    --text-primary: #ffffff;
+    --text-secondary: #94a3b8;
+    --border-gold: rgba(201, 169, 97, 0.1);
+    --selection-bg: rgba(201, 169, 97, 0.5);
+  }
+}
+
+/* Styles de base */
+body {
+  background-color: var(--bg-deep);
+  color: var(--text-primary);
+  transition: background-color 0.5s ease, color 0.5s ease;
+  min-height: 100vh;
+  selection-background-color: var(--selection-bg);
+}
+
+/* Utilitaires de texte adaptatifs */
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+
+/* Effet de texte dégradé doré premium */
 .gold-gradient-text {
   background: linear-gradient(to bottom right, #c9a961, #e2c27d);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  display: inline-block;
 }
 
-/* Optimisation pour Google Nest Hub et écrans paysage à faible hauteur */
+/* Composant Glassmorphism moderne */
+.glass-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-gold);
+}
+
+/* Barre de défilement personnalisée pour l'esthétique "Vibe" */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(201, 169, 97, 0.2);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(201, 169, 97, 0.4);
+}
+
+/* Optimisation pour les écrans à faible hauteur (Nest Hub, etc.) */
 @media (max-height: 650px) and (orientation: landscape) {
   h1 {
     font-size: 3.5rem !important;
     line-height: 1 !important;
   }
   
-  .md\:h-\[100vh\] {
-    height: auto !important;
+  section {
     min-height: 100vh;
-    padding-top: 5rem;
-    padding-bottom: 3rem;
-  }
-
-  .md\:mb-10 {
-    margin-bottom: 1rem !important;
-  }
-
-  p.md\:text-3xl {
-    font-size: 1.25rem !important;
+    padding-top: 4rem;
+    padding-bottom: 2rem;
   }
 }
