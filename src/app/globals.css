@@ -9,18 +9,12 @@
   --font-amiri: "Amiri", serif;
 }
 
-body {
-  color: white;
-  background-color: var(--color-emerald-950);
-  background-image: 
-    radial-gradient(circle at 10% 20%, rgba(201, 169, 97, 0.05) 0%, transparent 40%),
-    radial-gradient(circle at 90% 80%, rgba(5, 45, 30, 0.2) 0%, transparent 50%);
-  min-height: 100vh;
-}
+/* ... vos styles existants ... */
 
 .glass-card {
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(201, 169, 97, 0.1);
 }
 
@@ -28,4 +22,27 @@ body {
   background: linear-gradient(to bottom right, #c9a961, #e2c27d);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+/* Optimisation pour Google Nest Hub et écrans paysage à faible hauteur */
+@media (max-height: 650px) and (orientation: landscape) {
+  h1 {
+    font-size: 3.5rem !important;
+    line-height: 1 !important;
+  }
+  
+  .md\:h-\[100vh\] {
+    height: auto !important;
+    min-height: 100vh;
+    padding-top: 5rem;
+    padding-bottom: 3rem;
+  }
+
+  .md\:mb-10 {
+    margin-bottom: 1rem !important;
+  }
+
+  p.md\:text-3xl {
+    font-size: 1.25rem !important;
+  }
 }

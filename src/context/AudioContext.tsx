@@ -1,79 +1,74 @@
 'use client';
-import React, { createContext, useContext, useState, useRef, useEffect } from 'react';
 
-interface Track { title: string; url: string; }
+import React, { createContext, useContext, useState, useRef, useEffect } from 'react';
+import { Chapter } from '@/data/chapters';
 
 interface AudioContextType {
-  currentTrack: Track | null;
+  currentChapter: Chapter | null;
   isPlaying: boolean;
   progress: number;
-  duration: number;
-  currentTime: number;
-  playTrack: (track: Track) => void;
+  setChapter: (chapter: Chapter) => void;
   togglePlay: () => void;
-  seek: (time: number) => void;
 }
 
 const AudioContext = createContext<AudioContextType | undefined>(undefined);
 
 export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
-  const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
+  const [currentChapter, setCurrentChapter] = useState<Chapter | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
+  // Initialisation de l'élément audio global
   useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
+    audioRef.current = new Audio();
+    
     const updateProgress = () => {
-      setCurrentTime(audio.currentTime);
-      setProgress((audio.currentTime / audio.duration) * 100);
-    };
-
-    const handleLoadedMetadata = () => setDuration(audio.duration);
-
-    audio.addEventListener('timeupdate', updateProgress);
-    audio.addEventListener('loadedmetadata', handleLoadedMetadata);
-    return () => {
-      audio.removeEventListener('timeupdate', updateProgress);
-      audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
-    };
-  }, [currentTrack]);
-
-  const playTrack = (track: Track) => {
-    if (audioRef.current) {
-      if (currentTrack?.url !== track.url) {
-        setCurrentTrack(track);
-        audioRef.current.src = track.url;
+      if (audioRef.current) {
+        const val = (audioRef.current.currentTime / audioRef.current.duration) * 100;
+        setProgress(val || 0);
       }
-      audioRef.current.play();
-      setIsPlaying(true);
+    };
+
+    audioRef.current.addEventListener('timeupdate', updateProgress);
+    audioRef.current.addEventListener('ended', () => setIsPlaying(false));
+
+    return () => {
+      audioRef.current?.pause();
+      audioRef.current?.removeEventListener('timeupdate', updateProgress);
+    };
+  }, []);
+
+  const setChapter = (chapter: Chapter) => {
+    if (audioRef.current) {
+      if (currentChapter?.id === chapter.id) {
+        togglePlay();
+      } else {
+        audioRef.current.src = chapter.audioUrl;
+        audioRef.current.play();
+        setCurrentChapter(chapter);
+        setIsPlaying(true);
+      }
     }
   };
 
   const togglePlay = () => {
-    if (!audioRef.current) return;
-    isPlaying ? audioRef.current.pause() : audioRef.current.play();
-    setIsPlaying(!isPlaying);
-  };
-
-  const seek = (time: number) => {
-    if (audioRef.current) audioRef.current.currentTime = time;
+    if (audioRef.current && currentChapter) {
+      if (isPlaying) audioRef.current.pause();
+      else audioRef.current.play();
+      setIsPlaying(!isPlaying);
+    }
   };
 
   return (
-    <AudioContext.Provider value={{ currentTrack, isPlaying, progress, duration, currentTime, playTrack, togglePlay, seek }}>
+    <AudioContext.Provider value={{ currentChapter, isPlaying, progress, setChapter, togglePlay }}>
       {children}
-      <audio ref={audioRef} onEnded={() => setIsPlaying(false)} />
     </AudioContext.Provider>
   );
 };
 
 export const useAudio = () => {
   const context = useContext(AudioContext);
-  if (!context) throw new Error("useAudio must be used within AudioProvider");
+  if (!context) throw new Error("useAudio doit être utilisé dans un AudioProvider");
   return context;
 };
