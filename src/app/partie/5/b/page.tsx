@@ -172,18 +172,22 @@ export default function PageAblutions() {
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             <div className="space-y-6 text-white/70 leading-relaxed font-serif">
-              <p>Consiste à laver proprement les parties intimes avec de l’eau non souillée avant de quitter les lieux.</p>
+              <p>Consiste à laver proprement les parties intimes avec de l’eau non souillée, non altérée dans sa couleur, sa saveur et dans son odeur avant de quitter les lieux de toilettes.</p>
               <div className="bg-black/20 p-6 rounded-2xl border border-white/5 italic">
-                <p className="text-gold mb-2 uppercase text-[10px] font-bold">À l'entrée (Pied gauche) :</p>
+                <p className="text-gold mb-2 uppercase text-[10px] font-bold">Il est donc conseillé d’y aller avec de l’eau. S’il s’agit de toilette, il est méritoire d’introduire le pied gauche et dire avant d’entrer :  </p>
                 "Bismilahi allahouma iniya a hons oubika minal khouboussi wal khabâ issi."
               </div>
-            </div>
-            <div className="space-y-6 text-white/70 leading-relaxed font-serif">
               <div className="bg-black/20 p-6 rounded-2xl border border-white/5 italic">
-                <p className="text-gold mb-2 uppercase text-[10px] font-bold">À la sortie (Pied droit) :</p>
+                <p className="text-gold mb-2 uppercase text-[10px] font-bold">Une fois à l’intérieur, on ne prononce plus la formule. Il est aussi méritoire de sortir par le pied droit et dire :</p>
                 "Bismilahi alhamdoulilahi lazi azhaba anil âzâ wa hâfâni."
               </div>
-              <p className="text-sm text-white/40 italic">Il faut s'assurer qu'il ne reste aucune goutte d'urine dans l'urètre. Le manque de patience peut provoquer des châtiments dans la tombe.</p>
+            </div>
+            <div className="space-y-6 text-white/70 leading-relaxed font-serif">             
+              <p className="text-sm text-white/40 italic">Si c’est en plein air, la formule d’entrée doit se dire avant de découvrir et la formule de sortie après le besoin.</p>
+              <p className="text-sm text-white/40 italic">Si la précaution d’emporter de l’eau n’a pas été prise, il y a risque de souillure des vêtements, ce qui est de nature à annule r la prière ultérieure ; c’est la raison pour laquelle, le « siwou » revêt une importance capitale.</p>
+              <p className="text-sm text-white/40 italic">Il faudra avant de s’y employer, s’assurer qu’il ne reste plus aucune goutte d’urine dans ce canal qu’on appelle urètre.</p>
+              <p className="text-sm text-white/40 italic">La durée de l’évacuation varie suivant les hommes.</p>
+              <p className="text-sm text-white/40 italic">Chez certains, il est nécessaire de faire quelques pas avant de procéder au lavage de la verge, car la sécrétion d’urine survenue après le lavage de la verge due à un manque de patience est de ces péchés susceptibles de provoquer des châtiments dans la tombe. C’est seulement après le « siwou » que l’on doit procéder à l’ablution.</p>
             </div>
           </div>
         </section>
@@ -194,14 +198,15 @@ export default function PageAblutions() {
           <div className="glass-card p-6 md:p-10 rounded-[3rem] border border-white/5">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
               {[
-                "1. Dire Bismillahi et se rincer la bouche.",
-                "2. Se laver les mains (3 fois) jusqu'aux poignets.",
+                "1. Chercher de l’eau non souillée ; s’asseoir dans un lieu propre de toute souillure ; se tourner vers la Kaaba (l’Est) ; dire Bismillahi et se rincer la bouche (emploi de cure dents).",
+                "2. Se laver les mains (3 fois) jusqu’aux poignets en commençant par la main droite.",
                 "3. Se rincer la bouche (3 fois).",
-                "4. Aspirer l'eau par le nez et rejeter (3 fois).",
-                "5. Se laver le visage (3 fois) avec l'intention.",
-                "6. Se laver les avant-bras (3 fois) jusqu'aux coudes.",
-                "7. Passer l'eau sur la tête (front à nuque et retour).",
-                "8. Se laver les oreilles et les pieds (3 fois)."
+                "4. Aspirer l’eau par les narines et l’en rejeter en soufflant par le nez (3 fois) : aspirer avec la main droite, rejeter avec la main gauche.",
+                "5. Se laver le visage (3 fois) en formulant intérieurement l’intention de faire l’ablution selon les obligations divines.",
+                "6. Se laver l’avant-bras droit, puis l’avant-bras gauche (chacun 3 fois).",
+                "7. Faire passer l’eau sur la tête du front à la nuque, puis de la nuque au front.",
+                "8. Se laver les oreilles.",
+                "9. Enfin se laver le pied droit (3 fois), puis le pied gauche de la même façon."
               ].map((step, idx) => (
                 <div key={idx} className="flex items-center gap-4 p-4 border-b border-white/5 group hover:bg-white/5 transition-all">
                   <span className="text-gold font-black text-xl opacity-40">{idx + 1}</span>
@@ -210,10 +215,19 @@ export default function PageAblutions() {
               ))}
             </div>
             <div className="mt-10 p-8 bg-gold/5 rounded-3xl text-center border border-gold/10">
+              <p className="text-[10px] text-white/30 uppercase tracking-[0.2em]">Après cela, lever la tête vers le ciel et dire ceci : "Achadouane lahilaha illalah wahdahô la charika lahô wa ach hadou annas seydina Mouhamadane sala lahô tahala aleyhi wassalama Abdouho wa rassoulouhou. ala houmadj halna minattawa bîna wadj halna minal moutatakhirina wadj halna mine ib adika sahilina wa add khilnâfildjanati wa bahidna mina nâri allahouma sali al la seydina Mouhamadine wa alla ali seydina Mouhamadine wa salim."</p>
               <p className="font-amiri text-2xl text-gold-light leading-loose mb-4">
-                أشهد أن لا إله إلا الله وحده لا شريك له وأشهد أن محمداً عبده ورسوله...
+               أَشْهَدُ أَنْ لَا إِلٰهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ،
+                وَأَشْهَدُ أَنَّ سَيِّدَنَا مُحَمَّدًا صَلَّى اللَّهُ تَعَالَى عَلَيْهِ وَسَلَّمَ عَبْدُهُ وَرَسُولُهُ.
+                اللَّهُمَّ اجْعَلْنَا مِنَ التَّوَّابِينَ،
+                وَاجْعَلْنَا مِنَ الْمُتَطَهِّرِينَ،
+                وَاجْعَلْنَا مِنْ عِبَادِكَ الصَّالِحِينَ،
+                وَأَدْخِلْنَا الْجَنَّةَ،
+                وَبَاعِدْنَا مِنَ النَّارِ.
+                اللَّهُمَّ صَلِّ عَلَى سَيِّدِنَا مُحَمَّدٍ،
+                وَعَلَى آلِ سَيِّدِنَا مُحَمَّدٍ،
+                وَسَلِّمْ
               </p>
-              <p className="text-[10px] text-white/30 uppercase tracking-[0.2em]">Prière finale : "Achadouane lahilaha illalah..."</p>
             </div>
           </div>
         </section>
@@ -221,29 +235,36 @@ export default function PageAblutions() {
         {/* 5. FARATA ET SOUNA (8 & 8) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="bg-emerald-950/20 p-8 rounded-[2.5rem] border border-emerald-500/20 relative overflow-hidden">
-             <h3 className="text-emerald-500 font-black text-xs uppercase mb-8 border-b border-emerald-500/10 pb-4">FARATA (Obligatoires - 8)</h3>
+             <h3 className="text-emerald-500 font-black text-xs uppercase mb-8 border-b border-emerald-500/10 pb-4">Les pratiques obligatoires de l’ablution ( farata )</h3>
              <ul className="space-y-4 text-white/50 text-sm">
-                <li>1. L'Intention au lavage du visage</li>
+                <li>Elles sont au nombre de huit (8) et s’énumèrent ainsi qu’il suit :</li>
+                <li>1. Formuler intérieurement l’intention de s’acquitter de cette obligation au moment de se laver le visage</li>
                 <li>2. Laver entièrement le visage</li>
-                <li>3. Laver les avant-bras (coudes)</li>
+                <li>3. Se laver les avant-bras, jusqu’aux coudes</li>
                 <li>4. Laver les doigts séparément</li>
-                <li>5. Passer l'eau sur les cheveux</li>
-                <li>6. Laver les pieds (chevilles)</li>
-                <li>7. Le frottage (Dalk) au moment du lavage</li>
-                <li>8. L'ordre et l'enchaînement immédiat</li>
+                <li>5. Faire passer l’eau sur l’ensemble des cheveux</li>
+                <li>• Si les cheveux sont tressés sans aucune matière artificielle, il n’est pas nécessaire de les détresser</li>
+                <li>• Si par contre, une quelconque matière artificielle est rajoutée aux cheveux, il faut défaire les tresses pour que les cheveux puissent être entièrement mouillés</li>
+                <li>D’ailleurs, l’utilisation de cheveux artificiels est une mauvaise chose.</li>
+                <li>Cela n’est valable que pour la petite ablution. Si l’épaisseur des tresses est de nature à empêcher l’eau d’atteindre le cuir chevelu, il faut les défaire dans le cas de la purification par lavage même si les tr esses ne sont faites qu’avec des cheveux naturels.</li>
+                <li>6. Laver entièrement les pieds jusqu’aux chevilles en rinçant chaque orteil</li>
+                <li>7. Frotter chaque partie au moment de son lavage en utilisant une quantité d’eau strictement nécessaire</li>
+                <li>8. observer rigoureusement l’ordre tel qu’il est établi ; ne pas trop attendre entre le lavage des différentes parties sous peine d’annulation de l’ablution (ne pas attendre qu’un membre se sèche avant de passer à l’autre)</li>
+                <li>Si, après l’ablution, on se souvient d’avoir oublié une partie, on doit procéder à son lavage si les membres lavés sont déjà secs. Si on s’en souvient tout juste (avant l’assèchement des parties lavées), on reprend l’opération à partir de la partie omise jusqu’à la fin</li>
              </ul>
           </div>
           <div className="bg-gold/5 p-8 rounded-[2.5rem] border border-gold/20">
-             <h3 className="text-gold font-black text-xs uppercase mb-8 border-b border-gold/10 pb-4">SOUNA (Traditionnelles - 8)</h3>
+             <h3 className="text-gold font-black text-xs uppercase mb-8 border-b border-gold/10 pb-4">Les pratiques traditionnelles de l’ablution ( Souna )</h3>
              <ul className="space-y-4 text-white/50 text-sm">
-                <li>1. Laver les mains au début</li>
+                <li>Elles sont au nombre de huit (8) et s’énumèrent ainsi qu’il suit :</li>
+                <li>1. Commencer par se laver les mains jusqu’aux poignets</li>
                 <li>2. Se rincer la bouche</li>
-                <li>3. Aspirer l'eau par le nez</li>
-                <li>4. Rejeter l'eau du nez</li>
-                <li>5. Passer les mains sur les oreilles</li>
-                <li>6. Mouiller à nouveau pour les oreilles</li>
-                <li>7. Ramener les mains au front</li>
-                <li>8. Respecter l'ordre des Farata</li>
+                <li>3. Faire pénétrer l’eau dans les narines en aspirant</li>
+                <li>4. L’en faire sortir en soufflant par les narines</li>
+                <li>5. Puis passer les mains à l’intérieur et à l’extérieur des oreilles</li>
+                <li>6. Se mouiller à nouveau les mains avant de les faire passer sur les oreilles</li>
+                <li>7. Ramener les mains au front après les avoir portées à la nuque</li>
+                <li>8. Ne pas inverser l’ordre établi concernant les pratiques obligatoires</li>
              </ul>
           </div>
         </div>
@@ -253,21 +274,33 @@ export default function PageAblutions() {
           <h2 className="text-gold font-black text-xs uppercase tracking-widest mb-10 text-center">Les mérites de l'ablution & Le Cure-dent (Soocu)</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-white/50 text-sm leading-relaxed">
             <div className="space-y-4">
-              <p>L'ablution est recommandée pour :</p>
+              <p>L’ablution est recommandée à qui veut :</p>
               <ul className="list-disc pl-5 space-y-2">
-                <li>Réciter le Coran, Hadiths ou sciences religieuses.</li>
+                <li>Réciter le Coran, les hadiths ou les connaissances religieuses</li>
                 <li>Invoquer les noms d'Allah.</li>
                 <li>Rendre visite à un saint homme.</li>
-                <li>Aller au marché ou s'endormir.</li>
+                <li>Aller dans un marché</li>
+                <li>S’endormir</li>
               </ul>
+              <p>Il est méritoire de renouveler fréquemment ses ablutions. A l’occasion, il est recommandé de formuler l’intention de s’acquitter d’une prière obligatoire au moment du renouvellement. Si cette précaution n’est pas prise, l’ablution ne pourra pas servir à une prière obligatoire ou une prière surérogatoire et fait le tour de la Kaaba. Si l’ablution n’a servi qu’à la lecture du Coran, on peut se passer de la renouveler.</p>
             </div>
             <div className="space-y-4">
-              <p>Le cure-dent (Soocu) permet de :</p>
+              <p>L’emploi du cure-dent (soocu) est méritoire, si possible avant la prière.</p>
+              <p>Il est conseillé de se curer les dents, cela permet de :</p>
               <ul className="list-disc pl-5 space-y-2 text-emerald-500/70">
-                <li>S'attirer les grâces de Dieu et irriter Satan.</li>
-                <li>Aiguiser l'intelligence et améliorer la vue.</li>
-                <li>Faciliter la digestion et l'expression.</li>
-                <li>Conserver sa foi jusqu'au dernier soupir.</li>
+                <li>S’attirer les grâces de Dieu</li>
+                <li>Provoquer l’irritation et la colère de satan</li>
+                <li>Se rappeler le nom de Dieu dans l’article de la mort</li>
+                <li>Conserver sa foi jusqu’au dernier soupir</li>
+                <li>Rentrer dans les bonnes grâces des deux (2) anges gardiens</li>
+                <li>Atténuer les affres de l’agonie</li>
+                <li>Multiplier nos chances d’avoir de la fortune</li>
+                <li>Aiguiser l’intelligence</li>
+                <li>Améliorer la vue</li>
+                <li>Faciliter l’expression</li>
+                <li>Faciliter la digestion</li>
+                <li>Rendre les dents plus solide s et la bouche plus propre</li>
+                <li>Embellir la chevelure et retarder la vieillesse</li>
               </ul>
             </div>
           </div>

@@ -76,10 +76,10 @@ export default function PurificationLavageComplet() {
         <motion.h1 
           initial={{ y: 20, opacity: 0 }} 
           animate={{ y: 0, opacity: 1 }} 
-          className="text-4xl md:text-6xl font-bold gold-gradient-text leading-tight mb-8"
+          className="text-4xl md:text-7xl font-black bg-gradient-to-b from-white to-gold bg-clip-text text-transparent mb-8"
         >
           LA PURIFICATION (LAVAGE) <br />
-          <span className="font-amiri text-3xl md:text-5xl opacity-80 italic">الغسل</span>
+          <span className="font-amiri text-3xl md:text-5xl opacity-80 italic text-gold">الغسل</span>
         </motion.h1>
 
         <motion.button
