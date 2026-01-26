@@ -6,11 +6,12 @@ import { useRouter } from 'next/navigation';
 import { useAudio } from '@/context/AudioContext';
 import { CHAPTERS } from '@/data/chapters';
 
-export default function LesAblutionsCompletes() {
+export default function PageAblutions() {
   const router = useRouter();
   const { setChapter, currentChapter, isPlaying, togglePlay } = useAudio();
   
-  const chapterData = CHAPTERS.find(c => c.id === "6") || CHAPTERS[5];
+  const chapterData = CHAPTERS.find(c => c.id === "5") || CHAPTERS[4];
+  const isThisChapterPlaying = currentChapter?.id === chapterData.id && isPlaying;
 
   const handleAudioAction = () => {
     if (currentChapter?.id === chapterData.id) togglePlay();
@@ -18,179 +19,275 @@ export default function LesAblutionsCompletes() {
   };
 
   return (
-    <main className="min-h-screen bg-[#020504] text-white pt-24 pb-48 px-6 overflow-x-hidden">
+    <main className="min-h-screen bg-[#020504] text-white pt-16 md:pt-28 pb-48 px-4 md:px-6">
       
       {/* HEADER SECTION */}
-      <div className="max-w-4xl mx-auto text-center mb-16">
-        <motion.span className="text-gold tracking-[0.6em] text-[10px] uppercase font-black mb-4 block">
-          Khouratoul Ayni — Partie 5-B
+      <div className="max-w-4xl mx-auto text-center mb-12 md:mb-16 relative">
+        <motion.span 
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+          className="text-gold tracking-[0.5em] text-[10px] uppercase font-bold mb-4 block"
+        >
+          Chapitre V — Section B
         </motion.span>
         <motion.h1 
-          initial={{ y: 20, opacity: 0 }} 
-          animate={{ y: 0, opacity: 1 }} 
-          className="text-4xl md:text-6xl font-bold gold-gradient-text leading-tight mb-8"
+          initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
+          className="text-4xl md:text-7xl font-black bg-gradient-to-b from-white to-gold bg-clip-text text-transparent mb-8"
         >
-          LES ABLUTIONS <br />
-          <span className="font-amiri text-3xl md:text-5xl opacity-80">(الوضوء - AL-WOUDOU)</span>
+          LES ABLUTIONS <br/>
+          <span className="font-amiri text-3xl md:text-5xl opacity-80 italic text-gold">الوضوء</span>
         </motion.h1>
 
         <motion.button
+          whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
           onClick={handleAudioAction}
-          className="inline-flex items-center gap-4 px-10 py-5 bg-gold/10 border border-gold/30 rounded-2xl text-gold font-black uppercase tracking-widest text-[10px] shadow-2xl backdrop-blur-md"
+          className="inline-flex items-center gap-4 px-8 py-4 bg-gold/10 border border-gold/30 rounded-2xl text-gold font-bold uppercase tracking-widest text-[10px] backdrop-blur-md shadow-2xl"
         >
           <span className="material-symbols-rounded text-3xl">
-            {currentChapter?.id === chapterData.id && isPlaying ? 'pause_circle' : 'play_circle'}
+            {isThisChapterPlaying ? 'pause_circle' : 'play_circle'}
           </span>
-          {currentChapter?.id === chapterData.id && isPlaying ? 'Pause' : 'Écouter la leçon'}
+          {isThisChapterPlaying ? 'Mettre en pause' : 'Écouter la leçon'}
         </motion.button>
       </div>
 
-      <div className="max-w-6xl mx-auto space-y-20">
+      <div className="max-w-6xl mx-auto space-y-12 md:space-y-20">
 
-        {/* INTRODUCTION */}
-        <section className="glass-card p-10 rounded-[3rem] border border-white/5">
-          <p className="text-lg md:text-xl text-white/80 leading-relaxed font-serif italic text-center">
-            "Toute personne majeure doit faire ses ablutions avant de prier ou de toucher le Saint Coran. Quiconque le conteste est un mécréant."
-          </p>
-        </section>
-
-        {/* CAUSES D'ANNULATION */}
-        <section className="space-y-10">
-          <div className="flex items-center gap-6">
-            <h2 className="text-xl font-black text-gold uppercase">Causes de nullité</h2>
-            <div className="h-[1px] flex-1 bg-gold/10" />
-            <span className="font-amiri text-2xl text-gold/40">نواقض الوضوء</span>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="glass-card p-8 rounded-[2.5rem] border border-white/5 space-y-4">
-              <h3 className="text-white font-bold mb-4">Émissions Naturelles</h3>
-              <ul className="text-sm text-white/50 space-y-3">
-                <li>• Le pet, le fait d’aller à la selle ou d’uriner</li>
-                <li>• La sécrétion de liquide prostatique (Madji) consécutive à une érection</li>
-                <li>• La sortie du « wadiyu » (liquide gluant) émis sans plaisir</li>
-                <li>• La sécrétion du liquide précédant l’accouchement</li>
-              </ul>
+        {/* 1. OBLIGATION ET MISE EN GARDE */}
+        <section className="relative glass-card p-8 md:p-12 rounded-[2.5rem] border border-white/5 overflow-hidden">
+          <span className="absolute -top-10 -right-10 text-[200px] font-black opacity-[0.03] select-none">B</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center relative z-10">
+            <div className="text-right" dir="rtl">
+              <p className="text-2xl md:text-4xl font-amiri text-gold-light leading-relaxed">
+               يجب على كل شخص بالغ أن يتوضأ قبل الصلاة أو لمس المصحف الشريف. ومن أنكر ذلك فهو كافر. ومن خالف هذا الحكم عن قصد ومن غير عذرٍ فهو جدير بأشدّ الاحتقار، فإن لم يتب قبل موته فسيُطرح حتمًا في جهنم.
+              </p>
             </div>
-            <div className="glass-card p-8 rounded-[2.5rem] border border-white/5 space-y-4">
-              <h3 className="text-white font-bold mb-4">Perte de Conscience & Toucher</h3>
-              <ul className="text-sm text-white/50 space-y-3">
-                <li>• Crise d’épilepsie, folie, évanouissement ou ivresse</li>
-                <li>• Le sommeil profond, si court soit-il</li>
-                <li>• L'attouchement du corps d'une femme avec intention d'en jouir</li>
-                <li>• Toucher sa verge par la paume ou les doigts</li>
-              </ul>
+            <div className="border-l-2 border-gold/10 pl-8">
+              <p className="text-lg md:text-xl text-white/70 font-serif italic leading-relaxed">
+                "Toute personne majeure doit faire ses ablutions avant de prier ou de toucher le Saint Coran. Quiconque le conteste est un mécréant.<br />  Celui qui transgresse cette prescription de façon délibérée et sans excuse est digne du plus grand mépris. S’il ne s’en repent pas avant sa mort, il sera précipité irrémédiablement en enfer."
+              </p>
             </div>
           </div>
         </section>
 
-        {/* LE SIWOU */}
-        <section className="space-y-10">
+        {/* 2. CAUSES D'ANNULATION (15 CAUSES) */}
+        <section className="space-y-8">
           <div className="flex items-center gap-6">
-            <h2 className="text-xl font-black text-gold uppercase">Le Siwou</h2>
+            <h2 className="text-xl font-black text-gold uppercase tracking-tighter">APRES ABLUTIONS : CAUSES POUVANT RENDRE CADUQUES LES ABLUTIONS</h2>
             <div className="h-[1px] flex-1 bg-gold/10" />
-            <span className="font-amiri text-2xl text-gold/40">الاستنجاء</span>
+            <span className="font-amiri text-2xl text-gold/40">بعد الوضوء: الأسباب التي تُبطل الوضوء</span>
           </div>
-          <div className="glass-card p-10 rounded-[3rem] border border-gold/10">
-            <p className="text-white/70 leading-relaxed mb-6">
-              "Consiste à laver proprement les parties intimes avec de l’eau non souillée avant de quitter les lieux de toilettes."
-            </p>
-            <div className="bg-white/5 p-6 rounded-2xl italic text-gold-light font-serif">
-              "Bismilahi allahouma iniya a honsoubika minal khouboussi wal khabâ issi." (Formule d'entrée)
-            </div>
-          </div>
-        </section>
-
-        {/* PRATIQUE DE L'ABLUTION */}
-        <section className="space-y-10">
-          <div className="flex items-center gap-6">
-            <h2 className="text-xl font-black text-gold uppercase">Pratique pas à pas</h2>
-            <div className="h-[1px] flex-1 bg-gold/10" />
-            <span className="font-amiri text-2xl text-gold/40">صفة الوضوء</span>
-          </div>
-          <div className="grid gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
-              { fr: "Dire Bismillahi et se rincer la bouche.", ar: "التسمية والمضمضة" },
-              { fr: "Laver les mains (3 fois) jusqu'aux poignets.", ar: "غسل اليدين" },
-              { fr: "Aspirer l'eau par les narines et la rejeter (3 fois).", ar: "الاستنشاق والاستنثار" },
-              { fr: "Laver le visage (3 fois) avec l'intention.", ar: "غسل الوجه مع النية" },
-              { fr: "Laver les avant-bras jusqu'aux coudes (3 fois).", ar: "غسل اليدين إلى المرفقين" },
-              { fr: "Passer l'eau sur la tête du front à la nuque.", ar: "مسح الرأس" },
-              { fr: "Laver les oreilles.", ar: "مسح الأذنين" },
-              { fr: "Laver les pieds jusqu'aux chevilles (3 fois).", ar: "غسل الرجلين" }
-            ].map((step, idx) => (
-              <div key={idx} className="glass-card p-6 flex justify-between items-center rounded-2xl border border-white/5">
-                <div className="flex gap-6 items-center">
-                  <span className="text-gold font-black opacity-20 text-3xl">{idx + 1}</span>
-                  <p className="text-white/70 text-lg">{step.fr}</p>
+              {
+                id: 1,
+                fr: "Le pet.",
+                ar: "خروج الريح"
+              },
+              {
+                id: 2,
+                fr: "Le fait d’aller à la selle.",
+                ar: "الخروج إلى الغائط"
+              },
+              {
+                id: 3,
+                fr: "Le fait d’uriner.",
+                ar: "التبول"
+              },
+              {
+                id: 4,
+                fr: "La sécrétion de liquide prostatique (Madji) consécutive à l’érection due à l’observation, à l’imagination ou à l’attouchement. Dans ce cas, il faut laver entièrement le sexe après avoir formulé l’intention. L’érection sans sécrétion n’annule pas l’ablution.",
+                ar: "خروج المذي الناتج عن الانتصاب بسبب النظر أو التخيل أو اللمس، وفي هذه الحالة يجب غسل العضو الذكري كاملًا بعد استحضار النية. أما الانتصاب دون إفراز فلا ينقض الوضوء."
+              },
+              {
+                id: 5,
+                fr: "La sortie du « wadiyu », liquide gluant émis par l’homme sans plaisir.",
+                ar: "خروج الودي، وهو سائل لزج يخرج من الرجل دون لذة."
+              },
+              {
+                id: 6,
+                fr: "La sécrétion du sperme due à une maladie, à la fatigue ou à l’incontinence. Si cette sortie s’accompagne d’une jouissance sexuelle, la purification par le lavage est obligatoire.",
+                ar: "خروج المني بسبب مرض أو تعب أو سلس، فإن كان مصحوبًا بلذة جنسية وجب الغسل."
+              },
+              {
+                id: 7,
+                fr: "La sécrétion du liquide précédant l’accouchement. En cas d’accouchement non accompagné de sang, le lavage est obligatoire. S’il est accompagné de sang, le lavage se fait après l’arrêt du saignement.",
+                ar: "الإفرازات التي تسبق الولادة، فإن كانت الولادة بلا دم وجب الغسل، وإن كانت مصحوبة بالدم فيكون الغسل بعد انقطاعه."
+              },
+              {
+                id: 8,
+                fr: "Crise d’épilepsie ou de folie.",
+                ar: "نوبة صرع أو جنون"
+              },
+              {
+                id: 9,
+                fr: "L’évanouissement.",
+                ar: "الإغماء"
+              },
+              {
+                id: 10,
+                fr: "L’ivresse.",
+                ar: "السكر"
+              },
+              {
+                id: 11,
+                fr: "Le sommeil profond, même s’il est court, durant lequel une personne perd la sensation.",
+                ar: "النوم العميق ولو كان قصيرًا، وهو النوم الذي يفقد فيه الإنسان الإحساس."
+              },
+              {
+                id: 12,
+                fr: "Le fait pour un homme majeur de toucher le corps, les cheveux, les ongles ou les habits d’une femme avec l’intention d’en jouir, qu’il y ait plaisir ou non. Si le plaisir n’est ni recherché ni obtenu, l’ablution n’est pas annulée. Cela s’applique aussi à la femme. Le contact entre mineurs est sans effet.",
+                ar: "لمس الرجل لجسد المرأة أو شعرها أو أظافرها أو ثيابها بشهوة، سواء وُجدت اللذة أم لا. أما إذا لم تُطلب اللذة ولم تحصل فلا ينتقض الوضوء. وينطبق الحكم نفسه على المرأة، ولمس الصغار لا أثر له."
+              },
+              {
+                id: 13,
+                fr: "Le baiser bouche à bouche entre homme et femme annule l’ablution, qu’il y ait jouissance ou non. S’il a lieu entre majeur et mineur, l’annulation concerne le majeur seulement. Entre deux enfants, il n’y a pas d’effet. Embrasser par compassion ou par respect n’annule pas l’ablution.",
+                ar: "التقبيل من الفم بين الرجل والمرأة ينقض الوضوء سواء وُجدت اللذة أم لا. وإذا كان بين بالغ وصغير انتقض وضوء البالغ فقط، أما بين طفلين فلا أثر له. والتقبيل بدافع الرحمة أو الاحترام لا ينقض الوضوء."
+              },
+              {
+                id: 14,
+                fr: "Le fait pour un homme de toucher sa verge avec la paume, les doigts ou le contour de la main annule l’ablution. Le toucher par-dessus les habits ou le toucher d’autres parties intimes ne l’annule pas. Le toucher du sexe par la femme n’annule pas l’ablution.",
+                ar: "مس الرجل لذكره بباطن الكف أو بالأصابع ينقض الوضوء، أما لمسه من فوق الثياب أو لمس غيره من العورات فلا ينقض. ولمس المرأة لفرجها لا ينقض الوضوء."
+              },
+              {
+                id: 15,
+                fr: "En cas de doute avant ou pendant la prière, l’ablution doit être reprise. Si le doute disparaît, il n’y a pas lieu de reprendre l’ablution sauf en cas de certitude d’annulation.",
+                ar: "في حال الشك قبل الصلاة أو أثناءها يجب إعادة الوضوء، وإذا زال الشك فلا إعادة إلا مع اليقين بوجود ناقض."
+              }
+            ].map((item, i) => (
+              <div key={i} className="bg-white/[0.02] p-6 rounded-3xl border border-white/5 hover:border-gold/20 transition-all flex flex-col justify-between">
+                <div>
+                  <p className="text-gold font-black text-sm mb-2 opacity-30"># {item.id}</p>
+                  <p className="text-white/60 text-sm leading-relaxed mb-4">{item.fr}</p>
                 </div>
-                <p className="font-amiri text-gold-light text-2xl hidden md:block">{step.ar}</p>
+                <p className="text-right font-amiri text-lg text-gold-light/60" dir="rtl">{item.ar}</p>
               </div>
             ))}
           </div>
         </section>
 
-        {/* OBLIGATIONS (FARATA) ET TRADITIONS (SOUNA) */}
+        {/* 3. LE SIWOU (LAVAGE INTIME) */}
+        <section className="glass-card p-8 md:p-12 rounded-[2.5rem] border-l-4 border-gold bg-gradient-to-r from-gold/5 to-transparent">
+          <div className="flex justify-between items-start mb-8">
+            <h2 className="text-gold font-black text-xs uppercase tracking-widest">« LE SIWOU » (LAVAGE DES PARTIES INTIMES)</h2>
+            <span className="font-amiri text-3xl text-gold">الاستنجاء</span>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <div className="space-y-6 text-white/70 leading-relaxed font-serif">
+              <p>Consiste à laver proprement les parties intimes avec de l’eau non souillée avant de quitter les lieux.</p>
+              <div className="bg-black/20 p-6 rounded-2xl border border-white/5 italic">
+                <p className="text-gold mb-2 uppercase text-[10px] font-bold">À l'entrée (Pied gauche) :</p>
+                "Bismilahi allahouma iniya a hons oubika minal khouboussi wal khabâ issi."
+              </div>
+            </div>
+            <div className="space-y-6 text-white/70 leading-relaxed font-serif">
+              <div className="bg-black/20 p-6 rounded-2xl border border-white/5 italic">
+                <p className="text-gold mb-2 uppercase text-[10px] font-bold">À la sortie (Pied droit) :</p>
+                "Bismilahi alhamdoulilahi lazi azhaba anil âzâ wa hâfâni."
+              </div>
+              <p className="text-sm text-white/40 italic">Il faut s'assurer qu'il ne reste aucune goutte d'urine dans l'urètre. Le manque de patience peut provoquer des châtiments dans la tombe.</p>
+            </div>
+          </div>
+        </section>
+
+        {/* 4. PRATIQUE PAS À PAS */}
+        <section className="space-y-8">
+          <h2 className="text-center text-gold font-black text-xs uppercase tracking-[0.4em]">Pratique de l'ablution</h2>
+          <div className="glass-card p-6 md:p-10 rounded-[3rem] border border-white/5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
+              {[
+                "1. Dire Bismillahi et se rincer la bouche.",
+                "2. Se laver les mains (3 fois) jusqu'aux poignets.",
+                "3. Se rincer la bouche (3 fois).",
+                "4. Aspirer l'eau par le nez et rejeter (3 fois).",
+                "5. Se laver le visage (3 fois) avec l'intention.",
+                "6. Se laver les avant-bras (3 fois) jusqu'aux coudes.",
+                "7. Passer l'eau sur la tête (front à nuque et retour).",
+                "8. Se laver les oreilles et les pieds (3 fois)."
+              ].map((step, idx) => (
+                <div key={idx} className="flex items-center gap-4 p-4 border-b border-white/5 group hover:bg-white/5 transition-all">
+                  <span className="text-gold font-black text-xl opacity-40">{idx + 1}</span>
+                  <p className="text-white/60 text-sm">{step}</p>
+                </div>
+              ))}
+            </div>
+            <div className="mt-10 p-8 bg-gold/5 rounded-3xl text-center border border-gold/10">
+              <p className="font-amiri text-2xl text-gold-light leading-loose mb-4">
+                أشهد أن لا إله إلا الله وحده لا شريك له وأشهد أن محمداً عبده ورسوله...
+              </p>
+              <p className="text-[10px] text-white/30 uppercase tracking-[0.2em]">Prière finale : "Achadouane lahilaha illalah..."</p>
+            </div>
+          </div>
+        </section>
+
+        {/* 5. FARATA ET SOUNA (8 & 8) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="glass-card p-10 rounded-[2.5rem] border border-emerald-500/20">
-             <h3 className="text-emerald-500 font-black text-xs uppercase mb-8 border-b border-emerald-500/10 pb-4 flex justify-between">
-                OBLIGATOIRES (FARATA) <span className="font-amiri text-xl">فرائض</span>
-             </h3>
-             <ul className="space-y-4 text-white/60 text-sm">
-                <li>1. L'intention au lavage du visage</li>
+          <div className="bg-emerald-950/20 p-8 rounded-[2.5rem] border border-emerald-500/20 relative overflow-hidden">
+             <h3 className="text-emerald-500 font-black text-xs uppercase mb-8 border-b border-emerald-500/10 pb-4">FARATA (Obligatoires - 8)</h3>
+             <ul className="space-y-4 text-white/50 text-sm">
+                <li>1. L'Intention au lavage du visage</li>
                 <li>2. Laver entièrement le visage</li>
-                <li>3. Laver les avant-bras aux coudes</li>
+                <li>3. Laver les avant-bras (coudes)</li>
                 <li>4. Laver les doigts séparément</li>
                 <li>5. Passer l'eau sur les cheveux</li>
-                <li>6. Laver les pieds aux chevilles</li>
-                <li>7. Frotter chaque partie</li>
-                <li>8. Respecter l'ordre et l'enchaînement</li>
+                <li>6. Laver les pieds (chevilles)</li>
+                <li>7. Le frottage (Dalk) au moment du lavage</li>
+                <li>8. L'ordre et l'enchaînement immédiat</li>
              </ul>
           </div>
-          <div className="glass-card p-10 rounded-[2.5rem] border border-gold/20">
-             <h3 className="text-gold font-black text-xs uppercase mb-8 border-b border-gold/10 pb-4 flex justify-between">
-                TRADITIONNELLES (SOUNA) <span className="font-amiri text-xl">سنن</span>
-             </h3>
-             <ul className="space-y-4 text-white/60 text-sm">
-                <li>1. Laver les mains aux poignets</li>
+          <div className="bg-gold/5 p-8 rounded-[2.5rem] border border-gold/20">
+             <h3 className="text-gold font-black text-xs uppercase mb-8 border-b border-gold/10 pb-4">SOUNA (Traditionnelles - 8)</h3>
+             <ul className="space-y-4 text-white/50 text-sm">
+                <li>1. Laver les mains au début</li>
                 <li>2. Se rincer la bouche</li>
-                <li>3. Aspirer l'eau par les narines</li>
-                <li>4. Rejeter l'eau en soufflant</li>
-                <li>5. Passer les mains à l'intérieur/extérieur des oreilles</li>
-                <li>6. Mouiller à nouveau les mains pour les oreilles</li>
-                <li>7. Ramener les mains au front après la nuque</li>
-                <li>8. Respecter l'ordre des obligations</li>
+                <li>3. Aspirer l'eau par le nez</li>
+                <li>4. Rejeter l'eau du nez</li>
+                <li>5. Passer les mains sur les oreilles</li>
+                <li>6. Mouiller à nouveau pour les oreilles</li>
+                <li>7. Ramener les mains au front</li>
+                <li>8. Respecter l'ordre des Farata</li>
              </ul>
           </div>
         </div>
 
-        {/* LES MÉRITES */}
-        <section className="glass-card p-12 rounded-[3rem] border border-gold/20 bg-gradient-to-br from-gold/5 to-transparent">
-          <h2 className="text-center text-gold font-black text-xs uppercase tracking-[0.4em] mb-10">Les Mérites et le Siwou (Cure-dent)</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-white/60 text-sm">
-            <ul className="space-y-3">
-              <li>• S’attirer les grâces de Dieu</li>
-              <li>• Provoquer l’irritation et la colère de satan</li>
-              <li>• Se rappeler le nom de Dieu à la mort</li>
-              <li>• Conserver sa foi jusqu’au dernier soupir</li>
-            </ul>
-            <ul className="space-y-3">
-              <li>• Aiguiser l’intelligence</li>
-              <li>• Améliorer la vue et faciliter la digestion</li>
-              <li>• Rendre les dents plus solides</li>
-              <li>• Embellir la chevelure et retarder la vieillesse</li>
-            </ul>
+        {/* 6. MÉRITES ET CURE-DENT */}
+        <section className="glass-card p-8 md:p-12 rounded-[2.5rem] border border-white/5">
+          <h2 className="text-gold font-black text-xs uppercase tracking-widest mb-10 text-center">Les mérites de l'ablution & Le Cure-dent (Soocu)</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-white/50 text-sm leading-relaxed">
+            <div className="space-y-4">
+              <p>L'ablution est recommandée pour :</p>
+              <ul className="list-disc pl-5 space-y-2">
+                <li>Réciter le Coran, Hadiths ou sciences religieuses.</li>
+                <li>Invoquer les noms d'Allah.</li>
+                <li>Rendre visite à un saint homme.</li>
+                <li>Aller au marché ou s'endormir.</li>
+              </ul>
+            </div>
+            <div className="space-y-4">
+              <p>Le cure-dent (Soocu) permet de :</p>
+              <ul className="list-disc pl-5 space-y-2 text-emerald-500/70">
+                <li>S'attirer les grâces de Dieu et irriter Satan.</li>
+                <li>Aiguiser l'intelligence et améliorer la vue.</li>
+                <li>Faciliter la digestion et l'expression.</li>
+                <li>Conserver sa foi jusqu'au dernier soupir.</li>
+              </ul>
+            </div>
           </div>
         </section>
 
       </div>
 
-      {/* NAVIGATION */}
-      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 flex gap-4 z-50">
-        <button onClick={() => router.push('/partie/6/a')} className="px-10 py-4 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full text-[10px] uppercase tracking-[0.2em] font-bold text-white/50 transition-all">
-          Précédent (6-A)
+      {/* NAVIGATION PERSISTANTE */}
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 flex gap-4 z-50 w-full max-w-[90%] md:max-w-md">
+        <button 
+          onClick={() => router.push('/partie/5/a')} 
+          className="flex-1 py-4 bg-white/5 backdrop-blur-md border border-white/10 rounded-full text-[10px] uppercase tracking-widest font-bold text-white/50 hover:text-white transition-all"
+        >
+          Précédent
         </button>
-        <button onClick={() => router.push('/partie/6/c')} className="px-10 py-4 bg-gold text-emerald-950 rounded-full text-[10px] uppercase tracking-[0.2em] font-black shadow-lg hover:scale-105 transition-all">
-          Suivant (6-C)
+        <button 
+          onClick={() => router.push('/partie/5/c')} 
+          className="flex-1 py-4 bg-gold text-emerald-950 rounded-full text-[10px] uppercase tracking-widest font-black shadow-xl hover:scale-105 transition-all"
+        >
+          Suivant
         </button>
       </div>
     </main>
