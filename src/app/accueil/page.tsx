@@ -79,7 +79,7 @@ export default function LibraryPage() {
                     {/* Bouton Action Dynamique */}
                     <div className="flex items-center gap-4">
                       <div className="h-[1px] flex-1 bg-white/10 group-hover:bg-gold/30 transition-all" />
-                      <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-gold group-hover:text-emerald-950 transition-all duration-500">
+                      <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-gold group-hover:text-emerald-950-dynamic transition-all duration-500">
                         <span className="material-symbols-rounded text-lg">play_arrow</span>
                       </div>
                     </div>

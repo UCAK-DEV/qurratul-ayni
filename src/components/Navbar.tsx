@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { CHAPTERS, Chapter } from '@/data/chapters';
+import { useTheme } from '@/context/ThemeContext';
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -16,6 +17,7 @@ export const Navbar = () => {
   const pathname = usePathname();
   const router = useRouter();
   const searchRef = useRef<HTMLDivElement>(null);
+  const { theme, toggleTheme } = useTheme();
 
   // Détection du scroll pour l'effet de transparence dynamique
   useEffect(() => {
@@ -60,7 +62,7 @@ export const Navbar = () => {
 
   return (
     <nav className={`fixed top-0 w-full z-[100] transition-all duration-500 ${
-      isScrolled ? 'py-4 bg-emerald-950/60 backdrop-blur-2xl border-b border-white/5 shadow-2xl' : 'py-8 bg-transparent'
+      isScrolled ? 'py-4 bg-emerald-950-dynamic/60 backdrop-blur-2xl border-b border-white/5 shadow-2xl' : 'py-8 bg-transparent'
     }`}>
       <div className="container mx-auto px-6 md:px-12 flex items-center justify-between relative">
         
@@ -107,7 +109,7 @@ export const Navbar = () => {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
-                    className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-60 bg-emerald-950/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-lg p-3 z-50 max-h-80 overflow-y-auto custom-scrollbar"
+                    className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-60 bg-emerald-950-dynamic/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-lg p-3 z-50 max-h-80 overflow-y-auto custom-scrollbar"
                   >
                     <ul className="space-y-1">
                       {CHAPTERS.map((chapter) => (
@@ -166,7 +168,7 @@ export const Navbar = () => {
                   initial={{ opacity: 0, y: 15, scale: 0.98 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 15, scale: 0.98 }}
-                  className="absolute top-14 right-0 w-[320px] sm:w-[500px] bg-emerald-950/95 backdrop-blur-3xl border border-white/10 rounded-[2rem] overflow-hidden shadow-[0_30px_70px_rgba(0,0,0,0.7)] z-50"
+                  className="absolute top-14 right-0 w-[320px] sm:w-[500px] bg-emerald-950-dynamic/95 backdrop-blur-3xl border border-white/10 rounded-[2rem] overflow-hidden shadow-[0_30px_70px_rgba(0,0,0,0.7)] z-50"
                 >
                   <div className="p-6 max-h-[500px] overflow-y-auto custom-scrollbar">
                     <div className="flex items-center justify-between mb-6 px-2">
@@ -228,6 +230,17 @@ export const Navbar = () => {
               }`}>{l}</button>
             ))}
           </div>
+
+          {/* THEME TOGGLE */}
+          <button 
+            onClick={toggleTheme}
+            className="text-white/60 hover:text-white transition-colors p-2 hidden sm:block" // Hidden on small screens, shown on medium and up
+            aria-label="Toggle theme"
+          >
+            <span className="material-symbols-rounded text-2xl">
+              {theme === 'dark' ? 'light_mode' : 'dark_mode'}
+            </span>
+          </button>
 
           {/* MOBILE TOGGLE */}
           <button 

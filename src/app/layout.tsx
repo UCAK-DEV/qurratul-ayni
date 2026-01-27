@@ -1,6 +1,7 @@
 import { AudioProvider } from '@/context/AudioContext';
 import { Player } from '@/components/Player';
 import { Navbar } from '@/components/Navbar';
+import { ThemeProvider } from '@/context/ThemeContext';
 import './globals.css';
 
 /**
@@ -29,18 +30,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="antialiased selection:bg-gold/30 selection:text-white">
         {/* Fournisseur de contexte audio pour la lecture globale */}
-        <AudioProvider>
-          {/* Barre de navigation fixe */}
-          <Navbar />
-          
-          {/* Contenu principal de la page */}
-          <main>
-            {children}
-          </main>
-          
-          {/* Lecteur audio flottant (apparaît lorsqu'une piste est lancée) */}
-          <Player />
-        </AudioProvider>
+        <ThemeProvider>
+          <AudioProvider>
+            {/* Barre de navigation fixe */}
+            <Navbar />
+            
+            {/* Contenu principal de la page */}
+            <main>
+              {children}
+            </main>
+            
+            {/* Lecteur audio flottant (apparaît lorsqu'une piste est lancée) */}
+            <Player />
+          </AudioProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

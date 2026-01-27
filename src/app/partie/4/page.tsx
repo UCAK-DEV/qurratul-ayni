@@ -122,7 +122,7 @@ export default function ChapitreProphete() {
         </button>
         <button 
           onClick={() => router.push('/partie/5')} 
-          className="flex-1 py-4 bg-gold text-emerald-950 rounded-full text-[10px] uppercase tracking-[0.2em] font-black shadow-lg hover:scale-105 transition-all"
+          className="flex-1 py-4 bg-gold text-emerald-950-dynamic rounded-full text-[10px] uppercase tracking-[0.2em] font-black shadow-lg hover:scale-105 transition-all"
         >
           Suivant
         </button>

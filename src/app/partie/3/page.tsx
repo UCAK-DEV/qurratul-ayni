@@ -137,7 +137,7 @@ export default function PageUnicite() {
         </button>
         <button 
           onClick={() => router.push('/partie/4')} 
-          className="flex-1 py-4 bg-gold text-emerald-950 rounded-full text-[10px] uppercase tracking-widest font-black shadow-xl hover:scale-105 transition-all"
+          className="flex-1 py-4 bg-gold text-emerald-950-dynamic rounded-full text-[10px] uppercase tracking-widest font-black shadow-xl hover:scale-105 transition-all"
         >
           Suivant
         </button>

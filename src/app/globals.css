@@ -2,38 +2,46 @@
 
 @theme {
   /* Définition des couleurs et polices personnalisées */
-  --color-emerald-950: var(--bg-deep);
   --color-gold: #c9a961;
   --color-gold-light: #e2c27d;
   --font-serif: "Playfair Display", serif;
   --font-amiri: "Amiri", serif;
+
+  /* Custom Tailwind classes for dynamic emerald color */
+  .bg-emerald-950-dynamic {
+    background-color: var(--color-emerald-950-dynamic);
+  }
+  .text-emerald-950-dynamic {
+    color: var(--color-emerald-950-dynamic);
+  }
 }
 
-:root {
+:root,
+[data-theme='light'] {
   /* Variables pour le Mode Jour (Clair) */
-  --bg-deep: #f8fafc;
-  --bg-card: rgba(255, 255, 255, 0.8);
-  --text-primary: #020617;
-  --text-secondary: #475569;
+  --bg-deep: #f8fafc; /* Light background */
+  --bg-card: rgba(255, 255, 255, 0.8); /* Light card background with transparency */
+  --text-primary: #020617; /* Dark text for contrast */
+  --text-secondary: #475569; /* Slightly lighter dark text */
   --border-gold: rgba(201, 169, 97, 0.2);
   --selection-bg: rgba(201, 169, 97, 0.3);
+  --color-emerald-950-dynamic: #e0f2f7; /* Lighter emerald for light mode */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Variables pour le Mode Nuit (Sombre) */
-    --bg-deep: #020504;
-    --bg-card: rgba(255, 255, 255, 0.03);
-    --text-primary: #ffffff;
-    --text-secondary: #94a3b8;
-    --border-gold: rgba(201, 169, 97, 0.1);
-    --selection-bg: rgba(201, 169, 97, 0.5);
-  }
+[data-theme='dark'] {
+  /* Variables pour le Mode Nuit (Sombre) */
+  --bg-deep: #020504; /* Dark background */
+  --bg-card: rgba(255, 255, 255, 0.03); /* Dark card background with transparency */
+  --text-primary: #ffffff; /* White text for contrast */
+  --text-secondary: #94a3b8; /* Lighter white text */
+  --border-gold: rgba(201, 169, 97, 0.1);
+  --selection-bg: rgba(201, 169, 97, 0.5);
+  --color-emerald-950-dynamic: #020504; /* Dark emerald for dark mode */
 }
 
 /* Styles de base */
 body {
-  background-color: var(--bg-deep);
+  background-color: var(--color-emerald-950-dynamic); /* Use dynamic emerald variable */
   color: var(--text-primary);
   transition: background-color 0.5s ease, color 0.5s ease;
   min-height: 100vh;

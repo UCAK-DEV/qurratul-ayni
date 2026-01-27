@@ -161,7 +161,7 @@ export default function ChapitrePurification() {
         </button>
         <button 
           onClick={() => router.push('/partie/5/a')} 
-          className="flex-1 py-4 bg-gold text-emerald-950 rounded-full text-[10px] uppercase tracking-widest font-black shadow-[0_10px_40px_rgba(201,169,97,0.2)] hover:scale-105 transition-all"
+          className="flex-1 py-4 bg-gold text-emerald-950-dynamic rounded-full text-[10px] uppercase tracking-widest font-black shadow-[0_10px_40px_rgba(201,169,97,0.2)] hover:scale-105 transition-all"
         >
           Commencer
         </button>

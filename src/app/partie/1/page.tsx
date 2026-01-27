@@ -129,7 +129,7 @@ export default function NotesAuteur() {
         </button>
         <button 
           onClick={() => router.push('/partie/2')} 
-          className="px-10 py-4 bg-gold text-emerald-950 rounded-full text-[10px] uppercase tracking-[0.2em] font-black shadow-[0_10px_30px_rgba(201,169,97,0.3)] hover:scale-105 transition-all"
+          className="px-10 py-4 bg-gold text-emerald-950-dynamic rounded-full text-[10px] uppercase tracking-[0.2em] font-black shadow-[0_10px_30px_rgba(201,169,97,0.3)] hover:scale-105 transition-all"
         >
           Préface
         </button>

@@ -75,7 +75,7 @@ export default function TayamoumComplet() {
   ];
 
   return (
-    <main className="pt-20 pb-40 px-6 md:px-12 lg:px-20 xl:px-0 min-h-screen bg-emerald-950/10">
+    <main className="pt-20 pb-40 px-6 md:px-12 lg:px-20 xl:px-0 min-h-screen bg-emerald-950-dynamic/10">
       
       {/* HEADER DE LUXE */}
       <div className="max-w-4xl mx-auto text-center mb-16">
@@ -300,7 +300,7 @@ export default function TayamoumComplet() {
         </button>
         <button 
           onClick={() => router.push('/partie/5/d')} 
-          className="px-10 py-4 bg-gold text-emerald-950 rounded-full text-[10px] uppercase tracking-[0.2em] font-black shadow-[0_10px_30px_rgba(201,169,97,0.3)] hover:scale-105 transition-all"
+          className="px-10 py-4 bg-gold text-emerald-950-dynamic rounded-full text-[10px] uppercase tracking-[0.2em] font-black shadow-[0_10px_30px_rgba(201,169,97,0.3)] hover:scale-105 transition-all"
         >
           Suivant
         </button>

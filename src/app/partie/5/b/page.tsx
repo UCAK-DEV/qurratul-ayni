@@ -234,7 +234,7 @@ export default function PageAblutions() {
 
         {/* 5. FARATA ET SOUNA (8 & 8) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-emerald-950/20 p-8 rounded-[2.5rem] border border-emerald-500/20 relative overflow-hidden">
+          <div className="bg-emerald-950-dynamic/20 p-8 rounded-[2.5rem] border border-emerald-500/20 relative overflow-hidden">
              <h3 className="text-emerald-500 font-black text-xs uppercase mb-8 border-b border-emerald-500/10 pb-4">Les pratiques obligatoires de l’ablution ( farata )</h3>
              <ul className="space-y-4 text-white/50 text-sm">
                 <li>Elles sont au nombre de huit (8) et s’énumèrent ainsi qu’il suit :</li>
@@ -318,7 +318,7 @@ export default function PageAblutions() {
         </button>
         <button 
           onClick={() => router.push('/partie/5/c')} 
-          className="flex-1 py-4 bg-gold text-emerald-950 rounded-full text-[10px] uppercase tracking-widest font-black shadow-xl hover:scale-105 transition-all"
+          className="flex-1 py-4 bg-gold text-emerald-950-dynamic rounded-full text-[10px] uppercase tracking-widest font-black shadow-xl hover:scale-105 transition-all"
         >
           Suivant
         </button>

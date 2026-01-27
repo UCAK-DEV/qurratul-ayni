@@ -21,7 +21,7 @@ export default function HomePage() {
   if (!mounted) return null;
 
   return (
-    <main className="relative min-h-screen bg-emerald-950 overflow-x-hidden selection:bg-gold/30">
+    <main className="relative min-h-screen bg-emerald-950-dynamic overflow-x-hidden selection:bg-gold/30">
       
       {/* BACKGROUND DYNAMIQUE */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -95,7 +95,7 @@ export default function HomePage() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-full sm:px-10 py-4 md:py-5 rounded-full bg-gold text-emerald-950 font-black text-[10px] md:text-sm tracking-[0.2em] uppercase flex items-center justify-center gap-3 shadow-lg"
+                className="w-full sm:px-10 py-4 md:py-5 rounded-full bg-gold text-emerald-950-dynamic font-black text-[10px] md:text-sm tracking-[0.2em] uppercase flex items-center justify-center gap-3 shadow-lg"
               >
                 Commencer
                 <span className="material-symbols-rounded text-lg">menu_book</span>
@@ -165,7 +165,7 @@ export default function HomePage() {
                 fill 
                 className="object-cover"
               />
-              <div className="absolute inset-0 bg-emerald-950/40" />
+              <div className="absolute inset-0 bg-emerald-950-dynamic/40" />
             </div>
           </motion.div>
         </div>

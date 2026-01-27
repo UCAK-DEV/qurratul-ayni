@@ -18,7 +18,7 @@ export const Player = () => {
           <div className="glass-card p-4 rounded-3xl border border-gold/20 shadow-2xl flex items-center gap-5 backdrop-blur-2xl">
             <button 
               onClick={togglePlay}
-              className="w-14 h-14 bg-gold rounded-full flex items-center justify-center text-emerald-950 shadow-lg hover:scale-105 transition-transform"
+              className="w-14 h-14 bg-gold rounded-full flex items-center justify-center text-emerald-950-dynamic shadow-lg hover:scale-105 transition-transform"
             >
               <span className="material-symbols-rounded text-4xl">
                 {isPlaying ? 'pause' : 'play_arrow'}
