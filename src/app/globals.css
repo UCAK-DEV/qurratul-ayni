@@ -18,34 +18,43 @@
 
 :root,
 [data-theme='light'] {
-  /* Variables pour le Mode Jour (Clair) */
-  --bg-deep: #f8fafc; /* Light background */
-  --bg-card: rgba(255, 255, 255, 0.8); /* Light card background with transparency */
-  --text-primary: #020617; /* Dark text for contrast */
-  --text-secondary: #475569; /* Slightly lighter dark text */
-  --border-gold: rgba(201, 169, 97, 0.2);
-  --selection-bg: rgba(201, 169, 97, 0.3);
-  --color-emerald-950-dynamic: #e0f2f7; /* Lighter emerald for light mode */
+  /* Variables pour le Mode Jour (Clair) - Version Pro et Dynamique */
+  --bg-deep: #f0f4f8; /* Un fond plus doux, légèrement gris */
+  --bg-card: #ffffff; /* Cartes blanches pour un look propre et net */
+  --text-primary: #1a202c; /* Texte très sombre pour une lisibilité maximale */
+  --text-secondary: #4a5568; /* Texte secondaire bien visible */
+  --border-gold: #e2c27d; /* Bordures or plus visibles */
+  --selection-bg: rgba(201, 169, 97, 0.4); /* Sélection légèrement plus opaque */
+  --color-emerald-950-dynamic: #ffffff; /* Fond clair pour les sections normalement sombres */
+  --shadow-subtle: rgba(0, 0, 0, 0.05); /* Ombre subtile pour la profondeur */
+  --gradient-gold-start: #d4af37; /* Or plus riche pour les dégradés */
+  --gradient-gold-end: #f0e68c; /* Fin de dégradé pour l'or */
 }
 
 [data-theme='dark'] {
-  /* Variables pour le Mode Nuit (Sombre) */
-  --bg-deep: #020504; /* Dark background */
-  --bg-card: rgba(255, 255, 255, 0.03); /* Dark card background with transparency */
-  --text-primary: #ffffff; /* White text for contrast */
-  --text-secondary: #94a3b8; /* Lighter white text */
-  --border-gold: rgba(201, 169, 97, 0.1);
-  --selection-bg: rgba(201, 169, 97, 0.5);
-  --color-emerald-950-dynamic: #020504; /* Dark emerald for dark mode */
+  /* Variables pour le Mode Nuit (Sombre) - Version Pro et Dynamique */
+  --bg-deep: #0d1117; /* Fond sombre profond */
+  --bg-card: rgba(255, 255, 255, 0.08); /* Cartes légèrement plus visibles */
+  --text-primary: #e6edf3; /* Texte clair pour le contraste */
+  --text-secondary: #8b949e; /* Texte secondaire légèrement plus clair */
+  --border-gold: rgba(201, 169, 97, 0.3); /* Bordures or un peu plus prononcées */
+  --selection-bg: rgba(201, 169, 97, 0.6); /* Sélection plus visible */
+  --color-emerald-950-dynamic: #0d1117; /* Fond sombre pour les sections dynamiques */
+  --shadow-subtle: rgba(0, 0, 0, 0.3); /* Ombre pour la profondeur en mode sombre */
+  --gradient-gold-start: #b8860b; /* Or un peu plus foncé */
+  --gradient-gold-end: #ffd700; /* Or plus clair */
 }
 
 /* Styles de base */
 body {
-  background-color: var(--color-emerald-950-dynamic); /* Use dynamic emerald variable */
+  background-color: var(--bg-deep); /* Use the general deep background variable */
   color: var(--text-primary);
   transition: background-color 0.5s ease, color 0.5s ease;
   min-height: 100vh;
-  selection-background-color: var(--selection-bg);
+}
+
+::selection {
+  background-color: var(--selection-bg);
 }
 
 /* Utilitaires de texte adaptatifs */
@@ -54,7 +63,7 @@ body {
 
 /* Effet de texte dégradé doré premium */
 .gold-gradient-text {
-  background: linear-gradient(to bottom right, #c9a961, #e2c27d);
+  background: linear-gradient(to bottom right, var(--gradient-gold-start), var(--gradient-gold-end));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   display: inline-block;
@@ -66,6 +75,7 @@ body {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--border-gold);
+  box-shadow: 0 4px 6px -1px var(--shadow-subtle), 0 2px 4px -2px var(--shadow-subtle); /* Utilisation de l'ombre subtile */
 }
 
 /* Barre de défilement personnalisée pour l'esthétique "Vibe" */
