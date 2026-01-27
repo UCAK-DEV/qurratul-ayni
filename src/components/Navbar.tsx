@@ -1,23 +1,35 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { CHAPTERS, Chapter } from '@/data/chapters';
 import { useTheme } from '@/context/ThemeContext';
+import Fuse from 'fuse.js';
+import { useDebounce } from '@/hooks/useDebounce';
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const debouncedSearchQuery = useDebounce(searchQuery, 300); // Debounce search query by 300ms
   const [results, setResults] = useState<Chapter[]>([]);
   const [isChaptersDropdownOpen, setIsChaptersDropdownOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const searchRef = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
+
+  // Configure Fuse.js
+  const fuse = useMemo(() => {
+    return new Fuse(CHAPTERS, {
+      keys: ['titleFr', 'titleAr', 'desc'],
+      threshold: 0.3, // Fuzziness (0.0 = perfect match, 1.0 = any match)
+      includeScore: true, // Include score in results
+    });
+  }, []);
 
   // Détection du scroll pour l'effet de transparence dynamique
   useEffect(() => {
@@ -34,17 +46,14 @@ export const Navbar = () => {
 
   // Moteur de recherche en temps réel avec filtrage multicritères
   useEffect(() => {
-    if (searchQuery.length > 1) {
-      const filtered = CHAPTERS.filter(c => 
-        c.titleFr.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        c.titleAr.includes(searchQuery) ||
-        c.desc.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-      setResults(filtered);
+    if (debouncedSearchQuery.length > 1) {
+      const fuseResults = fuse.search(debouncedSearchQuery);
+      setResults(fuseResults.map(result => result.item)); // Get original Chapter objects
     } else {
       setResults([]);
     }
-  }, [searchQuery]);
+  }, [debouncedSearchQuery, fuse]); // Depend on debounced query and fuse instance
+
 
   // Fermeture automatique au clic extérieur
   useEffect(() => {
