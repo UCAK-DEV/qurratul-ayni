@@ -12,7 +12,7 @@ export const Navbar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [results, setResults] = useState<Chapter[]>([]);
-  
+  const [isChaptersDropdownOpen, setIsChaptersDropdownOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const searchRef = useRef<HTMLDivElement>(null);
@@ -23,6 +23,12 @@ export const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const navLinks = [
+    { name: 'Accueil', path: '/accueil' },
+  ];
+
+  const chaptersRef = useRef<HTMLLIElement>(null);
 
   // Moteur de recherche en temps réel avec filtrage multicritères
   useEffect(() => {
@@ -44,15 +50,13 @@ export const Navbar = () => {
       if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
         setIsSearchOpen(false);
       }
+      if (chaptersRef.current && !chaptersRef.current.contains(e.target as Node)) {
+        setIsChaptersDropdownOpen(false);
+      }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  const navLinks = [
-    { name: 'Accueil', path: '/accueil' },
-    { name: 'Bibliothèque', path: '/accueil#chapters' },
-  ];
+  }, [searchRef, chaptersRef]);
 
   return (
     <nav className={`fixed top-0 w-full z-[100] transition-all duration-500 ${
@@ -84,6 +88,45 @@ export const Navbar = () => {
                 </Link>
               </li>
             ))}
+            <li className="relative" ref={chaptersRef}>
+              <button
+                onClick={() => setIsChaptersDropdownOpen(!isChaptersDropdownOpen)}
+                className={`text-[10px] uppercase tracking-[0.2em] font-bold transition-all relative group flex items-center gap-1 ${
+                  isChaptersDropdownOpen ? 'text-gold' : 'text-white/50 hover:text-white'
+                }`}
+              >
+                Chapitres
+                <span className="material-symbols-rounded text-base">
+                  {isChaptersDropdownOpen ? 'expand_less' : 'expand_more'}
+                </span>
+                <span className={`absolute -bottom-1 left-0 h-[1px] bg-gold transition-all duration-500 ${isChaptersDropdownOpen ? 'w-full' : 'w-0 group-hover:w-full'}`} />
+              </button>
+              <AnimatePresence>
+                {isChaptersDropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-60 bg-emerald-950/95 backdrop-blur-xl border border-white/10 rounded-xl shadow-lg p-3 z-50 max-h-80 overflow-y-auto custom-scrollbar"
+                  >
+                    <ul className="space-y-1">
+                      {CHAPTERS.map((chapter) => (
+                        <li key={chapter.id}>
+                          <Link
+                            href={`/partie/${chapter.id}`}
+                            onClick={() => setIsChaptersDropdownOpen(false)}
+                            className="flex items-center gap-3 p-2 rounded-lg text-white/70 hover:bg-white/5 hover:text-gold transition-colors text-xs font-medium"
+                          >
+                            <span className="text-gold text-opacity-70">{chapter.id}.</span>
+                            <span>{chapter.titleFr}</span>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </li>
           </ul>
 
           {/* SYSTÈME DE RECHERCHE "DEEP LOOK" */}
