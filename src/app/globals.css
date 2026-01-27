@@ -16,22 +16,7 @@
   color: var(--color-emerald-950-dynamic);
 }
 
-:root,
-[data-theme='light'] {
-  /* Variables pour le Mode Jour (Clair) - Version Pro et Dynamique */
-  --bg-deep: #f0f4f8; /* Un fond plus doux, légèrement gris */
-  --bg-card: #ffffff; /* Cartes blanches pour un look propre et net */
-  --text-primary: #1a202c; /* Texte très sombre pour une lisibilité maximale */
-  --text-secondary: #4a5568; /* Texte secondaire bien visible */
-  --border-gold: #e2c27d; /* Bordures or plus visibles */
-  --selection-bg: rgba(201, 169, 97, 0.4); /* Sélection légèrement plus opaque */
-  --color-emerald-950-dynamic: #ffffff; /* Fond clair pour les sections normalement sombres */
-  --shadow-subtle: rgba(0, 0, 0, 0.05); /* Ombre subtile pour la profondeur */
-  --gradient-gold-start: #d4af37; /* Or plus riche pour les dégradés */
-  --gradient-gold-end: #f0e68c; /* Fin de dégradé pour l'or */
-}
-
-[data-theme='dark'] {
+:root {
   /* Variables pour le Mode Nuit (Sombre) - Version Pro et Dynamique */
   --bg-deep: #0d1117; /* Fond sombre profond */
   --bg-card: rgba(255, 255, 255, 0.08); /* Cartes légèrement plus visibles */

@@ -17,7 +17,7 @@ export const Navbar = () => {
   const pathname = usePathname();
   const router = useRouter();
   const searchRef = useRef<HTMLDivElement>(null);
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
 
   // Détection du scroll pour l'effet de transparence dynamique
   useEffect(() => {
@@ -230,17 +230,6 @@ export const Navbar = () => {
               }`}>{l}</button>
             ))}
           </div>
-
-          {/* THEME TOGGLE */}
-          <button 
-            onClick={toggleTheme}
-            className="text-white/60 hover:text-white transition-colors p-2 hidden sm:block" // Hidden on small screens, shown on medium and up
-            aria-label="Toggle theme"
-          >
-            <span className="material-symbols-rounded text-2xl">
-              {theme === 'dark' ? 'light_mode' : 'dark_mode'}
-            </span>
-          </button>
 
           {/* MOBILE TOGGLE */}
           <button 
