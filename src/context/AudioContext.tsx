@@ -34,6 +34,7 @@ interface AudioContextType {
   playNext: () => void;
   playPrevious: () => void;
   stop: () => void;
+  quitPlayback: () => void; // New function to quit playback mode
   formatTime: (seconds: number) => string; // Expose helper
 }
 
@@ -231,6 +232,21 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, []);
 
+  const quitPlayback = useCallback(() => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      audioRef.current.src = ''; // Clear audio source
+    }
+    setCurrentChapter(null);
+    setIsPlaying(false);
+    setProgress(0);
+    setCurrentTime(0);
+    setDuration(0);
+    setIsLoading(false);
+    setError(null);
+  }, []);
+
   const contextValue = React.useMemo(() => ({
     currentChapter,
     isPlaying,
@@ -254,12 +270,13 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
     playNext,
     playPrevious,
     stop,
+    quitPlayback, // Add quitPlayback to context
     formatTime,
   }), [
     currentChapter, isPlaying, progress, currentTime, duration,
     volume, playbackRate, isLooping, isMuted, isLoading, error,
     setChapter, togglePlay, seekTo, setVolume, toggleMute,
-    setPlaybackRate, toggleLoop, playNext, playPrevious, stop
+    setPlaybackRate, toggleLoop, playNext, playPrevious, stop, quitPlayback
   ]);
 
   return (
