@@ -6,14 +6,14 @@
   --color-gold-light: #e2c27d;
   --font-serif: "Playfair Display", serif;
   --font-amiri: "Amiri", serif;
+}
 
-  /* Custom Tailwind classes for dynamic emerald color */
-  .bg-emerald-950-dynamic {
-    background-color: var(--color-emerald-950-dynamic);
-  }
-  .text-emerald-950-dynamic {
-    color: var(--color-emerald-950-dynamic);
-  }
+/* Custom Tailwind classes for dynamic emerald color */
+.bg-emerald-950-dynamic {
+  background-color: var(--color-emerald-950-dynamic);
+}
+.text-emerald-950-dynamic {
+  color: var(--color-emerald-950-dynamic);
 }
 
 :root,
