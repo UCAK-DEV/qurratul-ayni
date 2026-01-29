@@ -104,7 +104,7 @@ export default function MenstruesPage() {
           ar: "يجب عليها تفقد الطهر. إذا طهرت قبل الفجر وكان الوقت يسع الغسل وركعة قبل الشروق وجب الصبح. وإذا طهرت قبل الغروب بوقت يسع ٥ ركعات صلت الظهر والعصر، وإن وسع ٤ ركعات صلت الظهر فقط."
         },
         {
-          fr: "En période de jeûne, elle doit vérifier l'arrêt avant l'aurore (Fajr). Si l'arrêt est avant le Fajr, elle jeûne. Si c'est après, elle ne jeûne pas. En cas de doute sur le moment précis de l'arrêt, elle doit jeûner ce jour par précaution et le compenser plus tard.",
+          fr: "En période de jeûne, elle doit vérifier l'arrêt avant l'aurore (Fajr). Si l'arrêt est avant le Fajr, elle jeûne. Si c'est après, elle ne jeûne pas. En cas d'interruption de moins de 15 jours, elle devra jeûner ce jour, retenir cette date et procéder plus tard à un jeûne de compensation.",
           ar: "في الصيام يجب تفقد الطهر قبل الفجر. فإن طهرت قبله صامت، وإن طهرت بعده أفطرت. وإن شكّت هل طهرت قبل الفجر أو بعده، صامت ذلك اليوم احتياطاً ثم تقضيه لاحقاً."
         }
       ]
@@ -112,30 +112,30 @@ export default function MenstruesPage() {
   ];
 
   return (
-    <main className="min-h-screen bg-[#020504] text-white pt-16 md:pt-28 pb-48 px-4 md:px-6">
+    <main className="min-h-screen bg-[#020504] text-white pt-20 md:pt-28 pb-48 px-4 md:px-6 overflow-x-hidden">
       
       {/* HEADER */}
       <div className="max-w-4xl mx-auto text-center mb-12 md:mb-16">
         <motion.span 
           initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-          className="text-gold tracking-[0.5em] text-[10px] uppercase font-bold mb-4 block"
+          className="text-gold tracking-[0.3em] md:tracking-[0.5em] text-[10px] uppercase font-bold mb-4 block"
         >
           Chapitre V — Section E
         </motion.span>
         <motion.h1 
           initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
-          className="text-4xl md:text-7xl font-black bg-gradient-to-b from-white to-gold bg-clip-text text-transparent mb-8"
+          className="text-3xl md:text-7xl font-black bg-gradient-to-b from-white to-gold bg-clip-text text-transparent mb-8 leading-tight"
         >
           LES MENSTRUES <br/>
-          <span className="font-amiri text-3xl md:text-5xl opacity-80 italic text-gold">الحيض</span>
+          <span className="font-amiri text-2xl md:text-5xl opacity-80 italic text-gold block mt-2">الحيض</span>
         </motion.h1>
 
         <motion.button
           whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
           onClick={handleAudioAction}
-          className="inline-flex items-center gap-4 px-8 py-4 bg-gold/10 border border-gold/30 rounded-2xl text-gold font-bold uppercase tracking-widest text-[10px] backdrop-blur-md"
+          className="inline-flex items-center gap-3 md:gap-4 px-6 md:px-8 py-3 md:py-4 bg-gold/10 border border-gold/30 rounded-2xl text-gold font-bold uppercase tracking-widest text-[9px] md:text-[10px] backdrop-blur-md"
         >
-          <span className="material-symbols-rounded text-3xl">
+          <span className="material-symbols-rounded text-2xl md:text-3xl">
             {isThisChapterPlaying ? 'pause_circle' : 'play_circle'}
           </span>
           {isThisChapterPlaying ? 'Mettre en pause' : 'Écouter la leçon complète'}
@@ -145,11 +145,12 @@ export default function MenstruesPage() {
       {/* CONTENT */}
       <div className="max-w-6xl mx-auto space-y-12 md:space-y-20">
         {sectionsMenstrues.map((section, sIdx) => (
-          <div key={sIdx} className="space-y-10">
-            <div className="flex items-center gap-8 px-4">
-              <h2 className="text-xl font-black text-gold uppercase tracking-tighter whitespace-nowrap">{section.titreFr}</h2>
-              <div className="h-[1px] flex-1 bg-gold/10" />
-              <h2 className="text-2xl font-amiri text-gold-light whitespace-nowrap">{section.titreAr}</h2>
+          <div key={sIdx} className="space-y-8 md:space-y-10">
+            {/* Titre Section avec flex-wrap pour mobile */}
+            <div className="flex flex-wrap items-center gap-4 md:gap-8 px-2">
+              <h2 className="text-lg md:text-xl font-black text-gold uppercase tracking-tighter">{section.titreFr}</h2>
+              <div className="hidden sm:block h-[1px] flex-1 bg-gold/10" />
+              <h2 className="text-xl md:text-2xl font-amiri text-gold-light ml-auto md:ml-0">{section.titreAr}</h2>
             </div>
 
             <div className="grid gap-6">
@@ -159,17 +160,20 @@ export default function MenstruesPage() {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  className="glass-card p-8 md:p-12 rounded-[2.5rem] border border-white/5 hover:border-gold/20 transition-all"
+                  className="glass-card p-6 md:p-12 rounded-[1.5rem] md:rounded-[2.5rem] border border-white/5 hover:border-gold/20 transition-all"
                 >
-                  <div className="flex flex-col md:flex-row gap-8 items-center">
+                  <div className="flex flex-col md:flex-row gap-6 md:gap-8 items-start md:items-center">
+                    {/* Arabe - texte réduit sur mobile */}
                     <div className="w-full md:w-1/2 text-right order-1 md:order-2">
-                      <p className="text-2xl md:text-4xl font-amiri text-white leading-[1.8]" dir="rtl">
+                      <p className="text-xl md:text-4xl font-amiri text-white leading-[1.8] md:leading-[1.8]" dir="rtl">
                         {item.ar}
                       </p>
                     </div>
-                    <div className="hidden md:block w-[1px] h-20 bg-gold/10 order-2" />
-                    <div className="w-full md:w-1/2 text-left order-3 md:order-1 border-l-2 border-gold/10 pl-8">
-                      <p className="text-lg text-white/60 font-serif leading-relaxed italic">
+                    {/* Séparateur masqué sur mobile */}
+                    <div className="hidden md:block w-[1px] h-24 bg-gold/10 order-2" />
+                    {/* Français */}
+                    <div className="w-full md:w-1/2 text-left order-2 md:order-1 border-l-2 border-gold/20 md:border-gold/10 pl-4 md:pl-8">
+                      <p className="text-sm md:text-lg text-white/60 font-serif leading-relaxed italic">
                         "{item.fr}"
                       </p>
                     </div>
@@ -181,17 +185,17 @@ export default function MenstruesPage() {
         ))}
       </div>
 
-      {/* NAV */}
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 flex gap-4 z-50 w-full max-w-[90%] md:max-w-md">
+      {/* NAV - adaptation largeur bouton */}
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-50 w-full max-w-[95%] md:max-w-md">
         <button 
           onClick={() => router.push('/partie/5/d')} 
-          className="flex-1 py-4 bg-white/5 backdrop-blur-md border border-white/10 rounded-full text-[10px] uppercase tracking-widest font-bold text-white/50 hover:text-white transition-all"
+          className="flex-1 py-4 bg-black/40 backdrop-blur-xl border border-white/10 rounded-full text-[9px] md:text-[10px] uppercase tracking-widest font-bold text-white/50 hover:text-white transition-all shadow-2xl"
         >
           Précédent
         </button>
         <button 
           onClick={() => router.push('/partie/5/f')} 
-          className="flex-1 py-4 bg-gold text-emerald-950 rounded-full text-[10px] uppercase tracking-widest font-black shadow-xl hover:scale-105 transition-all"
+          className="flex-1 py-4 bg-gold text-emerald-950 rounded-full text-[9px] md:text-[10px] uppercase tracking-widest font-black shadow-xl hover:scale-105 active:scale-95 transition-all"
         >
           Suivant
         </button>

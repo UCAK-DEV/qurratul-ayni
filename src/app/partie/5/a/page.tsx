@@ -296,7 +296,7 @@ export default function PurificationLavageComplet() {
           onClick={() => router.push('/partie/5')} // Vers le chapitre précédent
           className="px-10 py-4 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-white/10 transition-all text-white/70"
         >
-          Précédent
+          Sommaire V
         </button>
         <button 
           onClick={() => router.push('/partie/5/b')} // Vers le chapitre suivant
