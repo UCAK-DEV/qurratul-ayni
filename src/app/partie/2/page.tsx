@@ -21,7 +21,7 @@ export default function PrefacePage() {
         <motion.h1 
           initial={{ y: 20, opacity: 0 }} 
           animate={{ y: 0, opacity: 1 }} 
-          className="text-4xl md:text-7xl font-bold bg-gradient-to-b from-gold-light to-gold bg-clip-text text-transparent mb-6"
+          className="text-4xl md:text-7xl font-black bg-gradient-to-b from-white to-gold bg-clip-text text-transparent mb-8 uppercase leading-tight"
         >
           PRÉFACE & AVANT-PROPOS
         </motion.h1>

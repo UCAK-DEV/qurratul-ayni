@@ -59,7 +59,7 @@ export default function ChapitreProphete() {
         <motion.h1 
           initial={{ y: 20, opacity: 0 }} 
           animate={{ y: 0, opacity: 1 }} 
-          className="text-3xl md:text-6xl font-bold bg-gradient-to-b from-gold-light to-gold bg-clip-text text-transparent leading-tight mb-8"
+          className="text-4xl md:text-7xl font-black bg-gradient-to-b from-white to-gold bg-clip-text text-transparent mb-8 uppercase leading-tight"
         >
           MOUHAMMADOUNE RASSOUL LOULAHI <br/>
           <span className="font-amiri text-2xl md:text-4xl opacity-80">(محمد رسول الله)</span>

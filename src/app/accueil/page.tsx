@@ -28,7 +28,7 @@ export default function LibraryPage() {
               Sommaire Numérique
             </span>
             <h1 className="text-5xl md:text-8xl font-bold tracking-tighter leading-none mb-6">
-              Les <span className="gold-gradient-text">13 Parties</span>
+              Les <span className="gold-gradient-text">19 Parties</span>
             </h1>
             <div className="h-[2px] w-24 bg-gold/30 hidden md:block" />
           </motion.div>

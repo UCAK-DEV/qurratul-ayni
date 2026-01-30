@@ -142,7 +142,7 @@ export default function HomePage() {
             
             <div className="grid grid-cols-2 gap-4 pt-4">
               <div className="p-6 rounded-[2rem] bg-white/[0.03] border border-white/5 hover:border-gold/20 transition-all">
-                <h3 className="text-gold text-3xl md:text-5xl font-black mb-1">13</h3>
+                <h3 className="text-gold text-3xl md:text-5xl font-black mb-1">19</h3>
                 <p className="text-white/40 text-[8px] md:text-[10px] uppercase tracking-widest font-bold">Chapitres</p>
               </div>
               <div className="p-6 rounded-[2rem] bg-white/[0.03] border border-white/5 hover:border-gold/20 transition-all">
