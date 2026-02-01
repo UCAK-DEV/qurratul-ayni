@@ -170,8 +170,8 @@ export default function MaladeMourant() {
 
       {/* NAVIGATION PERSISTANTE */}
       <div className="fixed bottom-8 left-1/2 -translate-x-1/2 flex gap-4 z-50 w-full max-w-md px-6">
-        <button onClick={() => router.push('/partie/6')} className="flex-1 py-4 bg-black/40 backdrop-blur-xl border border-white/10 rounded-full text-[10px] uppercase font-bold text-white/50 hover:text-white transition-all">Chapitre Précédent</button>
-        <button onClick={() => router.push('/partie/7/b')} className="flex-1 py-4 bg-gold text-emerald-950 rounded-full text-[10px] uppercase font-black shadow-lg hover:scale-105 transition-all">Suivant</button>
+        <button onClick={() => router.push('/partie/6')} className="flex-1 py-4 bg-black/40 backdrop-blur-xl border border-white/10 rounded-full text-[10px] uppercase font-bold text-white/50 hover:text-white transition-all">Précédent</button>
+        <button onClick={() => router.push('/partie/8')} className="flex-1 py-4 bg-gold text-emerald-950 rounded-full text-[10px] uppercase font-black shadow-lg hover:scale-105 transition-all">Suivant</button>
       </div>
     </main>
   );

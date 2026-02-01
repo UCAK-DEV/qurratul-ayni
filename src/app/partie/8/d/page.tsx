@@ -170,10 +170,10 @@ export default function PrieresCondoleancesPage() {
           Précédent
         </button>
         <button 
-          onClick={() => router.push('/sommaire')} 
+          onClick={() => router.push('/partie/9')} 
           className="flex-1 py-4 bg-gold text-emerald-950 rounded-full text-[10px] uppercase tracking-widest font-black shadow-xl hover:scale-105 active:scale-95 transition-all"
         >
-          Fin du Chapitre
+          Suivant
         </button>
       </div>
     </main>
