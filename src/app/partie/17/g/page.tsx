@@ -68,7 +68,8 @@ export default function JoursRecommandesPage() {
           <p>Il est des jours pendant lesquels il est peu recommandé de faire certaines choses :</p>
           <p className="font-bold text-white">Ces jours sont :</p>
           <ul className="space-y-2 list-disc ml-6">
-            <li>Le 3ᵉ jour, le 5ᵉ jour, le 13ᵉ jour, le 16ᵉ jour, le 24ᵉ jour, le 26ᵉ jour de tout mois ainsi que le dernier mercredi de chaque mois, le 12ᵉ jour du mouharam (tamxarit).</li>
+            <li>Le 3ᵉ jour, le 5ᵉ jour, le 13ᵉ jour, le 16ᵉ jour, le 24ᵉ jour, le 26ᵉ jour de tout mois ainsi que le dernier mercredi de chaque mois.</li>
+            <li>Le 12ᵉ jour du mouharam (tamxarit).</li>
             <li>Le 10ᵉ jour du digui gamou.</li>
             <li>Le 4ᵉ jour du gamou.</li>
             <li>Le 18ᵉ jour du raki gamou.</li>
