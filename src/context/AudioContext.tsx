@@ -49,8 +49,8 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
   const [progress, setProgress] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [volume, setVolumeState] = useState(0.7); // Default volume
-  const [playbackRate, setPlaybackRateState] = useState(1.0);
+  const [volume, setVolume] = useState(0.7); // Default volume
+  const [playbackRate, setPlaybackRate] = useState(1.0);
   const [isLooping, setIsLooping] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -72,6 +72,76 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
       audioRef.current.muted = isMuted;
     }
   }, [volume, playbackRate, isLooping, isMuted]);
+
+  const togglePlay = useCallback(() => {
+    if (audioRef.current && currentChapter) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play().catch(e => {
+          console.error("Error playing audio:", e);
+          setError('Impossible de reprendre la lecture.');
+          setIsPlaying(false);
+        });
+      }
+      setIsPlaying(!isPlaying);
+    } else if (audioRef.current && !currentChapter && CHAPTERS.length > 0) {
+      // If no chapter is selected, play the first one
+      const firstChapter = CHAPTERS[0];
+      setCurrentChapter(firstChapter);
+      audioRef.current.src = firstChapter.audioUrl;
+      audioRef.current.load();
+      audioRef.current.play().catch(e => {
+        console.error("Error playing audio:", e);
+        setError('Impossible de lire la piste audio.');
+        setIsPlaying(false);
+        setIsLoading(false);
+      });
+      setIsPlaying(true);
+    }
+  }, [isPlaying, currentChapter]);
+
+  const setChapter = useCallback((chapter: Chapter) => {
+    if (audioRef.current) {
+      if (currentChapter?.id === chapter.id) {
+        // If same chapter, just toggle play
+        togglePlay();
+      } else {
+        setIsLoading(true);
+        setError(null);
+        audioRef.current.src = chapter.audioUrl;
+        audioRef.current.load(); // Load the new source
+        audioRef.current.play().catch(e => {
+          console.error("Error playing audio:", e);
+          setError('Impossible de lire la piste audio.');
+          setIsPlaying(false);
+          setIsLoading(false);
+        });
+        setCurrentChapter(chapter);
+        setIsPlaying(true);
+      }
+    }
+  }, [currentChapter, togglePlay]);
+
+  const playNext = useCallback(() => {
+    if (!currentChapter) {
+      if (CHAPTERS.length > 0) setChapter(CHAPTERS[0]);
+      return;
+    }
+    const currentIndex = CHAPTERS.findIndex(c => c.id === currentChapter.id);
+    const nextIndex = (currentIndex + 1) % CHAPTERS.length;
+    setChapter(CHAPTERS[nextIndex]);
+  }, [currentChapter, setChapter]);
+
+  const playPrevious = useCallback(() => {
+    if (!currentChapter) {
+      if (CHAPTERS.length > 0) setChapter(CHAPTERS[0]);
+      return;
+    }
+    const currentIndex = CHAPTERS.findIndex(c => c.id === currentChapter.id);
+    const prevIndex = (currentIndex - 1 + CHAPTERS.length) % CHAPTERS.length;
+    setChapter(CHAPTERS[prevIndex]);
+  }, [currentChapter, setChapter]);
 
   // Event Listeners for HTMLAudioElement
   useEffect(() => {
@@ -128,59 +198,11 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
       audio.removeEventListener('waiting', handleLoading);
       audio.removeEventListener('playing', () => setIsLoading(false));
     };
-  }, [currentChapter, isLooping]); // Re-attach listeners if chapter or looping changes
-
-  // Control functions
-  const setChapter = useCallback((chapter: Chapter) => {
-    if (audioRef.current) {
-      if (currentChapter?.id === chapter.id) {
-        // If same chapter, just toggle play
-        togglePlay();
-      } else {
-        setIsLoading(true);
-        setError(null);
-        audioRef.current.src = chapter.audioUrl;
-        audioRef.current.load(); // Load the new source
-        audioRef.current.play().catch(e => {
-          console.error("Error playing audio:", e);
-          setError('Impossible de lire la piste audio.');
-          setIsPlaying(false);
-          setIsLoading(false);
-        });
-        setCurrentChapter(chapter);
-        setIsPlaying(true);
-      }
-    }
-  }, [currentChapter]);
-
-  const togglePlay = useCallback(() => {
-    if (audioRef.current && currentChapter) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play().catch(e => {
-          console.error("Error playing audio:", e);
-          setError('Impossible de reprendre la lecture.');
-          setIsPlaying(false);
-        });
-      }
-      setIsPlaying(!isPlaying);
-    } else if (audioRef.current && !currentChapter && CHAPTERS.length > 0) {
-      // If no chapter is selected, play the first one
-      setChapter(CHAPTERS[0]);
-    }
-  }, [isPlaying, currentChapter, setChapter]);
+  }, [currentChapter, isLooping, playNext]); // Re-attach listeners if chapter or looping changes
 
   const seekTo = useCallback((time: number) => {
     if (audioRef.current && !isNaN(audioRef.current.duration)) {
       audioRef.current.currentTime = time;
-    }
-  }, []);
-
-  const setVolume = useCallback((level: number) => {
-    if (audioRef.current) {
-      audioRef.current.volume = level;
-      setVolumeState(level);
     }
   }, []);
 
@@ -191,36 +213,9 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [isMuted]);
 
-  const setPlaybackRate = useCallback((rate: number) => {
-    if (audioRef.current) {
-      audioRef.current.playbackRate = rate;
-      setPlaybackRateState(rate);
-    }
-  }, []);
-
   const toggleLoop = useCallback(() => {
     setIsLooping(!isLooping);
   }, [isLooping]);
-
-  const playNext = useCallback(() => {
-    if (!currentChapter) {
-      if (CHAPTERS.length > 0) setChapter(CHAPTERS[0]);
-      return;
-    }
-    const currentIndex = CHAPTERS.findIndex(c => c.id === currentChapter.id);
-    const nextIndex = (currentIndex + 1) % CHAPTERS.length;
-    setChapter(CHAPTERS[nextIndex]);
-  }, [currentChapter, setChapter]);
-
-  const playPrevious = useCallback(() => {
-    if (!currentChapter) {
-      if (CHAPTERS.length > 0) setChapter(CHAPTERS[0]);
-      return;
-    }
-    const currentIndex = CHAPTERS.findIndex(c => c.id === currentChapter.id);
-    const prevIndex = (currentIndex - 1 + CHAPTERS.length) % CHAPTERS.length;
-    setChapter(CHAPTERS[prevIndex]);
-  }, [currentChapter, setChapter]);
 
   const stop = useCallback(() => {
     if (audioRef.current) {

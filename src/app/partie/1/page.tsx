@@ -95,7 +95,7 @@ export default function NotesAuteur() {
               <div key={index} className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                 <div className="order-2 lg:order-1">
                   <p className="text-lg md:text-xl text-white/70 font-serif leading-relaxed italic border-l-2 border-gold/20 pl-6">
-                    "{section.fr}"
+                    &quot;{section.fr}&quot;
                   </p>
                 </div>
                 <div className="order-1 lg:order-2 text-right" dir="rtl">

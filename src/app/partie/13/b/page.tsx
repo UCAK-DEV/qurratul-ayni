@@ -56,7 +56,7 @@ export default function CasDivorcePage() {
           <span className="material-symbols-rounded text-3xl">
             {currentChapter?.id === chapterData.id && isPlaying ? 'pause_circle' : 'play_circle'}
           </span>
-          {currentChapter?.id === chapterData.id && isPlaying ? 'Mettre en pause' : 'Écouter l\'enseignement'}
+          {currentChapter?.id === chapterData.id && isPlaying ? 'Mettre en pause' : 'Écouter l&apos;enseignement'}
         </motion.button>
       </div>
 
@@ -81,7 +81,7 @@ export default function CasDivorcePage() {
               <h3 className="text-2xl font-black text-white uppercase tracking-tighter">Le divorce à titre provisoire (fayeli)</h3>
             </div>
             <p className="text-white/70 italic font-serif text-lg leading-relaxed">
-              "C’est le divorce qui n’est pas prononcé 3 (trois) fois et qui n’a pas été l’objet d’une demande de la part de la femme ; le mari peut reprendre sa femme sans avoir besoin de renouveler le mariage si toutefois la période de retraite légale n’est pas épuisée. Si par contre cette période expire, le divorce est consommé. Il ne peut être réparé que par un autre acte de mariage et le versement d’une autre dot."
+              &quot;C’est le divorce qui n’est pas prononcé 3 (trois) fois et qui n’a pas été l’objet d’une demande de la part de la femme ; le mari peut reprendre sa femme sans avoir besoin de renouveler le mariage si toutefois la période de retraite légale n’est pas épuisée. Si par contre cette période expire, le divorce est consommé. Il ne peut être réparé que par un autre acte de mariage et le versement d’une autre dot.&quot;
             </p>
           </motion.div>
 
@@ -93,11 +93,11 @@ export default function CasDivorcePage() {
             </div>
             <div className="space-y-6 text-white/70 italic font-serif text-lg leading-relaxed">
               <p>
-                "Le divorce demandé est celui exigé par la femme, que cette dernière ait ou non donné de l’argent. Le divorce légal (charia) est aussi expiatoire. C’est lorsque le mari a un comportement anormal vis-à-vis de sa femme au point que le divorce s’impose au vu de la charia."
+                &quot;Le divorce demandé est celui exigé par la femme, que cette dernière ait ou non donné de l’argent. Le divorce légal (charia) est aussi expiatoire. C’est lorsque le mari a un comportement anormal vis-à-vis de sa femme au point que le divorce s’impose au vu de la charia.&quot;
               </p>
               <div className="p-6 bg-emerald-950/20 rounded-2xl border border-emerald-500/20">
                 <p>
-                  "N’est pas considéré dans ce cas lorsque le divorce intervient à la suite d’un serment ou si le mari n’a pas de quoi nourrir sa femme. Dans ces cas, si celui qui avait juré sur l’honneur accepte de faire marche arrière, alors que la période de retraite légale n’est pas épuisée, la femme peut revenir chez elle. Ainsi, si le mari arrive à obtenir de quoi nourrir sa femme, toujours pendant la période de retraite légale, cette dernière peut retourner chez elle."
+                  &quot;N’est pas considéré dans ce cas lorsque le divorce intervient à la suite d’un serment ou si le mari n’a pas de quoi nourrir sa femme. Dans ces cas, si celui qui avait juré sur l’honneur accepte de faire marche arrière, alors que la période de retraite légale n’est pas épuisée, la femme peut revenir chez elle. Ainsi, si le mari arrive à obtenir de quoi nourrir sa femme, toujours pendant la période de retraite légale, cette dernière peut retourner chez elle.&quot;
                 </p>
               </div>
             </div>
@@ -111,13 +111,13 @@ export default function CasDivorcePage() {
             </div>
             <div className="space-y-6 text-white/70 italic font-serif text-lg leading-relaxed">
               <p className="font-bold text-white">
-                "C’est quand le divorce est prononcé 3 fois ou une seule fois avec la ferme intention d’en finir. Ce divorce ne peut être réparé."
+                &quot;C’est quand le divorce est prononcé 3 fois ou une seule fois avec la ferme intention d’en finir. Ce divorce ne peut être réparé.&quot;
               </p>
               <p>
-                "Le mari ne pourra reprendre cette femme que lorsque cette femme aura épuisé la durée de sa retraite légale, qu’elle aura contracté un autre mariage, qu’elle aura rompu celui-ci, et qu’elle aura épuisé la retraite légale consécutive à la rupture du dernier mariage. Toutefois, ce dernier mariage ne doit pas être contracté par un tiers en vue de permettre le retour de la femme avec son premier mari. La femme, quant à elle, peut se remarier dans ce but précis, tout comme le premier mari peut faire des démarches dans ce sens."
+                &quot;Le mari ne pourra reprendre cette femme que lorsque cette femme aura épuisé la durée de sa retraite légale, qu’elle aura contracté un autre mariage, qu’elle aura rompu celui-ci, et qu’elle aura épuisé la retraite légale consécutive à la rupture du dernier mariage. Toutefois, ce dernier mariage ne doit pas être contracté par un tiers en vue de permettre le retour de la femme avec son premier mari. La femme, quant à elle, peut se remarier dans ce but précis, tout comme le premier mari peut faire des démarches dans ce sens.&quot;
               </p>
               <div className="p-6 bg-red-950/20 rounded-2xl border border-red-500/20 text-red-100">
-                "C’est le second mari qui ne doit pas tremper dans cette combine. Il est interdit à deux hommes de rivaliser chez une même femme. Il est tout aussi interdit de courtiser une femme pendant sa retraite légale. Si le mariage a lieu pendant cette période, ce ménage sera frappé d’inceste à jamais."
+                &quot;C’est le second mari qui ne doit pas tremper dans cette combine. Il est interdit à deux hommes de rivaliser chez une même femme. Il est tout aussi interdit de courtiser une femme pendant sa retraite légale. Si le mariage a lieu pendant cette période, ce ménage sera frappé d’inceste à jamais.&quot;
               </div>
             </div>
           </motion.div>
@@ -132,26 +132,26 @@ export default function CasDivorcePage() {
 
           <div className="bg-white/5 p-8 md:p-12 rounded-[3rem] border border-white/10 space-y-8 text-white/60 italic font-serif text-base leading-relaxed">
             <p>
-              "Une femme en période de retraite légale ne doit pas aller loin de chez elle, encore moins passer la nuit ailleurs que chez elle. S’il s’agit de la période de viduité, tous ces interdits frappent la femme qui, en plus, ne doit en aucune manière porter des bijoux ou de beaux habits ; elle ne doit pas non plus se parfumer ; elle peut cependant entretenir ses cheveux au moyen d’une pommade non parfumée, cela pour en empêcher la chute."
+              &quot;Une femme en période de retraite légale ne doit pas aller loin de chez elle, encore moins passer la nuit ailleurs que chez elle. S’il s’agit de la période de viduité, tous ces interdits frappent la femme qui, en plus, ne doit en aucune manière porter des bijoux ou de beaux habits ; elle ne doit pas non plus se parfumer ; elle peut cependant entretenir ses cheveux au moyen d’une pommade non parfumée, cela pour en empêcher la chute.&quot;
             </p>
             <p>
-              "Une femme que son mari abandonne délibérément sans aucune raison, mais par simple refus de l’entretenir, cette femme peut aller consulter son père ou son représentant afin d’obtenir le divorce : ce divorce sera irréversible. Si le mari revient et veut reprendre sa femme, il pourra l’épouser à nouveau s’il ne la trouve pas mariée à un autre homme, et ce avec le consentement de la femme, mais on ne devra pas l’obliger à le faire."
+              &quot;Une femme que son mari abandonne délibérément sans aucune raison, mais par simple refus de l’entretenir, cette femme peut aller consulter son père ou son représentant afin d’obtenir le divorce : ce divorce sera irréversible. Si le mari revient et veut reprendre sa femme, il pourra l’épouser à nouveau s’il ne la trouve pas mariée à un autre homme, et ce avec le consentement de la femme, mais on ne devra pas l’obliger à le faire.&quot;
             </p>
             
             {/* CAS DU MARI DISPARU */}
             <div className="bg-gold/5 p-8 rounded-3xl border border-gold/10 space-y-6">
                <h4 className="text-gold font-black text-[10px] uppercase tracking-widest">Le Mari Disparu ou Absent</h4>
                <p>
-                 "Une femme dont le mari a disparu sans laisser de traces, une femme dont on sait que le mari se trouve dans une localité déterminée mais n’en revient pas et n’envoie rien à sa femme faute de moyen ou par empêchement, une femme dont on ne sait si le mari est en vie ou non, chacune de ces femmes doit attendre le retour de son mari pendant une durée de 4 ans, à condition que la femme se trouve dans un pays musulman, que le mari lui ait laissé de quoi nourrir (en nature ou en espèce) et que la femme soit sûre de pouvoir lui rester fidèle."
+                 &quot;Une femme dont le mari a disparu sans laisser de traces, une femme dont on sait que le mari se trouve dans une localité déterminée mais n’en revient pas et n’envoie rien à sa femme faute de moyen ou par empêchement, une femme dont on ne sait si le mari est en vie ou non, chacune de ces femmes doit attendre le retour de son mari pendant une durée de 4 ans, à condition que la femme se trouve dans un pays musulman, que le mari lui ait laissé de quoi nourrir (en nature ou en espèce) et que la femme soit sûre de pouvoir lui rester fidèle.&quot;
                </p>
                <p>
-                 "Si la femme ne se trouve pas dans un pays musulman, elle attendra aussi longtemps qu’elle le croira en vie. Toutefois, l’attente ne s’impose que si le mari a laissé à la femme suffisamment de nourriture, une maison où habiter et que la femme soit sûre de pouvoir lui rester fidèle. Si la femme n’est pas sûre de pouvoir lui rester fidèle, et que le mari ne lui a pas laissé de quoi se nourrir, se vêtir et un logement, elle pourra recouvrer la liberté aux yeux de la charia dès qu’elle ne se sentira plus en mesure d’attendre."
+                 &quot;Si la femme ne se trouve pas dans un pays musulman, elle attendra aussi longtemps qu’elle le croira en vie. Toutefois, l’attente ne s’impose que si le mari a laissé à la femme suffisamment de nourriture, une maison où habiter et que la femme soit sûre de pouvoir lui rester fidèle. Si la femme n’est pas sûre de pouvoir lui rester fidèle, et que le mari ne lui a pas laissé de quoi se nourrir, se vêtir et un logement, elle pourra recouvrer la liberté aux yeux de la charia dès qu’elle ne se sentira plus en mesure d’attendre.&quot;
                </p>
             </div>
 
             {/* VIDUITÉ À L'INSU */}
             <p>
-              "Si le mari meurt à l’insu de sa femme, la période de viduité commence dès que la femme apprend le décès du mari ; elle n’observera que le reste de la durée légale (en tenant compte de la date réelle du décès). Si, au moment où la femme apprend le décès, la durée légale de la viduité est épuisée, elle en sera dispensée."
+              &quot;Si le mari meurt à l’insu de sa femme, la période de viduité commence dès que la femme apprend le décès du mari ; elle n’observera que le reste de la durée légale (en tenant compte de la date réelle du décès). Si, au moment où la femme apprend le décès, la durée légale de la viduité est épuisée, elle en sera dispensée.&quot;
             </p>
           </div>
         </section>
@@ -164,18 +164,18 @@ export default function CasDivorcePage() {
           
           <div className="max-w-3xl mx-auto space-y-8 text-white italic font-serif text-xl leading-relaxed">
             <p>
-              "Certes, le divorce n’est pas interdit en soi, mais il ne doit être prononcé qu’en cas de nécessité absolue ; il ne doit pas être prononcé sous l’emprise de la colère ni par légèreté."
+              &quot;Certes, le divorce n’est pas interdit en soi, mais il ne doit être prononcé qu’en cas de nécessité absolue ; il ne doit pas être prononcé sous l’emprise de la colère ni par légèreté.&quot;
             </p>
             <p>
-              "Savoir supporter est un moyen, entre autres, qui nous permet d’éviter de tels travers et de s’abstenir de regarder intensément l’autre sexe. Celui qui ne le fait pas est toujours exposé à des difficultés. D’ailleurs, Allah le Tout-Puissant a recommandé cette pratique à l’homme et à la femme dans le Saint Coran."
+              &quot;Savoir supporter est un moyen, entre autres, qui nous permet d’éviter de tels travers et de s’abstenir de regarder intensément l’autre sexe. Celui qui ne le fait pas est toujours exposé à des difficultés. D’ailleurs, Allah le Tout-Puissant a recommandé cette pratique à l’homme et à la femme dans le Saint Coran.&quot;
             </p>
             <p className="text-white/60">
-              "Il (Dieu) connaît le genre humain mieux que quiconque. Il est plus attentif à notre sort, donc nous devons nous efforcer au respect de cette recommandation à tout moment."
+              &quot;Il (Dieu) connaît le genre humain mieux que quiconque. Il est plus attentif à notre sort, donc nous devons nous efforcer au respect de cette recommandation à tout moment.&quot;
             </p>
             <div className="space-y-4 pt-8">
-               <p className="text-gold font-bold">"Que le Tout-Puissant nous assiste dans l’observation de cette recommandation et nous réserve une fin heureuse."</p>
+               <p className="text-gold font-bold">&quot;Que le Tout-Puissant nous assiste dans l’observation de cette recommandation et nous réserve une fin heureuse.&quot;</p>
                <p className="font-amiri text-5xl text-gold pt-4 tracking-normal">آمِينَ</p>
-               <p className="text-white/40 text-sm uppercase tracking-[0.3em]">« Amine »</p>
+               <p className="text-white/40 text-sm uppercase tracking-[0.3em]">&laquo; Amine &raquo;</p>
             </div>
           </div>
           

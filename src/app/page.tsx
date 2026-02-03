@@ -15,6 +15,7 @@ export default function HomePage() {
   const scaleImage = useTransform(scrollY, [0, 300], [1, 0.8]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     setMounted(true);
   }, []);
 
@@ -106,7 +107,7 @@ export default function HomePage() {
                onClick={() => router.push('/partie/1')}
                className="w-full sm:px-10 py-4 md:py-5 rounded-full border border-white/10 text-white font-bold text-[10px] md:text-sm tracking-[0.2em] uppercase hover:bg-white/5 transition-all backdrop-blur-sm"
             >
-              L'Auteur
+              L&apos;Auteur
             </button>
           </motion.div>
         </motion.div>

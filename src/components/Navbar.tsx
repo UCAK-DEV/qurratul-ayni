@@ -46,6 +46,7 @@ export const Navbar = () => {
 
   // Moteur de recherche en temps réel avec filtrage multicritères
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     if (debouncedSearchQuery.length > 1) {
       const fuseResults = fuse.search(debouncedSearchQuery);
       setResults(fuseResults.map(result => result.item)); // Get original Chapter objects
