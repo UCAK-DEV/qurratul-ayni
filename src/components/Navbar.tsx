@@ -70,6 +70,13 @@ export const Navbar = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [searchRef, chaptersRef]);
 
+  const groupedChapters = useMemo(() => {
+    return CHAPTERS.reduce((acc, chapter) => {
+      (acc[chapter.group] = acc[chapter.group] || []).push(chapter);
+      return acc;
+    }, {} as Record<string, Chapter[]>);
+  }, []);
+
   return (
     <>
       <nav className={`fixed top-0 w-full z-[100] transition-all duration-300 ease-in-out ${
@@ -94,9 +101,10 @@ export const Navbar = () => {
             <ul className="flex items-center gap-6">
               {navLinks.map((link) => (
                 <li key={link.name}>
-                  <Link href={link.path} className={`text-xs uppercase tracking-widest font-bold transition-all relative group ${
+                  <Link href={link.path} className={`text-xs uppercase tracking-widest font-bold transition-all relative group flex items-center gap-2 ${
                     pathname === link.path ? 'text-gold' : 'text-white/60 hover:text-white'
                   }`}>
+                    <span className="material-symbols-rounded text-base">home</span>
                     {link.name}
                     <span className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 h-0.5 bg-gold transition-all duration-300 ${pathname === link.path ? 'w-1/2' : 'w-0 group-hover:w-full'}`} />
                   </Link>
@@ -109,6 +117,7 @@ export const Navbar = () => {
                     isChaptersDropdownOpen ? 'text-gold' : 'text-white/60 hover:text-white'
                   }`}
                 >
+                  <span className="material-symbols-rounded text-base">menu_book</span>
                   Chapitres
                   <motion.span animate={{ rotate: isChaptersDropdownOpen ? 180 : 0 }} className="material-symbols-rounded text-base">
                     expand_more
@@ -121,19 +130,26 @@ export const Navbar = () => {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-64 bg-[#0A1A14]/90 backdrop-blur-2xl border border-white/10 rounded-xl shadow-lg p-2 z-50 max-h-96 overflow-y-auto custom-scrollbar"
+                      className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-80 bg-[#0A1A14]/90 backdrop-blur-2xl border border-white/10 rounded-xl shadow-lg p-2 z-50 max-h-96 overflow-y-auto custom-scrollbar"
                     >
-                      <ul className="space-y-1">
-                        {CHAPTERS.map((chapter) => (
-                          <li key={chapter.id}>
-                            <Link
-                              href={`/partie/${chapter.id}`}
-                              onClick={() => setIsChaptersDropdownOpen(false)}
-                              className="flex items-center gap-3 p-3 rounded-lg text-white/80 hover:bg-white/5 hover:text-gold transition-colors text-sm font-medium"
-                            >
-                              <span className="text-gold/80 font-mono text-xs">{chapter.id.padStart(2, '0')}</span>
-                              <span>{chapter.titleFr}</span>
-                            </Link>
+                      <ul className="space-y-2">
+                        {Object.entries(groupedChapters).map(([group, chapters]) => (
+                          <li key={group}>
+                            <p className="px-3 pt-2 pb-1 text-[10px] uppercase font-bold tracking-widest text-gold/60">{group}</p>
+                            <ul className="space-y-1">
+                              {chapters.map((chapter) => (
+                                <li key={chapter.id}>
+                                  <Link
+                                    href={`/partie/${chapter.id}`}
+                                    onClick={() => setIsChaptersDropdownOpen(false)}
+                                    className="flex items-center gap-3 p-3 rounded-lg text-white/80 hover:bg-white/5 hover:text-gold transition-colors text-sm font-medium"
+                                  >
+                                    <span className="material-symbols-rounded text-gold/80 text-lg w-6 text-center">{chapter.icon}</span>
+                                    <span>{chapter.titleFr}</span>
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
                           </li>
                         ))}
                       </ul>
@@ -246,9 +262,10 @@ export const Navbar = () => {
               <ul className="space-y-6">
                 {navLinks.map((link) => (
                   <li key={link.name}>
-                    <Link href={link.path} onClick={() => setIsMobileMenuOpen(false)} className={`text-lg uppercase tracking-widest font-bold transition-all ${
+                    <Link href={link.path} onClick={() => setIsMobileMenuOpen(false)} className={`text-lg uppercase tracking-widest font-bold transition-all flex items-center gap-3 ${
                       pathname === link.path ? 'text-gold' : 'text-white/80 hover:text-white'
                     }`}>
+                      <span className="material-symbols-rounded text-xl">home</span>
                       {link.name}
                     </Link>
                   </li>
@@ -258,17 +275,26 @@ export const Navbar = () => {
                     onClick={() => setIsChaptersDropdownOpen(!isChaptersDropdownOpen)}
                     className="text-lg uppercase tracking-widest font-bold text-white/80 hover:text-white w-full flex justify-between items-center"
                   >
-                    Chapitres
+                    <span className="flex items-center gap-3">
+                      <span className="material-symbols-rounded text-xl">menu_book</span>
+                      Chapitres
+                    </span>
                     <motion.span animate={{ rotate: isChaptersDropdownOpen ? 180 : 0 }} className="material-symbols-rounded">
                       expand_more
                     </motion.span>
                   </button>
                   {isChaptersDropdownOpen && (
-                    <div className="mt-4 pl-4 space-y-2 max-h-60 overflow-y-auto custom-scrollbar">
-                      {CHAPTERS.map(chapter => (
-                        <Link key={chapter.id} href={`/partie/${chapter.id}`} onClick={() => setIsMobileMenuOpen(false)} className="block p-2 text-white/60 hover:text-gold rounded-md">
-                          {chapter.id}. {chapter.titleFr}
-                        </Link>
+                    <div className="mt-4 pl-4 space-y-1 max-h-60 overflow-y-auto custom-scrollbar">
+                      {Object.entries(groupedChapters).map(([group, chapters]) => (
+                        <div key={group} className="py-2">
+                          <p className="px-2 pb-2 text-sm uppercase font-bold tracking-widest text-gold/60">{group}</p>
+                          {chapters.map(chapter => (
+                            <Link key={chapter.id} href={`/partie/${chapter.id}`} onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 p-2 text-white/60 hover:text-gold rounded-md">
+                              <span className="material-symbols-rounded text-lg w-6 text-center">{chapter.icon}</span>
+                              {chapter.titleFr}
+                            </Link>
+                          ))}
+                        </div>
                       ))}
                     </div>
                   )}
