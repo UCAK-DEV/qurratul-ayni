@@ -4,10 +4,12 @@ import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation'; // Import useRouter
 
 export default function HomePage() {
   const [mounted, setMounted] = useState(false);
   const { scrollY } = useScroll();
+  const router = useRouter(); // Initialize router
   
   // Adaptations fluides au scroll
   const y1 = useTransform(scrollY, [0, 500], [0, -100]);
