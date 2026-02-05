@@ -10,13 +10,7 @@ export default function NafilasRamadanPage() {
   const router = useRouter();
   const { setChapter, currentChapter, isPlaying, togglePlay } = useAudio();
   const chapterData = CHAPTERS.find(c => c.id === "18") || CHAPTERS[17];
-
-  const fadeInUp = {
-    initial: { opacity: 0, y: 20 },
-    whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true },
-    transition: { duration: 0.5 }
-  };
+  const isThisChapterPlaying = currentChapter?.id === chapterData.id && isPlaying;
 
   const nafilas = [
     { nuit: "1ère Nuit", rakas: "12", recit: [{name: "Fatiha", count: 1}, {name: "Inna Anzalnahou", count: 2}, {name: "Al Kâfirouna", count: 2}, {name: "Ikhlass", count: 2}], recompense: "Dieu le sauvera à jamais de l’enfer et exaucera tous ses vœux formulés à la suite de cette prière." },
@@ -52,119 +46,118 @@ export default function NafilasRamadanPage() {
   ];
 
   return (
-    <main className="min-h-screen bg-[#020504] text-white pt-24 pb-48 px-4 md:px-6 relative overflow-x-hidden font-sans">
-      {/* Background Decor */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full pointer-events-none opacity-20 z-0">
-        <div className="absolute top-[-5%] right-[-10%] w-[60%] h-[40%] bg-emerald-900/10 blur-[100px] md:blur-[120px] rounded-full" />
-        <div className="absolute bottom-[10%] left-[-5%] w-[40%] h-[30%] bg-gold/5 blur-[100px] rounded-full" />
+    <main className="min-h-screen bg-[#010302] text-white pt-24 pb-48 px-6 selection:bg-gold/30 overflow-x-hidden font-sans">
+      
+      {/* BACKGROUND DECOR */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-0 right-0 w-[50vw] h-[50vh] bg-emerald-900/5 blur-[120px] rounded-full" />
+        <div className="absolute bottom-0 left-0 w-[40vw] h-[40vh] bg-gold/5 blur-[100px] rounded-full" />
       </div>
 
-      {/* HEADER SECTION */}
-      <div className="max-w-4xl mx-auto text-center mb-16 relative z-10">
-        <motion.div 
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-gold/20 bg-gold/5 mb-6"
-        >
-          <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse shadow-[0_0_10px_#D4AF37]" />
-          <span className="text-gold tracking-[0.4em] text-[9px] uppercase font-black">Chapitre XVIII</span>
-        </motion.div>
+      <div className="max-w-5xl mx-auto relative z-10">
+        
+        {/* HEADER */}
+        <header className="text-center mb-24">
+          <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
+            <span className="text-gold tracking-[0.5em] text-[10px] uppercase font-bold mb-4 block opacity-60">Chapitre XVIII — Les Prières de Nuit</span>
+            <h1 className="text-4xl md:text-7xl font-black tracking-tighter uppercase mb-6 leading-tight">
+              LES NAFILAS <br /> <span className="gold-gradient-text italic font-serif lowercase text-5xl md:text-8xl">du ramadan</span>
+            </h1>
+            <p className="text-3xl font-amiri text-gold-light mb-10">نوافل شهر رمضان</p>
 
-        <motion.h1 
-          initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
-          className="text-4xl md:text-7xl font-black bg-gradient-to-b from-white to-gold bg-clip-text text-transparent mb-8 leading-tight uppercase tracking-tighter"
-        >
-          LES NAFILAS <br />
-          <span className="gold-gradient-text italic text-3xl md:text-6xl uppercase tracking-normal">du Ramadan</span>
-        </motion.h1>
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => isThisChapterPlaying ? togglePlay() : setChapter(chapterData)}
+              className="group relative inline-flex items-center gap-6 px-10 py-5 bg-white/[0.03] border border-white/10 rounded-2xl transition-all hover:bg-white/[0.06] hover:border-gold/40 shadow-2xl"
+            >
+              <div className={`absolute inset-0 bg-gold blur-md rounded-full transition-opacity ${isThisChapterPlaying ? 'opacity-20' : 'opacity-0'}`} />
+              <span className="material-symbols-rounded text-4xl text-gold relative z-10">
+                {isThisChapterPlaying ? 'pause_circle' : 'play_circle'}
+              </span>
+              <span className="text-sm font-bold tracking-tight italic font-serif text-white/80 relative z-10">
+                {isThisChapterPlaying ? 'Mettre en pause' : 'Écouter les enseignements'}
+              </span>
+            </motion.button>
+          </motion.div>
+        </header>
 
-        <p className="font-amiri text-4xl md:text-6xl text-gold block mb-10 tracking-normal text-center">نوافل شهر رمضان</p>
-
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => currentChapter?.id === chapterData.id ? togglePlay() : setChapter(chapterData)}
-          className="inline-flex items-center gap-4 px-10 py-5 bg-gold/10 border border-gold/30 rounded-2xl text-gold font-black uppercase tracking-widest text-[10px] shadow-2xl backdrop-blur-md transition-all font-sans"
-        >
-          <span className="material-symbols-rounded text-3xl">
-            {currentChapter?.id === chapterData.id && isPlaying ? 'pause_circle' : 'play_circle'}
-          </span>
-          {currentChapter?.id === chapterData.id && isPlaying ? 'Mettre en pause' : 'Écouter les enseignements'}
-        </motion.button>
+        {/* LISTE DES NAFILAS */}
+        <div className="max-w-4xl mx-auto space-y-4">
+          {nafilas.map((item, index) => (
+            <AccordionItem key={index} item={item} index={index} />
+          ))}
+        </div>
       </div>
 
-      {/* ACCORDION DES NAFILAS */}
-      <div className="max-w-4xl mx-auto space-y-4 relative z-10">
-        {nafilas.map((item, index) => (
-          <AccordionItem key={index} item={item} />
-        ))}
-      </div>
+      {/* NAVIGATION BAR */}
+      <nav className="fixed bottom-10 left-1/2 -translate-x-1/2 flex items-center p-2 bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-full shadow-2xl z-50">
+        <button onClick={() => router.push('/partie/17/h')} className="px-8 py-3 rounded-full text-[10px] uppercase tracking-[0.2em] font-bold text-white/50 hover:text-white transition-all">Précédent</button>
+        <div className="w-[1px] h-4 bg-white/10 mx-2" />
+        <button onClick={() => router.push('/partie/19')} className="px-8 py-3 bg-gold text-black rounded-full text-[10px] uppercase tracking-[0.2em] font-black hover:scale-105 active:scale-95 transition-all shadow-lg shadow-gold/20">Chapitre XIX</button>
+      </nav>
     </main>
   );
 }
 
-const AccordionItem = ({ item }: { item: any }) => {
+function AccordionItem({ item, index }: { item: any, index: number }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <motion.div
-      layout
-      className="glass-card rounded-[2rem] border border-white/5 overflow-hidden group"
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.05 }}
+      viewport={{ once: true }}
+      className={`rounded-[2rem] border transition-all duration-500 ${isOpen ? 'bg-white/[0.04] border-gold/30 shadow-2xl' : 'bg-white/[0.02] border-white/5 hover:border-gold/20'}`}
     >
-      <motion.button
-        layout
+      <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex justify-between items-center p-6 text-left"
+        className="w-full flex justify-between items-center p-6 md:p-8 text-left"
       >
-        <div className="flex items-center gap-4">
-          <span className={`text-gold font-black text-[10px] uppercase tracking-widest bg-gold/5 px-3 py-1 rounded-full border border-gold/10 transition-colors ${isOpen ? 'bg-gold/20' : ''}`}>
+        <div className="flex items-center gap-6">
+          <span className="text-gold font-black text-[11px] uppercase tracking-[0.3em] bg-gold/10 px-4 py-2 rounded-full border border-gold/10">
             {item.nuit}
           </span>
-          <span className={`text-white font-bold text-sm hidden sm:inline ${isOpen ? 'text-gold' : ''}`}>{item.rakas} rakas</span>
+          <div className="space-y-1">
+            <span className="text-white font-bold text-lg block">{item.rakas} Rakas</span>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <span className={`text-white/40 text-xs font-mono hidden sm:inline transition-opacity ${isOpen ? 'opacity-0' : 'opacity-100'}`}>
-            Détails
-          </span>
-          <motion.div animate={{ rotate: isOpen ? 180 : 0 }}>
-            <span className="material-symbols-rounded text-white/40 group-hover:text-gold transition-colors">
-              expand_more
-            </span>
-          </motion.div>
-        </div>
-      </motion.button>
-      
+        <motion.div animate={{ rotate: isOpen ? 180 : 0 }} className="flex items-center justify-center w-10 h-10 rounded-full bg-white/5 border border-white/10">
+          <span className="material-symbols-rounded text-gold opacity-60">expand_more</span>
+        </motion.div>
+      </button>
+
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
             className="overflow-hidden"
           >
-            <div className="p-6 pt-0 space-y-6">
-              <div className="p-6 bg-black/20 rounded-xl border border-white/5">
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="material-symbols-rounded text-white/40 text-xl">auto_stories</span>
-                  <h3 className="text-white/40 font-black text-[9px] uppercase tracking-widest">Récitation recommandée</h3>
-                </div>
-                <div className="flex flex-wrap gap-2">
+            <div className="px-8 pb-8 space-y-8">
+              {/* Récitation */}
+              <div className="space-y-4">
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 block mb-4">Constitution des Rakas</span>
+                <div className="flex flex-wrap gap-3">
                   {item.recit.map((sourate: any, i: number) => (
-                    <div key={i} className="flex items-center gap-2 bg-white/5 px-3 py-1.5 rounded-full border border-white/10">
-                      <span className="text-white font-bold text-xs">{sourate.name}</span>
-                      <span className="text-gold bg-gold/10 font-black text-[10px] w-5 h-5 flex items-center justify-center rounded-full">{sourate.count}x</span>
+                    <div key={i} className="flex items-center gap-3 bg-black/40 px-4 py-2 rounded-2xl border border-white/5">
+                      <span className="text-gold font-bold text-sm">{sourate.count}x</span>
+                      <span className="text-white/80 text-sm font-serif italic">{sourate.name}</span>
                     </div>
                   ))}
                 </div>
               </div>
-              <div className="p-6 bg-emerald-900/10 rounded-xl border border-emerald-500/10">
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="material-symbols-rounded text-emerald-400 text-xl">workspace_premium</span>
-                  <h3 className="text-emerald-400 font-black text-[9px] uppercase tracking-widest">Récompense & Bienfaits</h3>
+
+              {/* Récompense */}
+              <div className="p-8 rounded-3xl bg-emerald-950/10 border border-emerald-500/20 relative overflow-hidden group/reward">
+                <div className="absolute top-0 right-0 p-4 opacity-10 group-hover/reward:opacity-20 transition-opacity">
+                   <span className="material-symbols-rounded text-5xl text-emerald-400">workspace_premium</span>
                 </div>
-                <p className="text-white/60 font-serif italic text-sm leading-relaxed">
-                  {item.recompense}
+                <span className="text-emerald-400 font-black text-[9px] uppercase tracking-[0.4em] block mb-4">Récompense & Bienfaits</span>
+                <p className="text-white/70 font-serif italic text-lg leading-relaxed text-justify relative z-10">
+                  &quot;{item.recompense}&quot;
                 </p>
               </div>
             </div>
@@ -173,4 +166,4 @@ const AccordionItem = ({ item }: { item: any }) => {
       </AnimatePresence>
     </motion.div>
   );
-};
+}

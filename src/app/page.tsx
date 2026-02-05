@@ -1,184 +1,217 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation'; // Import useRouter
+import { useRouter } from 'next/navigation';
 
 export default function HomePage() {
   const [mounted, setMounted] = useState(false);
   const { scrollY } = useScroll();
-  const router = useRouter(); // Initialize router
+  const router = useRouter();
   
-  // Adaptations fluides au scroll
-  const y1 = useTransform(scrollY, [0, 500], [0, -100]);
-  const opacityText = useTransform(scrollY, [0, 300], [1, 0]);
-  const scaleImage = useTransform(scrollY, [0, 300], [1, 0.8]);
+  // Effets de parallaxe fluides
+  const yHero = useTransform(scrollY, [0, 500], [0, -100]);
+  const opacityHero = useTransform(scrollY, [0, 300], [1, 0]);
+  const scalePortrait = useTransform(scrollY, [0, 300], [1, 0.95]);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     setMounted(true);
   }, []);
 
   if (!mounted) return null;
 
+  // Variantes d'animation pour les textes (Cascade/Stagger)
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.3,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.8, 
+        ease: [0.16, 1, 0.3, 1] as const // <--- Ajoutez ceci
+      }
+    },
+  };
+
   return (
-    <main className="relative min-h-screen bg-emerald-950-dynamic overflow-x-hidden selection:bg-gold/30">
+    <main className="relative min-h-[100dvh] bg-[#010503] overflow-x-hidden selection:bg-gold/30 flex flex-col font-sans">
       
-      {/* BACKGROUND DYNAMIQUE */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-10%] left-[-10%] w-[70%] h-[70%] bg-gold/10 rounded-full blur-[80px] md:blur-[120px] opacity-50" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-emerald-500/10 rounded-full blur-[80px] md:blur-[120px] opacity-30" />
+      {/* FOND AMBIANT DYNAMIQUE (GPU Optimized) */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.1, 1],
+            opacity: [0.3, 0.5, 0.3] 
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+          className="absolute top-0 right-0 w-[80vw] h-[80vw] bg-gold/5 rounded-full blur-[100px]" 
+        />
+        <div className="absolute bottom-0 left-0 w-[60vw] h-[60vw] bg-emerald-900/10 rounded-full blur-[100px]" />
       </div>
 
-      {/* SECTION HÉRO - Le coeur du design */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center px-4 py-8 md:py-20">
+      {/* SECTION HÉRO */}
+      <section className="relative min-h-[100dvh] flex flex-col items-center justify-center px-4 py-12">
         
-        {/* PORTRAIT - Redimensionné pour Nest Hub (max-h) */}
         <motion.div 
-          style={{ opacity: opacityText, scale: scaleImage }}
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-10 mb-6 md:mb-10"
+          style={{ opacity: opacityHero, y: yHero, scale: scalePortrait }}
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="relative z-10 w-full max-w-4xl flex flex-col items-center"
         >
-          {/* Taille adaptée : plus petite sur mobile et écrans courts (Nest Hub) */}
-          <div className="relative w-40 h-40 sm:w-56 sm:h-56 md:w-72 md:h-72 lg:w-80 lg:h-80 max-h-[30vh] max-w-[30vh]">
-            {/* Anneau rotatif */}
-            <motion.div 
-              animate={{ rotate: 360 }}
-              transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-              className="absolute -inset-3 md:-inset-4 border border-dashed border-gold/30 rounded-full" 
-            />
-            <div className="absolute -inset-1.5 bg-gradient-to-tr from-gold via-transparent to-gold/40 rounded-full blur-[2px]" />
-            
-            <div className="relative w-full h-full overflow-hidden rounded-full shadow-[0_0_50px_rgba(201,169,97,0.2)] border-2 border-gold/20">
-              <Image 
-                src="/author.jpg" 
-                alt="Serigne Shouhaïbou Mbacké"
-                fill
-                className="object-cover grayscale hover:grayscale-0 transition-all duration-1000 ease-in-out"
-                priority
+          {/* PORTRAIT AVEC EFFET DE RÉVÉLATION */}
+          <motion.div variants={itemVariants} className="relative mb-8 md:mb-12">
+            <div className="relative w-36 h-36 sm:w-52 sm:h-52 md:w-64 md:h-64 lg:w-72 lg:h-72">
+              <motion.div 
+                animate={{ rotate: 360 }}
+                transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
+                className="absolute -inset-4 border border-gold/10 rounded-full"
               />
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1.5, ease: "easeOut" }}
+                className="absolute -inset-1 bg-gradient-to-b from-gold/40 to-transparent rounded-full" 
+              />
+              <div className="relative w-full h-full overflow-hidden rounded-full border border-gold/20 shadow-2xl shadow-gold/5">
+                <Image 
+                  src="/author.jpg" 
+                  alt="Serigne Shouhaïbou Mbacké"
+                  fill
+                  className="object-cover grayscale hover:grayscale-0 transition-all duration-1000"
+                  priority
+                />
+              </div>
             </div>
-          </div>
-        </motion.div>
-
-        {/* TITRES */}
-        <motion.div
-          style={{ y: y1 }}
-          className="relative z-10 text-center space-y-3 md:space-y-6 max-w-4xl px-4"
-        >
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-          >
-            <span className="text-gold tracking-[0.4em] md:tracking-[0.6em] text-[9px] md:text-xs uppercase font-black mb-2 block opacity-80">
-              Œuvre Spirituelle Majeure
-            </span>
-            {/* Taille de texte fluide pour Nest Hub */}
-            <h1 className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-bold text-white mb-2 tracking-tighter leading-none">
-              Qurratul <span className="text-gold gold-gradient-text">Ayni</span>
-            </h1>
-            <p className="text-lg md:text-3xl lg:text-4xl font-serif text-white/70 italic leading-tight">
-              Serigne Shouhaïbou Mbacké
-            </p>
           </motion.div>
 
-          {/* ACTIONS - Adaptatives au tactile */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 pt-6 md:pt-10"
+          {/* TEXTES AVEC CLAMP ET STAGGER */}
+          <div className="space-y-4 px-2 text-center">
+            <motion.span 
+              variants={itemVariants}
+              className="text-gold text-[9px] sm:text-xs uppercase font-black tracking-[0.6em] block opacity-70"
+            >
+              Œuvre Spirituelle Majeure
+            </motion.span>
+            
+            <motion.h1 
+              variants={itemVariants}
+              className="text-[clamp(2.8rem,9vw,6.5rem)] font-black text-white tracking-tighter leading-[1] uppercase"
+            >
+              Qurratul <span className="gold-gradient-text italic font-serif">Ayni</span>
+            </motion.h1>
+            
+            <motion.p 
+              variants={itemVariants}
+              className="text-xl sm:text-2xl md:text-4xl font-serif text-white/60 italic leading-tight"
+            >
+              Serigne Shouhaïbou Mbacké
+            </motion.p>
+          </div>
+
+          {/* ACTIONS FLUIDES */}
+          <motion.div 
+            variants={itemVariants}
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12 w-full max-w-sm sm:max-w-none"
           >
             <Link href="/accueil" className="w-full sm:w-auto">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-full sm:px-10 py-4 md:py-5 rounded-full bg-gold text-emerald-950-dynamic font-black text-[10px] md:text-sm tracking-[0.2em] uppercase flex items-center justify-center gap-3 shadow-lg"
+                className="w-full sm:px-12 py-4 md:py-5 rounded-2xl bg-gold text-[#010503] font-black text-[11px] sm:text-sm tracking-[0.3em] uppercase flex items-center justify-center gap-3 shadow-2xl"
               >
                 Commencer
                 <span className="material-symbols-rounded text-lg">menu_book</span>
               </motion.button>
             </Link>
             
-            <button 
+            <motion.button 
+               whileHover={{ backgroundColor: "rgba(255,255,255,0.05)" }}
                onClick={() => router.push('/partie/1')}
-               className="w-full sm:px-10 py-4 md:py-5 rounded-full border border-white/10 text-white font-bold text-[10px] md:text-sm tracking-[0.2em] uppercase hover:bg-white/5 transition-all backdrop-blur-sm"
+               className="w-full sm:px-12 py-4 md:py-5 rounded-2xl border border-white/10 text-white font-bold text-[11px] sm:text-sm tracking-[0.3em] uppercase transition-all backdrop-blur-md"
             >
               L&apos;Auteur
-            </button>
+            </motion.button>
           </motion.div>
-        </motion.div>
-
-        {/* INDICATEUR DE SCROLL - Masqué si l'écran est trop court (Nest Hub) */}
-        <motion.div 
-          animate={{ y: [0, 10, 0] }}
-          transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
-          className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 hidden sm:flex flex-col items-center gap-2 md:gap-3 opacity-40"
-        >
-          <span className="text-[7px] md:text-[8px] uppercase tracking-[0.4em] text-white">Découvrir</span>
-          <div className="w-[1px] h-6 md:h-10 bg-gradient-to-b from-gold to-transparent" />
         </motion.div>
       </section>
 
-      {/* SECTION PRÉSENTATION - Grille Responsive */}
-      <section className="relative px-6 py-16 md:py-32 container mx-auto max-w-7xl">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-24 items-center">
+      {/* SECTION PRÉSENTATION (Fade-in on scroll) */}
+      <section className="relative px-6 py-20 bg-black/40">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="space-y-6 md:space-y-8 text-center lg:text-left"
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            viewport={{ once: true, margin: "-100px" }}
+            className="space-y-8 text-center lg:text-left"
           >
-            <h2 className="text-3xl md:text-6xl font-bold text-white leading-tight">
+            <h2 className="text-4xl sm:text-6xl font-bold text-white leading-tight tracking-tighter">
               Une Voie vers la <br />
               <span className="gold-gradient-text italic font-serif">Lumière Divine</span>
             </h2>
-            <p className="text-white/60 text-base md:text-xl leading-relaxed font-serif">
+            <p className="text-white/50 text-lg sm:text-xl leading-relaxed font-serif italic max-w-lg mx-auto lg:mx-0">
               Qurratul Ayni est un guide méthodique structuré, alliant poésie mystique et enseignements pratiques pour le croyant.
             </p>
             
-            <div className="grid grid-cols-2 gap-4 pt-4">
-              <div className="p-6 rounded-[2rem] bg-white/[0.03] border border-white/5 hover:border-gold/20 transition-all">
-                <h3 className="text-gold text-3xl md:text-5xl font-black mb-1">19</h3>
-                <p className="text-white/40 text-[8px] md:text-[10px] uppercase tracking-widest font-bold">Chapitres</p>
-              </div>
-              <div className="p-6 rounded-[2rem] bg-white/[0.03] border border-white/5 hover:border-gold/20 transition-all">
-                <h3 className="text-gold text-3xl md:text-5xl font-black mb-1">HD</h3>
-                <p className="text-white/40 text-[8px] md:text-[10px] uppercase tracking-widest font-bold">Audio</p>
-              </div>
+            <div className="grid grid-cols-2 gap-4">
+              {[
+                { val: "19", label: "Chapitres" },
+                { val: "HD", label: "Audio" }
+              ].map((stat, i) => (
+                <motion.div 
+                  key={i}
+                  whileHover={{ y: -5 }}
+                  className="p-6 rounded-3xl bg-white/[0.03] border border-white/5 text-center"
+                >
+                  <span className="text-gold text-4xl font-black block">{stat.val}</span>
+                  <span className="text-white/30 text-[10px] uppercase font-bold tracking-widest">{stat.label}</span>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.2 }}
             viewport={{ once: true }}
-            className="relative"
+            className="relative aspect-video sm:aspect-square max-h-[500px] rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl"
           >
-            <div className="aspect-square rounded-[2.5rem] md:rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl relative">
-              <Image 
-                src="/mosque.png" 
-                alt="Ambiance" 
-                fill 
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-emerald-950-dynamic/40" />
-            </div>
+            <Image 
+              src="/mosque.png" 
+              alt="Atmosphère" 
+              fill 
+              className="object-cover opacity-70 scale-110 hover:scale-100 transition-transform duration-[3s]"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#010503] via-transparent to-transparent" />
           </motion.div>
         </div>
       </section>
 
       {/* FOOTER */}
-      <footer className="py-12 border-t border-white/5 text-center">
-        <p className="text-white/20 text-[8px] md:text-[10px] tracking-[0.4em] uppercase font-bold">
-          © 2026 Qurratul Ayni
-        </p>
+      <footer className="py-16 border-t border-white/5 text-center mt-auto bg-black/20">
+        <motion.p 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          className="text-white/20 text-[10px] tracking-[0.5em] uppercase font-bold px-4"
+        >
+          © 2026 Qurratul Ayni • Bibliothèque Spirituelle Digitale
+        </motion.p>
       </footer>
     </main>
   );

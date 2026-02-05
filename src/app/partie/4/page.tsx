@@ -10,7 +10,6 @@ export default function ChapitreProphete() {
   const router = useRouter();
   const { setChapter, currentChapter, isPlaying, togglePlay } = useAudio();
   
-  // Récupération des données du chapitre 4
   const chapterData = CHAPTERS.find(c => c.id === "4") || CHAPTERS[3];
   const isThisChapterPlaying = currentChapter?.id === chapterData.id && isPlaying;
 
@@ -19,114 +18,128 @@ export default function ChapitreProphete() {
     else setChapter(chapterData);
   };
 
-  // Contenu basé sur le texte fourni
-  const contenuIntegral = [
-    {
-      fr: "Notre Prophète Mouhammadou Rassoû Loulahi (PSL), Service de Dieu, est son Messager qu’il a envoyé auprès de tout le monde.",
-      ar: "نبينا محمد رسول الله صلى الله عليه وسلم، عبد الله ورسوله الذي أرسله إلى العالمين كافة."
-    },
-    {
-      fr: "Tout ce qu’il dit, tout ce qu’il fait est conforme aux instructions divines.",
-      ar: "كل ما يقوله وكل ما يفعله مطابق للوحي الإلهي."
-    },
-    {
-      fr: "Celui qui en conteste une partie, si petite soit-elle, est un mécréant. Qui en retranche ou en rajoute tant soit peu est digne du plus grand mépris.",
-      ar: "من أنكر شيئاً منه، ولو كان يسيراً، فقد كفر. ومن نقص منه أو زاد فيه فهو مستحق لأشد المقت."
-    },
-    {
-      fr: "S’il ne s’en repent pas, il sera précipité dans les feux de l’enfer. L’objet de sa mission est de nous révéler que nous devons nous soumettre à ses recommandations.",
-      ar: "وإن لم يتب، فسيرمى في نار جهنم. إن الغرض من بعثته هو تعليمنا وجوب الانقياد لتوصياته."
-    },
-    {
-      fr: "La plus importante parmi celles-ci est la prière (cinq fois par jour).",
-      ar: "وأهم هذه التوصيات هي الصلاة (خمس مرات في اليوم)."
-    }
+  const enseignements = [
+    { fr: "Notre Prophète Mouhammadou Rassoû Loulahi (PSL), Service de Dieu, est son Messager qu’il a envoyé auprès de tout le monde." },
+    { fr: "Tout ce qu’il dit, tout ce qu’il fait est conforme aux instructions divines." },
+    { fr: "Celui qui en conteste une partie, si petite soit-elle, est un mécréant. Qui en retranche ou en rajoute tant soit peu est digne du plus grand mépris." },
+    { fr: "S’il ne s’en repent pas, il sera précipité dans les feux de l’enfer. L’objet de sa mission est de nous révéler que nous devons nous soumettre à ses recommandations." },
+    { fr: "La plus importante parmi celles-ci est la prière (cinq fois par jour)." }
   ];
 
   return (
-    <main className="min-h-screen bg-[#020504] text-white pt-16 md:pt-28 pb-48 px-4 md:px-6">
+    <main className="min-h-screen bg-[#010302] text-white pt-24 pb-48 px-6 selection:bg-gold/30">
       
-      {/* HEADER SECTION - Adapté Nest Hub & Mobile */}
-      <div className="max-w-4xl mx-auto text-center mb-12 md:mb-16">
-        <motion.span 
-          initial={{ opacity: 0 }} 
-          animate={{ opacity: 1 }} 
-          className="text-gold tracking-[0.4em] md:tracking-[0.6em] text-[8px] md:text-[10px] uppercase font-black mb-4 block"
-        >
-          Khouratoul Ayni — Chapitre IV
-        </motion.span>
+      {/* BACKGROUND ORNAMENTAL */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-0 right-0 w-[50vw] h-[50vh] bg-gold/5 blur-[120px] rounded-full" />
+        <div className="absolute bottom-0 left-0 w-[30vw] h-[30vh] bg-emerald-500/5 blur-[100px] rounded-full" />
+      </div>
+
+      <div className="max-w-4xl mx-auto relative z-10">
         
-        <motion.h1 
-          initial={{ y: 20, opacity: 0 }} 
-          animate={{ y: 0, opacity: 1 }} 
-          className="text-4xl md:text-7xl font-black bg-gradient-to-b from-white to-gold bg-clip-text text-transparent mb-8 uppercase leading-tight"
-        >
-          MOUHAMMADOUNE RASSOUL LOULAHI <br/>
-          <span className="font-amiri text-2xl md:text-4xl opacity-80">(محمد رسول الله)</span>
-        </motion.h1>
-
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={handleAudioAction}
-          className="inline-flex items-center gap-4 px-8 py-4 bg-gold/10 border border-gold/30 rounded-2xl text-gold font-bold uppercase tracking-widest text-[10px] shadow-2xl backdrop-blur-md transition-all hover:bg-gold/20"
-        >
-          <span className="material-symbols-rounded text-3xl">
-            {isThisChapterPlaying ? 'pause_circle' : 'play_circle'}
-          </span>
-          {isThisChapterPlaying ? 'Mettre en pause' : 'Écouter l\'enseignement'}
-        </motion.button>
-      </div>
-
-      {/* LISTE DES ENSEIGNEMENTS BILINGUES */}
-      <div className="max-w-5xl mx-auto space-y-6 md:space-y-10">
-        {contenuIntegral.map((item, index) => (
-          <motion.div 
-            key={index} 
-            initial={{ opacity: 0, y: 30 }} 
-            whileInView={{ opacity: 1, y: 0 }} 
-            viewport={{ once: true, margin: "-5%" }} 
-            className="glass-card p-6 md:p-12 rounded-[2rem] md:rounded-[3rem] border border-white/5 hover:border-gold/20 transition-all duration-500 shadow-xl"
+        {/* HEADER SECTION */}
+        <header className="text-center mb-24 space-y-8">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
           >
-            <div className="flex flex-col md:flex-row gap-6 md:gap-12 items-center">
-              
-              {/* Texte Arabe */}
-              <div className="w-full md:w-1/2 text-right order-1 md:order-2" dir="rtl">
-                <p className="text-xl md:text-3xl font-amiri text-gold-light leading-[1.6] md:leading-[1.8]">
-                  {item.ar}
-                </p>
-              </div>
-              
-              {/* Séparateur */}
-              <div className="hidden md:block w-[1px] h-24 bg-gradient-to-b from-transparent via-gold/20 to-transparent order-2" />
-              <div className="md:hidden w-1/3 h-[1px] bg-gold/10 order-2" />
-              
-              {/* Texte Français */}
-              <div className="w-full md:w-1/2 text-left order-3 md:order-1 border-l-2 md:border-l-0 border-gold/10 pl-4 md:pl-0">
-                <p className="text-base md:text-lg text-white/60 font-serif leading-relaxed italic">
-                  "{item.fr}"
-                </p>
-              </div>
+            <div className="flex items-center justify-center gap-4 mb-4">
+              <span className="h-[1px] w-8 bg-gold/30" />
+              <span className="text-gold tracking-[0.5em] text-[10px] uppercase font-bold">Chapitre IV</span>
+              <span className="h-[1px] w-8 bg-gold/30" />
             </div>
+            
+            <h1 className="text-4xl md:text-7xl font-black tracking-tighter leading-none uppercase mb-6">
+              MOUHAMMADOUNE <br />
+              <span className="gold-gradient-text">RASSOUL LOULAHI</span>
+            </h1>
+
+            <div className="flex flex-col items-center gap-4 mb-10">
+               <span className="text-4xl md:text-5xl font-amiri text-gold-light drop-shadow-sm">مُحَمَّدٌ رَسُولُ اللَّهِ</span>
+               <span className="text-2xl font-amiri text-gold/60">ﷺ</span>
+            </div>
+
+            {/* AUDIO CONTROL */}
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={handleAudioAction}
+              className="group relative inline-flex items-center gap-6 px-10 py-5 bg-white/[0.03] border border-white/10 rounded-2xl transition-all hover:bg-white/[0.06] hover:border-gold/40 shadow-2xl"
+            >
+              <div className="relative">
+                <div className={`absolute inset-0 bg-gold blur-md rounded-full transition-opacity ${isThisChapterPlaying ? 'opacity-40' : 'opacity-0'}`} />
+                <span className={`material-symbols-rounded text-4xl relative z-10 ${isThisChapterPlaying ? 'text-gold' : 'text-white'}`}>
+                  {isThisChapterPlaying ? 'pause_circle' : 'play_circle'}
+                </span>
+              </div>
+              <div className="text-left">
+                <p className="text-[10px] uppercase tracking-[0.3em] font-bold text-white/40 group-hover:text-gold transition-colors">Enregistrement</p>
+                <p className="text-sm font-bold tracking-tight">
+                  {isThisChapterPlaying ? 'Mettre en pause' : 'Écouter la leçon'}
+                </p>
+              </div>
+            </motion.button>
           </motion.div>
-        ))}
+        </header>
+
+        {/* CONTENT SECTIONS */}
+        <div className="space-y-6">
+          {enseignements.map((item, idx) => (
+            <motion.div 
+              key={idx}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-10%" }}
+              transition={{ duration: 0.6, delay: idx * 0.1 }}
+              className="group relative p-8 md:p-12 rounded-[2.5rem] bg-white/[0.02] border border-white/5 hover:border-gold/20 transition-all"
+            >
+              {/* Index discret */}
+              <span className="absolute right-10 top-10 text-5xl font-black text-white/[0.02] group-hover:text-gold/[0.05] transition-colors pointer-events-none">
+                {idx + 1}
+              </span>
+
+              <div className="relative z-10 max-w-2xl">
+                <p className="text-lg md:text-2xl text-white/80 font-serif leading-relaxed italic group-hover:text-white transition-colors">
+                  &quot;{item.fr}&quot;
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* TRANSCRIPTION FINALE SOLENNELLE */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          className="mt-24 pt-16 border-t border-white/5 text-center space-y-6"
+        >
+          <p className="text-4xl md:text-5xl font-amiri text-gold-light leading-loose">
+            صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ
+          </p>
+          <div className="h-[1px] w-12 bg-gold/30 mx-auto" />
+          <p className="text-[10px] uppercase tracking-[0.4em] text-white/30">
+            Paix et Bénédictions sur Lui
+          </p>
+        </motion.div>
       </div>
 
-      {/* NAVIGATION */}
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 flex gap-4 z-50 w-full max-w-[90%] md:max-w-md">
+      {/* NAVIGATION BAR */}
+      <nav className="fixed bottom-10 left-1/2 -translate-x-1/2 flex items-center p-2 bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-full shadow-2xl z-50">
         <button 
           onClick={() => router.push('/partie/3')} 
-          className="flex-1 py-4 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-white/10 transition-all text-white/70"
+          className="px-8 py-3 rounded-full text-[10px] uppercase tracking-[0.2em] font-bold text-white/50 hover:text-white transition-all"
         >
           Précédent
         </button>
+        <div className="w-[1px] h-4 bg-white/10 mx-2" />
         <button 
           onClick={() => router.push('/partie/5')} 
-          className="flex-1 py-4 bg-gold text-emerald-950-dynamic rounded-full text-[10px] uppercase tracking-[0.2em] font-black shadow-lg hover:scale-105 transition-all"
+          className="px-8 py-3 bg-gold text-black rounded-full text-[10px] uppercase tracking-[0.2em] font-black hover:scale-105 active:scale-95 transition-all shadow-lg shadow-gold/20"
         >
-          Suivant
+          Chapitre V
         </button>
-      </div>
+      </nav>
     </main>
   );
 }

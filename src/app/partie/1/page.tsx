@@ -11,129 +11,148 @@ export default function NotesAuteur() {
   const router = useRouter();
   const { setChapter, currentChapter, isPlaying, togglePlay } = useAudio();
   
-  // Récupération des données du chapitre 1 (Notes sur l'auteur)
   const chapterData = CHAPTERS.find(c => c.id === "1") || CHAPTERS[0];
-
-  const handleAudioAction = () => {
-    if (currentChapter?.id === chapterData.id) togglePlay();
-    else setChapter(chapterData);
-  };
 
   const bioSections = [
     {
-      fr: "Mieux connu sous le nom de Serigne Shouhaïbou MBACKÉ, il fut l'un des remarquables soufis et érudits de la Muridiyyah.",
-      ar: "المعروف بلقب الشيخ شعيب مباكي، كان من أبرز الصوفيين والعلماء في الطريقة المريدية."
+      fr: "Mieux connu sous le nom de Serigne Shouhaïbou MBACKÉ, il fut l'un des remarquables soufis et érudits de la Muridiyyah."
     },
     {
-      fr: "Il fut très tôt attaché à son illustre père, Cheikh Ahmadou Bamba, qui lui inculqua les valeurs islamiques fondamentales et la rigueur spirituelle.",
-      ar: "ارتبط منذ صغره بوالده الجليل الشيخ أحمدو بمبا، الذي غرس فيه القيم الإسلامية الأساسية والصرامة الروحية."
+      fr: "Il fut très tôt attaché à son illustre père, Cheikh Ahmadou Bamba, qui lui inculqua les valeurs islamiques fondamentales et la rigueur spirituelle."
     },
     {
-      fr: "Il apprit et mémorisa le Coran très jeune auprès de son oncle Cheikh Hamzatou Diakhaté, avant de poursuivre ses études de droit islamique et de théologie.",
-      ar: "تعلم وحفظ القرآن الكريم في سن مبكرة على يد خاله الشيخ حمزة ديخاتي، قبل أن يواصل دراساته في الفقه والتوحيد."
+      fr: "Il apprit et mémorisa le Coran très jeune auprès de son oncle Cheikh Hamzatou Diakhaté, avant de poursuivre ses études de droit islamique et de théologie."
     },
     {
-      fr: "Sa vie durant, il s'est consacré à l'éducation coranique à Touba, laissant une œuvre immense dont Khouratoul Ayni est le joyau.",
-      ar: "كرس حياته للتربية القرآنية في طوبى، تاركاً وراءه إرثاً أدبياً عظيماً يعد كتاب «قرة العين» جوهرته."
+      fr: "Sa vie durant, il s'est consacré à l'éducation coranique à Touba, laissant une œuvre immense dont Khouratoul Ayni est le joyau."
     }
   ];
 
   return (
-    <main className="min-h-screen bg-[#020504] text-white pt-24 pb-48 px-6">
-      <div className="max-w-4xl mx-auto text-center mb-16">
-        <motion.span 
-          initial={{ opacity: 0 }} 
-          animate={{ opacity: 1 }} 
-          className="text-gold tracking-[0.6em] text-[10px] uppercase font-black mb-4 block"
-        >
-          {chapterData.titleAr}
-        </motion.span>
-        <motion.h1 
-          initial={{ y: 20, opacity: 0 }} 
-          animate={{ y: 0, opacity: 1 }} 
-          className="text-4xl md:text-7xl font-bold gold-gradient-text mb-10"
-        >
-          {chapterData.titleFr}
-        </motion.h1>
+    <main className="min-h-screen bg-[#010302] text-white pt-24 pb-48 px-6 selection:bg-gold/30">
+      
+      {/* Background Decoratif */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[50vh] bg-gradient-to-b from-gold/5 to-transparent blur-3xl" />
       </div>
 
-      <div className="max-w-6xl mx-auto">
-        <motion.div 
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="glass-card p-8 md:p-16 rounded-[3rem] border border-white/5 shadow-2xl space-y-12"
-        >
-          {/* Portrait et Présentation */}
-          <div className="flex flex-col md:flex-row gap-12 items-center border-b border-white/5 pb-12">
-            <div className="relative w-48 h-48 md:w-64 md:h-64 flex-shrink-0">
-              <div className="absolute -inset-4 border border-gold/20 rounded-full animate-spin-slow" />
-              <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-gold/40">
-                <Image 
-                  src="/author.jpg" 
-                  alt="Serigne Shouhaïbou Mbacké" 
-                  fill 
-                  className="object-cover"
-                />
+      <div className="max-w-6xl mx-auto relative z-10">
+        
+        {/* Header Style "Fine Art" */}
+        <header className="mb-24 flex flex-col items-center text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="space-y-6"
+          >
+            <div className="flex items-center justify-center gap-4">
+              <span className="h-[1px] w-8 bg-gold/50" />
+              <span className="text-gold tracking-[0.5em] text-[10px] uppercase font-bold">
+                Profil Biographique
+              </span>
+              <span className="h-[1px] w-8 bg-gold/50" />
+            </div>
+            <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-none uppercase">
+              {chapterData.titleFr}
+            </h1>
+          </motion.div>
+        </header>
+
+        {/* Section Principale */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+          
+          {/* Colonne Gauche : Portrait Fixe/Sticky */}
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="lg:col-span-5 lg:sticky lg:top-32"
+          >
+            <div className="relative aspect-[4/5] w-full rounded-2xl overflow-hidden border border-white/10 group">
+              <Image 
+                src="/author.jpg" 
+                alt="Serigne Shouhaïbou Mbacké" 
+                fill 
+                className="object-cover grayscale hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100"
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#010302] via-transparent to-transparent opacity-60" />
+              <div className="absolute bottom-8 left-8">
+                <p className="text-gold font-serif italic text-2xl tracking-tight">
+                  1918 — 1991
+                </p>
               </div>
             </div>
-            <div className="space-y-6 text-center md:text-left">
-              <h2 className="text-2xl md:text-5xl font-bold text-white leading-tight">
-                Cheikh Abo Madyana <br />
-                <span className="text-gold">Shouhaïbou Mbacké</span>
-              </h2>
-              <p className="text-gold/60 font-serif italic text-xl">
-                1918 — 1991 (١٣٣٧ - ١٤١٢ هـ)
-              </p>
-              <div className="h-[1px] w-24 bg-gold/30 mx-auto md:mx-0" />
-            </div>
-          </div>
+          </motion.div>
 
-          {/* Corps du texte biographique bilingue */}
-          <div className="space-y-12">
-            {bioSections.map((section, index) => (
-              <div key={index} className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                <div className="order-2 lg:order-1">
-                  <p className="text-lg md:text-xl text-white/70 font-serif leading-relaxed italic border-l-2 border-gold/20 pl-6">
-                    &quot;{section.fr}&quot;
-                  </p>
-                </div>
-                <div className="order-1 lg:order-2 text-right" dir="rtl">
-                  <p className="text-2xl md:text-4xl font-amiri text-gold-light leading-[1.8]">
-                    {section.ar}
-                  </p>
-                </div>
+          {/* Colonne Droite : Contenu Textuel */}
+          <div className="lg:col-span-7 space-y-20">
+            
+            {/* Titre et Rang */}
+            <section className="space-y-8">
+              <motion.div 
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                className="space-y-4"
+              >
+                <h2 className="text-4xl md:text-6xl font-bold leading-tight">
+                  Cheikh Abo Madyana <br />
+                  <span className="gold-gradient-text italic font-serif">Shouhaïbou Mbacké</span>
+                </h2>
+                <div className="h-1 w-20 bg-gold" />
+              </motion.div>
+
+              {/* Blocs de texte stylisés */}
+              <div className="space-y-12">
+                {bioSections.map((section, index) => (
+                  <motion.div 
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    className="relative group"
+                  >
+                    <span className="absolute -left-8 top-0 text-gold/10 text-6xl font-black opacity-0 group-hover:opacity-100 transition-opacity -z-10">
+                      0{index + 1}
+                    </span>
+                    <p className="text-xl md:text-2xl text-white/80 font-serif leading-relaxed italic hover:text-white transition-colors">
+                      &quot;{section.fr}&quot;
+                    </p>
+                  </motion.div>
+                ))}
               </div>
-            ))}
-          </div>
+            </section>
 
-          {/* Citation Finale */}
-          <div className="pt-8 border-t border-white/5">
-            <p className="text-center font-amiri text-4xl text-gold-light leading-loose">
-              رَضِيَ اللهُ عَنْهُ وَأَرْضَاهُ
-            </p>
-            <p className="text-center text-[10px] uppercase tracking-widest text-white/30 mt-4">
-              Puisse Dieu être satisfait de lui et l'agréer
-            </p>
+            {/* Note Finale Signature */}
+            <footer className="pt-16 border-t border-white/5 text-center lg:text-left">
+               <p className="text-xs uppercase tracking-[0.4em] text-white/30 mb-2">
+                 Hommage & Reconnaissance
+               </p>
+               <p className="text-xl font-serif text-gold/80 italic">
+                 Puisse Dieu être satisfait de lui et l&apos;agréer
+               </p>
+            </footer>
           </div>
-        </motion.div>
+        </div>
       </div>
 
-      {/* Navigation */}
-      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 flex gap-4 z-50">
+      {/* Navigation Flottante Moderne */}
+      <nav className="fixed bottom-10 left-1/2 -translate-x-1/2 flex items-center p-2 bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-full shadow-2xl z-50">
         <button 
           onClick={() => router.push('/accueil')} 
-          className="px-10 py-4 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-white/10 transition-all text-white/70"
+          className="px-8 py-3 rounded-full text-[10px] uppercase tracking-[0.2em] font-bold text-white/50 hover:text-white transition-all"
         >
           Sommaire
         </button>
+        <div className="w-[1px] h-4 bg-white/10 mx-2" />
         <button 
           onClick={() => router.push('/partie/2')} 
-          className="px-10 py-4 bg-gold text-emerald-950-dynamic rounded-full text-[10px] uppercase tracking-[0.2em] font-black shadow-[0_10px_30px_rgba(201,169,97,0.3)] hover:scale-105 transition-all"
+          className="px-8 py-3 bg-gold text-black rounded-full text-[10px] uppercase tracking-[0.2em] font-black hover:scale-105 active:scale-95 transition-all shadow-[0_10px_20px_rgba(212,175,55,0.2)]"
         >
           Préface
         </button>
-      </div>
+      </nav>
     </main>
   );
 }

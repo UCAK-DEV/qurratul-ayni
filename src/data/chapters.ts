@@ -63,6 +63,25 @@ export const CHAPTERS: Chapter[] = [
     group: "Les Piliers",
     icon: "mosque"
   },
+  
+  {
+    id: "7",
+    titleAr: "المريض والميت",
+    titleFr: "LE MALADE MOURANT",
+    desc: "Règles sur l'accompagnement des mourants",
+    audioUrl: "/audio/mort.mp3",
+    group: "Rites et Société",
+    icon: "personal_injury"
+  },
+  {
+    id: "8",
+    titleAr: "الميت",
+    titleFr: "LE MORT",
+    desc: "Le lavage mortuaire et l'inhumation.",
+    audioUrl: "/audio/mort.mp3",
+    group: "Rites et Société",
+    icon: "nightlight"
+  },
   {
     id: "9",
     titleAr: "الزكاة",
@@ -88,25 +107,7 @@ export const CHAPTERS: Chapter[] = [
     desc: "Conditions physiques et financières pour accomplir le cinquième pilier de l'Islam.",
     audioUrl: "/audio/hajj.mp3",
     group: "Les Piliers",
-    icon: "kaaba"
-  },
-  {
-    id: "7",
-    titleAr: "المريض والميت",
-    titleFr: "LE MALADE MOURANT",
-    desc: "Règles sur l'accompagnement des mourants",
-    audioUrl: "/audio/mort.mp3",
-    group: "Rites et Société",
-    icon: "personal_injury"
-  },
-  {
-    id: "8",
-    titleAr: "الميت",
-    titleFr: "LE MORT",
-    desc: "Le lavage mortuaire et l'inhumation.",
-    audioUrl: "/audio/mort.mp3",
-    group: "Rites et Société",
-    icon: "tomb"
+    icon: "directions_walk"
   },
   {
     id: "12",
@@ -151,7 +152,7 @@ export const CHAPTERS: Chapter[] = [
     desc: "Règles et conditions de l’abattage rituel islamique, incluant l’intention, les formules prescrites et les bonnes pratiques à respecter.",
     audioUrl: "/audio/conseils.mp3",
     group: "Jurisprudence",
-    icon: "knife"
+    icon: "rule"
   },
   {
     id: "17",

@@ -10,8 +10,13 @@ export default function ProduitsCreditProhibePage() {
   const router = useRouter();
   const { setChapter, currentChapter, isPlaying, togglePlay } = useAudio();
   
-  // Récupération des données du chapitre 14 (ou fallback)
   const chapterData = CHAPTERS.find(c => c.id === "14") || CHAPTERS[13];
+  const isThisChapterPlaying = currentChapter?.id === chapterData.id && isPlaying;
+
+  const handleAudioAction = () => {
+    if (currentChapter?.id === chapterData.id) togglePlay();
+    else setChapter(chapterData);
+  };
 
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
@@ -21,134 +26,121 @@ export default function ProduitsCreditProhibePage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#020504] text-white pt-24 pb-48 px-4 md:px-6 relative overflow-x-hidden font-sans text-justify">
-      {/* Background Decor */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full pointer-events-none opacity-20 z-0">
-        <div className="absolute top-[-5%] right-[-10%] w-[60%] h-[40%] bg-emerald-900/10 blur-[100px] md:blur-[120px] rounded-full" />
-        <div className="absolute bottom-[10%] left-[-5%] w-[40%] h-[30%] bg-gold/5 blur-[100px] rounded-full" />
+    <main className="min-h-screen bg-[#010302] text-white pt-24 pb-48 px-6 selection:bg-gold/30">
+      
+      {/* BACKGROUND DECOR */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-0 right-0 w-[50vw] h-[50vh] bg-red-900/5 blur-[120px] rounded-full" />
+        <div className="absolute bottom-0 left-0 w-[40vw] h-[40vh] bg-gold/5 blur-[100px] rounded-full" />
       </div>
 
-      {/* HEADER SECTION */}
-      <div className="max-w-4xl mx-auto text-center mb-16 relative z-10">
-        <motion.div 
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-gold/20 bg-gold/5 mb-6"
-        >
-          <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse" />
-          <span className="text-gold tracking-[0.4em] text-[9px] uppercase font-black">Chapitre XIV — Fiqh des Échanges</span>
-        </motion.div>
-
-        <motion.h1 
-          initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
-          className="text-4xl md:text-7xl font-black bg-gradient-to-b from-white to-gold bg-clip-text text-transparent mb-8 leading-tight uppercase tracking-tighter"
-        >
-          CRÉDIT <br />
-          <span className="gold-gradient-text italic text-3xl md:text-6xl uppercase tracking-normal">Prohibé</span>
-        </motion.h1>
-
-        <p className="font-amiri text-4xl md:text-6xl text-gold block mb-10 tracking-normal text-center">المنتجات الممنوع فيها النسيئة</p>
-
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => currentChapter?.id === chapterData.id ? togglePlay() : setChapter(chapterData)}
-          className="inline-flex items-center gap-4 px-10 py-5 bg-gold/10 border border-gold/30 rounded-2xl text-gold font-black uppercase tracking-widest text-[10px] shadow-2xl backdrop-blur-md transition-all font-sans"
-        >
-          <span className="material-symbols-rounded text-3xl">
-            {currentChapter?.id === chapterData.id && isPlaying ? 'pause_circle' : 'play_circle'}
-          </span>
-          {currentChapter?.id === chapterData.id && isPlaying ? 'Mettre en pause' : 'Écouter l\'enseignement'}
-        </motion.button>
-      </div>
-
-      <div className="max-w-5xl mx-auto space-y-12 relative z-10">
+      <div className="max-w-5xl mx-auto relative z-10">
         
-        {/* 1. LA PROHIBITION DU CRÉDIT */}
-        <motion.section {...fadeInUp} className="glass-card p-8 md:p-12 rounded-[3rem] border border-white/5 space-y-8">
-          <div className="flex items-center gap-6">
-            <h2 className="text-xl font-black text-gold uppercase tracking-widest italic leading-none font-sans">Règle Générale</h2>
-            <div className="h-px flex-1 bg-gradient-to-r from-gold/30 to-transparent" />
-          </div>
+        {/* HEADER */}
+        <header className="text-center mb-24">
+          <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
+            <span className="text-gold tracking-[0.5em] text-[10px] uppercase font-bold mb-4 block opacity-60">Chapitre XIV — Fiqh des Échanges</span>
+            <h1 className="text-4xl md:text-7xl font-black tracking-tighter uppercase mb-6 leading-tight">
+              CRÉDIT <br /> <span className="gold-gradient-text italic font-serif lowercase text-5xl md:text-8xl">prohibé</span>
+            </h1>
+            <p className="text-3xl font-amiri text-gold-light mb-10">المنتجات الممنوع فيها النسيئة</p>
 
-          <div className="bg-red-950/10 border border-red-500/20 p-8 rounded-3xl space-y-4">
-            <div className="flex items-center gap-3 text-red-400">
-              <span className="material-symbols-rounded">gavel</span>
-              <span className="font-black text-[10px] uppercase tracking-widest text-red-500">Interdiction</span>
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={handleAudioAction}
+              className="group relative inline-flex items-center gap-6 px-10 py-5 bg-white/[0.03] border border-white/10 rounded-2xl transition-all hover:bg-white/[0.06] hover:border-gold/40 shadow-2xl"
+            >
+              <div className={`absolute inset-0 bg-gold blur-md rounded-full transition-opacity ${isThisChapterPlaying ? 'opacity-20' : 'opacity-0'}`} />
+              <span className="material-symbols-rounded text-4xl relative z-10 text-gold">
+                {isThisChapterPlaying ? 'pause_circle' : 'play_circle'}
+              </span>
+              <span className="text-sm font-bold tracking-tight relative z-10 italic font-serif">
+                {isThisChapterPlaying ? 'Mettre en pause' : 'Écouter l\'enseignement'}
+              </span>
+            </motion.button>
+          </motion.div>
+        </header>
+
+        <div className="space-y-32">
+          
+          {/* 1. RÈGLE GÉNÉRALE - PROHIBITION */}
+          <section className="space-y-12">
+            <div className="flex items-center gap-6">
+              <h2 className="text-xs font-black text-gold uppercase tracking-[0.3em]">Règle Fondamentale</h2>
+              <div className="h-[1px] flex-1 bg-white/5" />
             </div>
-            <p className="text-white/80 italic font-serif text-xl leading-relaxed">
-              "Il n’est pas permis de les donner sous forme de prêt (crédit), que ce que l’on donne soit de la même espèce que ce que l’on récupère ou non."
-            </p>
-          </div>
-        </motion.section>
-
-        {/* 2. LES CONDITIONS DU TROC (MÊME ESPÈCE) */}
-        <motion.section {...fadeInUp} className="space-y-8">
-          <div className="flex items-center gap-6">
-            <h2 className="text-xl font-black text-gold uppercase tracking-widest italic leading-none font-sans">Troc de même espèce</h2>
-            <div className="h-px flex-1 bg-gradient-to-r from-gold/30 to-transparent" />
-          </div>
-
-          <div className="bg-white/5 p-8 md:p-12 rounded-[3rem] border border-white/10 space-y-8">
-            <p className="text-white/70 italic font-serif text-lg leading-relaxed">
-              "Cependant, l’échange, lorsqu’il se fait sur place (troc), est permis s’il s’agit de la même espèce de produits, comme entre le mil (souna) et le mil (sanio) ou entre deux variétés de maïs."
-            </p>
-            <div className="p-6 bg-gold/5 rounded-2xl border-l-4 border-gold">
-               <div className="flex items-center gap-4 mb-2">
-                 <span className="material-symbols-rounded text-gold">balance</span>
-                 <span className="text-gold font-black text-[10px] uppercase tracking-widest">Condition Impérative</span>
-               </div>
-               <p className="text-white font-bold italic font-serif text-xl">
-                 "Dans ce cas, les deux quantités échangées doivent être égales."
-               </p>
-            </div>
-          </div>
-        </motion.section>
-
-        {/* 3. TROC D'ESPÈCES DIFFÉRENTES */}
-        <motion.section {...fadeInUp} className="space-y-8 pb-12">
-          <div className="flex items-center gap-6">
-            <h2 className="text-xl font-black text-emerald-400 uppercase tracking-widest italic leading-none font-sans">Espèces Différentes</h2>
-            <div className="h-px flex-1 bg-gradient-to-r from-emerald-500/30 to-transparent" />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="p-8 rounded-[2.5rem] bg-white/[0.03] border border-white/10 space-y-6">
-              <h3 className="text-emerald-400 font-black text-[10px] uppercase mb-4 tracking-widest">Produits Céréaliers</h3>
-              <p className="text-white/60 italic font-serif text-base leading-relaxed">
-                "Si les deux produits échangés ne sont pas de la même espèce, comme entre le gros mil (félà) et le mil (souna), ou entre le riz et le mil, il est admis que l’une des quantités soit plus grande que l’autre."
-              </p>
-            </div>
-
-            <div className="p-8 rounded-[2.5rem] bg-white/[0.03] border border-white/10 space-y-6">
-              <h3 className="text-emerald-400 font-black text-[10px] uppercase mb-4 tracking-widest">Fruits et Variétés</h3>
-              <p className="text-white/60 italic font-serif text-base leading-relaxed">
-                "Il en est de même pour toutes les espèces de fruits lorsqu’elles sont présentes, qu’elles soient ou non de la même famille."
-              </p>
-              <div className="pt-4 flex justify-center opacity-20">
-                 <span className="material-symbols-rounded text-6xl text-gold">nutrition</span>
+            
+            <motion.div {...fadeInUp} className="p-8 md:p-16 rounded-[4rem] bg-white/[0.01] border border-white/5 relative overflow-hidden group">
+              <span className="absolute -right-10 -top-10 text-[250px] font-black text-white/[0.01] pointer-events-none group-hover:text-gold/[0.02] transition-colors">XIV</span>
+              <div className="max-w-4xl relative z-10 font-serif italic text-lg md:text-xl text-white/80 leading-relaxed space-y-8 text-justify">
+                <div className="p-10 rounded-3xl bg-red-950/[0.05] border border-red-900/20 shadow-sm border-l-4 border-l-red-500">
+                  <div className="flex items-center gap-4 mb-6">
+                    <span className="material-symbols-rounded text-red-500 text-3xl">gavel</span>
+                    <span className="text-red-400 font-black text-[10px] uppercase tracking-widest font-sans not-italic">Interdiction de crédit</span>
+                  </div>
+                  &quot;Il n’est pas permis de les donner sous forme de prêt (crédit), que ce que l’on donne soit de la même espèce que ce que l’on récupère ou non.&quot;
+                </div>
               </div>
+            </motion.div>
+          </section>
+
+          {/* 2. LE TROC (MÊME ESPÈCE) */}
+          <section className="space-y-12">
+            <div className="flex items-center gap-6">
+              <h2 className="text-xs font-black text-gold uppercase tracking-[0.3em]">Troc de même espèce</h2>
+              <div className="h-[1px] flex-1 bg-white/5" />
             </div>
-          </div>
-        </motion.section>
+            
+            <motion.div {...fadeInUp} className="p-10 md:p-16 rounded-[4rem] bg-white/[0.02] border border-white/5 space-y-12 font-serif italic text-lg md:text-xl text-white/70 leading-relaxed">
+              <p className="text-justify">
+                &quot;Cependant, l’échange, lorsqu’il se fait sur place (troc), est permis s’il s’agit de la même espèce de produits, comme entre le mil (souna) et le mil (sanio) ou entre deux variétés de maïs.&quot;
+              </p>
+              
+              <div className="p-10 rounded-[3rem] bg-gold/[0.05] border border-gold/20 flex flex-col items-center gap-6 shadow-sm">
+                <span className="material-symbols-rounded text-gold text-4xl">balance</span>
+                <p className="text-white font-bold text-center">
+                  &quot;Dans ce cas, les deux quantités échangées doivent être égales.&quot;
+                </p>
+              </div>
+            </motion.div>
+          </section>
 
+          {/* 3. ESPÈCES DIFFÉRENTES */}
+          <section className="space-y-12 pb-20">
+            <div className="flex items-center gap-6">
+              <h2 className="text-xs font-black text-emerald-400 uppercase tracking-[0.3em]">Espèces Différentes</h2>
+              <div className="h-[1px] flex-1 bg-emerald-500/10" />
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8 not-italic">
+              <motion.div {...fadeInUp} className="p-10 rounded-[3rem] bg-white/[0.03] border border-white/10 space-y-8 flex flex-col group hover:border-emerald-500/30 transition-all shadow-sm">
+                <h3 className="text-emerald-400 font-bold text-[10px] uppercase tracking-widest border-b border-white/5 pb-4">Produits Céréaliers</h3>
+                <p className="text-white/70 font-serif italic text-lg leading-relaxed flex-1">
+                  &quot;Si les deux produits échangés ne sont pas de la même espèce, comme entre le gros mil (félà) et le mil (souna), ou entre le riz et le mil, il est admis que l’une des quantités soit plus grande que l’autre.&quot;
+                </p>
+              </motion.div>
+              
+              <motion.div {...fadeInUp} className="p-10 rounded-[3rem] bg-white/[0.03] border border-white/10 space-y-8 flex flex-col group hover:border-emerald-500/30 transition-all shadow-sm">
+                <h3 className="text-emerald-400 font-bold text-[10px] uppercase tracking-widest border-b border-white/5 pb-4">Fruits et Variétés</h3>
+                <p className="text-white/70 font-serif italic text-lg leading-relaxed flex-1">
+                  &quot;Il en est de même pour toutes les espèces de fruits lorsqu’elles sont présentes, qu’elles soient ou non de la même famille.&quot;
+                </p>
+                <div className="flex justify-end opacity-20">
+                   <span className="material-symbols-rounded text-gold text-5xl">nutrition</span>
+                </div>
+              </motion.div>
+            </div>
+          </section>
+
+        </div>
       </div>
 
-      {/* NAVIGATION PERSISTANTE */}
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 flex gap-4 z-50 w-full max-w-[95%] md:max-w-md font-sans">
-        <button 
-          onClick={() => router.push('/partie/13/b')} 
-          className="flex-1 py-4 bg-black/60 backdrop-blur-xl border border-white/10 rounded-full text-[10px] uppercase tracking-widest font-bold text-white/50 hover:text-white transition-all shadow-2xl active:scale-95"
-        >
-          Précédent
-        </button>
-        <button 
-          onClick={() => router.push('/partie/15')} 
-          className="flex-1 py-4 bg-gold text-emerald-950 rounded-full text-[10px] uppercase tracking-widest font-black shadow-gold/20 shadow-2xl hover:scale-105 active:scale-95 transition-all"
-        >
-          Suivant
-        </button>
-      </div>
+      <nav className="fixed bottom-10 left-1/2 -translate-x-1/2 flex items-center p-2 bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-full shadow-2xl z-50">
+        <button onClick={() => router.push('/partie/13/b')} className="px-8 py-3 rounded-full text-[10px] uppercase tracking-[0.2em] font-bold text-white/50 hover:text-white transition-all">Précédent</button>
+        <div className="w-[1px] h-4 bg-white/10 mx-2" />
+        <button onClick={() => router.push('/partie/15')} className="px-8 py-3 bg-gold text-black rounded-full text-[10px] uppercase tracking-[0.2em] font-black hover:scale-105 active:scale-95 transition-all shadow-lg shadow-gold/20">Chapitre XV</button>
+      </nav>
     </main>
   );
 }
