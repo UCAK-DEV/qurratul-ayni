@@ -128,15 +128,6 @@ export const CHAPTERS: Chapter[] = [
     icon: "heart_broken"
   },
   {
-    id: "16",
-    titleAr: "في شأن الختان",
-    titleFr: "DE LA CIRCONCISION",
-    desc: "Enseignements relatifs à la circoncision, son statut religieux, ses conditions et son importance dans la tradition islamique.",
-    audioUrl: "/audio/conseils.mp3",
-    group: "Rites et Société",
-    icon: "cut"
-  },
-  {
     id: "14",
     titleAr: "المنتجات التي يُحظَر فيها البيع بالدَّيْن",
     titleFr: "DES PRODUITS DONT LE CRÉDIT EST PROHIBÉ",
@@ -153,6 +144,15 @@ export const CHAPTERS: Chapter[] = [
     audioUrl: "/audio/conseils.mp3",
     group: "Jurisprudence",
     icon: "rule"
+  },
+  {
+    id: "16",
+    titleAr: "في شأن الختان",
+    titleFr: "DE LA CIRCONCISION",
+    desc: "Enseignements relatifs à la circoncision, son statut religieux, ses conditions et son importance dans la tradition islamique.",
+    audioUrl: "/audio/conseils.mp3",
+    group: "Rites et Société",
+    icon: "cut"
   },
   {
     id: "17",

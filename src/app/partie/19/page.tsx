@@ -23,24 +23,28 @@ export default function ChapitreInvocationsUtilites() {
       letter: "A",
       title: "L'AUMÔNE ET SES MÉRITES",
       ar: "فضل الصدقة",
+      icon: "volunteer_activism", // Icône de don/aumône
       sub: ["Calamités et Protection", "Aide aux nécessiteux"]
     },
     {
       letter: "B",
       title: "LECTURE DU CORAN",
       ar: "قراءة القرآن",
-      sub: ["Prosternation durant la lecture", "Sourates et versets"]
+      icon: "menu_book", // Icône de livre sacré
+      sub: ["Prosternation de lecture", "Sourates et versets"]
     },
     {
       letter: "C",
       title: "INVOCATIONS ET WIRDS",
       ar: "أدعية وأوراد",
+      icon: "auto_awesome", // Icône de spiritualité/lumière
       sub: ["Bismillahi Rahmani Rahimi", "La ilaha ila lahou"]
     },
     {
       letter: "D",
       title: "ACTES ÉQUIVALENTS",
       ar: "أعمال صالحة",
+      icon: "workspace_premium", // Icône de récompense/grades
       sub: ["Prières de la matinée", "Services aux musulmans"]
     }
   ];
@@ -73,7 +77,7 @@ export default function ChapitreInvocationsUtilites() {
             </div>
             
             <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-none uppercase mb-12">
-              INVOCATIONS <br /><span className="gold-gradient-text italic lowercase font-serif">et sourates</span>
+              INVOCATIONS <br /><span className="gold-gradient-text italic lowercase font-serif text-6xl md:text-9xl">et sourates</span>
             </h1>
 
             {/* INTEGRAL TEXT PRESERVATION */}
@@ -119,48 +123,47 @@ export default function ChapitreInvocationsUtilites() {
               <div className="text-left">
                 <p className="text-[10px] uppercase tracking-[0.3em] font-bold text-white/40 group-hover:text-gold transition-colors">Écouter la leçon</p>
                 <p className="text-sm font-bold tracking-tight">
-                  {isThisChapterPlaying ? 'Pause Audio' : 'Démarrer l\'audio'}
+                  {isThisChapterPlaying ? 'Mise en pause' : 'Démarrer l\'audio'}
                 </p>
               </div>
             </motion.button>
           </motion.div>
         </header>
 
-        {/* GRID DES SECTIONS */}
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* GRID DES SECTIONS - DESIGN COHÉRENT */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {sectionsInvocations.map((item, idx) => (
             <motion.div
               key={item.letter}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
+              transition={{ delay: idx * 0.05 }}
               onClick={() => router.push(`/partie/19/${item.letter.toLowerCase()}`)}
-              className="group relative p-8 rounded-[3rem] bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-gold/30 transition-all duration-500 cursor-pointer overflow-hidden h-[340px] flex flex-col justify-between shadow-sm"
+              className="group relative p-10 rounded-[2.5rem] bg-white/[0.02] border border-white/5 hover:border-gold/30 transition-all duration-500 cursor-pointer overflow-hidden min-h-[340px] flex flex-col justify-between"
             >
-              <span className="absolute -bottom-8 -right-4 text-[180px] font-black leading-none select-none pointer-events-none transition-all duration-700 opacity-[0.02] group-hover:opacity-[0.05] group-hover:-translate-y-4" 
+              {/* LARGE BACKGROUND LETTER */}
+              <span className="absolute -bottom-6 -right-4 text-[180px] font-black leading-none select-none pointer-events-none transition-all duration-700 opacity-[0.03] group-hover:opacity-[0.08] group-hover:-translate-y-4 italic" 
                     style={{ WebkitTextStroke: '1px white' }}>
                 {item.letter}
               </span>
 
               <div className="relative z-10">
                 <div className="flex justify-between items-start mb-6">
-                  <div className="flex items-center gap-3">
-                     <div className="w-8 h-8 rounded-full bg-gold/10 border border-gold/20 flex items-center justify-center text-gold font-black text-[10px] italic">
-                       {item.letter}
-                     </div>
-                     <span className="text-[10px] font-bold text-gold tracking-[0.3em] uppercase opacity-60">Section</span>
-                  </div>
-                  <span className="font-amiri text-3xl text-gold/40 group-hover:text-gold transition-colors duration-500">{item.ar}</span>
+                   <div className="p-3 rounded-xl bg-gold/10 border border-gold/20 text-gold group-hover:scale-110 transition-transform">
+                      <span className="material-symbols-rounded text-2xl">{item.icon}</span>
+                   </div>
+                   <span className="font-amiri text-3xl text-gold/40 group-hover:text-gold transition-colors duration-500">{item.ar}</span>
                 </div>
                 
-                <h3 className="text-lg font-bold text-white tracking-tight group-hover:text-gold transition-colors mb-4 leading-tight uppercase">
+                <span className="text-[10px] font-bold text-gold tracking-widest uppercase opacity-60">Section {item.letter}</span>
+                <h3 className="text-xl font-bold text-white tracking-tight group-hover:text-gold transition-colors mb-4 mt-1 leading-tight uppercase">
                   {item.title}
                 </h3>
 
                 <ul className="space-y-2">
                   {item.sub.map((sub, sIdx) => (
-                    <li key={sIdx} className="text-white/40 group-hover:text-white/60 text-xs flex items-center gap-3 transition-colors">
+                    <li key={sIdx} className="text-white/40 group-hover:text-white/60 text-sm flex items-center gap-3 transition-colors">
                       <span className="w-1 h-1 bg-gold/40 group-hover:bg-gold rounded-full" />
                       {sub}
                     </li>
@@ -168,8 +171,8 @@ export default function ChapitreInvocationsUtilites() {
                 </ul>
               </div>
 
-              <div className="relative z-10 flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-gold opacity-0 group-hover:opacity-100 transition-all translate-x-[-10px] group-hover:translate-x-0">
-                Explorer <span className="material-symbols-rounded text-sm">arrow_forward</span>
+              <div className="relative z-10 mt-8 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-gold opacity-0 group-hover:opacity-100 transition-all translate-x-[-10px] group-hover:translate-x-0">
+                Ouvrir l'étude <span className="material-symbols-rounded text-sm">arrow_forward</span>
               </div>
             </motion.div>
           ))}
@@ -180,7 +183,7 @@ export default function ChapitreInvocationsUtilites() {
       <nav className="fixed bottom-10 left-1/2 -translate-x-1/2 flex items-center p-2 bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-full shadow-2xl z-50">
         <button onClick={() => router.push('/partie/18')} className="px-8 py-3 rounded-full text-[10px] uppercase tracking-[0.2em] font-bold text-white/50 hover:text-white transition-all">Précédent</button>
         <div className="w-[1px] h-4 bg-white/10 mx-2" />
-        <button onClick={() => router.push('/partie/19/a')} className="px-8 py-3 bg-gold text-black rounded-full text-[10px] uppercase tracking-[0.2em] font-black hover:scale-105 active:scale-95 transition-all shadow-lg shadow-gold/20">Section A</button>
+        <button onClick={() => router.push('/partie/19/a')} className="px-8 py-3 bg-gold text-black rounded-full text-[10px] uppercase tracking-[0.2em] font-black hover:scale-105 active:scale-95 transition-all shadow-lg shadow-gold/20">Commencer</button>
       </nav>
     </main>
   );

@@ -18,12 +18,14 @@ export default function ChapitreDivorce() {
       letter: "A",
       title: "LA RETRAITE LÉGALE",
       ar: "العدة",
+      icon: "hourglass_empty", // Icône de temps/attente
       sub: ["Définition de l'Idda", "Délais et conditions"]
     },
     {
       letter: "B",
       title: "LES CAS DE DIVORCE",
       ar: "أقسام الطلاق",
+      icon: "gavel", // Icône de justice/décision
       sub: ["Fayeli (Provisoire)", "Divorce Expiatoire", "Irréversible"]
     }
   ];
@@ -41,11 +43,7 @@ export default function ChapitreDivorce() {
         
         {/* HEADER SECTION */}
         <header className="max-w-4xl mx-auto text-center mb-24">
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
+          <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
             <div className="flex flex-col items-center gap-4 mb-8">
                <span className="text-4xl font-amiri text-gold-light drop-shadow-sm">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيمِ</span>
                <div className="flex items-center gap-4">
@@ -62,43 +60,20 @@ export default function ChapitreDivorce() {
             {/* INTEGRAL TEXT PRESERVATION */}
             <div className="p-8 md:p-12 rounded-[2.5rem] bg-white/[0.02] border border-white/5 mb-12 text-justify">
               <div className="max-w-4xl mx-auto text-white/50 font-serif italic text-base md:text-lg leading-relaxed space-y-8">
-                <p>
-                  &quot;Consiste à rompre les liens du mariage. Il est préférable qu’il soit prononcé à un moment où la femme est en état de pureté, à un moment où on n’a pas eu de rapports avec elle ; il vaut mieux le prononcer une seule fois (au lieu de 3 fois), sans la ferme volonté d’en finir. C’est cela le divorce traditionnel (sunna).&quot;
-                </p>
-                <p>
-                  &quot;Si on procède ainsi, il sera possible de revenir sur le divorce sans avoir besoin de renouveler l’acte de mariage, et ce avant la fin de la période de retraite légale (idda). Si, par contre, la période de retraite légale est épuisée, on doit renouer le mariage après avoir versé une autre dot.&quot;
-                </p>
-                <p>
-                  &quot;Si l’on prononce 3 fois le divorce ou une seule fois avec la ferme volonté d’en finir, alors le divorce est consommé. Dans ce cas, même après la retraite légale, on ne pourra pas remarier la femme avant qu’elle n’ait divorcé d’avec un autre homme. Ce mariage intermédiaire ne devra pas être aménagé pour permettre, après le divorce, aux premiers époux de se remarier (barsawdié).&quot;
-                </p>
-                <p className="border-l-2 border-gold/30 pl-8">
-                  &quot;Tout le monde devra être convaincu qu’il n’y a pas eu de tricherie, que ce second mariage et le divorce qui s’en est suivi procèdent de la volonté divine.&quot;
-                </p>
+                <p>"Consiste à rompre les liens du mariage. Il est préférable qu’il soit prononcé à un moment où la femme est en état de pureté, à un moment où on n’a pas eu de rapports avec elle ; il vaut mieux le prononcer une seule fois (au lieu de 3 fois), sans la ferme volonté d’en finir. C’est cela le divorce traditionnel (sunna)."</p>
+                <p>"Si on procède ainsi, il sera possible de revenir sur le divorce sans avoir besoin de renouveler l’acte de mariage, et ce avant la fin de la période de retraite légale (idda). Si, par contre, la période de retraite légale est épuisée, on doit renouer le mariage après avoir versé une autre dot."</p>
+                <p>"Si l’on prononce 3 fois le divorce ou une seule fois avec la ferme volonté d’en finir, alors le divorce est consommé. Dans ce cas, même après la retraite légale, on ne pourra pas remarier la femme avant qu’elle n’ait divorcé d’avec un autre homme. Ce mariage intermédiaire ne devra pas être aménagé pour permettre, après le divorce, aux premiers époux de se remarier (barsawdié)."</p>
+                <p className="border-l-2 border-gold/30 pl-8">"Tout le monde devra être convaincu qu’il n’y a pas eu de tricherie, que ce second mariage et le divorce qui s’en est suivi procèdent de la volonté divine."</p>
                 <div className="p-8 rounded-[2rem] bg-red-950/10 border border-red-900/20 shadow-sm">
-                  &quot;On ne peut pas divorcer une femme en période de menstrues. La charia oblige celui qui le fait à aller la chercher. Il ne pourra la répudier à nouveau que lorsqu’elle sera en état de pureté, qu’ils auront eu des rapports, que la femme se trouve à nouveau en période menstruelle et qu’elle en soit purifiée. Il lui sera alors loisible de renoncer au divorce.&quot;
+                  "On ne peut pas divorcer une femme en période de menstrues. La charia oblige celui qui le fait à aller la chercher. Il ne pourra la répudier à nouveau que lorsqu’elle sera en état de pureté, qu’ils auront eu des rapports, que la femme se trouve à nouveau en période menstruelle et qu’elle en soit purifiée. Il lui sera alors loisible de renoncer au divorce."
                 </div>
               </div>
             </div>
 
             {/* AUDIO CONTROL */}
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => isThisChapterPlaying ? togglePlay() : setChapter(chapterData)}
-              className="group relative inline-flex items-center gap-6 px-10 py-5 bg-white/[0.03] border border-white/10 rounded-2xl transition-all hover:bg-white/[0.06] hover:border-gold/40 shadow-2xl"
-            >
-              <div className="relative">
-                <div className={`absolute inset-0 bg-gold blur-md rounded-full transition-opacity ${isThisChapterPlaying ? 'opacity-40' : 'opacity-0'}`} />
-                <span className={`material-symbols-rounded text-4xl relative z-10 ${isThisChapterPlaying ? 'text-gold' : 'text-white'}`}>
-                  {isThisChapterPlaying ? 'pause_circle' : 'play_circle'}
-                </span>
-              </div>
-              <div className="text-left">
-                <p className="text-[10px] uppercase tracking-[0.3em] font-bold text-white/40 group-hover:text-gold transition-colors">Écouter la leçon</p>
-                <p className="text-sm font-bold tracking-tight">
-                  {isThisChapterPlaying ? 'Pause Audio' : 'Démarrer l\'enseignement'}
-                </p>
-              </div>
+            <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onClick={() => isThisChapterPlaying ? togglePlay() : setChapter(chapterData)} className="group relative inline-flex items-center gap-6 px-10 py-5 bg-white/[0.03] border border-white/10 rounded-2xl transition-all hover:bg-white/[0.06] hover:border-gold/40 shadow-2xl">
+              <span className={`material-symbols-rounded text-4xl ${isThisChapterPlaying ? 'text-gold' : 'text-white'}`}>{isThisChapterPlaying ? 'pause_circle' : 'play_circle'}</span>
+              <div className="text-left"><p className="text-[10px] uppercase tracking-widest text-white/40">Écouter la leçon</p><p className="text-sm font-bold">{isThisChapterPlaying ? 'Pause Audio' : 'Démarrer l\'enseignement'}</p></div>
             </motion.button>
           </motion.div>
         </header>
@@ -113,30 +88,19 @@ export default function ChapitreDivorce() {
               viewport={{ once: true }}
               transition={{ delay: idx * 0.1 }}
               onClick={() => router.push(`/partie/13/${item.letter.toLowerCase()}`)}
-              className="group relative p-10 rounded-[3rem] bg-white/[0.02] border border-white/5 hover:bg-white/[0.05] hover:border-gold/30 transition-all duration-500 cursor-pointer overflow-hidden h-[340px] flex flex-col justify-between"
+              className="group relative p-10 rounded-[3rem] bg-white/[0.02] border border-white/5 hover:border-gold/30 transition-all duration-500 cursor-pointer overflow-hidden h-[340px] flex flex-col justify-between"
             >
-              {/* LARGE BACKGROUND LETTER */}
-              <span className="absolute -bottom-8 -right-4 text-[220px] font-black leading-none select-none pointer-events-none transition-all duration-700 opacity-[0.02] group-hover:opacity-[0.05] group-hover:-translate-y-6" 
-                    style={{ WebkitTextStroke: '1px white' }}>
-                {item.letter}
-              </span>
-
-              <div className="relative z-10">
-                <div className="flex justify-between items-start mb-8">
-                  <div className="flex items-center gap-3">
-                     <div className="w-10 h-10 rounded-full bg-gold/10 border border-gold/20 flex items-center justify-center text-gold font-black text-xs italic">
-                       {item.letter}
-                     </div>
-                     <span className="text-[10px] font-bold text-gold tracking-[0.3em] uppercase opacity-60">Section</span>
-                  </div>
-                  <span className="font-amiri text-4xl text-gold/40 group-hover:text-gold transition-colors duration-500">{item.ar}</span>
+              <div className="relative z-10 flex justify-between items-start mb-8">
+                <div className="p-4 rounded-2xl bg-gold/10 border border-gold/20 text-gold group-hover:scale-110 transition-transform duration-500 shadow-lg shadow-gold/5">
+                  <span className="material-symbols-rounded text-3xl">{item.icon}</span>
                 </div>
-                
-                <h3 className="text-2xl font-bold text-white tracking-tight group-hover:text-gold transition-colors mb-6 leading-tight">
-                  {item.title}
-                </h3>
-
-                <ul className="space-y-3">
+                <span className="font-amiri text-4xl text-gold/40 group-hover:text-gold transition-colors duration-500">{item.ar}</span>
+              </div>
+              
+              <div className="relative z-10">
+                <span className="text-[10px] font-bold text-gold tracking-widest uppercase opacity-60">Section {item.letter}</span>
+                <h3 className="text-2xl font-bold text-white tracking-tight group-hover:text-gold transition-colors mb-4">{item.title}</h3>
+                <ul className="space-y-2">
                   {item.sub.map((sub, sIdx) => (
                     <li key={sIdx} className="text-white/40 group-hover:text-white/60 text-sm flex items-center gap-3 transition-colors">
                       <span className="w-1 h-1 bg-gold/40 group-hover:bg-gold rounded-full" />
@@ -146,29 +110,16 @@ export default function ChapitreDivorce() {
                 </ul>
               </div>
 
-              <div className="relative z-10 flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-gold opacity-0 group-hover:opacity-100 transition-all translate-x-[-10px] group-hover:translate-x-0">
-                Ouvrir l'étude <span className="material-symbols-rounded text-sm">arrow_forward</span>
-              </div>
+              <span className="absolute -bottom-8 -right-4 text-[220px] font-black opacity-[0.02] group-hover:opacity-[0.05] transition-all italic pointer-events-none" style={{ WebkitTextStroke: '1px white' }}>{item.letter}</span>
             </motion.div>
           ))}
         </div>
       </div>
 
-      {/* NAVIGATION BAR */}
       <nav className="fixed bottom-10 left-1/2 -translate-x-1/2 flex items-center p-2 bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-full shadow-2xl z-50">
-        <button 
-          onClick={() => router.push('/partie/12')} 
-          className="px-8 py-3 rounded-full text-[10px] uppercase tracking-[0.2em] font-bold text-white/50 hover:text-white transition-all"
-        >
-          Précédent
-        </button>
+        <button onClick={() => router.push('/partie/12')} className="px-8 py-3 rounded-full text-[10px] uppercase font-bold text-white/50 hover:text-white transition-all">Précédent</button>
         <div className="w-[1px] h-4 bg-white/10 mx-2" />
-        <button 
-          onClick={() => router.push('/partie/13/a')} 
-          className="px-8 py-3 bg-gold text-black rounded-full text-[10px] uppercase tracking-[0.2em] font-black hover:scale-105 active:scale-95 transition-all shadow-lg shadow-gold/20"
-        >
-          Commencer
-        </button>
+        <button onClick={() => router.push('/partie/13/a')} className="px-8 py-3 bg-gold text-black rounded-full text-[10px] uppercase font-black hover:scale-105 active:scale-95 transition-all shadow-lg">Commencer</button>
       </nav>
     </main>
   );

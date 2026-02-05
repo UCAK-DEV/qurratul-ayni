@@ -33,6 +33,10 @@ body {
   background-color: var(--selection-bg);
 }
 
+body.modal-open {
+  overflow: hidden; /* Empêche le défilement du site quand le sidebar est ouvert */
+}
+
 /* Utilitaires de texte adaptatifs */
 .text-primary { color: var(--text-primary); }
 .text-secondary { color: var(--text-secondary); }

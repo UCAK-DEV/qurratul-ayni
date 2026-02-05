@@ -19,6 +19,7 @@ export default function ChapitrePelerinage() {
       title: "LE PETIT PÈLERINAGE (OUMRA)",
       subtitle: "La visite pieuse",
       ar: "العمرة",
+      icon: "directions_walk", // Icône représentant le Tawaf/marche
       sub: ["Statut religieux", "Actes essentiels"]
     }
   ];
@@ -114,13 +115,20 @@ export default function ChapitrePelerinage() {
 
               <div className="relative z-10 flex-1">
                 <div className="flex justify-between items-start mb-6">
-                  <span className="text-[10px] font-bold text-gold tracking-[0.3em] uppercase opacity-60">Section {item.letter}</span>
+                  <div className="flex items-center gap-4">
+                    <div className="p-3 rounded-2xl bg-gold/10 border border-gold/20 text-gold group-hover:scale-110 transition-transform">
+                      <span className="material-symbols-rounded text-3xl">{item.icon}</span>
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-bold text-gold tracking-[0.3em] uppercase opacity-60">Section {item.letter}</span>
+                      <h3 className="text-2xl font-bold text-white tracking-tight group-hover:text-gold transition-colors leading-tight">
+                        {item.title}
+                      </h3>
+                    </div>
+                  </div>
                   <span className="font-amiri text-4xl text-gold/40 group-hover:text-gold transition-colors duration-500">{item.ar}</span>
                 </div>
                 
-                <h3 className="text-3xl font-bold text-white tracking-tight group-hover:text-gold transition-colors mb-2 leading-tight">
-                  {item.title}
-                </h3>
                 <p className="text-white/30 text-[10px] font-bold uppercase tracking-[0.2em] mb-8">
                   {item.subtitle}
                 </p>
@@ -135,7 +143,7 @@ export default function ChapitrePelerinage() {
                 </ul>
               </div>
 
-              <div className="relative z-10 flex items-center gap-3 text-[11px] font-black uppercase tracking-widest text-gold opacity-0 group-hover:opacity-100 transition-all translate-x-[-10px] group-hover:translate-x-0 whitespace-nowrap border border-gold/30 px-6 py-3 rounded-full">
+              <div className="relative z-10 flex items-center gap-3 text-[11px] font-black uppercase tracking-widest text-gold opacity-0 group-hover:opacity-100 transition-all translate-x-[-10px] group-hover:translate-x-0 whitespace-nowrap border border-gold/30 px-6 py-3 rounded-full bg-gold/5">
                 Explorer <span className="material-symbols-rounded text-base">arrow_forward</span>
               </div>
             </motion.div>

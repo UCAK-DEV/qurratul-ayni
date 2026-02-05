@@ -1,6 +1,7 @@
 import { AudioProvider } from '@/context/AudioContext';
 import { Player } from '@/components/Player';
 import { Navbar } from '@/components/Navbar';
+import Sidebar from '@/components/Sidebar';
 import { ThemeProvider } from '@/context/ThemeContext';
 import './globals.css';
 
@@ -34,7 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <AudioProvider>
             {/* Barre de navigation fixe */}
             <Navbar />
-            
+            <Sidebar />
             {/* Contenu principal de la page */}
             <main>
               {children}
