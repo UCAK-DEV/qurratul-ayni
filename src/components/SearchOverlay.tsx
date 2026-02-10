@@ -14,7 +14,7 @@ interface SearchOverlayProps {
 export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose }) => {
   const [query, setQuery] = useState('');
   const results = useChapterSearch(query);
-  const { selectChapter } = useAudio();
+  const { setChapter } = useAudio();
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -29,14 +29,14 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
   }, [isOpen]);
 
   const handleResultClick = (chapter: Chapter) => {
-    selectChapter(chapter);
+    setChapter(chapter);
     onClose();
   };
 
   const overlayVariants = { hidden: { opacity: 0 }, visible: { opacity: 1 } };
   const panelVariants = {
     hidden: { opacity: 0, scale: 0.95, y: -50 },
-    visible: { opacity: 1, scale: 1, y: 0, transition: { type: 'spring', damping: 25, stiffness: 300 } },
+    visible: { opacity: 1, scale: 1, y: 0, transition: { damping: 25, stiffness: 300 } },
     exit: { opacity: 0, scale: 0.95, transition: { duration: 0.15 } },
   };
   const listVariants = { visible: { transition: { staggerChildren: 0.05 } } };

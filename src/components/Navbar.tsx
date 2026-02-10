@@ -17,7 +17,7 @@ export const Navbar = () => {
   
   const pathname = usePathname();
   const chaptersRef = useRef<HTMLLIElement>(null);
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
   const { isOfflineReady } = usePWA();
 
   useEffect(() => {
@@ -132,9 +132,7 @@ export const Navbar = () => {
               )}
             </AnimatePresence>
 
-            <button onClick={toggleTheme} className={`${iconColor} ${linkColorHover} transition-colors`}>
-              <span className="material-symbols-rounded text-xl">{theme === 'dark' ? 'light_mode' : 'dark_mode'}</span>
-            </button>
+
             
             <button onClick={() => setIsSearchOverlayOpen(true)} className={`${iconColor} ${linkColorHover} transition-colors`}>
               <span className="material-symbols-rounded text-xl">search</span>

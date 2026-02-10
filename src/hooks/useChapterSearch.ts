@@ -1,11 +1,12 @@
 'use client';
 
 import { useState, useMemo, useEffect } from 'react';
+import type { IFuseOptions } from 'fuse.js';
 import Fuse from 'fuse.js';
 import { CHAPTERS, Chapter } from '@/data/chapters';
 import { useDebounce } from '@/hooks/useDebounce';
 
-const fuseOptions: Fuse.IFuseOptions<Chapter> = {
+const fuseOptions: IFuseOptions<Chapter> = {
   keys: ['titleFr', 'titleAr', 'desc'],
   threshold: 0.4,
   includeScore: true,
