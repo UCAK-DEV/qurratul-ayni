@@ -8,7 +8,6 @@ import Sidebar from '@/components/Sidebar';
 import { ThemeProvider } from '@/context/ThemeContext';
 import { PWAProvider } from '@/context/PWAContext';
 import { AppPWAProvider } from '@/components/AppPWAProvider';
-import { BottomNavbar } from '@/components/BottomNavbar'; // Import BottomNavbar
 import './globals.css';
 
 
@@ -18,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
-  const [isSearchOverlayOpen, setIsSearchOverlayOpen] = useState(false); // New state for search overlay
+  const [isSearchOverlayOpen, setIsSearchOverlayOpen] = useState(false);
 
   return (
     <html lang="fr" className="scroll-smooth">
@@ -42,18 +41,14 @@ export default function RootLayout({
                     <Navbar
                       isMobileSidebarOpen={isMobileSidebarOpen}
                       setIsMobileSidebarOpen={setIsMobileSidebarOpen}
-                      isSearchOverlayOpen={isSearchOverlayOpen} // Pass search state
-                      setIsSearchOverlayOpen={setIsSearchOverlayOpen} // Pass search setter
+                      isSearchOverlayOpen={isSearchOverlayOpen}
+                      setIsSearchOverlayOpen={setIsSearchOverlayOpen}
                     />
-                    <main className="flex-1 overflow-y-auto pt-16 pb-14"> {/* Added pb-14 for bottom nav */}
+                    <main className="flex-1 overflow-y-auto pt-16">
                       {children}
                     </main>
                     <Player />
                   </div>
-                  <BottomNavbar
-                    setIsSearchOverlayOpen={setIsSearchOverlayOpen} // Pass search setter to BottomNavbar
-                    isSearchOverlayOpen={isSearchOverlayOpen}
-                  />
                 </div>
               </AppPWAProvider>
             </AudioProvider>

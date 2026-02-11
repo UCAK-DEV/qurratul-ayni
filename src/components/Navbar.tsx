@@ -9,11 +9,10 @@ import { useTheme } from '@/context/ThemeContext';
 import { usePWA } from '@/context/PWAContext';
 import { SearchOverlay } from '@/components/SearchOverlay';
 
-export const Navbar = ({ isMobileSidebarOpen, setIsMobileSidebarOpen, isSearchOverlayOpen, setIsSearchOverlayOpen }: { isMobileSidebarOpen: boolean; setIsMobileSidebarOpen: (isOpen: boolean) => void; isSearchOverlayOpen: boolean; setIsSearchOverlayOpen: (isOpen: boolean) => void }) => {
+export const Navbar = ({ isMobileSidebarOpen, setIsMobileSidebarOpen, isSearchOverlayOpen, setIsSearchOverlayOpen }: { isMobileSidebarOpen: boolean; setIsMobileSidebarOpen: (isOpen: boolean) => void; isSearchOverlayOpen: boolean; setIsSearchOverlayOpen: (isOpen: boolean) => void; }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isChaptersDropdownOpen, setIsChaptersDropdownOpen] = useState(false);
 
-  
   const pathname = usePathname();
   const chaptersRef = useRef<HTMLLIElement>(null);
   const { theme } = useTheme();
@@ -48,43 +47,40 @@ export const Navbar = ({ isMobileSidebarOpen, setIsMobileSidebarOpen, isSearchOv
   const navClasses = isScrolled
     ? 'bg-white/80 dark:bg-gray-950/80 backdrop-blur-xl border-b border-gray-200 dark:border-gray-800 shadow-lg'
     : 'bg-transparent';
-  const linkColor = isScrolled ? 'text-gray-700 dark:text-gray-200' : 'text-white';
-  const linkColorHover = isScrolled ? 'hover:text-black dark:hover:text-white' : 'hover:text-white';
-  const iconColor = isScrolled ? 'text-gray-600 dark:text-gray-300' : 'text-white/70';
+
 
   return (
     <>
       <SearchOverlay isOpen={isSearchOverlayOpen} onClose={() => setIsSearchOverlayOpen(false)} />
       
-      <header className={`sticky top-0 w-full z-40 transition-all duration-300 ease-in-out ${navClasses}`}>
-        <div className="mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 z-50 group">
-            <motion.div
-              whileHover={{ scale: 1.1, rotate: -15 }}
-              className="w-10 h-10 border border-gold/50 rounded-lg flex items-center justify-center bg-gold/10 shadow-[0_0_20px_rgba(201,169,97,0.2)]"
-            >
-              <span className="material-symbols-rounded text-gold text-2xl">auto_stories</span>
-            </motion.div>
-            <div className="hidden sm:flex flex-col">
-              <span className={`text-lg font-bold tracking-widest leading-none uppercase ${linkColor}`}>Qurratul <span className="text-gold">Ayni</span></span>
-              <span className={`text-[9px] uppercase tracking-[0.3em] ${isScrolled ? 'text-gray-500 dark:text-gray-400' : 'text-white/60'}`}>Enseignements Sacrés</span>
-            </div>
-          </Link>
+      <nav className={`fixed w-full z-40 top-0 start-0 border-b transition-all duration-300 ease-in-out ${navClasses}`}>
+        <div className="max-w-screen-xl flex items-center justify-between mx-auto p-4">
+          
+          {/* Logo */}
+          <div className="flex-shrink-0">
+            <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse z-50 group">
+              <motion.div
+                whileHover={{ scale: 1.1, rotate: -15 }}
+                className="h-7 border border-gold/50 rounded-lg flex items-center justify-center bg-gold/10 shadow-[0_0_20px_rgba(201,169,97,0.2)]"
+              >
+                <span className="material-symbols-rounded text-gold text-2xl">auto_stories</span>
+              </motion.div>
+            </Link>
+          </div>
 
-          <div className="hidden md:flex items-center gap-4">
-            <ul className="flex items-center gap-4">
+          {/* Center Nav Links (Desktop) */}
+          <div className="hidden md:flex items-center justify-center flex-1">
+            <ul className="flex items-center gap-8 text-sm font-medium text-gray-700 dark:text-gray-300">
               <li>
-                <Link href="/accueil" className={`text-xs uppercase tracking-widest font-bold transition-all relative group flex items-center gap-2 ${pathname === '/accueil' ? 'text-gold' : `${iconColor} ${linkColorHover}`}`}>
-                  <span className="material-symbols-rounded text-base">home</span>
+                <Link href="/accueil" className="hover:text-black dark:hover:text-white transition-colors">
                   Accueil
                 </Link>
               </li>
               <li className="relative" ref={chaptersRef}>
                 <button
                   onClick={() => setIsChaptersDropdownOpen(!isChaptersDropdownOpen)}
-                  className={`text-xs uppercase tracking-widest font-bold transition-all relative group flex items-center gap-1 ${isChaptersDropdownOpen ? 'text-gold' : `${iconColor} ${linkColorHover}`}`}
+                  className="flex items-center gap-1 hover:text-black dark:hover:text-white transition-colors"
                 >
-                  <span className="material-symbols-rounded text-base">menu_book</span>
                   Chapitres
                   <motion.span animate={{ rotate: isChaptersDropdownOpen ? 180 : 0 }} className="material-symbols-rounded text-base">expand_more</motion.span>
                 </button>
@@ -94,46 +90,50 @@ export const Navbar = ({ isMobileSidebarOpen, setIsMobileSidebarOpen, isSearchOv
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-80 bg-white/95 dark:bg-gray-900/95 backdrop-blur-2xl border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg p-2 z-50 max-h-96 overflow-y-auto custom-scrollbar"
+                      className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[48rem] max-w-[90vw] bg-white/80 dark:bg-gray-900/80 backdrop-blur-2xl border border-gray-200 dark:border-gray-800 rounded-xl shadow-2xl p-6 z-50"
                     >
-                      {Object.entries(groupedChapters).map(([group, chapters]) => (
-                        <div key={group} className="mb-4">
-                          <p className="px-3 pt-2 pb-1 text-[10px] uppercase font-bold tracking-widest text-gold/80 dark:text-gold/60">{group}</p>
-                          {chapters.map((chapter) => (
-                            <Link
-                              key={chapter.id}
-                              href={`/partie/${chapter.id}`}
-                              onClick={() => setIsChaptersDropdownOpen(false)}
-                              className="flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gold dark:hover:text-gold transition-colors text-sm font-medium"
-                            >
-                              <span className="material-symbols-rounded text-gold/80 text-lg w-6 text-center">{chapter.icon}</span>
-                              <span>{chapter.titleFr}</span>
-                            </Link>
-                          ))}
-                        </div>
-                      ))}
+                      <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 max-h-[70vh] overflow-y-auto custom-scrollbar">
+                        {Object.entries(groupedChapters).map(([group, chapters]) => (
+                          <div key={group}>
+                            <p className="px-3 pt-2 pb-1 text-xs uppercase font-bold tracking-widest text-gold/80 dark:text-gold/60">{group}</p>
+                            {chapters.map((chapter) => (
+                              <Link
+                                key={chapter.id}
+                                href={`/partie/${chapter.id}`}
+                                onClick={() => setIsChaptersDropdownOpen(false)}
+                                className="flex items-center gap-3 p-3 rounded-lg text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gold dark:hover:text-gold transition-colors text-sm font-medium"
+                              >
+                                <span className="material-symbols-rounded text-gold/80 text-lg w-6 text-center">{chapter.icon}</span>
+                                <span>{chapter.titleFr}</span>
+                              </Link>
+                            ))}
+                          </div>
+                        ))}
+                      </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
               </li>
             </ul>
-
-            <div className={`h-6 w-px bg-gray-200 dark:bg-gray-700`} />
-
-
-
-
-            
-            <button onClick={() => setIsSearchOverlayOpen(true)} className={`${iconColor} ${linkColorHover} transition-colors hidden md:flex`}>
-              <span className="material-symbols-rounded text-xl">search</span>
-            </button>
           </div>
 
-          <button onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)} className={`md:hidden z-50 transition-colors ${iconColor} ${linkColorHover}`}>
-            <span className="material-symbols-rounded text-3xl">{isMobileSidebarOpen ? 'close' : 'menu'}</span>
-          </button>
+          {/* Right Actions */}
+          <div className="flex items-center gap-2">
+            <button 
+              onClick={() => setIsSearchOverlayOpen(true)} 
+              className="p-2 rounded-full text-gray-700 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            >
+              <span className="material-symbols-rounded">search</span>
+            </button>
+            <button 
+              onClick={() => setIsMobileSidebarOpen(true)} 
+              className="p-2 rounded-full text-gray-700 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors md:hidden"
+            >
+              <span className="material-symbols-rounded">menu</span>
+            </button>
+          </div>
         </div>
-      </header>
+      </nav>
     </>
   );
 };
