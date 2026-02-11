@@ -68,8 +68,7 @@ const subSections: Record<string, { id: string; title: string }[]> = {
   ]
 };
 
-export default function Sidebar() {
-  const [isOpen, setIsOpen] = useState(false);
+export default function Sidebar({ isMobileSidebarOpen, setIsMobileSidebarOpen }: { isMobileSidebarOpen: boolean; setIsMobileSidebarOpen: (isOpen: boolean) => void }) {
   const [mounted, setMounted] = useState(false);
   const [expandedChapter, setExpandedChapter] = useState<string | null>(null);
 
@@ -77,7 +76,7 @@ export default function Sidebar() {
     setMounted(true);
   }, []);
 
-  const toggleSidebar = () => setIsOpen(!isOpen);
+
 
   const groupedChapters = CHAPTERS.reduce((acc, chapter) => {
     (acc[chapter.group] = acc[chapter.group] || []).push(chapter);
@@ -99,18 +98,18 @@ export default function Sidebar() {
         <motion.button
           initial={{ opacity: 0.5 }}
           whileHover={{ opacity: 1, scale: 1.1, backgroundColor: 'rgba(201, 169, 97, 0.2)' }}
-          onClick={toggleSidebar}
+          onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
           className="w-12 h-12 flex items-center justify-center bg-gold/10 border border-gold/30 rounded-full backdrop-blur-md shadow-2xl"
         >
           <span className="material-symbols-rounded text-gold text-3xl">
-            {isOpen ? 'close' : 'chevron_right'}
+            {isMobileSidebarOpen ? 'close' : 'chevron_right'}
           </span>
         </motion.button>
       </motion.div>
 
       {/* BOUTON MOBILE */}
       <button
-        onClick={toggleSidebar}
+        onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
         className="fixed bottom-24 left-4 z-[110] md:hidden w-12 h-12 bg-gold rounded-full shadow-2xl flex items-center justify-center text-emerald-950"
       >
         <span className="material-symbols-rounded text-3xl">menu_open</span>
@@ -118,12 +117,12 @@ export default function Sidebar() {
 
       {/* OVERLAY */}
       <AnimatePresence>
-        {isOpen && (
+        {isMobileSidebarOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={toggleSidebar}
+            onClick={() => setIsMobileSidebarOpen(false)}
             className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[120]"
           />
         )}
@@ -132,14 +131,14 @@ export default function Sidebar() {
       {/* SIDEBAR PANNEAU */}
       <motion.aside
         initial={{ x: '-100%' }}
-        animate={{ x: isOpen ? 0 : '-100%' }}
+        animate={{ x: isMobileSidebarOpen ? 0 : '-100%' }}
         transition={{ type: 'spring', damping: 25, stiffness: 200 }}
         className="fixed top-0 left-0 h-full z-[130] w-full md:w-1/3 lg:w-1/4 bg-[#05110d]/98 border-r border-gold/10 backdrop-blur-3xl shadow-2xl flex flex-col"
       >
         <div className="p-8 border-b border-white/5">
           <div className="flex items-center justify-between mb-2">
             <h2 className="text-gold font-black text-xs uppercase tracking-[0.4em]">Sommaire Interactif</h2>
-            <button onClick={toggleSidebar} className="p-2 hover:bg-white/5 rounded-full transition-colors">
+            <button onClick={() => setIsMobileSidebarOpen(false)} className="p-2 hover:bg-white/5 rounded-full transition-colors">
               <span className="material-symbols-rounded text-white/50">close</span>
             </button>
           </div>
@@ -186,7 +185,7 @@ export default function Sidebar() {
                             {/* Lien vers l'introduction du chapitre */}
                             <Link
                               href={`/partie/${chapter.id}`}
-                              onClick={() => setIsOpen(false)}
+                              onClick={() => setIsMobileSidebarOpen(false)}
                               className="text-[11px] text-white/40 hover:text-gold py-2 transition-all flex items-center gap-2 group"
                             >
                               <span className="w-1 h-1 rounded-full bg-white/10 group-hover:bg-gold transition-colors" />
@@ -198,7 +197,7 @@ export default function Sidebar() {
                               <Link
                                 key={sub.id}
                                 href={`/partie/${chapter.id}/${sub.id}`}
-                                onClick={() => setIsOpen(false)}
+                                onClick={() => setIsMobileSidebarOpen(false)}
                                 className="text-[11px] text-white/40 hover:text-gold py-2 transition-all flex items-center gap-2 group"
                               >
                                 <span className="w-1 h-1 rounded-full bg-white/10 group-hover:bg-gold transition-colors" />

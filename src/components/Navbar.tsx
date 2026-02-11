@@ -9,11 +9,10 @@ import { useTheme } from '@/context/ThemeContext';
 import { usePWA } from '@/context/PWAContext';
 import { SearchOverlay } from '@/components/SearchOverlay';
 
-export const Navbar = () => {
+export const Navbar = ({ isMobileSidebarOpen, setIsMobileSidebarOpen, isSearchOverlayOpen, setIsSearchOverlayOpen }: { isMobileSidebarOpen: boolean; setIsMobileSidebarOpen: (isOpen: boolean) => void; isSearchOverlayOpen: boolean; setIsSearchOverlayOpen: (isOpen: boolean) => void }) => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isChaptersDropdownOpen, setIsChaptersDropdownOpen] = useState(false);
-  const [isSearchOverlayOpen, setIsSearchOverlayOpen] = useState(false);
+
   
   const pathname = usePathname();
   const chaptersRef = useRef<HTMLLIElement>(null);
@@ -121,26 +120,17 @@ export const Navbar = () => {
 
             <div className={`h-6 w-px bg-gray-200 dark:bg-gray-700`} />
 
-            <AnimatePresence>
-              {isOfflineReady && (
-                <motion.div initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0 }} className="relative group flex items-center">
-                  <span className="material-symbols-rounded text-xl text-emerald-500">cloud_done</span>
-                  <div className="absolute bottom-full mb-2 -translate-x-1/2 left-1/2 px-2 py-1 bg-gray-800 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                    Prêt hors-ligne
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+
 
 
             
-            <button onClick={() => setIsSearchOverlayOpen(true)} className={`${iconColor} ${linkColorHover} transition-colors`}>
+            <button onClick={() => setIsSearchOverlayOpen(true)} className={`${iconColor} ${linkColorHover} transition-colors hidden md:flex`}>
               <span className="material-symbols-rounded text-xl">search</span>
             </button>
           </div>
 
-          <button onClick={() => setIsMobileMenuOpen(false)} className={`md:hidden z-50 transition-colors ${iconColor} ${linkColorHover}`}>
-            <span className="material-symbols-rounded text-3xl">{isMobileMenuOpen ? 'close' : 'menu'}</span>
+          <button onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)} className={`md:hidden z-50 transition-colors ${iconColor} ${linkColorHover}`}>
+            <span className="material-symbols-rounded text-3xl">{isMobileSidebarOpen ? 'close' : 'menu'}</span>
           </button>
         </div>
       </header>

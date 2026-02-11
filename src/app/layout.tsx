@@ -1,3 +1,6 @@
+'use client';
+import { useState } from 'react';
+
 import { AudioProvider } from '@/context/AudioContext';
 import { Player } from '@/components/Player';
 import { Navbar } from '@/components/Navbar';
@@ -5,19 +8,18 @@ import Sidebar from '@/components/Sidebar';
 import { ThemeProvider } from '@/context/ThemeContext';
 import { PWAProvider } from '@/context/PWAContext';
 import { AppPWAProvider } from '@/components/AppPWAProvider';
+import { BottomNavbar } from '@/components/BottomNavbar'; // Import BottomNavbar
 import './globals.css';
 
-export const metadata = {
-  title: 'Qurratul Ayni — Serigne Chouhinbou Mbacké',
-  description: 'Une immersion spirituelle dans l’œuvre majeure de Serigne Chouhinbou Mbacké.',
-  manifest: '/manifest.json',
-};
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
+  const [isSearchOverlayOpen, setIsSearchOverlayOpen] = useState(false); // New state for search overlay
+
   return (
     <html lang="fr" className="scroll-smooth">
       <head>
@@ -32,14 +34,26 @@ export default function RootLayout({
             <AudioProvider>
               <AppPWAProvider>
                 <div className="flex h-screen text-gray-900 dark:text-gray-100">
-                  <Sidebar />
+                  <Sidebar
+                    isMobileSidebarOpen={isMobileSidebarOpen}
+                    setIsMobileSidebarOpen={setIsMobileSidebarOpen}
+                  />
                   <div className="flex-1 flex flex-col overflow-hidden">
-                    <Navbar />
-                    <main className="flex-1 overflow-y-auto">
+                    <Navbar
+                      isMobileSidebarOpen={isMobileSidebarOpen}
+                      setIsMobileSidebarOpen={setIsMobileSidebarOpen}
+                      isSearchOverlayOpen={isSearchOverlayOpen} // Pass search state
+                      setIsSearchOverlayOpen={setIsSearchOverlayOpen} // Pass search setter
+                    />
+                    <main className="flex-1 overflow-y-auto pt-16 pb-14"> {/* Added pb-14 for bottom nav */}
                       {children}
                     </main>
                     <Player />
                   </div>
+                  <BottomNavbar
+                    setIsSearchOverlayOpen={setIsSearchOverlayOpen} // Pass search setter to BottomNavbar
+                    isSearchOverlayOpen={isSearchOverlayOpen}
+                  />
                 </div>
               </AppPWAProvider>
             </AudioProvider>
