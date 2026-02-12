@@ -38,12 +38,7 @@ export default function RootLayout({
                     setIsMobileSidebarOpen={setIsMobileSidebarOpen}
                   />
                   <div className="flex-1 flex flex-col overflow-hidden">
-                    <Navbar
-                      isMobileSidebarOpen={isMobileSidebarOpen}
-                      setIsMobileSidebarOpen={setIsMobileSidebarOpen}
-                      isSearchOverlayOpen={isSearchOverlayOpen}
-                      setIsSearchOverlayOpen={setIsSearchOverlayOpen}
-                    />
+                    <Navbar />
                     <main className="flex-1 overflow-y-auto pt-16">
                       {children}
                     </main>
