@@ -141,7 +141,9 @@ export default function PageUnicite() {
       </div>
 
       {/* STICKY NAVIGATION */}
-      <nav className="fixed bottom-10 left-1/2 -translate-x-1/2 flex items-center p-2 bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-full shadow-2xl z-50">
+      <nav className={`fixed left-1/2 -translate-x-1/2 flex items-center p-2 bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-full shadow-2xl z-50 transition-all duration-300 ${
+        currentChapter ? 'bottom-32' : 'bottom-10'
+      }`}>
         <button 
           onClick={() => router.push('/partie/2')} 
           className="px-8 py-3 rounded-full text-[10px] uppercase tracking-[0.2em] font-bold text-white/50 hover:text-white transition-all"
