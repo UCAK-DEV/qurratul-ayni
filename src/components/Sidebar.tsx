@@ -1,87 +1,45 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { CHAPTERS } from '@/data/chapters';
 
-// Définition des sous-sections basées sur votre table des matières
-const subSections: Record<string, { id: string; title: string }[]> = {
-  "5": [
-    { id: "a", title: "La Purification" },
-    { id: "b", title: "Les Ablutions" },
-    { id: "c", title: "Le Tayamoum" },
-    { id: "d", title: "Les Souillures" },
-    { id: "e", title: "Les Menstrues" },
-    { id: "f", title: "Les Lochies" },
-  ],
-  "6": [
-    { id: "a", title: "Appel à la prière" },
-    { id: "b", title: "La prière rituelle" },
-    { id: "c", title: "Les 5 prières" },
-    { id: "d", title: "Pratiques Obligatoires" },
-    { id: "e", title: "Pratiques Traditionnelles" },
-    { id: "f", title: "La prière du Vendredi" },
-    { id: "g", title: "Prières non effectuées" },
-    { id: "h", title: "Prières surérogatoires" },
-  ],
-  "8": [
-    { id: "a", title: "Lavage mortuaire" },
-    { id: "b", title: "Prière mortuaire" },
-    { id: "c", title: "L'inhumation" },
-    { id: "d", title: "Condoléances" },
-  ],
-  "10": [
-    { id: "a", title: "Qu'est-ce que le jeûne ?" },
-    { id: "b", title: "Qui doit jeûner ?" },
-    { id: "c", title: "Actes blâmables" },
-    { id: "d", title: "Petit déjeuner (Kheude)" },
-  ],
-  "12": [
-    { id: "a", title: "Obligations" },
-    { id: "b", title: "Célébration" },
-    { id: "c", title: "Acte conjugal" },
-    { id: "d", title: "Femme enceinte" },
-    { id: "e", title: "Le Baptême" },
-    { id: "f", title: "Remèdes enfant" },
-    { id: "g", title: "Le Sevrage" },
-    { id: "h", title: "L'Éducation" },
-  ],
-  "13": [
-    { id: "a", title: "Retraite légale" },
-    { id: "b", title: "Cas de divorce" },
-  ],
-  "15": [
-    { id: "a", title: "Le Chasseur" },
-    { id: "b", title: "Tabaski" },
-  ],
-  "17": [
-    { id: "a", title: "Pratiques interdites" },
-    { id: "c", title: "Causes de pauvreté" },
-    { id: "d", title: "Aisance matérielle" },
-  ],
-  "19": [
-    { id: "a", title: "L'Aumône" },
-    { id: "b", title: "Lecture du Coran" },
-    { id: "c", title: "Invocations & Wirds" },
-    { id: "d", title: "Actes équivalents" },
-  ]
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.05,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 100,
+    },
+  },
 };
 
 export default function Sidebar({ isMobileSidebarOpen, setIsMobileSidebarOpen }: { isMobileSidebarOpen: boolean; setIsMobileSidebarOpen: (isOpen: boolean) => void }) {
   const [mounted, setMounted] = useState(false);
-  const [expandedChapter, setExpandedChapter] = useState<string | null>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
-
-
-
-  const groupedChapters = CHAPTERS.reduce((acc, chapter) => {
-    (acc[chapter.group] = acc[chapter.group] || []).push(chapter);
-    return acc;
-  }, {} as Record<string, typeof CHAPTERS>);
+  
+  const groupedChapters = useMemo(() => {
+    return CHAPTERS.reduce((acc, chapter) => {
+      (acc[chapter.group] = acc[chapter.group] || []).push(chapter);
+      return acc;
+    }, {} as Record<string, typeof CHAPTERS>);
+  }, []);
 
   if (!mounted) return null;
 
@@ -145,75 +103,36 @@ export default function Sidebar({ isMobileSidebarOpen, setIsMobileSidebarOpen }:
           <p className="text-white/30 text-[9px] uppercase tracking-widest font-medium italic">Khouratoul Ayni Digital</p>
         </div>
 
-        <nav className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
-          {Object.entries(groupedChapters).map(([group, chapters]) => (
-            <div key={group} className="space-y-3">
-              <h3 className="px-4 text-[10px] font-black text-gold/40 uppercase tracking-[0.2em] border-l border-gold/20 ml-2">{group}</h3>
-              <div className="space-y-1">
-                {chapters.map((chapter) => (
-                  <div key={chapter.id} className="relative">
-                    <button
-                      onClick={() => setExpandedChapter(expandedChapter === chapter.id ? null : chapter.id)}
-                      className={`w-full flex items-center justify-between p-4 rounded-xl transition-all ${
-                        expandedChapter === chapter.id 
-                        ? 'bg-gold/10 border border-gold/20 shadow-lg shadow-gold/5' 
-                        : 'hover:bg-white/5 border border-transparent'
-                      }`}
-                    >
-                      <div className="flex items-center gap-4 text-left">
-                        <span className={`material-symbols-rounded text-xl ${expandedChapter === chapter.id ? 'text-gold' : 'text-white/30'}`}>
-                          {chapter.icon}
-                        </span>
-                        <span className={`text-sm font-bold transition-colors ${expandedChapter === chapter.id ? 'text-white' : 'text-white/60'}`}>
-                          {chapter.titleFr}
-                        </span>
-                      </div>
-                      <span className={`material-symbols-rounded text-xs transition-transform duration-300 ${expandedChapter === chapter.id ? 'rotate-90 text-gold' : 'text-white/20'}`}>
-                        arrow_forward_ios
-                      </span>
-                    </button>
-
-                    <AnimatePresence>
-                      {expandedChapter === chapter.id && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          className="overflow-hidden"
-                        >
-                          <div className="pl-12 pr-4 py-2 flex flex-col gap-1 border-l border-gold/10 ml-6 mt-1">
-                            {/* Lien vers l'introduction du chapitre */}
-                            <Link
-                              href={`/partie/${chapter.id}`}
-                              onClick={() => setIsMobileSidebarOpen(false)}
-                              className="text-[11px] text-white/40 hover:text-gold py-2 transition-all flex items-center gap-2 group"
-                            >
-                              <span className="w-1 h-1 rounded-full bg-white/10 group-hover:bg-gold transition-colors" />
-                              Introduction générale
-                            </Link>
-
-                            {/* Liens vers les sous-sections spécifiques */}
-                            {subSections[chapter.id]?.map((sub) => (
-                              <Link
-                                key={sub.id}
-                                href={`/partie/${chapter.id}/${sub.id}`}
-                                onClick={() => setIsMobileSidebarOpen(false)}
-                                className="text-[11px] text-white/40 hover:text-gold py-2 transition-all flex items-center gap-2 group"
-                              >
-                                <span className="w-1 h-1 rounded-full bg-white/10 group-hover:bg-gold transition-colors" />
-                                <span className="uppercase text-gold/60 font-bold mr-1">{sub.id}.</span>
-                                {sub.title}
-                              </Link>
-                            ))}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                ))}
+        <nav className="flex-1 overflow-y-auto p-4 md:p-6 custom-scrollbar">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="space-y-8"
+          >
+            {Object.entries(groupedChapters).map(([group, chapters]) => (
+              <div key={group}>
+                <h3 className="px-4 mb-4 text-sm font-black text-gold/40 uppercase tracking-[0.2em]">{group}</h3>
+                <motion.div 
+                  variants={containerVariants}
+                  className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 gap-3"
+                >
+                  {chapters.map((chapter) => (
+                    <motion.div key={chapter.id} variants={itemVariants} whileHover={{ scale: 1.05 }}>
+                      <Link
+                        href={`/partie/${chapter.id}`}
+                        onClick={() => setIsMobileSidebarOpen(false)}
+                        className="flex flex-col items-center justify-center text-center p-3 aspect-square bg-white/5 rounded-2xl border border-transparent hover:border-gold/30 hover:bg-gold/10 transition-all"
+                      >
+                        <span className="material-symbols-rounded text-4xl text-gold/70 mb-2">{chapter.icon}</span>
+                        <span className="text-xs font-bold text-white/80 leading-tight">{chapter.titleFr}</span>
+                      </Link>
+                    </motion.div>
+                  ))}
+                </motion.div>
               </div>
-            </div>
-          ))}
+            ))}
+          </motion.div>
         </nav>
 
         <div className="p-8 border-t border-white/5 bg-black/20">

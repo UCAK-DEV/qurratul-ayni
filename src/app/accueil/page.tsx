@@ -30,7 +30,7 @@ export default function LibraryPage() {
                 Bibliothèque Numérique
               </span>
             </div>
-            <h1 className="text-6xl md:text-8xl font-black tracking-tight leading-[0.9]">
+            <h1 className="text-5xl sm:text-6xl md:text-8xl font-black tracking-tight leading-[0.9]">
               Sommaire <br />
               <span className="gold-gradient-text opacity-90">Général</span>
             </h1>
@@ -71,10 +71,10 @@ export default function LibraryPage() {
                   {/* Textes - Focus sur la lisibilité */}
                   <div className="space-y-1">
                     <div className="flex items-baseline justify-between gap-2">
-                       <h3 className="text-lg font-bold text-white/90 group-hover:text-white truncate">
+                       <h3 className="text-lg font-bold text-white/90 group-hover:text-white">
                         {chapter.titleFr}
                       </h3>
-                      <span className="text-xl font-amiri text-gold/40 group-hover:text-gold/90 transition-colors whitespace-nowrap">
+                      <span className="text-xl font-amiri text-gold/40 group-hover:text-gold/90 transition-colors">
                         {chapter.titleAr}
                       </span>
                     </div>

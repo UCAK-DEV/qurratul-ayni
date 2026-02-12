@@ -131,7 +131,7 @@ export default function PageUnicite() {
               </span>
               
               <div className="max-w-2xl mx-auto">
-                <p className="text-xl md:text-2xl text-white/80 font-serif leading-relaxed italic text-center">
+                <p className="text-lg sm:text-xl md:text-2xl text-white/80 font-serif leading-relaxed italic text-center">
                   &quot;{item.fr}&quot;
                 </p>
               </div>
