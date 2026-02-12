@@ -1,7 +1,6 @@
 'use client';
 import { useState } from 'react';
-
-import { AudioProvider } from '@/context/AudioContext';
+import { useAudio, AudioProvider } from '@/context/AudioContext';
 import { Player } from '@/components/Player';
 import { Navbar } from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
@@ -10,6 +9,14 @@ import { PWAProvider } from '@/context/PWAContext';
 import { AppPWAProvider } from '@/components/AppPWAProvider';
 import './globals.css';
 
+function MainContent({ children }: { children: React.ReactNode }) {
+  const { currentChapter } = useAudio();
+  return (
+    <main className={`flex-1 overflow-y-auto pt-16 ${currentChapter ? 'pb-28' : ''}`}>
+      {children}
+    </main>
+  );
+}
 
 export default function RootLayout({
   children,
@@ -17,7 +24,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
-  const [isSearchOverlayOpen, setIsSearchOverlayOpen] = useState(false);
 
   return (
     <html lang="fr" className="scroll-smooth">
@@ -39,9 +45,9 @@ export default function RootLayout({
                   />
                   <div className="flex-1 flex flex-col overflow-hidden">
                     <Navbar />
-                    <main className="flex-1 overflow-y-auto pt-16">
+                    <MainContent>
                       {children}
-                    </main>
+                    </MainContent>
                     <Player />
                   </div>
                 </div>

@@ -1,22 +1,54 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useAudio } from '@/context/AudioContext';
-import { CHAPTERS } from '@/data/chapters';
+import { getSupabaseClient } from '@/utils/supabase';
+import { Chapter } from '@/data/chapters';
 
 export default function PageUnicite() {
   const router = useRouter();
   const { setChapter, currentChapter, isPlaying, togglePlay } = useAudio();
+  const [chapterData, setChapterData] = useState<Chapter | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchChapter = async () => {
+      const supabase = getSupabaseClient();
+      const { data, error } = await supabase
+        .from('chapters')
+        .select('*')
+        .eq('id', '3')
+        .single();
+
+      if (error) {
+        console.error('Error fetching chapter:', JSON.stringify(error, null, 2));
+      } else {
+        console.log('Fetched Chapter Data:', data); // Add this log
+        setChapterData(data);
+      }
+      setLoading(false);
+    };
+
+    fetchChapter();
+  }, []);
+
+  if (loading) {
+    return <div className="min-h-screen bg-[#010302] text-white flex items-center justify-center">Loading...</div>;
+  }
+
+  if (!chapterData) {
+    return <div className="min-h-screen bg-[#010302] text-white flex items-center justify-center">Chapter not found.</div>;
+  }
   
-  const chapterData = CHAPTERS.find(c => c.id === "3") || CHAPTERS[2];
   const isThisChapterPlaying = currentChapter?.id === chapterData.id && isPlaying;
 
   const handleAudioAction = () => {
     if (currentChapter?.id === chapterData.id) {
       togglePlay();
     } else {
+      console.log('Setting chapter in AudioContext:', chapterData); // Add this log
       setChapter(chapterData);
     }
   };

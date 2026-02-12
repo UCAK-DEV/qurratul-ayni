@@ -1,7 +1,8 @@
 'use client';
 
 import React, { createContext, useContext, useState, useRef, useEffect, useCallback } from 'react';
-import { CHAPTERS, Chapter } from '@/data/chapters';
+import { Chapter } from '@/data/chapters';
+import { getSupabaseClient } from '@/utils/supabase';
 
 // Helper to format time for display
 const formatTime = (seconds: number): string => {
@@ -44,6 +45,7 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   
   // Player state
+  const [chapters, setChapters] = useState<Chapter[]>([]);
   const [currentChapter, setCurrentChapter] = useState<Chapter | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -55,6 +57,24 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
   const [isMuted, setIsMuted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Fetch all chapters from Supabase on mount
+  useEffect(() => {
+    const fetchChapters = async () => {
+      const supabase = getSupabaseClient();
+      const { data, error } = await supabase
+        .from('chapters')
+        .select('*')
+        .order('id', { ascending: true });
+
+      if (error) {
+        console.error('Error fetching chapters:', JSON.stringify(error, null, 2));
+      } else if (data) {
+        setChapters(data);
+      }
+    };
+    fetchChapters();
+  }, []);
 
   // Initialize audio element ref
   useEffect(() => {
@@ -85,9 +105,9 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
         });
       }
       setIsPlaying(!isPlaying);
-    } else if (audioRef.current && !currentChapter && CHAPTERS.length > 0) {
+    } else if (audioRef.current && !currentChapter && chapters.length > 0) {
       // If no chapter is selected, play the first one
-      const firstChapter = CHAPTERS[0];
+      const firstChapter = chapters[0];
       setCurrentChapter(firstChapter);
       audioRef.current.src = firstChapter.audioUrl;
       audioRef.current.load();
@@ -125,23 +145,23 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
 
   const playNext = useCallback(() => {
     if (!currentChapter) {
-      if (CHAPTERS.length > 0) setChapter(CHAPTERS[0]);
+      if (chapters.length > 0) setChapter(chapters[0]);
       return;
     }
-    const currentIndex = CHAPTERS.findIndex(c => c.id === currentChapter.id);
-    const nextIndex = (currentIndex + 1) % CHAPTERS.length;
-    setChapter(CHAPTERS[nextIndex]);
-  }, [currentChapter, setChapter]);
+    const currentIndex = chapters.findIndex(c => c.id === currentChapter.id);
+    const nextIndex = (currentIndex + 1) % chapters.length;
+    setChapter(chapters[nextIndex]);
+  }, [currentChapter, setChapter, chapters]);
 
   const playPrevious = useCallback(() => {
     if (!currentChapter) {
-      if (CHAPTERS.length > 0) setChapter(CHAPTERS[0]);
+      if (chapters.length > 0) setChapter(chapters[0]);
       return;
     }
-    const currentIndex = CHAPTERS.findIndex(c => c.id === currentChapter.id);
-    const prevIndex = (currentIndex - 1 + CHAPTERS.length) % CHAPTERS.length;
-    setChapter(CHAPTERS[prevIndex]);
-  }, [currentChapter, setChapter]);
+    const currentIndex = chapters.findIndex(c => c.id === currentChapter.id);
+    const prevIndex = (currentIndex - 1 + chapters.length) % chapters.length;
+    setChapter(chapters[prevIndex]);
+  }, [currentChapter, setChapter, chapters]);
 
   // Event Listeners for HTMLAudioElement
   useEffect(() => {
