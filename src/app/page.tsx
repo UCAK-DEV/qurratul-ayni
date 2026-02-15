@@ -109,9 +109,9 @@ export default function HomePage() {
             
             <motion.h1 
               variants={itemVariants}
-              className="text-[clamp(2.8rem,9vw,6.5rem)] font-black text-white tracking-tighter leading-[1] uppercase"
+              className="text-[clamp(2.8rem,9vw,6.5rem)] font-serif font-black text-white tracking-tighter leading-[1] uppercase"
             >
-              Qurratul <span className="gold-gradient-text italic font-serif">Ayni</span>
+              Qurratul <span className="gold-gradient-text ">Ayni</span>
             </motion.h1>
             
             <motion.p 
@@ -160,7 +160,7 @@ export default function HomePage() {
             viewport={{ once: true, margin: "-100px" }}
             className="space-y-8 text-center lg:text-left"
           >
-            <h2 className="text-4xl sm:text-6xl font-bold text-white leading-tight tracking-tighter">
+            <h2 className="text-4xl sm:text-6xl font-serif font-bold text-white leading-tight tracking-tighter">
               Une Voie vers la <br />
               <span className="gold-gradient-text italic font-serif">Lumière Divine</span>
             </h2>

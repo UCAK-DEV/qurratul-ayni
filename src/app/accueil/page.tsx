@@ -94,7 +94,7 @@ export default function LibraryPage() {
       {/* Footer Minimaliste Flottant */}
       <footer className="mt-24 border-t border-white/5 pt-12 text-center opacity-40 hover:opacity-100 transition-opacity">
         <p className="text-[10px] tracking-[0.2em] uppercase">
-          Projet Khouratoul Ayni • 2024
+          Projet Khouratoul Ayni • 2026
         </p>
       </footer>
     </div>
