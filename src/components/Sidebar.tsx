@@ -66,12 +66,19 @@ export default function Sidebar({ isMobileSidebarOpen, setIsMobileSidebarOpen }:
       </motion.div>
 
       {/* BOUTON MOBILE */}
-      <button
-        onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
-        className="fixed bottom-24 left-4 z-[110] md:hidden w-12 h-12 bg-gold rounded-full shadow-2xl flex items-center justify-center text-emerald-950"
+      <motion.div
+        drag="y"
+        dragConstraints={{ top: -200, bottom: 200 }} // Allow 200px up/down movement
+        dragElastic={0.1}
+        className="fixed bottom-24 left-4 z-[110] md:hidden cursor-grab active:cursor-grabbing"
       >
-        <span className="material-symbols-rounded text-3xl">menu_open</span>
-      </button>
+        <button
+          onClick={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
+          className="w-12 h-12 bg-gold rounded-full shadow-2xl flex items-center justify-center text-emerald-950"
+        >
+          <span className="material-symbols-rounded text-3xl">menu_open</span>
+        </button>
+      </motion.div>
 
       {/* OVERLAY */}
       <AnimatePresence>
