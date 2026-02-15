@@ -58,8 +58,6 @@ export const Player = () => {
     setPlaybackRate(rate);
   };
 
-  const remainingTime = duration - currentTime;
-
   if (!currentChapter) return null;
 
   return (
@@ -68,52 +66,134 @@ export const Player = () => {
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 100, opacity: 0 }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed bottom-4 inset-x-4 max-w-sm mx-auto z-[100] p-5 bg-black/20 backdrop-blur-[20px] border border-gold/50 rounded-3xl shadow-2xl"
+        className="fixed bottom-0 left-0 w-full z-[100] p-4 bg-gradient-to-t from-emerald-950-dynamic/90 to-emerald-950-dynamic/60 backdrop-blur-xl border-t border-white/5 shadow-2xl md:pb-6"
         onMouseUp={handleSeekEnd}
         onMouseLeave={handleSeekEnd}
       >
-        <div className="flex items-center gap-4 mb-4">
-          <p className="flex-1 text-white/90 text-lg font-serif truncate">
-            {currentChapter.titleFr}
-          </p>
-          <button 
-            onClick={togglePlay} 
-            className="w-16 h-16 bg-gradient-to-b from-gold to-[#A8884A] text-emerald-950-dynamic rounded-full flex items-center justify-center shadow-lg hover:scale-105 transition-transform flex-shrink-0"
-          >
-            {isLoading ? (
-              <span className="material-symbols-rounded text-4xl animate-spin">progress_activity</span>
-            ) : (
-              <span className="material-symbols-rounded text-4xl">
-                {isPlaying ? 'pause' : 'play_arrow'}
-              </span>
-            )}
-          </button>
+        <div 
+          ref={progressBarRef} 
+          className="relative w-full h-1.5 bg-white/10 rounded-full cursor-pointer group mb-4"
+          onMouseDown={handleSeekStart}
+          onMouseMove={handleSeek}
+          onMouseUp={handleSeekEnd}
+        >
+          <motion.div 
+            className="h-full bg-gold shadow-[0_0_10px_#C9A961] rounded-full" 
+            style={{ width: `${isSeeking ? (seekTime / duration) * 100 : progress}%` }}
+          />
+          <div 
+            className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-gold rounded-full shadow-[0_0_15px_#C9A961] opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+            style={{ left: `${isSeeking ? (seekTime / duration) * 100 : progress}%` }}
+          />
         </div>
 
-        <div className="flex items-center gap-3">
-          <div 
-            ref={progressBarRef} 
-            className="relative w-full h-1 bg-white/10 rounded-full cursor-pointer group"
-            onMouseDown={handleSeekStart}
-            onMouseMove={handleSeek}
-            onMouseUp={handleSeekEnd}
-          >
-            <motion.div 
-              className="h-full bg-gold shadow-[0_0_10px_#C9A961] rounded-full" 
-              style={{ width: `${isSeeking ? (seekTime / duration) * 100 : progress}%` }}
-            />
+        <div className="flex items-center justify-between gap-4 md:gap-8">
+          <div className="flex items-center gap-3 w-1/3 md:w-auto">
+            <button onClick={quitPlayback} className="text-white/40 hover:text-red-400 transition-colors p-1 md:p-2">
+              <span className="material-symbols-rounded text-xl md:text-2xl">close</span>
+            </button>
+            <div className="w-9 h-9 md:w-10 md:h-10 bg-gold/10 rounded-lg flex items-center justify-center text-gold text-xl shrink-0">
+              <span className="material-symbols-rounded">menu_book</span>
+            </div>
+            <div className="min-w-0 hidden sm:block">
+              <p className="text-[10px] font-black text-gold uppercase tracking-[0.1em] truncate">
+                {currentChapter.titleFr}
+              </p>
+              <p className="text-xs text-white/70 truncate">
+                {currentChapter.titleAr}
+              </p>
+            </div>
           </div>
-          <p className="text-xs text-white/50 font-mono w-16 text-right">
-            -{formatTime(remainingTime)}
-          </p>
+
+          <div className="flex items-center gap-2 md:gap-4 flex-1 justify-center">
+            <button onClick={playPrevious} className="text-white/70 hover:text-white transition-colors p-2 md:p-3">
+              <span className="material-symbols-rounded text-xl md:text-2xl">skip_previous</span>
+            </button>
+            <button 
+              onClick={togglePlay} 
+              className="w-12 h-12 bg-gold text-emerald-950-dynamic rounded-full flex items-center justify-center shadow-lg hover:scale-105 transition-transform"
+            >
+              {isLoading ? (
+                <span className="material-symbols-rounded text-3xl animate-spin">progress_activity</span>
+              ) : (
+                <span className="material-symbols-rounded text-3xl">
+                  {isPlaying ? 'pause' : 'play_arrow'}
+                </span>
+              )}
+            </button>
+            <button onClick={playNext} className="text-white/70 hover:text-white transition-colors p-2 md:p-3">
+              <span className="material-symbols-rounded text-xl md:text-2xl">skip_next</span>
+            </button>
+          </div>
+
+          {/* Secondary Controls - Visible on Desktop */}
+          <div className="hidden md:flex items-center justify-end gap-2 md:gap-4 w-1/3 md:w-auto">
+            <p className="text-xs text-white/50 font-mono">
+              {formatTime(isSeeking ? seekTime : currentTime)} / {formatTime(duration)}
+            </p>
+            <div className="flex items-center gap-1 md:gap-2 group">
+              <button onClick={toggleMute} className="text-white/70 hover:text-white transition-colors p-2 md:p-3">
+                <span className="material-symbols-rounded text-xl md:text-2xl">
+                  {isMuted || volume === 0 ? 'volume_off' : volume > 0.5 ? 'volume_up' : 'volume_down'}
+                </span>
+              </button>
+              <input type="range" min="0" max="1" step="0.01" value={localVolume} onChange={handleVolumeChange} className="w-16 md:w-20 h-1 accent-gold opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+            </div>
+            <div className="relative group">
+              <button className="text-white/70 hover:text-white transition-colors p-2 md:p-3">
+                <span className="material-symbols-rounded text-xl md:text-2xl">speed</span>
+              </button>
+              <div className="absolute bottom-full mb-2 right-1/2 translate-x-1/2 p-2 bg-emerald-950-dynamic/90 backdrop-blur-lg rounded-full shadow-lg border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
+                {[0.75, 1.0, 1.25, 1.5, 2.0].map(rate => (
+                  <button key={rate} onClick={() => handlePlaybackRateChange(rate)} className={`text-xs px-2 py-1 rounded-full ${playbackRate === rate ? 'bg-gold text-emerald-950-dynamic' : 'text-white/70 hover:bg-white/10'}`} > {rate}x </button>
+                ))}
+              </div>
+            </div>
+            <button onClick={toggleLoop} className={`p-2 md:p-3 rounded-full ${isLooping ? 'text-gold bg-gold/10' : 'text-white/70 hover:bg-white/10'} transition-all`}>
+              <span className="material-symbols-rounded text-xl md:text-2xl">repeat</span>
+            </button>
+          </div>
+
+          {/* More Options Button - Visible on Mobile */}
+          <div className="relative w-1/3 md:hidden flex justify-end">
+            <button onClick={() => setIsOptionsMenuOpen(!isOptionsMenuOpen)} className="p-2 rounded-full text-white/70 hover:text-white">
+              <span className="material-symbols-rounded">more_vert</span>
+            </button>
+            <AnimatePresence>
+              {isOptionsMenuOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  className="absolute bottom-full right-0 mb-2 p-4 bg-gradient-to-br from-emerald-950/95 to-emerald-900/90 backdrop-blur-lg rounded-xl shadow-lg border border-white/10 flex flex-col gap-4"
+                >
+                  <div className="flex items-center gap-2 text-white/70">
+                    <span className="material-symbols-rounded text-xl">volume_up</span>
+                    <input type="range" min="0" max="1" step="0.01" value={localVolume} onChange={handleVolumeChange} className="w-24 h-1 accent-gold" />
+                  </div>
+                  <div className="text-white/70">
+                    <p className="text-xs mb-2">Vitesse</p>
+                    <div className="flex gap-1">
+                      {[0.75, 1.0, 1.25, 1.5, 2.0].map(rate => (
+                        <button key={rate} onClick={() => handlePlaybackRateChange(rate)} className={`text-xs px-2 py-1 rounded-full ${playbackRate === rate ? 'bg-gold text-emerald-950-dynamic' : 'text-white/70 hover:bg-white/10'}`} > {rate}x </button>
+                      ))}
+                    </div>
+                  </div>
+                  <button onClick={toggleLoop} className={`p-2 rounded-full flex items-center gap-2 ${isLooping ? 'text-gold' : 'text-white/70'}`}>
+                    <span className="material-symbols-rounded text-xl">repeat</span>
+                    <span className="text-xs">Répéter</span>
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
 
         {error && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="absolute -top-12 left-1/2 -translate-x-1/2 bg-red-600 text-white text-xs px-3 py-1 rounded-md shadow-md"
+            className="absolute -top-10 left-1/2 -translate-x-1/2 bg-red-600 text-white text-xs px-3 py-1 rounded-md shadow-md"
           >
             {error}
           </motion.div>
