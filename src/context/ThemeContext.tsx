@@ -14,9 +14,13 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const theme: Theme = 'dark'; // Always dark theme
 
   useEffect(() => {
-    // Enforce dark theme
-    document.documentElement.setAttribute('data-theme', 'dark');
-    localStorage.setItem('theme', 'dark');
+    try {
+      // Enforce dark theme
+      document.documentElement.setAttribute('data-theme', 'dark');
+      localStorage.setItem('theme', 'dark');
+    } catch (error) {
+      console.error("Failed to access localStorage for theme persistence:", error);
+    }
   }, []); // Run only once on mount
 
   return (
