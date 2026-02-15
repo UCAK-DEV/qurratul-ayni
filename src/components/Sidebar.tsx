@@ -150,6 +150,11 @@ export default function Sidebar({ isMobileSidebarOpen, setIsMobileSidebarOpen }:
               <p className="text-[8px] uppercase tracking-widest text-white/30">Édition Numérique v2.0</p>
             </div>
           </div>
+          <div className="text-center mt-6">
+            <Link href="/a-propos" className="text-xs text-white/40 hover:text-gold transition-colors" onClick={() => setIsMobileSidebarOpen(false)}>
+              À Propos des Développeurs
+            </Link>
+          </div>
         </div>
       </motion.aside>
 
