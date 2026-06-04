@@ -12,13 +12,16 @@ interface ReadingSettings {
 interface ThemeContextType {
   theme: Theme;
   readingSettings: ReadingSettings;
+  isFocusMode: boolean;
   setReadingSettings: (settings: ReadingSettings) => void;
+  toggleFocusMode: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const theme: Theme = 'dark';
+  const [isFocusMode, setIsFocusMode] = useState(false);
   const [readingSettings, setReadingSettings] = useState<ReadingSettings>({
     fontSize: 100,
     lineHeight: 1.6
@@ -42,8 +45,16 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem('readingSettings', JSON.stringify(newSettings));
   };
 
+  const toggleFocusMode = () => setIsFocusMode(!isFocusMode);
+
   return (
-    <ThemeContext.Provider value={{ theme, readingSettings, setReadingSettings: updateSettings }}>
+    <ThemeContext.Provider value={{ 
+      theme, 
+      readingSettings, 
+      isFocusMode, 
+      setReadingSettings: updateSettings,
+      toggleFocusMode 
+    }}>
       {children}
     </ThemeContext.Provider>
   );

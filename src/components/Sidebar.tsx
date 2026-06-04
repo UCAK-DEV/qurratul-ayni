@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { CHAPTERS } from '@/data/chapters';
+import { useLearning } from '@/context/LearningContext';
 
 // Définition des sous-sections basées sur votre table des matières
 const subSections: Record<string, { id: string; title: string }[]> = {
@@ -72,6 +73,7 @@ export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [expandedChapter, setExpandedChapter] = useState<string | null>(null);
+  const { isCompleted } = useLearning();
 
   useEffect(() => {
     setMounted(true);
@@ -162,6 +164,21 @@ export default function Sidebar() {
         </div>
 
         <nav className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
+          {/* LIEN FAVORIS */}
+          <div className="px-4 mb-8">
+            <Link 
+              href="/favoris"
+              onClick={() => setIsOpen(false)}
+              className="flex items-center gap-4 p-5 rounded-2xl bg-gold/10 border border-gold/20 hover:bg-gold/20 transition-all group"
+            >
+              <span className="material-symbols-rounded text-gold group-hover:scale-110 transition-transform">bookmark_heart</span>
+              <div>
+                <p className="text-xs font-black text-white uppercase tracking-widest leading-none">Mes Favoris</p>
+                <p className="text-[9px] text-gold/60 uppercase mt-1">Leçons sauvegardées</p>
+              </div>
+            </Link>
+          </div>
+
           {Object.entries(groupedChapters).map(([group, chapters]) => (
             <div key={group} className="space-y-3">
               <h3 className="px-4 text-[10px] font-black text-gold/40 uppercase tracking-[0.2em] border-l border-gold/20 ml-2">{group}</h3>
@@ -179,9 +196,16 @@ export default function Sidebar() {
                       aria-label={`Chapitre ${chapter.id}: ${chapter.titleFr}`}
                     >
                       <div className="flex items-center gap-4 text-left">
-                        <span className={`material-symbols-rounded text-xl ${expandedChapter === chapter.id ? 'text-gold' : 'text-white/60'}`}>
-                          {chapter.icon}
-                        </span>
+                        <div className="relative">
+                          <span className={`material-symbols-rounded text-xl ${expandedChapter === chapter.id ? 'text-gold' : 'text-white/60'}`}>
+                            {chapter.icon}
+                          </span>
+                          {isCompleted(chapter.id) && (
+                            <span className="absolute -top-1 -right-1 w-3 h-3 bg-gold rounded-full border-2 border-[#05110d] flex items-center justify-center">
+                              <span className="material-symbols-rounded text-[6px] text-black font-black">check</span>
+                            </span>
+                          )}
+                        </div>
                         <span className={`text-sm font-bold transition-colors ${expandedChapter === chapter.id ? 'text-white' : 'text-white/60'}`}>
                           {chapter.titleFr}
                         </span>

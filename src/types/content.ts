@@ -25,5 +25,6 @@ export interface PageContent {
   titleAr: string;
   subtitleFr?: string;
   basmala?: boolean;
+  audioUrl?: string;  // Nouveau champ pour l'audio spécifique de la section
   blocks: ContentBlock[];
 }

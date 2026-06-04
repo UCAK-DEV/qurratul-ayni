@@ -5,22 +5,40 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { ContentBlock } from '@/types/content';
 import { useTheme } from '@/context/ThemeContext';
+import { useBookmarks } from '@/context/BookmarkContext';
 
 interface BlockRendererProps {
   blocks: ContentBlock[];
+  slug?: string;
+  chapterTitle?: string;
 }
 
-export const BlockRenderer: React.FC<BlockRendererProps> = ({ blocks }) => {
+export const BlockRenderer: React.FC<BlockRendererProps> = ({ blocks, slug = '', chapterTitle = '' }) => {
   const { readingSettings } = useTheme();
+  const { addBookmark, removeBookmark, isBookmarked } = useBookmarks();
   
   const textStyle = {
     fontSize: `${readingSettings.fontSize}%`,
     lineHeight: readingSettings.lineHeight
   };
 
+  const handleBookmarkToggle = (id: string, text: string) => {
+    if (isBookmarked(id)) {
+      removeBookmark(id);
+    } else {
+      addBookmark({
+        id,
+        text: text.substring(0, 150) + (text.length > 150 ? '...' : ''),
+        slug,
+        chapterTitle
+      });
+    }
+  };
+
   return (
     <>
       {blocks.map((block, index) => {
+        const blockId = `${slug}-${index}`;
         switch (block.type) {
           case 'bio_header':
             return (
@@ -83,26 +101,41 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({ blocks }) => {
           case 'text_block':
             return (
               <div key={index} className="space-y-4">
-                {block.content.map((text: string, idx: number) => (
-                  <motion.section 
-                    key={idx}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-10%" }}
-                    transition={{ duration: 0.7, delay: idx * 0.05 }}
-                    className="relative p-8 md:p-12 rounded-[2.5rem] bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors group"
-                    aria-label={`Enseignement ${idx + 1}`}
-                  >
-                    <span className="absolute left-8 top-8 text-6xl font-black text-white/[0.03] group-hover:text-gold/[0.05] transition-colors -z-10" aria-hidden="true">
-                      {(idx + 1).toString().padStart(2, '0')}
-                    </span>
-                    <div className="max-w-2xl mx-auto">
-                      <p className="text-lg sm:text-xl md:text-2xl text-white/80 font-serif leading-relaxed italic text-center" style={textStyle}>
-                        &quot;{text}&quot;
-                      </p>
-                    </div>
-                  </motion.section>
-                ))}
+                {block.content.map((text: string, idx: number) => {
+                  const itemId = `${slug}-${index}-${idx}`;
+                  return (
+                    <motion.section 
+                      key={idx}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "-10%" }}
+                      transition={{ duration: 0.7, delay: idx * 0.05 }}
+                      className="relative p-8 md:p-12 rounded-[2.5rem] bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors group"
+                      aria-label={`Enseignement ${idx + 1}`}
+                    >
+                      <button 
+                        onClick={() => handleBookmarkToggle(itemId, text)}
+                        className={`absolute right-8 top-8 p-3 rounded-xl border transition-all opacity-0 group-hover:opacity-100 z-20 ${
+                          isBookmarked(itemId) ? 'bg-gold border-gold text-emerald-950 opacity-100' : 'bg-white/5 border-white/10 text-gold hover:bg-gold/10'
+                        }`}
+                        aria-label="Ajouter aux favoris"
+                      >
+                        <span className="material-symbols-rounded text-xl">
+                          {isBookmarked(itemId) ? 'bookmark_added' : 'bookmark_add'}
+                        </span>
+                      </button>
+
+                      <span className="absolute left-8 top-8 text-6xl font-black text-white/[0.03] group-hover:text-gold/[0.05] transition-colors -z-10" aria-hidden="true">
+                        {(idx + 1).toString().padStart(2, '0')}
+                      </span>
+                      <div className="max-w-2xl mx-auto">
+                        <p className="text-lg sm:text-xl md:text-2xl text-white/80 font-serif leading-relaxed italic text-center" style={textStyle}>
+                          &quot;{text}&quot;
+                        </p>
+                      </div>
+                    </motion.section>
+                  );
+                })}
               </div>
             );
 
@@ -157,12 +190,23 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({ blocks }) => {
                   <div className="h-[1px] flex-1 bg-white/5" />
                   {block.titleAr && <span className="text-xl font-amiri text-gold/40" lang="ar" dir="rtl">{block.titleAr}</span>}
                 </div>
-                <div className="p-8 md:p-16 rounded-[3rem] bg-white/[0.01] border border-white/5">
+                <div className="p-8 md:p-16 rounded-[3rem] bg-white/[0.01] border border-white/5 relative group">
+                  <button 
+                    onClick={() => handleBookmarkToggle(blockId, block.content.join(' '))}
+                    className={`absolute right-8 top-8 p-3 rounded-xl border transition-all opacity-0 group-hover:opacity-100 z-20 ${
+                      isBookmarked(blockId) ? 'bg-gold border-gold text-emerald-950 opacity-100' : 'bg-white/5 border-white/10 text-gold hover:bg-gold/10'
+                    }`}
+                    aria-label="Sauvegarder la procédure"
+                  >
+                    <span className="material-symbols-rounded text-xl">
+                      {isBookmarked(blockId) ? 'bookmark_added' : 'bookmark_add'}
+                    </span>
+                  </button>
                   <div className="space-y-8">
                     {block.content.map((step: string, idx: number) => (
-                      <div key={idx} className="flex gap-8 group border-b border-white/5 pb-8 last:border-0">
+                      <div key={idx} className="flex gap-8 group/item border-b border-white/5 pb-8 last:border-0">
                         <span className="text-gold font-black opacity-20 text-4xl leading-none">{(idx + 1).toString().padStart(2, '0')}</span>
-                        <p className="text-lg md:text-xl text-white/60 group-hover:text-white transition-colors font-serif italic leading-relaxed tracking-tight" style={textStyle}>
+                        <p className="text-lg md:text-xl text-white/60 group-hover/item:text-white transition-colors font-serif italic leading-relaxed tracking-tight" style={textStyle}>
                           {step}
                         </p>
                       </div>

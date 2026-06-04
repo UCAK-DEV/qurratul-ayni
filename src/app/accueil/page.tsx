@@ -2,12 +2,48 @@
 
 import React from 'react';
 import { CHAPTERS } from '@/data/chapters';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import { useLearning } from '@/context/LearningContext';
 
 export default function LibraryPage() {
+  const { lastVisitedSlug, isCompleted } = useLearning();
+
+  const lastChapter = lastVisitedSlug ? CHAPTERS.find(c => c.id === lastVisitedSlug.split('-')[0]) : null;
+
   return (
     <div className="min-h-screen bg-[#010302] text-white pt-24 pb-32 px-6 md:px-16 overflow-x-hidden selection:bg-gold/30">
+      
+      {/* Reprise Automatique */}
+      <AnimatePresence>
+        {lastVisitedSlug && lastChapter && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="relative z-20 mb-12 max-w-7xl mx-auto"
+          >
+            <div className="p-1 rounded-2xl bg-gradient-to-r from-gold/50 via-gold/10 to-transparent">
+              <div className="bg-[#010302] rounded-[0.9rem] p-4 flex items-center justify-between gap-4">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center text-gold">
+                    <span className="material-symbols-rounded">history</span>
+                  </div>
+                  <div>
+                    <p className="text-[10px] uppercase font-bold text-gold tracking-widest leading-none mb-1">Continuer l'étude</p>
+                    <p className="text-sm font-medium text-white/80">{lastChapter.titleFr}</p>
+                  </div>
+                </div>
+                <Link 
+                  href={`/partie/${lastVisitedSlug.split('-').join('/')}`}
+                  className="px-6 py-2 bg-gold text-black rounded-xl text-[10px] font-black uppercase hover:scale-105 transition-all shadow-lg shadow-gold/20"
+                >
+                  Reprendre
+                </Link>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       
       {/* Arrière-plan cinématique */}
       <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
@@ -61,10 +97,21 @@ export default function LibraryPage() {
                            {chapter.id.toString().padStart(2, '0')}
                         </span>
                     </div>
-                    <div className="p-3 rounded-xl bg-white/[0.03] border border-white/10 text-gold/80 group-hover:text-gold group-hover:scale-110 group-hover:bg-gold/10 transition-all duration-500">
-                      <span className="material-symbols-rounded text-2xl leading-none">
-                        {chapter.icon}
-                      </span>
+                    <div className="flex items-center gap-3">
+                      {isCompleted(chapter.id) && (
+                        <motion.div 
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          className="w-8 h-8 rounded-full bg-gold/20 border border-gold/40 flex items-center justify-center text-gold"
+                        >
+                          <span className="material-symbols-rounded text-lg">check_circle</span>
+                        </motion.div>
+                      )}
+                      <div className="p-3 rounded-xl bg-white/[0.03] border border-white/10 text-gold/80 group-hover:text-gold group-hover:scale-110 group-hover:bg-gold/10 transition-all duration-500">
+                        <span className="material-symbols-rounded text-2xl leading-none">
+                          {chapter.icon}
+                        </span>
+                      </div>
                     </div>
                   </div>
 
