@@ -1,30 +1,49 @@
 'use client';
 
-import React, { createContext, useEffect, useContext, ReactNode } from 'react';
+import React, { createContext, useEffect, useContext, useState, ReactNode } from 'react';
 
-type Theme = 'dark'; // Only dark mode
+type Theme = 'dark'; // Only dark mode for now
+
+interface ReadingSettings {
+  fontSize: number;   // In percentage (ex: 100, 110, 120)
+  lineHeight: number; // multiplier (ex: 1.5, 1.8, 2.0)
+}
 
 interface ThemeContextType {
   theme: Theme;
+  readingSettings: ReadingSettings;
+  setReadingSettings: (settings: ReadingSettings) => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const theme: Theme = 'dark'; // Always dark theme
+  const theme: Theme = 'dark';
+  const [readingSettings, setReadingSettings] = useState<ReadingSettings>({
+    fontSize: 100,
+    lineHeight: 1.6
+  });
 
   useEffect(() => {
     try {
-      // Enforce dark theme
       document.documentElement.setAttribute('data-theme', 'dark');
-      localStorage.setItem('theme', 'dark');
+      
+      const saved = localStorage.getItem('readingSettings');
+      if (saved) {
+        setReadingSettings(JSON.parse(saved));
+      }
     } catch (error) {
-      console.error("Failed to access localStorage for theme persistence:", error);
+      console.error("Failed to load settings:", error);
     }
-  }, []); // Run only once on mount
+  }, []);
+
+  const updateSettings = (newSettings: ReadingSettings) => {
+    setReadingSettings(newSettings);
+    localStorage.setItem('readingSettings', JSON.stringify(newSettings));
+  };
 
   return (
-    <ThemeContext.Provider value={{ theme }}>
+    <ThemeContext.Provider value={{ theme, readingSettings, setReadingSettings: updateSettings }}>
       {children}
     </ThemeContext.Provider>
   );

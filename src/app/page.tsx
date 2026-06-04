@@ -179,7 +179,7 @@ export default function HomePage() {
                   className="p-6 rounded-3xl bg-white/[0.03] border border-white/5 text-center"
                 >
                   <span className="text-gold text-4xl font-black block">{stat.val}</span>
-                  <span className="text-white/30 text-[10px] uppercase font-bold tracking-widest">{stat.label}</span>
+                  <span className="text-white/60 text-[10px] uppercase font-bold tracking-widest">{stat.label}</span>
                 </motion.div>
               ))}
             </div>

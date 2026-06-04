@@ -101,6 +101,7 @@ export default function Sidebar() {
           whileHover={{ opacity: 1, scale: 1.1, backgroundColor: 'rgba(201, 169, 97, 0.2)' }}
           onClick={toggleSidebar}
           className="w-12 h-12 flex items-center justify-center bg-gold/10 border border-gold/30 rounded-full backdrop-blur-md shadow-2xl"
+          aria-label={isOpen ? 'Fermer le sommaire' : 'Ouvrir le sommaire'}
         >
           <span className="material-symbols-rounded text-gold text-3xl">
             {isOpen ? 'close' : 'chevron_right'}
@@ -118,6 +119,7 @@ export default function Sidebar() {
         <button
           onClick={toggleSidebar}
           className="w-12 h-12 bg-gold rounded-full shadow-2xl flex items-center justify-center text-emerald-950"
+          aria-label="Ouvrir le sommaire"
         >
           <span className="material-symbols-rounded text-3xl">menu_open</span>
         </button>
@@ -132,6 +134,7 @@ export default function Sidebar() {
             exit={{ opacity: 0 }}
             onClick={toggleSidebar}
             className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[120]"
+            aria-hidden="true"
           />
         )}
       </AnimatePresence>
@@ -142,15 +145,20 @@ export default function Sidebar() {
         animate={{ x: isOpen ? 0 : '-100%' }}
         transition={{ type: 'spring', damping: 25, stiffness: 200 }}
         className="fixed top-0 left-0 h-full z-[130] w-full md:w-1/3 lg:w-1/4 bg-[#05110d]/98 border-r border-gold/10 backdrop-blur-3xl shadow-2xl flex flex-col"
+        aria-label="Sommaire interactif"
       >
         <div className="p-8 border-b border-white/5">
           <div className="flex items-center justify-between mb-2">
             <h2 className="text-gold font-black text-xs uppercase tracking-[0.4em]">Sommaire Interactif</h2>
-            <button onClick={toggleSidebar} className="p-2 hover:bg-white/5 rounded-full transition-colors">
+            <button 
+              onClick={toggleSidebar} 
+              className="p-2 hover:bg-white/5 rounded-full transition-colors"
+              aria-label="Fermer le sommaire"
+            >
               <span className="material-symbols-rounded text-white/50">close</span>
             </button>
           </div>
-          <p className="text-white/30 text-[9px] uppercase tracking-widest font-medium italic">Khouratoul Ayni Digital</p>
+          <p className="text-white/60 text-[9px] uppercase tracking-widest font-medium italic">Khouratoul Ayni Digital</p>
         </div>
 
         <nav className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
@@ -167,9 +175,11 @@ export default function Sidebar() {
                         ? 'bg-gold/10 border border-gold/20 shadow-lg shadow-gold/5' 
                         : 'hover:bg-white/5 border border-transparent'
                       }`}
+                      aria-expanded={expandedChapter === chapter.id}
+                      aria-label={`Chapitre ${chapter.id}: ${chapter.titleFr}`}
                     >
                       <div className="flex items-center gap-4 text-left">
-                        <span className={`material-symbols-rounded text-xl ${expandedChapter === chapter.id ? 'text-gold' : 'text-white/30'}`}>
+                        <span className={`material-symbols-rounded text-xl ${expandedChapter === chapter.id ? 'text-gold' : 'text-white/60'}`}>
                           {chapter.icon}
                         </span>
                         <span className={`text-sm font-bold transition-colors ${expandedChapter === chapter.id ? 'text-white' : 'text-white/60'}`}>
@@ -194,7 +204,7 @@ export default function Sidebar() {
                             <Link
                               href={`/partie/${chapter.id}`}
                               onClick={() => setIsOpen(false)}
-                              className="text-[11px] text-white/40 hover:text-gold py-2 transition-all flex items-center gap-2 group"
+                              className="text-[11px] text-white/60 hover:text-gold py-2 transition-all flex items-center gap-2 group"
                             >
                               <span className="w-1 h-1 rounded-full bg-white/10 group-hover:bg-gold transition-colors" />
                               Introduction générale
@@ -206,7 +216,7 @@ export default function Sidebar() {
                                 key={sub.id}
                                 href={`/partie/${chapter.id}/${sub.id}`}
                                 onClick={() => setIsOpen(false)}
-                                className="text-[11px] text-white/40 hover:text-gold py-2 transition-all flex items-center gap-2 group"
+                                className="text-[11px] text-white/60 hover:text-gold py-2 transition-all flex items-center gap-2 group"
                               >
                                 <span className="w-1 h-1 rounded-full bg-white/10 group-hover:bg-gold transition-colors" />
                                 <span className="uppercase text-gold/60 font-bold mr-1">{sub.id}.</span>
@@ -229,11 +239,11 @@ export default function Sidebar() {
             <div className="w-10 h-10 rounded-lg bg-gold/10 border border-gold/20 flex items-center justify-center font-black text-gold text-sm tracking-tighter">QA</div>
             <div>
               <p className="text-[10px] uppercase font-bold text-white/60">Qurratul Ayni</p>
-              <p className="text-[8px] uppercase tracking-widest text-white/30">Édition Numérique v2.0</p>
+              <p className="text-[8px] uppercase tracking-widest text-white/60">Édition Numérique v2.0</p>
             </div>
           </div>
           <div className="text-center mt-6">
-            <Link href="/a-propos" className="text-xs text-white/40 hover:text-gold transition-colors" onClick={toggleSidebar}>
+            <Link href="/a-propos" className="text-xs text-white/60 hover:text-gold transition-colors" onClick={toggleSidebar}>
               À Propos des Développeurs
             </Link>
           </div>

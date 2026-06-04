@@ -1,30 +1,17 @@
-'use client';
-import { useState } from 'react';
-import { useAudio, AudioProvider } from '@/context/AudioContext';
-import { Player } from '@/components/Player';
-import { Navbar } from '@/components/Navbar';
-import Sidebar from '@/components/Sidebar';
-import { ThemeProvider } from '@/context/ThemeContext';
-import { PWAProvider } from '@/context/PWAContext';
-import { AppPWAProvider } from '@/components/AppPWAProvider';
+import React from 'react';
+import { AppProviders } from '@/components/AppProviders';
 import './globals.css';
 
-function MainContent({ children }: { children: React.ReactNode }) {
-  const { currentChapter } = useAudio();
-  return (
-    <main className={`flex-1 overflow-y-auto pt-16 ${currentChapter ? 'pb-28' : ''}`}>
-      {children}
-    </main>
-  );
-}
+export const metadata = {
+  title: 'Qurratul Ayni Digital',
+  description: 'Bibliothèque Spirituelle Digitale - Enseignements de Serigne Shouhaïbou Mbacké',
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
-
   return (
     <html lang="fr" className="scroll-smooth">
       <head>
@@ -34,24 +21,9 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet" />
       </head>
       <body className="antialiased selection:bg-gold/30 dark:selection:text-gray-900 bg-white dark:bg-gray-950">
-        <PWAProvider>
-          <ThemeProvider>
-            <AudioProvider>
-              <AppPWAProvider>
-                <div className="flex h-screen text-gray-900 dark:text-gray-100">
-                  <Sidebar />
-                  <div className="flex-1 flex flex-col overflow-hidden">
-                    <Navbar />
-                    <MainContent>
-                      {children}
-                    </MainContent>
-                    <Player />
-                  </div>
-                </div>
-              </AppPWAProvider>
-            </AudioProvider>
-          </ThemeProvider>
-        </PWAProvider>
+        <AppProviders>
+          {children}
+        </AppProviders>
       </body>
     </html>
   );

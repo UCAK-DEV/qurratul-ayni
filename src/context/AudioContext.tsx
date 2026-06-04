@@ -1,8 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useRef, useEffect, useCallback } from 'react';
-import { Chapter } from '@/data/chapters';
-import { getSupabaseClient } from '@/utils/supabase';
+import { Chapter, CHAPTERS } from '@/data/chapters';
 
 // Helper to format time for display
 const formatTime = (seconds: number): string => {
@@ -45,7 +44,7 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   
   // Player state
-  const [chapters, setChapters] = useState<Chapter[]>([]);
+  const [chapters] = useState<Chapter[]>(CHAPTERS);
   const [currentChapter, setCurrentChapter] = useState<Chapter | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -57,24 +56,6 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
   const [isMuted, setIsMuted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  // Fetch all chapters from Supabase on mount
-  useEffect(() => {
-    const fetchChapters = async () => {
-      const supabase = getSupabaseClient();
-      const { data, error } = await supabase
-        .from('chapters')
-        .select('*')
-        .order('id', { ascending: true });
-
-      if (error) {
-        console.error('Error fetching chapters:', JSON.stringify(error, null, 2));
-      } else if (data) {
-        setChapters(data);
-      }
-    };
-    fetchChapters();
-  }, []);
 
   // Initialize audio element ref
   useEffect(() => {

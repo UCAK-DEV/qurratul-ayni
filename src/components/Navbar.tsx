@@ -8,11 +8,13 @@ import { CHAPTERS, Chapter } from '@/data/chapters';
 import { useTheme } from '@/context/ThemeContext';
 import Fuse from 'fuse.js';
 import { useDebounce } from '@/hooks/useDebounce';
+import { ReadingSettings } from './ReadingSettings';
 
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
   const [results, setResults] = useState<Chapter[]>([]);
@@ -73,16 +75,17 @@ export const Navbar = () => {
       }`}>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           
-          <Link href="/" className="flex items-center gap-3 z-50 group">
+          <Link href="/" className="flex items-center gap-3 z-50 group" aria-label="Retour à l'accueil">
             <motion.div 
               whileHover={{ scale: 1.1, rotate: -15 }}
               className="w-10 h-10 border border-gold/50 rounded-lg flex items-center justify-center bg-gold/10 shadow-[0_0_20px_rgba(201,169,97,0.2)]"
+              aria-hidden="true"
             >
               <span className="material-symbols-rounded text-gold text-2xl">auto_stories</span>
             </motion.div>
             <div className="hidden sm:flex flex-col">
               <span className="text-lg font-bold tracking-widest text-white leading-none uppercase">Qurratul <span className="text-gold">Ayni</span></span>
-              <span className="text-[9px] text-white/40 uppercase tracking-[0.3em]">Enseignements Sacrés</span>
+              <span className="text-[9px] text-white/60 uppercase tracking-[0.3em]">Enseignements Sacrés</span>
             </div>
           </Link>
 
@@ -92,7 +95,7 @@ export const Navbar = () => {
                 <Link href="/accueil" className={`text-xs uppercase tracking-widest font-bold transition-all relative group flex items-center gap-2 ${
                   pathname === '/accueil' ? 'text-gold' : 'text-white/60 hover:text-white'
                 }`}>
-                  <span className= "material-symbols-rounded text-base">home</span>
+                  <span className= "material-symbols-rounded text-base" aria-hidden="true">home</span>
                   Accueil
                   <span className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 h-0.5 bg-gold transition-all duration-300 ${pathname === '/accueil' ? 'w-1/2' : 'w-0 group-hover:w-full'}`} />
                 </Link>
@@ -103,10 +106,12 @@ export const Navbar = () => {
                   className={`text-xs uppercase tracking-widest font-bold transition-all relative group flex items-center gap-1 ${
                     isChaptersDropdownOpen ? 'text-gold' : 'text-white/60 hover:text-white'
                   }`}
+                  aria-expanded={isChaptersDropdownOpen}
+                  aria-haspopup="true"
                 >
-                  <span className="material-symbols-rounded text-base">menu_book</span>
+                  <span className="material-symbols-rounded text-base" aria-hidden="true">menu_book</span>
                   Chapitres
-                  <motion.span animate={{ rotate: isChaptersDropdownOpen ? 180 : 0 }} className="material-symbols-rounded text-base">expand_more</motion.span>
+                  <motion.span animate={{ rotate: isChaptersDropdownOpen ? 180 : 0 }} className="material-symbols-rounded text-base" aria-hidden="true">expand_more</motion.span>
                 </button>
                 <AnimatePresence>
                   {isChaptersDropdownOpen && (
@@ -115,18 +120,20 @@ export const Navbar = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-80 bg-emerald-950/95 backdrop-blur-2xl border border-white/10 rounded-xl shadow-lg p-2 z-50 max-h-96 overflow-y-auto custom-scrollbar"
+                      role="menu"
                     >
                       {Object.entries(groupedChapters).map(([group, chapters]) => (
-                        <div key={group} className="mb-4">
-                          <p className="px-3 pt-2 pb-1 text-[10px] uppercase font-bold tracking-widest text-gold/60">{group}</p>
+                        <div key={group} className="mb-4" role="none">
+                          <p className="px-3 pt-2 pb-1 text-[10px] uppercase font-bold tracking-widest text-gold/60" role="presentation">{group}</p>
                           {chapters.map((chapter) => (
                             <Link
                               key={chapter.id}
                               href={`/partie/${chapter.id}`}
                               onClick={() => setIsChaptersDropdownOpen(false)}
                               className="flex items-center gap-3 p-3 rounded-lg text-white/80 hover:bg-white/5 hover:text-gold transition-colors text-sm font-medium"
+                              role="menuitem"
                             >
-                              <span className="material-symbols-rounded text-gold/80 text-lg w-6 text-center">{chapter.icon}</span>
+                              <span className="material-symbols-rounded text-gold/80 text-lg w-6 text-center" aria-hidden="true">{chapter.icon}</span>
                               <span>{chapter.titleFr}</span>
                             </Link>
                           ))}
@@ -140,13 +147,25 @@ export const Navbar = () => {
 
             <div className="h-6 w-px bg-white/10" />
 
+            <button 
+              onClick={() => setIsSettingsOpen(true)}
+              className="w-10 h-10 flex items-center justify-center text-white/60 hover:text-gold transition-colors"
+              aria-label="Réglages de lecture"
+            >
+              <span className="material-symbols-rounded text-xl">settings_accessibility</span>
+            </button>
+
             <div className="relative" ref={searchRef}>
               <motion.div 
                 animate={{ width: isSearchOpen ? '250px' : '40px' }}
                 className="h-10 bg-white/5 border border-white/10 rounded-full flex items-center overflow-hidden"
               >
-                <button onClick={() => setIsSearchOpen(!isSearchOpen)} className="w-10 h-10 flex-shrink-0 flex items-center justify-center text-white/60 hover:text-gold">
-                  <span className="material-symbols-rounded text-xl">{isSearchOpen ? 'close' : 'search'}</span>
+                <button 
+                  onClick={() => setIsSearchOpen(!isSearchOpen)} 
+                  className="w-10 h-10 flex-shrink-0 flex items-center justify-center text-white/60 hover:text-gold"
+                  aria-label={isSearchOpen ? 'Fermer la recherche' : 'Ouvrir la recherche'}
+                >
+                  <span className="material-symbols-rounded text-xl" aria-hidden="true">{isSearchOpen ? 'close' : 'search'}</span>
                 </button>
                 <input 
                   type="text"
@@ -154,6 +173,7 @@ export const Navbar = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="bg-transparent border-none outline-none text-sm text-white w-full pr-4"
+                  aria-label="Champ de recherche"
                 />
               </motion.div>
               {/* Résultats de recherche... */}
@@ -164,8 +184,10 @@ export const Navbar = () => {
           <button 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="md:hidden text-white/60 hover:text-white transition-colors z-50"
+            aria-label={isMobileMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+            aria-expanded={isMobileMenuOpen}
           >
-            <span className="material-symbols-rounded text-3xl">{isMobileMenuOpen ? 'close' : 'menu'}</span>
+            <span className="material-symbols-rounded text-3xl" aria-hidden="true">{isMobileMenuOpen ? 'close' : 'menu'}</span>
           </button>
         </div>
       </nav>
@@ -232,6 +254,8 @@ export const Navbar = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <ReadingSettings isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
     </>
   );
 };

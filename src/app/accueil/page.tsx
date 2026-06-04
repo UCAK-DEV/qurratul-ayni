@@ -74,7 +74,7 @@ export default function LibraryPage() {
                        <h3 className="text-lg font-bold text-white/90 group-hover:text-white">
                         {chapter.titleFr}
                       </h3>
-                      <span className="text-xl font-amiri text-gold/40 group-hover:text-gold/90 transition-colors">
+                      <span className="text-xl font-amiri text-gold/40 group-hover:text-gold/90 transition-colors" lang="ar" dir="rtl">
                         {chapter.titleAr}
                       </span>
                     </div>
