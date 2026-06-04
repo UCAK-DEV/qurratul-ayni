@@ -723,13 +723,13 @@ export const PAGES_CONTENT: Record<string, PageContent> = {
     id: "12-h", chapterId: "12", sectionId: "h", titleFr: "L’ÉDUCATION", titleAr: "تربية الأولاد",
     blocks: [
       { type: 'timeline', content: [
-        { age: \"5 ans\", title: \"Bonnes habitudes\", text: \"Initier aux bonnes habitudes (manger avec la main droite, dire Bismilahi, etc.).\" },
-        { age: \"6 ans\", title: \"École coranique\", text: \"Circoncision et envoi à l'école coranique.\" },
-        { age: \"9 ans\", title: \"Pudeur\", text: \"Le garçon ne doit plus partager le lit de sa mère ou de sa sœur.\" },
-        { age: \"12 ans\", title: \"Enseignement religieux\", text: \"Enseigner les obligations religieuses ainsi que les règles de bienséance.\" },
-        { age: \"13 ans\", title: \"Obligation\", text: \"Obliger à prier et à jeûner.\" },
-        { age: \"16 ans\", title: \"Mariage\", text: \"Le mariage si le père en a les moyens.\" },
-        { age: \"18 ans\", title: \"Responsabilité\", text: \"Responsabilité majeure (obligation de prier et jeûner).\" }
+        { age: "5 ans", title: "Bonnes habitudes", text: "Initier aux bonnes habitudes (manger avec la main droite, dire Bismilahi, etc.)." },
+        { age: "6 ans", title: "École coranique", text: "Circoncision et envoi à l'école coranique." },
+        { age: "9 ans", title: "Pudeur", text: "Le garçon ne doit plus partager le lit de sa mère ou de sa sœur." },
+        { age: "12 ans", title: "Enseignement religieux", text: "Enseigner les obligations religieuses ainsi que les règles de bienséance." },
+        { age: "13 ans", title: "Obligation", text: "Obliger à prier et à jeûner." },
+        { age: "16 ans", title: "Mariage", text: "Le mariage si le père en a les moyens." },
+        { age: "18 ans", title: "Responsabilité", text: "Responsabilité majeure (obligation de prier et jeûner)." }
       ]}
     ]
   },
