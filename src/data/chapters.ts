@@ -14,7 +14,7 @@ export const CHAPTERS: Chapter[] = [
     titleAr: "ملاحظات عن المؤلف",
     titleFr: "NOTES SUR L'AUTEUR",
     desc: "Biographie de Cheikh Abo Madyana Shouhaïbou Mbacké (1918-1991), éminent soufi et érudit de la Muridiyyah.",
-    audioUrl: "/audio/recommandation.mp3",
+    audioUrl: "",
     group: "Introduction",
     icon: "person"
   },
@@ -23,7 +23,7 @@ export const CHAPTERS: Chapter[] = [
     titleAr: "مقدمة",
     titleFr: "PRÉFACE & AVANT - PROPOS",
     desc: "Cadre contextuel de la traduction du livre Khouratoul Ayni du Wolofal vers le français.",
-    audioUrl: "/audio/recommandation.mp3",
+    audioUrl: "",
     group: "Introduction",
     icon: "menu_book"
   },
@@ -86,7 +86,7 @@ export const CHAPTERS: Chapter[] = [
     titleAr: "الزكاة",
     titleFr: "LA ZAKAT : UNE OBLIGATION DIVINE",
     desc: "Prescriptions sur l'aumône légale concernant l'argent, les produits agricoles et le bétail.",
-    audioUrl: "/audio/recommandation.mp3",
+    audioUrl: "",
     group: "Les Piliers",
     icon: "volunteer_activism"
   },
@@ -95,7 +95,7 @@ export const CHAPTERS: Chapter[] = [
     titleAr: "شهر رمضان",
     titleFr: "LE MOIS DE RAMADAN",
     desc: "Règles du jeûne, sa rupture et les prières surérogatoires (Nafilas).",
-    audioUrl: "/audio/recommandation.mp3",
+    audioUrl: "",
     group: "Les Piliers",
     icon: "nights_stay"
   },
@@ -104,7 +104,7 @@ export const CHAPTERS: Chapter[] = [
     titleAr: "الحج",
     titleFr: "LE PELERINAGE A LA MECQUE",
     desc: "Conditions physiques et financières pour accomplir le fifth pilier de l'Islam.",
-    audioUrl: "/audio/recommandation.mp3",
+    audioUrl: "",
     group: "Les Piliers",
     icon: "directions_walk"
   },
@@ -113,7 +113,7 @@ export const CHAPTERS: Chapter[] = [
     titleAr: "النكاح",
     titleFr: "LE MARIAGE",
     desc: "Jurisprudence sur l'union conjugale, le baptême, l'éducation des enfants",
-    audioUrl: "/audio/recommandation.mp3",
+    audioUrl: "",
     group: "Rites et Société",
     icon: "family_restroom"
   },
@@ -122,7 +122,7 @@ export const CHAPTERS: Chapter[] = [
     titleAr: "الطلاق",
     titleFr: "LE DIVORCE",
     desc: "La séparation.",
-    audioUrl: "/audio/recommandation.mp3",
+    audioUrl: "",
     group: "Rites et Société",
     icon: "heart_broken"
   },
@@ -131,7 +131,7 @@ export const CHAPTERS: Chapter[] = [
     titleAr: "المنتجات التي يُحظَر فيها البيع بالدَّيْن",
     titleFr: "DES PRODUITS DONT LE CRÉDIT EST PROHIBÉ",
     desc: "Dispositions juridiques relatives aux biens et produits pour lesquels la vente à crédit est interdite selon les principes de la jurisprudence islamique.",
-    audioUrl: "/audio/recommandation.mp3",
+    audioUrl: "",
     group: "Jurisprudence",
     icon: "gavel"
   },
@@ -140,16 +140,16 @@ export const CHAPTERS: Chapter[] = [
     titleAr: "فيما يخصّ فعل الذبح",
     titleFr: "CONCERNANT L’ACTE D’ÉGORGER",
     desc: "Règles et conditions de l’abattage rituel islamique, incluant l’intention, les formules prescrites et les bonnes pratiques à respecter.",
-    audioUrl: "/audio/recommandation.mp3",
+    audioUrl: "",
     group: "Jurisprudence",
     icon: "rule"
   },
   {
     id: "16",
-    titleAr: "في شأن الختان",
+    titleAr: "في شأن הختان",
     titleFr: "DE LA CIRCONCISION",
     desc: "Enseignements relatifs à la circoncision, son statut religieux, ses conditions et son importance dans la tradition islamique.",
-    audioUrl: "/audio/recommandation.mp3",
+    audioUrl: "",
     group: "Rites et Société",
     icon: "cut"
   },
@@ -158,7 +158,7 @@ export const CHAPTERS: Chapter[] = [
     titleAr: "نصائح عملية",
     titleFr: "CONSEILS PRATIQUES",
     desc: "Recommandations et orientations pratiques visant à adopter un comportement conforme à l’éthique et aux valeurs de l’Islam dans la vie quotidienne.",
-    audioUrl: "/audio/recommandation.mp3",
+    audioUrl: "",
     group: "Spiritualité",
     icon: "self_improvement"
   },
@@ -167,7 +167,7 @@ export const CHAPTERS: Chapter[] = [
     titleAr: "النوافل في شهر رمضان",
     titleFr: "LES NAFILAS DU MOIS DE RAMADAN",
     desc: "Présentation des prières surérogatoires (nafilas) spécifiques au mois de Ramadan, leurs mérites et les moments propices pour les accomplir.",
-    audioUrl: "/audio/recommandation.mp3",
+    audioUrl: "",
     group: "Spiritualité",
     icon: "star"
   },
@@ -176,7 +176,7 @@ export const CHAPTERS: Chapter[] = [
     titleAr: "بعض الأدعية والسور وفوائدها",
     titleFr: "QUELQUES INVOCATIONS ET SOURATES, ET LEURS UTILITÉS",
     desc: "Sélection d’invocations et de sourates du Coran, avec leurs bienfaits spirituels et leurs usages recommandés dans différentes situations.",
-    audioUrl: "/audio/recommandation.mp3",
+    audioUrl: "",
     group: "Spiritualité",
     icon: "list_alt"
   }

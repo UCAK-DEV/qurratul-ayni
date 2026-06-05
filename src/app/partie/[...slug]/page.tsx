@@ -40,11 +40,12 @@ export default function DynamicPage({ params }: PageProps) {
     );
   }
 
-  const isThisChapterPlaying = currentChapter?.id === chapterData.id && isPlaying;
+  const targetAudio = pageContent.audioUrl || chapterData.audioUrl;
+  const hasAudio = !!targetAudio;
+  const isThisChapterPlaying = hasAudio && currentChapter?.audioUrl === targetAudio && isPlaying;
 
   const handleAudioAction = () => {
-    // Si un audio spécifique à la section existe, on l'utilise, sinon l'audio du chapitre
-    const targetAudio = pageContent.audioUrl || chapterData.audioUrl;
+    if (!hasAudio) return;
     
     if (currentChapter?.audioUrl === targetAudio) {
       togglePlay();
@@ -113,19 +114,24 @@ export default function DynamicPage({ params }: PageProps) {
 
             {pageContent.type !== 'bio_header' && (
               <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={hasAudio ? { scale: 1.02 } : {}}
+                whileTap={hasAudio ? { scale: 0.98 } : {}}
                 onClick={handleAudioAction}
-                className="group relative inline-flex items-center gap-6 px-10 py-5 bg-white/[0.03] border border-white/10 rounded-2xl transition-all hover:bg-white/[0.06] hover:border-gold/40 shadow-2xl mt-8"
-                aria-label={isPlaying ? 'Pause' : 'Lecture'}
+                disabled={!hasAudio}
+                className={`group relative inline-flex items-center gap-6 px-10 py-5 border rounded-2xl transition-all shadow-2xl mt-8 ${
+                  hasAudio 
+                  ? 'bg-white/[0.03] border-white/10 hover:bg-white/[0.06] hover:border-gold/40 shadow-gold/10' 
+                  : 'bg-white/[0.01] border-white/5 opacity-50 cursor-not-allowed'
+                }`}
+                aria-label={!hasAudio ? 'Audio non disponible' : isPlaying ? 'Pause' : 'Lecture'}
                 aria-pressed={isThisChapterPlaying}
               >
-                <div className={`absolute inset-0 bg-gold blur-md rounded-full transition-opacity ${isThisChapterPlaying ? 'opacity-20' : 'opacity-0'}`} />
-                <span className="material-symbols-rounded text-4xl relative z-10 text-gold">
-                  {isThisChapterPlaying ? 'pause_circle' : 'play_circle'}
+                {hasAudio && <div className={`absolute inset-0 bg-gold blur-md rounded-full transition-opacity ${isThisChapterPlaying ? 'opacity-20' : 'opacity-0'}`} />}
+                <span className={`material-symbols-rounded text-4xl relative z-10 ${hasAudio ? 'text-gold' : 'text-white/20'}`}>
+                  {!hasAudio ? 'volume_off' : isThisChapterPlaying ? 'pause_circle' : 'play_circle'}
                 </span>
-                <span className="text-sm font-bold tracking-tight relative z-10 italic font-serif">
-                  {isThisChapterPlaying ? 'Mettre en pause' : 'Écouter l\'enseignement'}
+                <span className={`text-sm font-bold tracking-tight relative z-10 italic font-serif ${hasAudio ? '' : 'text-white/40'}`}>
+                  {!hasAudio ? 'Audio non disponible' : isThisChapterPlaying ? 'Mettre en pause' : 'Écouter l\'enseignement'}
                 </span>
               </motion.button>
             )}
