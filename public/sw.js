@@ -43,11 +43,18 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const { request } = event;
 
+  // 1. Skip Supabase API calls (let the browser handle them directly)
+  if (request.url.includes('supabase.co')) {
+    return;
+  }
+
+  // 2. Cache audio files (Cache First)
   if (request.url.includes('.mp3')) {
     event.respondWith(cacheFirst(request, AUDIO_CACHE_NAME));
     return;
   }
   
+  // 3. Static assets (Stale While Revalidate)
   event.respondWith(staleWhileRevalidate(request, CACHE_NAME));
 });
 
@@ -79,12 +86,13 @@ async function staleWhileRevalidate(request, cacheName) {
   const cachedResponse = await cache.match(request);
 
   const networkFetch = fetch(request).then(response => {
-    if (response.ok) {
+    if (response && response.ok) {
       cache.put(request, response.clone());
     }
     return response;
   }).catch(err => {
     console.error(`[SW] Fetch error (StaleWhileRevalidate): ${request.url}`, err);
+    return cachedResponse || new Response('Network error', { status: 408 });
   });
 
   return cachedResponse || networkFetch;
