@@ -302,14 +302,19 @@ export const Navbar = () => {
       const currentScrollY = window.scrollY || document.documentElement.scrollTop;
       setIsScrolled(currentScrollY > 50);
       
-      // Auto-hide logic
-      if (currentScrollY <= 50) {
-        setShowNav(true);
-      } else if (currentScrollY > lastScrollY.current + 15) {
-        // Scrolling down -> hide nav
-        setShowNav(false);
-      } else if (currentScrollY < lastScrollY.current - 15) {
-        // Scrolling up -> show nav
+      // Auto-hide logic (Mobile only)
+      if (window.innerWidth < 768) {
+        if (currentScrollY <= 50) {
+          setShowNav(true);
+        } else if (currentScrollY > lastScrollY.current + 15) {
+          // Scrolling down -> hide nav
+          setShowNav(false);
+        } else if (currentScrollY < lastScrollY.current - 15) {
+          // Scrolling up -> show nav
+          setShowNav(true);
+        }
+      } else {
+        // Desktop: always show navbar
         setShowNav(true);
       }
       lastScrollY.current = currentScrollY;
@@ -350,12 +355,27 @@ export const Navbar = () => {
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
 
-          {/* Logo (Authentic Typography) */}
-          <Link href="/" className="flex flex-col z-50 opacity-90 hover:opacity-100 transition-opacity" aria-label="Accueil Qurratul Ayni">
-            <span className="font-amiri text-[#c9a961] text-[13px] md:text-sm leading-none tracking-wider mb-0.5">
+          {/* ── LOGO DESKTOP ── */}
+          <Link href="/" className="hidden md:flex items-center gap-3 z-50 group" aria-label="Accueil Qurratul Ayni">
+            <div className="w-10 h-10 border rounded-xl flex items-center justify-center transition-all" style={{ background: 'rgba(201,169,97,0.1)', borderColor: 'rgba(201,169,97,0.4)' }}>
+              <span className="material-symbols-rounded text-[#c9a961] text-2xl group-hover:scale-110 transition-transform">auto_stories</span>
+            </div>
+            <div className="flex flex-col opacity-90 group-hover:opacity-100 transition-opacity">
+              <span className="font-amiri text-[#c9a961] text-[13px] leading-none tracking-wider mb-0.5">
+                قرة العين
+              </span>
+              <span className="text-xl font-serif font-black tracking-[0.15em] uppercase leading-none text-adaptive-primary">
+                Qurratul Ayni
+              </span>
+            </div>
+          </Link>
+
+          {/* ── LOGO MOBILE ── */}
+          <Link href="/" className="md:hidden flex flex-col z-50 opacity-90 active:opacity-100 transition-opacity" aria-label="Accueil Qurratul Ayni">
+            <span className="font-amiri text-[#c9a961] text-[13px] leading-none tracking-wider mb-0.5">
               قرة العين
             </span>
-            <span className="text-lg md:text-xl font-serif font-black tracking-[0.15em] uppercase leading-none text-adaptive-primary">
+            <span className="text-lg font-serif font-black tracking-[0.15em] uppercase leading-none text-adaptive-primary">
               Qurratul Ayni
             </span>
           </Link>
