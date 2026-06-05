@@ -67,6 +67,8 @@ export const Navbar = () => {
     }, {} as Record<string, Chapter[]>);
   }, [chapters]);
 
+  const groupOrder = ["Introduction", "Les Piliers", "Rites et Société", "Jurisprudence", "Spiritualité"];
+
   // Fonction utilitaire pour fermer le menu mobile lors d'un clic
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
@@ -124,23 +126,27 @@ export const Navbar = () => {
                       className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-80 bg-emerald-950/95 backdrop-blur-2xl border border-white/10 rounded-xl shadow-lg p-2 z-50 max-h-96 overflow-y-auto custom-scrollbar"
                       role="menu"
                     >
-                      {Object.entries(groupedChapters).map(([group, chapters]) => (
-                        <div key={group} className="mb-4" role="none">
-                          <p className="px-3 pt-2 pb-1 text-[10px] uppercase font-bold tracking-widest text-gold/60" role="presentation">{group}</p>
-                          {chapters.map((chapter) => (
-                            <Link
-                              key={chapter.id}
-                              href={`/partie/${chapter.id}`}
-                              onClick={() => setIsChaptersDropdownOpen(false)}
-                              className="flex items-center gap-3 p-3 rounded-lg text-white/80 hover:bg-white/5 hover:text-gold transition-colors text-sm font-medium"
-                              role="menuitem"
-                            >
-                              <span className="material-symbols-rounded text-gold/80 text-lg w-6 text-center" aria-hidden="true">{chapter.icon}</span>
-                              <span>{chapter.titleFr}</span>
-                            </Link>
-                          ))}
-                        </div>
-                      ))}
+                      {groupOrder.map((group) => {
+                        const chaptersInGroup = groupedChapters[group];
+                        if (!chaptersInGroup) return null;
+                        return (
+                          <div key={group} className="mb-4" role="none">
+                            <p className="px-3 pt-2 pb-1 text-[10px] uppercase font-bold tracking-widest text-gold/60" role="presentation">{group}</p>
+                            {chaptersInGroup.map((chapter) => (
+                              <Link
+                                key={chapter.id}
+                                href={`/partie/${chapter.id}`}
+                                onClick={() => setIsChaptersDropdownOpen(false)}
+                                className="flex items-center gap-3 p-3 rounded-lg text-white/80 hover:bg-white/5 hover:text-gold transition-colors text-sm font-medium"
+                                role="menuitem"
+                              >
+                                <span className="material-symbols-rounded text-gold/80 text-lg w-6 text-center" aria-hidden="true">{chapter.icon}</span>
+                                <span>{chapter.titleFr}</span>
+                              </Link>
+                            ))}
+                          </div>
+                        );
+                      })}
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -231,24 +237,28 @@ export const Navbar = () => {
                   </div>
                   
                   <div className="space-y-4 max-h-[60vh] overflow-y-auto custom-scrollbar pr-2">
-                    {Object.entries(groupedChapters).map(([group, chapters]) => (
-                      <div key={group} className="space-y-2">
-                        <p className="text-[9px] uppercase font-bold text-white/20 tracking-[0.2em]">{group}</p>
-                        <div className="grid gap-2">
-                          {chapters.map(chapter => (
-                            <Link 
-                              key={chapter.id} 
-                              href={`/partie/${chapter.id}`} 
-                              onClick={closeMobileMenu} // FERMETURE ET REDIRECTION ICI
-                              className="flex items-center gap-3 p-3 bg-white/5 rounded-xl text-white/70 active:bg-gold/10 active:text-gold"
-                            >
-                              <span className="material-symbols-rounded text-lg text-gold/60">{chapter.icon}</span>
-                              <span className="text-sm font-medium">{chapter.titleFr}</span>
-                            </Link>
-                          ))}
+                    {groupOrder.map((group) => {
+                      const chaptersInGroup = groupedChapters[group];
+                      if (!chaptersInGroup) return null;
+                      return (
+                        <div key={group} className="space-y-2">
+                          <p className="text-[9px] uppercase font-bold text-white/20 tracking-[0.2em]">{group}</p>
+                          <div className="grid gap-2">
+                            {chaptersInGroup.map(chapter => (
+                              <Link 
+                                key={chapter.id} 
+                                href={`/partie/${chapter.id}`} 
+                                onClick={closeMobileMenu} // FERMETURE ET REDIRECTION ICI
+                                className="flex items-center gap-3 p-3 bg-white/5 rounded-xl text-white/70 active:bg-gold/10 active:text-gold"
+                              >
+                                <span className="material-symbols-rounded text-lg text-gold/60">{chapter.icon}</span>
+                                <span className="text-sm font-medium">{chapter.titleFr}</span>
+                              </Link>
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </li>
               </ul>
