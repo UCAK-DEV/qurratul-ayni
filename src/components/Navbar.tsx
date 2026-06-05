@@ -273,6 +273,8 @@ const SearchSheet: React.FC<{
 // ─── Main Navbar ───────────────────────────────────────────────────────────────
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [showNav, setShowNav] = useState(true);
+  const lastScrollY = useRef(0);
   const [isChaptersOpen, setIsChaptersOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -296,7 +298,22 @@ export const Navbar = () => {
   , [chapters]);
 
   useEffect(() => {
-    const onScroll = () => setIsScrolled(window.scrollY > 50);
+    const onScroll = () => {
+      const currentScrollY = window.scrollY || document.documentElement.scrollTop;
+      setIsScrolled(currentScrollY > 50);
+      
+      // Auto-hide logic
+      if (currentScrollY <= 50) {
+        setShowNav(true);
+      } else if (currentScrollY > lastScrollY.current + 15) {
+        // Scrolling down -> hide nav
+        setShowNav(false);
+      } else if (currentScrollY < lastScrollY.current - 15) {
+        // Scrolling up -> show nav
+        setShowNav(true);
+      }
+      lastScrollY.current = currentScrollY;
+    };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
@@ -326,9 +343,9 @@ export const Navbar = () => {
       {/* ── DESKTOP NAVBAR ─────────────────────────────────────────────────── */}
       <nav
         aria-label="Navigation principale"
-        className={`fixed top-0 w-full z-[100] transition-all duration-300 ${
+        className={`fixed top-0 w-full z-[100] transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)] ${
           isScrolled ? 'py-2' : 'py-5'
-        }`}
+        } ${!showNav ? '-translate-y-full opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'}`}
         style={isScrolled ? { background: 'var(--bg-nav)', borderBottom: '1px solid var(--border-subtle)', boxShadow: '0 4px 24px rgba(0,0,0,0.15)' } : {}}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
@@ -462,7 +479,12 @@ export const Navbar = () => {
       </nav>
 
       {/* ── MOBILE BOTTOM TAB BAR ──────────────────────────────────────────── */}
-      <nav className="bottom-tab-bar md:hidden" aria-label="Navigation mobile">
+      <nav 
+        className={`bottom-tab-bar md:hidden transition-transform duration-500 ease-[cubic-bezier(0.33,1,0.68,1)] ${
+          !showNav && !mobileChaptersOpen && !mobileSearchOpen && !isSettingsOpen ? 'translate-y-[150%]' : 'translate-y-0'
+        }`} 
+        aria-label="Navigation mobile"
+      >
 
         {/* Home */}
         <Link href="/accueil" className={`bottom-tab-btn ${activeMobileTab === 'home' ? 'active' : ''}`}>
