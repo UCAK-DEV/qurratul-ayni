@@ -109,7 +109,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({ blocks, slug = '',
                 <div className="lg:col-span-7 space-y-20">
                   <section className="space-y-8">
                     <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="space-y-4">
-                      <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight break-words">
+                      <h2 className="hidden md:block text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight break-words">
                         {block.content.name.split(' ').slice(0, 3).join(' ')}{' '}
                         <br />
                         <span className="gold-gradient-text italic font-serif">

@@ -181,7 +181,7 @@ export const ClientPageUI: React.FC<ClientPageUIProps> = ({
               <span className="h-[1px] w-8 bg-gold/50" />
             </div>
             
-            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-none uppercase break-words px-2">
+            <h1 className="hidden md:block text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-none uppercase break-words px-2">
               {pageContent.titleFr}
             </h1>
 
