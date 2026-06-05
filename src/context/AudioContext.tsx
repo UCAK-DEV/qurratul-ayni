@@ -65,7 +65,7 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, []);
 
-  // Update audio element properties on state change
+  // Update audio element properties when state changes (safeguard)
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = volume;
@@ -73,7 +73,7 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
       audioRef.current.loop = isLooping;
       audioRef.current.muted = isMuted;
     }
-  }, [volume, playbackRate, isLooping, isMuted]);
+  }, [volume, playbackRate, isLooping, isMuted, currentChapter]);
 
   const togglePlay = useCallback(() => {
     if (audioRef.current && currentChapter) {
@@ -208,16 +208,31 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, []);
 
+  const handleSetVolume = useCallback((level: number) => {
+    setVolume(level);
+    if (audioRef.current) audioRef.current.volume = level;
+  }, []);
+
+  const handleSetPlaybackRate = useCallback((rate: number) => {
+    setPlaybackRate(rate);
+    if (audioRef.current) audioRef.current.playbackRate = rate;
+  }, []);
+
   const toggleMute = useCallback(() => {
-    if (audioRef.current) {
-      audioRef.current.muted = !isMuted;
-      setIsMuted(!isMuted);
-    }
-  }, [isMuted]);
+    setIsMuted(prev => {
+      const next = !prev;
+      if (audioRef.current) audioRef.current.muted = next;
+      return next;
+    });
+  }, []);
 
   const toggleLoop = useCallback(() => {
-    setIsLooping(!isLooping);
-  }, [isLooping]);
+    setIsLooping(prev => {
+      const next = !prev;
+      if (audioRef.current) audioRef.current.loop = next;
+      return next;
+    });
+  }, []);
 
   const stop = useCallback(() => {
     if (audioRef.current) {
@@ -260,9 +275,9 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
     setChapter,
     togglePlay,
     seekTo,
-    setVolume,
+    setVolume: handleSetVolume,
     toggleMute,
-    setPlaybackRate,
+    setPlaybackRate: handleSetPlaybackRate,
     toggleLoop,
     playNext,
     playPrevious,
@@ -272,8 +287,8 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
   }), [
     currentChapter, isPlaying, progress, currentTime, duration,
     volume, playbackRate, isLooping, isMuted, isLoading, error,
-    setChapter, togglePlay, seekTo, setVolume, toggleMute,
-    setPlaybackRate, toggleLoop, playNext, playPrevious, stop, quitPlayback
+    setChapter, togglePlay, seekTo, handleSetVolume, toggleMute,
+    handleSetPlaybackRate, toggleLoop, playNext, playPrevious, stop, quitPlayback
   ]);
 
   return (
