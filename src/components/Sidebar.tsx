@@ -3,8 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { CHAPTERS } from '@/data/chapters';
+import { Chapter } from '@/data/chapters';
 import { useLearning } from '@/context/LearningContext';
+import { useData } from '@/context/DataContext';
 
 // Définition des sous-sections basées sur votre table des matières
 const subSections: Record<string, { id: string; title: string }[]> = {
@@ -74,6 +75,7 @@ export default function Sidebar() {
   const [mounted, setMounted] = useState(false);
   const [expandedChapter, setExpandedChapter] = useState<string | null>(null);
   const { isCompleted } = useLearning();
+  const { chapters } = useData();
 
   useEffect(() => {
     setMounted(true);
@@ -81,10 +83,10 @@ export default function Sidebar() {
 
   const toggleSidebar = () => setIsOpen(!isOpen);
 
-  const groupedChapters = CHAPTERS.reduce((acc, chapter) => {
+  const groupedChapters = chapters.reduce((acc, chapter) => {
     (acc[chapter.group] = acc[chapter.group] || []).push(chapter);
     return acc;
-  }, {} as Record<string, typeof CHAPTERS>);
+  }, {} as Record<string, Chapter[]>);
 
   if (!mounted) return null;
 

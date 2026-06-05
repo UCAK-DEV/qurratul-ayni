@@ -5,6 +5,7 @@ import { PWAProvider } from '@/context/PWAContext';
 import { ThemeProvider } from '@/context/ThemeContext';
 import { LearningProvider } from '@/context/LearningContext';
 import { BookmarkProvider } from '@/context/BookmarkContext';
+import { DataProvider } from '@/context/DataContext';
 import { AudioProvider, useAudio } from '@/context/AudioContext';
 import { AppPWAProvider } from '@/components/AppPWAProvider';
 import Sidebar from '@/components/Sidebar';
@@ -26,20 +27,22 @@ export const AppProviders = ({ children }: { children: React.ReactNode }) => {
       <ThemeProvider>
         <LearningProvider>
           <BookmarkProvider>
-            <AudioProvider>
-              <AppPWAProvider>
-                <div className="flex h-screen text-gray-900 dark:text-gray-100">
-                  <Sidebar />
-                  <div className="flex-1 flex flex-col overflow-hidden">
-                    <Navbar />
-                    <MainContent>
-                      {children}
-                    </MainContent>
-                    <Player />
+            <DataProvider>
+              <AudioProvider>
+                <AppPWAProvider>
+                  <div className="flex h-screen text-gray-900 dark:text-gray-100">
+                    <Sidebar />
+                    <div className="flex-1 flex flex-col overflow-hidden">
+                      <Navbar />
+                      <MainContent>
+                        {children}
+                      </MainContent>
+                      <Player />
+                    </div>
                   </div>
-                </div>
-              </AppPWAProvider>
-            </AudioProvider>
+                </AppPWAProvider>
+              </AudioProvider>
+            </DataProvider>
           </BookmarkProvider>
         </LearningProvider>
       </ThemeProvider>

@@ -4,8 +4,9 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { CHAPTERS, Chapter } from '@/data/chapters';
+import { Chapter } from '@/data/chapters';
 import { useTheme } from '@/context/ThemeContext';
+import { useData } from '@/context/DataContext';
 import Fuse from 'fuse.js';
 import { useDebounce } from '@/hooks/useDebounce';
 import { ReadingSettings } from './ReadingSettings';
@@ -22,13 +23,14 @@ export const Navbar = () => {
   const pathname = usePathname();
   const searchRef = useRef<HTMLDivElement>(null);
   const chaptersRef = useRef<HTMLLIElement>(null);
+  const { chapters } = useData();
 
   const fuse = useMemo(() => {
-    return new Fuse(CHAPTERS, {
+    return new Fuse(chapters, {
       keys: ['titleFr', 'titleAr', 'desc'],
       threshold: 0.3,
     });
-  }, []);
+  }, [chapters]);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -59,11 +61,11 @@ export const Navbar = () => {
   }, []);
 
   const groupedChapters = useMemo(() => {
-    return CHAPTERS.reduce((acc, chapter) => {
+    return chapters.reduce((acc, chapter) => {
       (acc[chapter.group] = acc[chapter.group] || []).push(chapter);
       return acc;
     }, {} as Record<string, Chapter[]>);
-  }, []);
+  }, [chapters]);
 
   // Fonction utilitaire pour fermer le menu mobile lors d'un clic
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
