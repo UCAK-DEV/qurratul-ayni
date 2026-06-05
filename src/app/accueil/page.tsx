@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { CHAPTERS } from '@/data/chapters';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useLearning } from '@/context/LearningContext';
@@ -9,14 +8,44 @@ import { useData } from '@/context/DataContext';
 
 export default function LibraryPage() {
   const { lastVisitedSlug, isCompleted } = useLearning();
-  const { chapters, isLoading } = useData();
+  const { chapters, isLoading, error, retry } = useData();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const lastChapter = lastVisitedSlug ? chapters.find(c => c.id === lastVisitedSlug.split('-')[0]) : null;
 
-  if (isLoading) {
+  if (!mounted || isLoading) {
     return (
       <div className="min-h-screen bg-[#010302] flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-gold"></div>
+      </div>
+    );
+  }
+
+  if (error && chapters.length === 0) {
+    return (
+      <div className="min-h-screen bg-[#010302] text-white flex flex-col items-center justify-center p-6 text-center">
+        <div className="w-20 h-20 rounded-full bg-red-500/10 flex items-center justify-center mb-6 border border-red-500/20">
+          <span className="material-symbols-rounded text-4xl text-red-500">cloud_off</span>
+        </div>
+        <h1 className="text-3xl font-black mb-4 uppercase tracking-tighter">Données Inaccessibles</h1>
+        <p className="text-white/60 mb-8 max-w-md font-serif italic">
+          {error}. Vérifiez votre connexion ou la configuration de vos clés Supabase sur Vercel.
+        </p>
+        <div className="flex gap-4">
+          <button 
+            onClick={retry}
+            className="px-8 py-3 bg-gold text-black rounded-full text-[10px] font-black uppercase hover:scale-105 transition-all shadow-lg shadow-gold/20"
+          >
+            Réessayer
+          </button>
+          <Link href="/" className="px-8 py-3 bg-white/5 text-white rounded-full text-[10px] font-black uppercase hover:bg-white/10 transition-all border border-white/10">
+            Accueil
+          </Link>
+        </div>
       </div>
     );
   }
@@ -148,7 +177,7 @@ export default function LibraryPage() {
         </div>
       </div>
 
-      {/* Footer Minimaliste Flottant */}
+      {/* Footer Minimaliste Flottante */}
       <footer className="mt-24 border-t border-white/5 pt-12 text-center opacity-40 hover:opacity-100 transition-opacity">
         <p className="text-[10px] tracking-[0.2em] uppercase">
           Projet Khouratoul Ayni • 2026
