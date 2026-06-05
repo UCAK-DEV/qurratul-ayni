@@ -102,7 +102,7 @@ export const ClientPageUI: React.FC<ClientPageUIProps> = ({
               {pageContent.titleFr}
             </h1>
 
-            {pageContent.type !== 'bio_header' && (
+            {!pageContent.blocks.some(b => b.type === 'bio_header') && (
               <motion.button
                 whileHover={hasAudio ? { scale: 1.02 } : {}}
                 whileTap={hasAudio ? { scale: 0.98 } : {}}
