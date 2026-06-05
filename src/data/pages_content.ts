@@ -103,6 +103,7 @@ export const PAGES_CONTENT: Record<string, PageContent> = {
   },
   "5-a": {
     id: "5-a",
+    audioUrl: "/audio/LA_PURIFICATION_du_corps.mp3",
     chapterId: "5",
     sectionId: "a",
     titleFr: "LA PURIFICATION DU CORPS",
@@ -427,6 +428,7 @@ export const PAGES_CONTENT: Record<string, PageContent> = {
   },
   "6-a": {
     id: "6-a",
+    audioUrl: "/audio/L_APPEL_A_la_priere.mp3",
     chapterId: "6",
     sectionId: "a",
     titleFr: "L'APPEL À LA PRIÈRE",
@@ -568,6 +570,7 @@ export const PAGES_CONTENT: Record<string, PageContent> = {
   },
   "5-b": {
     id: "5-b", chapterId: "5", sectionId: "b", titleFr: "LES ABLUTIONS", titleAr: "الوضوء",
+    audioUrl: "/audio/LES_ablutions.mp3",
     blocks: [
       { type: 'quote', content: ["Toute personne majeure doit faire ses ablutions avant de prier ou de toucher le Saint Coran. Celui qui transgresse cette prescription de façon délibérée et sans excuse est digne du plus grand mépris."] },
       { type: 'procedure', titleFr: "Causes d'annulation", titleAr: "نواقض الوضوء", content: ["1. Le pet.", "2. Le fait d’aller à la selle.", "3. Le fait d’uriner.", "4. La sécrétion de liquide prostatique (Madji)...", "5. La sortie du « wadiyu »...", "6. La sécrétion du sperme due à une maladie...", "7. La sécrétion du liquide précédant l’accouchement...", "8. Crise d’épilepsie ou de folie.", "9. L’évanouissement.", "10. L’ivresse.", "11. Le sommeil profond...", "12. Toucher une femme avec intention d'en jouir...", "13. Le baiser bouche à bouche...", "14. Toucher sa verge...", "15. Doute sur l'ablution."] },
@@ -577,6 +580,7 @@ export const PAGES_CONTENT: Record<string, PageContent> = {
   },
   "5-c": {
     id: "5-c", chapterId: "5", sectionId: "c", titleFr: "LE TAYAMOUM", titleAr: "التيمم",
+    audioUrl: "/audio/LE_tayamoum.mp3",
     blocks: [
       { type: 'text_block', content: ["La lustration pulvérale est autorisée à celui qui veut effectuer sa prière ou lire ou écrire le Coran... lorsqu’il est dans l’impossibilité totale de trouver l’eau..."] },
       { type: 'procedure', titleFr: "Comment pratiquer ?", titleAr: "كيفية التيمم", content: ["Attendre le moment précis...", "Y bien appuyer les paumes sur le sable...", "Bien frotter tout le visage...", "Formuler intérieurement à ce moment l’intention...", "Remettre les paumes sur le sable...", "Placer le dos de la main droit...", "Frotter ensuite l’intérieur de l’avant-bras...", "Frotter l’intérieur du pouce droit...", "Frotter les deux paumes et entrecroiser les doigts."] },
@@ -588,6 +592,7 @@ export const PAGES_CONTENT: Record<string, PageContent> = {
   },
   "5-d": {
     id: "5-d", chapterId: "5", sectionId: "d", titleFr: "LES SOUILLURES", titleAr: "النجاسات",
+    audioUrl: "/audio/LES_souillures.mp3",
     blocks: [
       { type: 'split_text', content: [
         { label: "OBLIGATION DE NETTOYAGE", paragraphs: ["Obligation est faite à tout croyant d’enlever les souillures laissées sur son corps..."] },
@@ -600,6 +605,7 @@ export const PAGES_CONTENT: Record<string, PageContent> = {
   },
   "5-e": {
     id: "5-e", chapterId: "5", sectionId: "e", titleFr: "LES MENSTRUES", titleAr: "الحيض",
+    audioUrl: "/audio/LES_menstrues.mp3",
     blocks: [
       { type: 'split_text', content: [
         { label: "DÉFINITION ET CATÉGORIES", paragraphs: ["C’est l’écoulement de sang propre à la femme de 9 ans au moins..."] },
@@ -613,6 +619,7 @@ export const PAGES_CONTENT: Record<string, PageContent> = {
   },
   "5-f": {
     id: "5-f", chapterId: "5", sectionId: "f", titleFr: "LES LOCHIES", titleAr: "النفاس",
+    audioUrl: "/audio/LES_lochies.mp3",
     blocks: [
       { type: 'split_text', content: [
         { label: "DÉFINITION ET DURÉE", paragraphs: ["L’accouchement s’accompagne de sang...", "La durée maximale des lochies n’excède jamais soixante (60) jours."] },
@@ -963,6 +970,7 @@ export const PAGES_CONTENT: Record<string, PageContent> = {
   },
   "6-b": {
     id: "6-b",
+    audioUrl: "/audio/LA_PRIERE_rituelle.mp3",
     chapterId: "6",
     sectionId: "b",
     titleFr: "LA PRIÈRE RITUELLE",
@@ -1050,6 +1058,7 @@ export const PAGES_CONTENT: Record<string, PageContent> = {
   },
   "6-c": {
     id: "6-c",
+    audioUrl: "/audio/LES_CINQ_prieres_obligatoires.mp3",
     chapterId: "6",
     sectionId: "c",
     titleFr: "LES CINQ PRIÈRES",
@@ -1092,6 +1101,7 @@ export const PAGES_CONTENT: Record<string, PageContent> = {
   },
   "6-d": {
     id: "6-d",
+    audioUrl: "/audio/LES_PRATIQUES_obligatoires.mp3",
     chapterId: "6",
     sectionId: "d",
     titleFr: "PRATIQUES OBLIGATOIRES",
@@ -1122,6 +1132,7 @@ export const PAGES_CONTENT: Record<string, PageContent> = {
   },
   "6-e": {
     id: "6-e",
+    audioUrl: "/audio/LES_PRATIQUES_traditionnelles.mp3",
     chapterId: "6",
     sectionId: "e",
     titleFr: "PRATIQUES TRADITIONNELLES",
@@ -1155,6 +1166,7 @@ export const PAGES_CONTENT: Record<string, PageContent> = {
   },
   "6-f": {
     id: "6-f",
+    audioUrl: "/audio/LA_PRIERE_DU_vendredi.mp3",
     chapterId: "6",
     sectionId: "f",
     titleFr: "LA PRIÈRE DU VENDREDI",
@@ -1203,6 +1215,7 @@ export const PAGES_CONTENT: Record<string, PageContent> = {
   },
   "6-g": {
     id: "6-g",
+    audioUrl: "/audio/LES_PRIERES_non_effectuees.mp3",
     chapterId: "6",
     sectionId: "g",
     titleFr: "PRIÈRES NON EFFECTUÉES",
@@ -1236,6 +1249,7 @@ export const PAGES_CONTENT: Record<string, PageContent> = {
   },
   "6-h": {
     id: "6-h",
+    audioUrl: "/audio/LA_PRIERE_DU_voyageur.mp3",
     chapterId: "6",
     sectionId: "h",
     titleFr: "LA PRIÈRE DU VOYAGEUR",
@@ -1261,6 +1275,7 @@ export const PAGES_CONTENT: Record<string, PageContent> = {
   },
   "6-i": {
     id: "6-i",
+    audioUrl: "/audio/DE_CERTAINS_ACTES_durant_la_priere.mp3",
     chapterId: "6",
     sectionId: "i",
     titleFr: "ACTES DURANT LA PRIÈRE",
@@ -1289,6 +1304,7 @@ export const PAGES_CONTENT: Record<string, PageContent> = {
   },
   "6-j": {
     id: "6-j",
+    audioUrl: "/audio/LES_PRIERES_surerogatoires.mp3",
     chapterId: "6",
     sectionId: "j",
     titleFr: "PRIÈRES SURÉROGATOIRES",
@@ -1318,6 +1334,7 @@ export const PAGES_CONTENT: Record<string, PageContent> = {
   },
   "6-k": {
     id: "6-k",
+    audioUrl: "/audio/LES_PRIERES_DES_fetes_hiit.mp3",
     chapterId: "6",
     sectionId: "k",
     titleFr: "LES PRIÈRES DES FÊTES",
