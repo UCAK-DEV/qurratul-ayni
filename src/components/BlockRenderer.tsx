@@ -147,6 +147,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({ blocks, slug = '',
              );
 
           case 'summary_grid':
+            const chapterIdFromSlug = slug.split('-')[0];
             return (
               <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
                 {block.content.map((item: any, idx: number) => (
@@ -156,7 +157,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({ blocks, slug = '',
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: idx * 0.05 }}
-                    onClick={() => window.location.href = `/partie/${block.chapterId}/${item.letter.toLowerCase()}`}
+                    onClick={() => window.location.href = `/partie/${chapterIdFromSlug}/${item.letter.toLowerCase()}`}
                     className="group relative p-10 rounded-[2.5rem] bg-white/[0.02] border border-white/5 hover:bg-white/[0.05] hover:border-gold/30 transition-all duration-500 cursor-pointer overflow-hidden min-h-[320px] flex flex-col justify-between"
                   >
                     <div className="relative z-10 flex justify-between items-start mb-6">
