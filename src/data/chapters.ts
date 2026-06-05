@@ -50,7 +50,7 @@ export const CHAPTERS: Chapter[] = [
     titleAr: "العبادات",
     titleFr: "LES PRATIQUES RELIGIEUSES",
     desc: "Conditions de purification du corps, des habits et du lieu nécessaires à la prière.",
-    audioUrl: "/audio/LES PRATIQUES RELIGIEUSES.mp3",
+    audioUrl: "/audio/LES_PRATIQUES_RELIGIEUSES.mp3",
     group: "Les Piliers",
     icon: "spa"
   },
@@ -59,17 +59,16 @@ export const CHAPTERS: Chapter[] = [
     titleAr: "الصلاة",
     titleFr: "LA PRIÈRE",
     desc: "Guide complet sur l'appel à la prière (Nodd), les obligations et les pratiques traditionnelles.",
-    audioUrl: "/audio/LA PRIÈRE.mp3",
+    audioUrl: "/audio/LA_PRIERE.mp3",
     group: "Les Piliers",
     icon: "mosque"
   },
-  
   {
     id: "7",
     titleAr: "المريض والميت",
     titleFr: "LE MALADE MOURANT",
     desc: "Règles sur l'accompagnement des mourants",
-    audioUrl: "/audio/LE MALADE mourant.mp3",
+    audioUrl: "/audio/LE_MALADE_mourant.mp3",
     group: "Rites et Société",
     icon: "personal_injury"
   },
@@ -78,7 +77,7 @@ export const CHAPTERS: Chapter[] = [
     titleAr: "الميت",
     titleFr: "LE MORT",
     desc: "Le lavage mortuaire et l'inhumation.",
-    audioUrl: "/audio/LE MALADE mourant.mp3",
+    audioUrl: "/audio/LE_MALADE_mourant.mp3",
     group: "Rites et Société",
     icon: "nightlight"
   },
