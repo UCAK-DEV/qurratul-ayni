@@ -109,7 +109,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({ blocks, slug = '',
                 <div className="lg:col-span-7 space-y-20">
                   <section className="space-y-8">
                     <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="space-y-4">
-                      <h2 className="text-4xl md:text-6xl font-bold leading-tight">
+                      <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight break-words">
                         {block.content.name.split(' ').slice(0, 3).join(' ')}{' '}
                         <br />
                         <span className="gold-gradient-text italic font-serif">
@@ -206,7 +206,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({ blocks, slug = '',
                   <div className="w-48 h-16 bg-gold/10 rounded-full blur-2xl animate-pulse" />
                 </div>
                 <p
-                  className="relative font-amiri text-4xl md:text-5xl text-gold-light drop-shadow-[0_0_20px_rgba(212,175,55,0.4)] text-center leading-loose"
+                  className="relative font-amiri text-3xl sm:text-4xl md:text-5xl text-gold-light drop-shadow-[0_0_20px_rgba(212,175,55,0.4)] text-center leading-loose break-words px-4"
                   lang="ar"
                   dir="rtl"
                 >
