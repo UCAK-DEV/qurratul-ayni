@@ -263,8 +263,9 @@ export default function Sidebar() {
                 ))}
               </div>
             </div>
-          ))}
-        </nav>
+          );
+        })}
+      </nav>
 
         <div className="p-8 border-t border-white/5 bg-black/20">
           <div className="flex items-center gap-4 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-700">
