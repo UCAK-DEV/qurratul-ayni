@@ -387,9 +387,14 @@ a:focus-visible {
 /* ═══════════════════════════════════════════════════════════
    READING OPTIMISATIONS MOBILE
    ═══════════════════════════════════════════════════════════ */
-@media (max-width: 640px) {
+@media (max-width: 767px) {
   /* Espace en bas pour la bottom tab bar */
   body { padding-bottom: 64px; }
+
+  /* Remonter le chapter-nav au-dessus de la bottom bar */
+  .chapter-nav {
+    bottom: 64px !important;
+  }
 
   /* Arabic text on small screens */
   .font-amiri { font-size: 1.5rem; }
@@ -401,8 +406,11 @@ a:focus-visible {
     height: calc(64px + env(safe-area-inset-bottom));
     padding-bottom: env(safe-area-inset-bottom);
   }
-  @media (max-width: 640px) {
+  @media (max-width: 767px) {
     body { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
+    .chapter-nav {
+      bottom: calc(64px + env(safe-area-inset-bottom)) !important;
+    }
   }
 }
 
