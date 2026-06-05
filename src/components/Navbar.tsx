@@ -348,7 +348,7 @@ export const Navbar = () => {
       {/* ── DESKTOP NAVBAR ─────────────────────────────────────────────────── */}
       <nav
         aria-label="Navigation principale"
-        className={`fixed top-0 w-full z-[100] transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)] ${
+        className={`hidden md:block fixed top-0 w-full z-[100] transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)] ${
           isScrolled ? 'py-2' : 'py-5'
         } ${!showNav ? '-translate-y-full opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'}`}
         style={isScrolled ? { background: 'var(--bg-nav)', borderBottom: '1px solid var(--border-subtle)', boxShadow: '0 4px 24px rgba(0,0,0,0.15)' } : {}}
@@ -368,16 +368,6 @@ export const Navbar = () => {
                 Qurratul Ayni
               </span>
             </div>
-          </Link>
-
-          {/* ── LOGO MOBILE ── */}
-          <Link href="/" className="md:hidden flex flex-col z-50 opacity-90 active:opacity-100 transition-opacity" aria-label="Accueil Qurratul Ayni">
-            <span className="font-amiri text-[#c9a961] text-[13px] leading-none tracking-wider mb-0.5">
-              قرة العين
-            </span>
-            <span className="text-lg font-serif font-black tracking-[0.15em] uppercase leading-none text-adaptive-primary">
-              Qurratul Ayni
-            </span>
           </Link>
 
           {/* Desktop Nav Links */}

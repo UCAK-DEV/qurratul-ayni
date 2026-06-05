@@ -150,7 +150,7 @@ export const ClientPageUI: React.FC<ClientPageUIProps> = ({
 
   return (
     <main
-      className={`min-h-screen pt-24 pb-40 px-6 selection:bg-gold/30 transition-all duration-700 ${isFocusMode ? 'pt-12' : ''}`}
+      className={`min-h-screen pt-8 md:pt-24 pb-40 px-6 selection:bg-gold/30 transition-all duration-700 ${isFocusMode ? 'pt-8 md:pt-12' : ''}`}
       style={{ backgroundColor: 'var(--bg-base)', color: 'var(--text-primary)' }}
     >
       
