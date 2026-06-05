@@ -1,7 +1,8 @@
 'use client';
 
 import React, { createContext, useContext, useState, useRef, useEffect, useCallback } from 'react';
-import { Chapter, CHAPTERS } from '@/data/chapters';
+import { Chapter } from '@/data/chapters';
+import { useData } from './DataContext';
 
 // Helper to format time for display
 const formatTime = (seconds: number): string => {
@@ -42,9 +43,9 @@ const AudioContext = createContext<AudioContextType | undefined>(undefined);
 
 export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const { chapters } = useData();
   
   // Player state
-  const [chapters] = useState<Chapter[]>(CHAPTERS);
   const [currentChapter, setCurrentChapter] = useState<Chapter | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -100,7 +101,7 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
       });
       setIsPlaying(true);
     }
-  }, [isPlaying, currentChapter]);
+  }, [isPlaying, currentChapter, chapters]);
 
   const setChapter = useCallback((chapter: Chapter) => {
     if (audioRef.current) {

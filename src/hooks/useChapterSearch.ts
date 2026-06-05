@@ -3,8 +3,9 @@
 import { useState, useMemo, useEffect } from 'react';
 import type { IFuseOptions } from 'fuse.js';
 import Fuse from 'fuse.js';
-import { CHAPTERS, Chapter } from '@/data/chapters';
+import { Chapter } from '@/data/chapters';
 import { useDebounce } from '@/hooks/useDebounce';
+import { useData } from '@/context/DataContext';
 
 const fuseOptions: IFuseOptions<Chapter> = {
   keys: ['titleFr', 'titleAr', 'desc'],
@@ -14,9 +15,10 @@ const fuseOptions: IFuseOptions<Chapter> = {
 };
 
 export const useChapterSearch = (query: string, debounceMs: number = 300): Chapter[] => {
+  const { chapters } = useData();
   const [results, setResults] = useState<Chapter[]>([]);
   const debouncedQuery = useDebounce(query, debounceMs);
-  const fuse = useMemo(() => new Fuse(CHAPTERS, fuseOptions), []);
+  const fuse = useMemo(() => new Fuse(chapters, fuseOptions), [chapters]);
 
   useEffect(() => {
     if (debouncedQuery.trim().length > 1) {

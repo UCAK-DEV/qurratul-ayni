@@ -5,11 +5,21 @@ import { CHAPTERS } from '@/data/chapters';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useLearning } from '@/context/LearningContext';
+import { useData } from '@/context/DataContext';
 
 export default function LibraryPage() {
   const { lastVisitedSlug, isCompleted } = useLearning();
+  const { chapters, isLoading } = useData();
 
-  const lastChapter = lastVisitedSlug ? CHAPTERS.find(c => c.id === lastVisitedSlug.split('-')[0]) : null;
+  const lastChapter = lastVisitedSlug ? chapters.find(c => c.id === lastVisitedSlug.split('-')[0]) : null;
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#010302] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-gold"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#010302] text-white pt-24 pb-32 px-6 md:px-16 overflow-x-hidden selection:bg-gold/30">
@@ -75,7 +85,7 @@ export default function LibraryPage() {
 
         {/* Grille de Navigation - Ultra Fluide */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {CHAPTERS.map((chapter, index) => (
+          {chapters.map((chapter, index) => (
             <motion.div
               key={chapter.id}
               initial={{ opacity: 0, y: 30 }}
