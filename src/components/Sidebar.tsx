@@ -137,7 +137,8 @@ export default function Sidebar() {
         initial={{ x: '-100%' }}
         animate={{ x: isOpen ? 0 : '-100%' }}
         transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-        className="fixed top-0 left-0 h-full z-[130] w-full md:w-1/3 lg:w-1/4 bg-[#05110d]/98 border-r border-gold/10 backdrop-blur-3xl shadow-2xl flex flex-col"
+        className="fixed top-0 left-0 h-full z-[130] w-full md:w-1/3 lg:w-1/4 border-r border-gold/10 backdrop-blur-3xl shadow-2xl flex flex-col"
+        style={{ background: 'var(--bg-nav)' }}
         aria-label="Sommaire interactif"
       >
         <div className="p-8 border-b border-white/5">
