@@ -10,78 +10,130 @@ interface ReadingSettingsProps {
 }
 
 export const ReadingSettings: React.FC<ReadingSettingsProps> = ({ isOpen, onClose }) => {
-  const { readingSettings, setReadingSettings } = useTheme();
+  const { readingSettings, setReadingSettings, theme, toggleTheme } = useTheme();
 
-  const fontSizes = [100, 110, 120, 130, 140];
+  const fontSizes = [90, 100, 115, 130, 145];
   const lineHeights = [1.4, 1.6, 1.8, 2.0];
 
   return (
     <AnimatePresence>
       {isOpen && (
         <>
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[150]"
+            className="fixed inset-0 z-[150]"
+            style={{ background: 'var(--bg-overlay)', backdropFilter: 'blur(4px)' }}
           />
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            initial={{ opacity: 0, scale: 0.92, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-md bg-emerald-950/95 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] shadow-2xl p-8 z-[160]"
+            exit={{ opacity: 0, scale: 0.92, y: 20 }}
+            transition={{ type: 'spring', damping: 22, stiffness: 260 }}
+            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[92%] max-w-sm rounded-[2rem] shadow-2xl p-7 z-[160]"
+            style={{ background: 'var(--bg-surface)', border: '1px solid var(--border-medium)' }}
           >
-            <div className="flex justify-between items-center mb-8">
-              <h2 className="text-gold font-black text-xs uppercase tracking-[0.4em]">Réglages de lecture</h2>
-              <button onClick={onClose} className="p-2 hover:bg-white/5 rounded-full transition-colors">
-                <span className="material-symbols-rounded text-white/60">close</span>
+            {/* Header */}
+            <div className="flex justify-between items-center mb-7">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-rounded text-[#c9a961] text-lg">tune</span>
+                <h2 className="font-black text-xs uppercase tracking-[0.35em]" style={{ color: '#c9a961' }}>
+                  Réglages
+                </h2>
+              </div>
+              <button onClick={onClose} className="w-8 h-8 flex items-center justify-center rounded-full transition-colors"
+                style={{ background: 'var(--border-subtle)', color: 'var(--text-muted)' }}>
+                <span className="material-symbols-rounded text-base">close</span>
               </button>
             </div>
 
-            <div className="space-y-10">
+            <div className="space-y-7">
+
+              {/* Mode Jour / Nuit */}
+              <div className="space-y-3">
+                <p className="text-[10px] uppercase font-black tracking-widest" style={{ color: 'var(--text-muted)' }}>
+                  Thème
+                </p>
+                <div className="grid grid-cols-2 gap-2">
+                  {/* Night mode button */}
+                  <motion.button
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => theme !== 'dark' && toggleTheme()}
+                    className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl border text-sm font-bold transition-all"
+                    style={theme === 'dark'
+                      ? { background: 'rgba(201,169,97,0.15)', borderColor: '#c9a961', color: '#c9a961' }
+                      : { background: 'var(--bg-card)', borderColor: 'var(--border-subtle)', color: 'var(--text-muted)' }
+                    }
+                  >
+                    <span className="material-symbols-rounded text-lg">dark_mode</span>
+                    Nuit
+                  </motion.button>
+                  {/* Day mode button */}
+                  <motion.button
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => theme !== 'light' && toggleTheme()}
+                    className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl border text-sm font-bold transition-all"
+                    style={theme === 'light'
+                      ? { background: 'rgba(201,169,97,0.2)', borderColor: '#c9a961', color: '#8a6a20' }
+                      : { background: 'var(--bg-card)', borderColor: 'var(--border-subtle)', color: 'var(--text-muted)' }
+                    }
+                  >
+                    <span className="material-symbols-rounded text-lg">light_mode</span>
+                    Jour
+                  </motion.button>
+                </div>
+              </div>
+
               {/* Taille de police */}
-              <div className="space-y-4">
-                <p className="text-[10px] uppercase font-bold tracking-widest text-white/40">Taille du texte</p>
-                <div className="flex justify-between gap-2">
+              <div className="space-y-3">
+                <p className="text-[10px] uppercase font-black tracking-widest" style={{ color: 'var(--text-muted)' }}>
+                  Taille du texte
+                </p>
+                <div className="flex gap-2">
                   {fontSizes.map(size => (
                     <button
                       key={size}
                       onClick={() => setReadingSettings({ ...readingSettings, fontSize: size })}
-                      className={`flex-1 py-3 rounded-xl border transition-all text-sm font-bold ${
-                        readingSettings.fontSize === size 
-                        ? 'bg-gold border-gold text-emerald-950' 
-                        : 'bg-white/5 border-white/10 text-white/60 hover:border-gold/30'
-                      }`}
+                      className="flex-1 py-2.5 rounded-xl border text-xs font-bold transition-all"
+                      style={readingSettings.fontSize === size
+                        ? { background: 'rgba(201,169,97,0.15)', borderColor: '#c9a961', color: '#c9a961' }
+                        : { background: 'var(--bg-card)', borderColor: 'var(--border-subtle)', color: 'var(--text-muted)' }
+                      }
                     >
-                      {size}%
+                      {size === 90 ? 'XS' : size === 100 ? 'S' : size === 115 ? 'M' : size === 130 ? 'L' : 'XL'}
                     </button>
                   ))}
                 </div>
               </div>
 
               {/* Interlignage */}
-              <div className="space-y-4">
-                <p className="text-[10px] uppercase font-bold tracking-widest text-white/40">Espacement des lignes</p>
-                <div className="flex justify-between gap-2">
-                  {lineHeights.map(height => (
+              <div className="space-y-3">
+                <p className="text-[10px] uppercase font-black tracking-widest" style={{ color: 'var(--text-muted)' }}>
+                  Espacement des lignes
+                </p>
+                <div className="flex gap-2">
+                  {lineHeights.map(h => (
                     <button
-                      key={height}
-                      onClick={() => setReadingSettings({ ...readingSettings, lineHeight: height })}
-                      className={`flex-1 py-3 rounded-xl border transition-all text-sm font-bold ${
-                        readingSettings.lineHeight === height 
-                        ? 'bg-gold border-gold text-emerald-950' 
-                        : 'bg-white/5 border-white/10 text-white/60 hover:border-gold/30'
-                      }`}
+                      key={h}
+                      onClick={() => setReadingSettings({ ...readingSettings, lineHeight: h })}
+                      className="flex-1 py-2.5 rounded-xl border text-xs font-bold transition-all"
+                      style={readingSettings.lineHeight === h
+                        ? { background: 'rgba(201,169,97,0.15)', borderColor: '#c9a961', color: '#c9a961' }
+                        : { background: 'var(--bg-card)', borderColor: 'var(--border-subtle)', color: 'var(--text-muted)' }
+                      }
                     >
-                      {height}
+                      {h === 1.4 ? 'Compact' : h === 1.6 ? 'Normal' : h === 1.8 ? 'Aéré' : 'Large'}
                     </button>
                   ))}
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-white/5">
-                <p className="text-[9px] text-center text-white/30 italic">Ces réglages sont appliqués à tous les contenus éducatifs.</p>
+              <div className="pt-2 border-t" style={{ borderColor: 'var(--border-subtle)' }}>
+                <p className="text-[9px] text-center font-serif italic" style={{ color: 'var(--text-muted)' }}>
+                  Réglages sauvegardés automatiquement
+                </p>
               </div>
             </div>
           </motion.div>

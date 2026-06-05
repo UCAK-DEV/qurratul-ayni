@@ -19,7 +19,7 @@ export default function LibraryPage() {
 
   if (!mounted || isLoading) {
     return (
-      <div className="min-h-screen bg-[#010302] flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--bg-base)' }}>
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-gold"></div>
       </div>
     );
@@ -27,7 +27,7 @@ export default function LibraryPage() {
 
   if (error && chapters.length === 0) {
     return (
-      <div className="min-h-screen bg-[#010302] text-white flex flex-col items-center justify-center p-6 text-center">
+      <div className="min-h-screen text-white flex flex-col items-center justify-center p-6 text-center" style={{ backgroundColor: 'var(--bg-base)', color: 'var(--text-primary)' }}>
         <div className="w-20 h-20 rounded-full bg-red-500/10 flex items-center justify-center mb-6 border border-red-500/20">
           <span className="material-symbols-rounded text-4xl text-red-500">cloud_off</span>
         </div>
@@ -51,7 +51,9 @@ export default function LibraryPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#010302] text-white pt-24 pb-32 px-6 md:px-16 overflow-x-hidden selection:bg-gold/30">
+    <div className="min-h-screen pt-24 pb-32 px-6 md:px-16 overflow-x-hidden selection:bg-gold/30"
+      style={{ backgroundColor: 'var(--bg-base)', color: 'var(--text-primary)' }}
+    >
       
       {/* Reprise Automatique */}
       <AnimatePresence>

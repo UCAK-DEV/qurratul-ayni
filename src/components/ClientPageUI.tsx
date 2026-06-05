@@ -9,6 +9,68 @@ import { useLearning } from '@/context/LearningContext';
 import { useTheme } from '@/context/ThemeContext';
 import { PageContent } from '@/types/content';
 import { Chapter } from '@/data/chapters';
+import { ReadingProgress } from '@/components/ReadingProgress';
+import { ChapterNav } from '@/components/ChapterNav';
+import { ReadingToolbar } from '@/components/ReadingToolbar';
+import { QuizSection, ZAKAT_QUIZ_DEMO } from '@/components/QuizSection';
+
+// ─── Navigation map: slug → { prev, next, label } ────────────────────────────
+// Build the ordered sequence of all known slugs so we can compute prev/next
+const ORDERED_SLUGS: Array<{ id: string; label: string }> = [
+  { id: '1',    label: 'Cheikh Ibrahim Niasse' },
+  { id: '2',    label: 'La Foi (Aqida)' },
+  { id: '3',    label: 'La Pureté Rituelle' },
+  { id: '4',    label: 'La Prière' },
+  { id: '5',    label: 'Le Jeûne (Siyam)' },
+  { id: '6',    label: 'Le Pèlerinage (Hajj)' },
+  { id: '7',    label: 'Le Mariage' },
+  { id: '8',    label: 'L\'Héritage' },
+  { id: '9',    label: 'La Zakat — Aperçu' },
+  { id: '9-a',  label: 'L\'Argent Épargné' },
+  { id: '9-b',  label: 'Produits Agricoles' },
+  { id: '9-c',  label: 'Le Bétail' },
+  { id: '9-d',  label: 'Qui a droit à la Zakat ?' },
+  { id: '9-e',  label: 'Zakat al-Fitr' },
+  { id: '10',   label: 'La Médecine Prophétique' },
+  { id: '10-a', label: 'Al-Fatiha comme remède' },
+  { id: '10-b', label: 'Le Miel' },
+  { id: '10-c', label: 'La Cupping (Hijama)' },
+  { id: '10-d', label: 'La Nigelle' },
+  { id: '11',   label: 'L\'Éducation Islamique' },
+  { id: '11-a', label: 'Fondements Pédagogiques' },
+  { id: '11-b', label: 'L\'Éducation de l\'Enfant' },
+  { id: '11-c', label: 'Vertus du Savoir' },
+  { id: '12',   label: 'La Spiritualité (Tasawwuf)' },
+  { id: '12-a', label: 'Purification du Cœur' },
+  { id: '12-b', label: 'Le Dhikr' },
+  { id: '12-c', label: 'Les Stations Spirituelles' },
+  { id: '12-d', label: 'L\'Amour Divin' },
+  { id: '13',   label: 'La Mort et l\'Au-delà' },
+  { id: '13-a', label: 'Les Signes Annonciateurs' },
+  { id: '13-b', label: 'Le Jour du Jugement' },
+  { id: '14',   label: 'Les Invocations (Dou\'as)' },
+  { id: '14-a', label: 'Dou\'a du Matin' },
+  { id: '14-b', label: 'Dou\'a du Soir' },
+  { id: '14-c', label: 'Dou\'a après la Prière' },
+  { id: '15',   label: 'Le Commerce Licite' },
+  { id: '16',   label: 'La Famille en Islam' },
+  { id: '17',   label: 'Les Droits des Voisins' },
+  { id: '18',   label: 'La Politique Islamique' },
+  { id: '19',   label: 'Épilogue' },
+];
+
+function getNavItems(fullId: string) {
+  const idx = ORDERED_SLUGS.findIndex(s => s.id === fullId);
+  const prev = idx > 0 ? ORDERED_SLUGS[idx - 1] : undefined;
+  const next = idx < ORDERED_SLUGS.length - 1 ? ORDERED_SLUGS[idx + 1] : undefined;
+  return { prev, next };
+}
+
+// Demo quiz only on chapter 9 sections for now
+function getQuizForSlug(slug: string) {
+  if (slug.startsWith('9')) return ZAKAT_QUIZ_DEMO;
+  return null;
+}
 
 interface ClientPageUIProps {
   pageContent: PageContent;
@@ -50,16 +112,36 @@ export const ClientPageUI: React.FC<ClientPageUIProps> = ({
     }
   };
 
+  // Navigation
+  const { prev, next } = getNavItems(fullId);
+  const navPrev = prev ? { slug: prev.id, label: prev.label } : undefined;
+  const navNext = next ? { slug: next.id, label: next.label } : undefined;
+  const parentChapterSlug = slugArray.length > 1 ? chapterId : undefined;
+
+  // Quiz data (if applicable)
+  const quizData = pageContent.quiz ?? getQuizForSlug(fullId);
+
   return (
-    <main className={`min-h-screen bg-[#010302] text-white pt-24 pb-48 px-6 selection:bg-gold/30 transition-all duration-700 ${isFocusMode ? 'pt-12' : ''}`}>
+    <main
+      className={`min-h-screen pt-24 pb-40 px-6 selection:bg-gold/30 transition-all duration-700 ${isFocusMode ? 'pt-12' : ''}`}
+      style={{ backgroundColor: 'var(--bg-base)', color: 'var(--text-primary)' }}
+    >
       
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+      {/* Background ambient */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none ambient-gradient">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[50vh] bg-gradient-to-b from-gold/5 to-transparent blur-3xl" />
       </div>
 
+      {/* Scroll progress bar (top of page) */}
+      <ScrollProgressBar />
+
+      {/* Reading Toolbar (floating right) */}
+      {!isFocusMode && <ReadingToolbar />}
+
       <div className={`max-w-6xl mx-auto relative z-10 transition-all duration-700 ${isFocusMode ? 'max-w-4xl' : ''}`}>
         
-        <div className="fixed top-8 right-8 z-50">
+        {/* Focus Mode Toggle */}
+        <div className="fixed top-8 right-20 z-50">
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
@@ -77,12 +159,13 @@ export const ClientPageUI: React.FC<ClientPageUIProps> = ({
           </motion.button>
         </div>
 
-        <header className="mb-24 flex flex-col items-center text-center">
+        {/* Page Header */}
+        <header className="mb-16 flex flex-col items-center text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="space-y-6"
+            className="space-y-6 w-full"
           >
             {pageContent.basmala && (
                <p className="font-amiri text-4xl text-gold-light mb-8 drop-shadow-[0_0_15px_rgba(212,175,55,0.3)]" lang="ar" dir="rtl">
@@ -123,12 +206,23 @@ export const ClientPageUI: React.FC<ClientPageUIProps> = ({
                 </span>
               </motion.button>
             )}
+
+            {/* Reading Progress Bar */}
+            <div className="pt-4">
+              <ReadingProgress
+                chapterId={chapterId}
+                currentSlug={fullId}
+                chapterTitle={chapterData.titleFr}
+              />
+            </div>
           </motion.div>
         </header>
 
+        {/* Main Content */}
         <BlockRenderer blocks={pageContent.blocks} slug={fullId} chapterTitle={pageContent.titleFr} />
 
-        <div className="mt-32 border-t border-white/5 pt-16 flex flex-col items-center">
+        {/* Mark as Complete Button */}
+        <div className="mt-24 border-t border-white/5 pt-16 flex flex-col items-center gap-6">
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -143,30 +237,54 @@ export const ClientPageUI: React.FC<ClientPageUIProps> = ({
               {isCompleted(fullId) ? 'task_alt' : 'check_circle'}
             </span>
             <span className="text-sm font-black uppercase tracking-[0.2em]">
-              {isCompleted(fullId) ? 'Leçon mémorisée' : 'Marquer comme lu'}
+              {isCompleted(fullId) ? 'Leçon mémorisée ✓' : 'Marquer comme lu'}
             </span>
           </motion.button>
         </div>
+
+        {/* Quiz & Flashcards Section */}
+        {quizData && <QuizSection quiz={quizData} chapterTitle={pageContent.titleFr} />}
       </div>
 
-      <AnimatePresence>
-        {!isFocusMode && (
-          <motion.nav 
-            initial={{ y: 100, x: '-50%' }}
-            animate={{ y: 0, x: '-50%' }}
-            exit={{ y: 100, x: '-50%' }}
-            className="fixed bottom-10 left-1/2 flex items-center p-2 bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-full shadow-2xl z-50"
-          >
-            <button 
-              onClick={() => router.push('/accueil')} 
-              className="px-8 py-3 rounded-full text-[10px] uppercase tracking-[0.2em] font-bold text-white/50 hover:text-white transition-all"
-            >
-              Sommaire
-            </button>
-            <div className="w-[1px] h-4 bg-white/10 mx-2" />
-          </motion.nav>
-        )}
-      </AnimatePresence>
+      {/* Chapter Navigation (bottom fixed bar) */}
+      {!isFocusMode && (
+        <ChapterNav
+          prev={navPrev}
+          next={navNext}
+          summarySlug={parentChapterSlug}
+          currentTitle={pageContent.titleFr}
+        />
+      )}
     </main>
   );
 };
+
+// ─── Scroll Progress Indicator ─────────────────────────────────────────────────
+const ScrollProgressBar: React.FC = () => {
+  const [progress, setProgress] = React.useState(0);
+
+  React.useEffect(() => {
+    const update = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const totalHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      setProgress(totalHeight > 0 ? (scrollTop / totalHeight) * 100 : 0);
+    };
+    // Listen on both window and document for cross-browser support
+    window.addEventListener('scroll', update, { passive: true });
+    document.addEventListener('scroll', update, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', update);
+      document.removeEventListener('scroll', update);
+    };
+  }, []);
+
+  return (
+    <div className="fixed top-0 left-0 right-0 h-[2px] z-[200] bg-white/5" aria-hidden="true">
+      <div
+        className="h-full bg-gradient-to-r from-gold/60 to-gold transition-[width] duration-100 ease-linear"
+        style={{ width: `${progress}%` }}
+      />
+    </div>
+  );
+};
+

@@ -2,7 +2,7 @@
 
 import React, { createContext, useEffect, useContext, useState, ReactNode } from 'react';
 
-type Theme = 'dark'; // Only dark mode for now
+export type Theme = 'dark' | 'light';
 
 interface ReadingSettings {
   fontSize: number;   // In percentage (ex: 100, 110, 120)
@@ -15,12 +15,13 @@ interface ThemeContextType {
   isFocusMode: boolean;
   setReadingSettings: (settings: ReadingSettings) => void;
   toggleFocusMode: () => void;
+  toggleTheme: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const theme: Theme = 'dark';
+  const [theme, setTheme] = useState<Theme>('dark');
   const [isFocusMode, setIsFocusMode] = useState(false);
   const [readingSettings, setReadingSettings] = useState<ReadingSettings>({
     fontSize: 100,
@@ -29,16 +30,43 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     try {
-      document.documentElement.setAttribute('data-theme', 'dark');
-      
+      // Load saved theme
+      const savedTheme = localStorage.getItem('qa-theme') as Theme | null;
+      const resolvedTheme: Theme = savedTheme === 'light' ? 'light' : 'dark';
+      setTheme(resolvedTheme);
+      applyTheme(resolvedTheme);
+
+      // Load reading settings
       const saved = localStorage.getItem('readingSettings');
       if (saved) {
         setReadingSettings(JSON.parse(saved));
       }
     } catch (error) {
       console.error("Failed to load settings:", error);
+      applyTheme('dark');
     }
   }, []);
+
+  const applyTheme = (t: Theme) => {
+    const html = document.documentElement;
+    html.setAttribute('data-theme', t);
+    // Update meta theme-color for mobile browser chrome
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) {
+      meta.setAttribute('content', t === 'light' ? '#f5f0e4' : '#020504');
+    }
+  };
+
+  const toggleTheme = () => {
+    setTheme(prev => {
+      const next: Theme = prev === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+      try {
+        localStorage.setItem('qa-theme', next);
+      } catch (e) { /* ignore */ }
+      return next;
+    });
+  };
 
   const updateSettings = (newSettings: ReadingSettings) => {
     setReadingSettings(newSettings);
@@ -53,7 +81,8 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
       readingSettings, 
       isFocusMode, 
       setReadingSettings: updateSettings,
-      toggleFocusMode 
+      toggleFocusMode,
+      toggleTheme,
     }}>
       {children}
     </ThemeContext.Provider>
