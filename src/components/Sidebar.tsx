@@ -83,6 +83,9 @@ export default function Sidebar() {
 
   const toggleSidebar = () => setIsOpen(!isOpen);
 
+  // Groupes dans l'ordre logique souhaité
+  const groupOrder = ["Introduction", "Les Piliers", "Rites et Société", "Jurisprudence", "Spiritualité"];
+
   const groupedChapters = chapters.reduce((acc, chapter) => {
     (acc[chapter.group] = acc[chapter.group] || []).push(chapter);
     return acc;
@@ -181,11 +184,14 @@ export default function Sidebar() {
             </Link>
           </div>
 
-          {Object.entries(groupedChapters).map(([group, chapters]) => (
-            <div key={group} className="space-y-3">
-              <h3 className="px-4 text-[10px] font-black text-gold/40 uppercase tracking-[0.2em] border-l border-gold/20 ml-2">{group}</h3>
-              <div className="space-y-1">
-                {chapters.map((chapter) => (
+          {groupOrder.map((group) => {
+            const chaptersInGroup = groupedChapters[group];
+            if (!chaptersInGroup) return null;
+            return (
+              <div key={group} className="space-y-3">
+                <h3 className="px-4 text-[10px] font-black text-gold/40 uppercase tracking-[0.2em] border-l border-gold/20 ml-2">{group}</h3>
+                <div className="space-y-1">
+                  {chaptersInGroup.map((chapter) => (
                   <div key={chapter.id} className="relative">
                     <button
                       onClick={() => setExpandedChapter(expandedChapter === chapter.id ? null : chapter.id)}

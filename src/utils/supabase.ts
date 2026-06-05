@@ -23,16 +23,15 @@ export const fetchChapters = async (): Promise<Chapter[]> => {
   const supabase = getSupabaseClient();
   const { data, error } = await supabase
     .from('chapters')
-    .select('*')
-    .order('id', { ascending: true });
+    .select('*');
 
   if (error) {
     console.error('Error fetching chapters:', error);
     return [];
   }
 
-  // Mapping pour correspondre aux interfaces TS (camelCase)
-  return (data || []).map((c: any) => ({
+  // Mapping et Tri Numérique (pour éviter 1, 10, 2...)
+  const mapped = (data || []).map((c: any) => ({
     id: c.id,
     titleAr: c.titlear,
     titleFr: c.titlefr,
@@ -41,6 +40,8 @@ export const fetchChapters = async (): Promise<Chapter[]> => {
     group: c.group,
     icon: c.icon
   }));
+
+  return mapped.sort((a, b) => parseInt(a.id) - parseInt(b.id));
 };
 
 export const fetchPageContent = async (fullId: string): Promise<PageContent | null> => {
