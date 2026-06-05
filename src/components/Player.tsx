@@ -63,182 +63,149 @@ export const Player = () => {
   return (
     <AnimatePresence>
       <motion.div 
-        initial={{ y: 100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        exit={{ y: 100, opacity: 0 }}
-        className="fixed bottom-0 left-0 w-full z-[100] p-4 bg-gradient-to-t from-emerald-950-dynamic/90 to-emerald-950-dynamic/60 backdrop-blur-xl border-t border-white/5 shadow-2xl md:pb-6"
+        initial={{ y: 150, opacity: 0, scale: 0.95 }}
+        animate={{ y: 0, opacity: 1, scale: 1 }}
+        exit={{ y: 150, opacity: 0, scale: 0.95 }}
+        transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+        className="fixed z-[150] bottom-[80px] md:bottom-8 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:w-auto md:min-w-[600px] flex flex-col overflow-hidden rounded-3xl border border-[var(--border-gold)] shadow-[var(--shadow-gold)]"
+        style={{ background: 'var(--bg-nav)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}
         onMouseUp={handleSeekEnd}
         onMouseLeave={handleSeekEnd}
       >
+        {/* Progress Bar (integrated at the very top of the pill) */}
         <div 
           ref={progressBarRef} 
-          className="relative w-full h-1.5 bg-white/10 rounded-full cursor-pointer group mb-4"
+          className="relative w-full h-1.5 bg-black/5 dark:bg-white/5 cursor-pointer group"
           onMouseDown={handleSeekStart}
           onMouseMove={handleSeek}
           onMouseUp={handleSeekEnd}
         >
           <motion.div 
-            className="h-full bg-gold shadow-[0_0_10px_#C9A961] rounded-full" 
+            className="h-full bg-gold rounded-r-full relative" 
             style={{ width: `${isSeeking ? (seekTime / duration) * 100 : progress}%` }}
-          />
-          <div 
-            className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-gold rounded-full shadow-[0_0_15px_#C9A961] opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-            style={{ left: `${isSeeking ? (seekTime / duration) * 100 : progress}%` }}
-          />
+          >
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-[0_0_8px_rgba(201,169,97,0.8)] opacity-0 group-hover:opacity-100 transition-opacity translate-x-1/2" />
+          </motion.div>
         </div>
 
-        <div className="flex items-center justify-between gap-4 md:gap-8">
-          <div className="flex items-center gap-3 w-1/3 md:w-auto">
+        <div className="flex items-center justify-between p-3 md:px-6 md:py-4 gap-4">
+          
+          {/* Left: Info & Close */}
+          <div className="flex items-center gap-3 w-1/3 md:w-[200px]">
             <button 
               onClick={quitPlayback} 
-              className="text-white/60 hover:text-red-400 transition-colors p-1 md:p-2"
-              aria-label="Quitter la lecture"
+              className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-red-500/10 text-[var(--text-muted)] hover:text-red-500 transition-colors"
+              aria-label="Fermer le lecteur"
             >
-              <span className="material-symbols-rounded text-xl md:text-2xl">close</span>
+              <span className="material-symbols-rounded text-lg">close</span>
             </button>
-            <div className="w-9 h-9 md:w-10 md:h-10 bg-gold/10 rounded-lg flex items-center justify-center text-gold text-xl shrink-0" aria-hidden="true">
-              <span className="material-symbols-rounded">menu_book</span>
-            </div>
-            <div className="min-w-0 hidden sm:block">
-              <p className="text-[10px] font-black text-gold uppercase tracking-[0.1em] truncate">
+            <div className="min-w-0 flex flex-col justify-center">
+              <p className="text-[10px] font-black text-gold uppercase tracking-widest truncate">
                 {currentChapter.titleFr}
               </p>
-              <p className="text-xs text-white/70 truncate" lang="ar" dir="rtl">
+              <p className="text-xs text-[var(--text-secondary)] font-amiri truncate" lang="ar" dir="rtl">
                 {currentChapter.titleAr}
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 md:gap-4 flex-1 justify-center">
+          {/* Center: Playback Controls */}
+          <div className="flex items-center justify-center gap-2 md:gap-4">
             <button 
               onClick={playPrevious} 
-              className="text-white/70 hover:text-white transition-colors p-2 md:p-3"
+              className="text-[var(--text-muted)] hover:text-gold transition-colors p-2"
               aria-label="Chapitre précédent"
             >
-              <span className="material-symbols-rounded text-xl md:text-2xl">skip_previous</span>
+              <span className="material-symbols-rounded text-2xl">skip_previous</span>
             </button>
+            
             <button 
               onClick={togglePlay} 
-              className="w-12 h-12 bg-gold text-emerald-950-dynamic rounded-full flex items-center justify-center shadow-lg hover:scale-105 transition-transform"
+              className="w-12 h-12 md:w-14 md:h-14 bg-gold rounded-full flex items-center justify-center shadow-[0_4px_15px_rgba(201,169,97,0.3)] hover:scale-105 transition-transform text-[#05110d]"
               aria-label={isPlaying ? 'Pause' : 'Lecture'}
-              aria-pressed={isPlaying}
             >
               {isLoading ? (
                 <span className="material-symbols-rounded text-3xl animate-spin">progress_activity</span>
               ) : (
-                <span className="material-symbols-rounded text-3xl">
+                <span className="material-symbols-rounded text-3xl md:text-4xl translate-x-[1px]">
                   {isPlaying ? 'pause' : 'play_arrow'}
                 </span>
               )}
             </button>
+            
             <button 
               onClick={playNext} 
-              className="text-white/70 hover:text-white transition-colors p-2 md:p-3"
+              className="text-[var(--text-muted)] hover:text-gold transition-colors p-2"
               aria-label="Chapitre suivant"
             >
-              <span className="material-symbols-rounded text-xl md:text-2xl">skip_next</span>
+              <span className="material-symbols-rounded text-2xl">skip_next</span>
             </button>
           </div>
 
-          {/* Secondary Controls - Visible on Desktop */}
-          <div className="hidden md:flex items-center justify-end gap-2 md:gap-4 w-1/3 md:w-auto">
-            <p className="text-xs text-white/50 font-mono" aria-label="Temps écoulé et durée totale">
-              {formatTime(isSeeking ? seekTime : currentTime)} / {formatTime(duration)}
+          {/* Right: Secondary Controls */}
+          <div className="flex items-center justify-end gap-1 md:gap-3 w-1/3 md:w-[200px]">
+            <p className="hidden lg:block text-xs text-[var(--text-muted)] font-mono tracking-tighter w-20 text-right">
+              {formatTime(isSeeking ? seekTime : currentTime)}
             </p>
-            <div className="flex items-center gap-1 md:gap-2 group">
-              <button 
-                onClick={toggleMute} 
-                className="text-white/70 hover:text-white transition-colors p-2 md:p-3"
-                aria-label={isMuted || volume === 0 ? 'Activer le son' : 'Couper le son'}
-              >
-                <span className="material-symbols-rounded text-xl md:text-2xl">
-                  {isMuted || volume === 0 ? 'volume_off' : volume > 0.5 ? 'volume_up' : 'volume_down'}
-                </span>
+            
+            {/* Speed Control */}
+            <div className="relative group hidden sm:block">
+              <button className="text-[var(--text-muted)] hover:text-gold transition-colors p-2 font-black text-[10px] tracking-widest uppercase">
+                {playbackRate}x
               </button>
-              <input 
-                type="range" 
-                min="0" 
-                max="1" 
-                step="0.01" 
-                value={localVolume} 
-                onChange={handleVolumeChange} 
-                className="w-16 md:w-20 h-1 accent-gold opacity-0 group-hover:opacity-100 transition-opacity duration-200" 
-                aria-label="Régler le volume"
-              />
-            </div>
-            <div className="relative group">
-              <button 
-                className="text-white/70 hover:text-white transition-colors p-2 md:p-3"
-                aria-label="Vitesse de lecture"
-              >
-                <span className="material-symbols-rounded text-xl md:text-2xl">speed</span>
-              </button>
-              <div className="absolute bottom-full mb-2 right-1/2 translate-x-1/2 p-2 bg-emerald-950-dynamic/90 backdrop-blur-lg rounded-full shadow-lg border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
-                {[0.75, 1.0, 1.25, 1.5, 2.0].map(rate => (
+              <div className="absolute bottom-full mb-4 right-1/2 translate-x-1/2 p-2 bg-[var(--bg-surface)] rounded-2xl shadow-xl border border-[var(--border-subtle)] opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-1 pointer-events-none group-hover:pointer-events-auto">
+                {[2.0, 1.5, 1.25, 1.0, 0.75].map(rate => (
                   <button 
                     key={rate} 
                     onClick={() => handlePlaybackRateChange(rate)} 
-                    className={`text-xs px-2 py-1 rounded-full ${playbackRate === rate ? 'bg-gold text-emerald-950-dynamic' : 'text-white/70 hover:bg-white/10'}`}
-                    aria-label={`Vitesse ${rate}x`}
+                    className={`text-xs px-4 py-2 rounded-xl text-center font-bold transition-colors ${playbackRate === rate ? 'bg-gold text-white' : 'text-[var(--text-secondary)] hover:bg-[var(--bg-base)]'}`}
                   > {rate}x </button>
                 ))}
               </div>
             </div>
-            <button 
-              onClick={toggleLoop} 
-              className={`p-2 md:p-3 rounded-full ${isLooping ? 'text-gold bg-gold/10' : 'text-white/70 hover:bg-white/10'} transition-all`}
-              aria-label="Répéter en boucle"
-              aria-pressed={isLooping}
-            >
-              <span className="material-symbols-rounded text-xl md:text-2xl">repeat</span>
-            </button>
+
+            {/* Mobile Options Menu */}
+            <div className="sm:hidden relative">
+              <button 
+                onClick={() => setIsOptionsMenuOpen(!isOptionsMenuOpen)} 
+                className={`p-2 rounded-full transition-colors ${isOptionsMenuOpen ? 'text-gold' : 'text-[var(--text-muted)] hover:text-gold'}`}
+              >
+                <span className="material-symbols-rounded">more_vert</span>
+              </button>
+              <AnimatePresence>
+                {isOptionsMenuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.9 }}
+                    className="absolute bottom-full right-0 mb-4 p-4 min-w-[200px] bg-[var(--bg-surface)] backdrop-blur-xl rounded-2xl shadow-2xl border border-[var(--border-subtle)] flex flex-col gap-5 origin-bottom-right"
+                  >
+                    <div className="text-[var(--text-primary)] font-bold text-xs uppercase tracking-widest text-center border-b border-[var(--border-subtle)] pb-2 mb-1">Options audio</div>
+                    <div className="flex items-center gap-3">
+                      <span className="material-symbols-rounded text-xl text-gold">speed</span>
+                      <div className="flex flex-wrap gap-1 flex-1 justify-end">
+                        {[0.75, 1.0, 1.25, 1.5, 2.0].map(rate => (
+                          <button key={rate} onClick={() => handlePlaybackRateChange(rate)} className={`text-[10px] font-bold px-2 py-1 rounded-full ${playbackRate === rate ? 'bg-gold text-white' : 'bg-[var(--bg-base)] text-[var(--text-secondary)]'}`} > {rate}x </button>
+                        ))}
+                      </div>
+                    </div>
+                    <button onClick={toggleLoop} className={`flex items-center justify-between w-full p-2 rounded-xl transition-colors ${isLooping ? 'bg-gold/10 text-gold' : 'hover:bg-[var(--bg-base)] text-[var(--text-secondary)]'}`}>
+                      <span className="text-xs font-bold uppercase tracking-widest">En Boucle</span>
+                      <span className="material-symbols-rounded text-xl">repeat</span>
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
 
-          {/* More Options Button - Visible on Mobile */}
-          <div className="relative w-1/3 md:hidden flex justify-end">
-            <button 
-              onClick={() => setIsOptionsMenuOpen(!isOptionsMenuOpen)} 
-              className="p-2 rounded-full text-white/70 hover:text-white"
-              aria-label="Plus d'options de lecture"
-              aria-expanded={isOptionsMenuOpen}
-            >
-              <span className="material-symbols-rounded">more_vert</span>
-            </button>
-            <AnimatePresence>
-              {isOptionsMenuOpen && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  className="absolute bottom-full right-0 mb-2 p-4 bg-gradient-to-br from-emerald-950/95 to-emerald-900/90 backdrop-blur-lg rounded-xl shadow-lg border border-white/10 flex flex-col gap-4"
-                >
-                  <div className="flex items-center gap-2 text-white/70">
-                    <span className="material-symbols-rounded text-xl">volume_up</span>
-                    <input type="range" min="0" max="1" step="0.01" value={localVolume} onChange={handleVolumeChange} className="w-24 h-1 accent-gold" />
-                  </div>
-                  <div className="text-white/70">
-                    <p className="text-xs mb-2">Vitesse</p>
-                    <div className="flex gap-1">
-                      {[0.75, 1.0, 1.25, 1.5, 2.0].map(rate => (
-                        <button key={rate} onClick={() => handlePlaybackRateChange(rate)} className={`text-xs px-2 py-1 rounded-full ${playbackRate === rate ? 'bg-gold text-emerald-950-dynamic' : 'text-white/70 hover:bg-white/10'}`} > {rate}x </button>
-                      ))}
-                    </div>
-                  </div>
-                  <button onClick={toggleLoop} className={`p-2 rounded-full flex items-center gap-2 ${isLooping ? 'text-gold' : 'text-white/70'}`}>
-                    <span className="material-symbols-rounded text-xl">repeat</span>
-                    <span className="text-xs">Répéter</span>
-                  </button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
         </div>
 
         {error && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="absolute -top-10 left-1/2 -translate-x-1/2 bg-red-600 text-white text-xs px-3 py-1 rounded-md shadow-md"
+            className="absolute -top-12 left-1/2 -translate-x-1/2 bg-red-500 text-white font-bold text-[10px] uppercase tracking-widest px-4 py-2 rounded-full shadow-lg"
           >
             {error}
           </motion.div>
