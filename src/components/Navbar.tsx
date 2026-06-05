@@ -350,23 +350,14 @@ export const Navbar = () => {
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
 
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 z-50 group" aria-label="Accueil Qurratul Ayni">
-            <motion.div
-              whileHover={{ scale: 1.08, rotate: -12 }}
-              className="w-10 h-10 border rounded-xl flex items-center justify-center"
-              style={{ background: 'rgba(201,169,97,0.1)', borderColor: 'rgba(201,169,97,0.4)' }}
-            >
-              <span className="material-symbols-rounded text-[#c9a961] text-2xl">auto_stories</span>
-            </motion.div>
-            <div className="hidden sm:flex flex-col">
-              <span className="text-base font-black tracking-widest uppercase leading-none" style={{ color: 'var(--text-primary)' }}>
-                Qurratul <span className="text-[#c9a961]">Ayni</span>
-              </span>
-              <span className="text-[9px] uppercase tracking-[0.3em]" style={{ color: 'var(--text-muted)' }}>
-                Enseignements Sacrés
-              </span>
-            </div>
+          {/* Logo (Authentic Typography) */}
+          <Link href="/" className="flex flex-col z-50 opacity-90 hover:opacity-100 transition-opacity" aria-label="Accueil Qurratul Ayni">
+            <span className="font-amiri text-[#c9a961] text-[13px] md:text-sm leading-none tracking-wider mb-0.5">
+              قرة العين
+            </span>
+            <span className="text-lg md:text-xl font-serif font-black tracking-[0.15em] uppercase leading-none text-adaptive-primary">
+              Qurratul Ayni
+            </span>
           </Link>
 
           {/* Desktop Nav Links */}
