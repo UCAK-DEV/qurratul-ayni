@@ -41,17 +41,14 @@ export const ChapterNav: React.FC<ChapterNavProps> = ({ prev, next, summarySlug,
     <AnimatePresence>
       {visible && (
         <motion.nav
-          initial={{ y: 120, opacity: 0 }}
+          initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 120, opacity: 0 }}
+          exit={{ y: 20, opacity: 0 }}
           transition={{ type: 'spring', damping: 28, stiffness: 200, delay: 0.1 }}
           aria-label="Navigation entre parties"
-          className="fixed bottom-0 left-0 right-0 z-50 px-4 pb-4 pt-2 md:pb-6 chapter-nav"
+          className="w-full mt-16 mb-8 pt-8 border-t border-white/10 relative z-10 chapter-nav"
         >
-          {/* Blur gradient fade from bottom */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#010302] via-[#010302]/80 to-transparent pointer-events-none" />
-
-          <div className="relative max-w-3xl mx-auto">
+          <div className="relative max-w-3xl mx-auto px-4 md:px-0">
             <div className="flex items-stretch gap-1.5 md:gap-2">
               {/* Previous Button */}
               {prev ? (
@@ -110,7 +107,7 @@ export const ChapterNav: React.FC<ChapterNavProps> = ({ prev, next, summarySlug,
                     whileTap={{ scale: 0.9 }}
                     onClick={scrollToTop}
                     aria-label="Revenir en haut"
-                    className="w-12 md:w-14 h-full flex-shrink-0 flex items-center justify-center rounded-xl md:rounded-2xl bg-white/[0.04] border border-white/10 hover:border-gold/30 hover:text-gold text-white/40 transition-all"
+                    className="w-12 md:w-14 h-12 md:h-14 flex-shrink-0 flex items-center justify-center rounded-xl md:rounded-2xl bg-white/[0.04] border border-white/10 hover:border-gold/30 hover:text-gold text-white/40 transition-all"
                   >
                     <span className="material-symbols-rounded text-lg md:text-xl">vertical_align_top</span>
                   </motion.button>

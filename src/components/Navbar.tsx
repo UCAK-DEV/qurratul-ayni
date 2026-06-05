@@ -139,7 +139,7 @@ const ChaptersBottomSheet: React.FC<{
             </div>
 
             {/* Chapters list */}
-            <div className="overflow-y-auto flex-1 px-3 py-3">
+            <div className="overflow-y-auto flex-1 px-3 pt-3 pb-8" style={{ paddingBottom: 'calc(1.5rem + env(safe-area-inset-bottom))' }}>
               {GROUP_ORDER.map((group) => {
                 const chapters = groupedChapters[group];
                 if (!chapters) return null;
@@ -237,7 +237,7 @@ const SearchSheet: React.FC<{
                 )}
               </div>
             </div>
-            <div className="flex-1 overflow-y-auto px-4 pb-6">
+            <div className="flex-1 overflow-y-auto px-4 pt-2 pb-6" style={{ paddingBottom: 'calc(1.5rem + env(safe-area-inset-bottom))' }}>
               {query.length > 1 && results.length === 0 && (
                 <p className="text-center py-8 text-sm font-serif italic" style={{ color: 'var(--text-muted)' }}>
                   Aucun résultat pour « {query} »
@@ -457,10 +457,7 @@ export const Navbar = () => {
             </div>
           </div>
 
-          {/* Mobile: only theme toggle visible in top bar */}
-          <div className="md:hidden">
-            <ThemeToggle />
-          </div>
+
         </div>
       </nav>
 

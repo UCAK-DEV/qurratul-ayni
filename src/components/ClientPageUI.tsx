@@ -141,7 +141,7 @@ export const ClientPageUI: React.FC<ClientPageUIProps> = ({
       <div className={`max-w-6xl mx-auto relative z-10 transition-all duration-700 ${isFocusMode ? 'max-w-4xl' : ''}`}>
         
         {/* Focus Mode Toggle */}
-        <div className="fixed top-8 right-20 z-50">
+        <div className="fixed top-8 right-20 z-50 hidden md:block">
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}

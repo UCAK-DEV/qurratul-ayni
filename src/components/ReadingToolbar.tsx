@@ -36,7 +36,7 @@ export const ReadingToolbar: React.FC = () => {
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 0.4, duration: 0.4 }}
-      className="fixed right-4 top-1/2 -translate-y-1/2 z-40 flex flex-col items-center gap-2"
+      className="hidden md:flex fixed right-4 top-1/2 -translate-y-1/2 z-40 flex-col items-center gap-2"
     >
       {/* Toggle handle */}
       <motion.button
