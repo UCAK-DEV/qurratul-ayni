@@ -8,7 +8,7 @@ import { BookmarkProvider } from '@/context/BookmarkContext';
 import { DataProvider } from '@/context/DataContext';
 import { AudioProvider, useAudio } from '@/context/AudioContext';
 import { AppPWAProvider } from '@/components/AppPWAProvider';
-import Sidebar from '@/components/Sidebar';
+
 import { Navbar } from '@/components/Navbar';
 import { Player } from '@/components/Player';
 
@@ -31,7 +31,7 @@ export const AppProviders = ({ children }: { children: React.ReactNode }) => {
               <AudioProvider>
                 <AppPWAProvider>
                   <div className="flex h-screen text-gray-900 dark:text-gray-100">
-                    <Sidebar />
+
                     <div className="flex-1 flex flex-col overflow-hidden">
                       <Navbar />
                       <MainContent>

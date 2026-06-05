@@ -14,6 +14,80 @@ import { ReadingSettings } from './ReadingSettings';
 
 const GROUP_ORDER = ["Introduction", "Les Piliers", "Rites et Société", "Jurisprudence", "Spiritualité"];
 
+// Définition des sous-sections basées sur la table des matières
+const subSections: Record<string, { id: string; title: string }[]> = {
+  "5": [
+    { id: "a", title: "La purification du corps" },
+    { id: "b", title: "Les ablutions" },
+    { id: "c", title: "Le Tayamoum" },
+    { id: "d", title: "Les souillures" },
+    { id: "e", title: "Les menstrues" },
+    { id: "f", title: "Les lochies" },
+  ],
+  "6": [
+    { id: "a", title: "L'appel à la prière" },
+    { id: "b", title: "La prière rituelle" },
+    { id: "c", title: "Les cinq prières" },
+    { id: "d", title: "Pratiques Obligatoires" },
+    { id: "e", title: "Pratiques Traditionnelles" },
+    { id: "f", title: "La prière du Vendredi" },
+    { id: "g", title: "Prières non effectuées" },
+    { id: "h", title: "La prière du voyageur" },
+    { id: "i", title: "Actes durant la prière" },
+    { id: "j", title: "Prières surérogatoires" },
+    { id: "k", title: "Les prières des fêtes" },
+  ],
+  "8": [
+    { id: "a", title: "Le lavage mortuaire" },
+  ],
+  "9": [
+    { id: "a", title: "L'argent épargné" },
+  ],
+  "10": [
+    { id: "a", title: "Qu'est-ce que le jeûne ?" },
+    { id: "b", title: "Qui doit jeûner ?" },
+    { id: "c", title: "Actes blâmables" },
+    { id: "d", title: "Petit déjeuner de l'aube" },
+  ],
+  "11": [
+    { id: "a", title: "Le petit pèlerinage" },
+  ],
+  "12": [
+    { id: "a", title: "Les obligations" },
+    { id: "b", title: "La célébration" },
+    { id: "c", title: "L'acte conjugal" },
+    { id: "d", title: "La femme enceinte" },
+    { id: "e", title: "Le baptême" },
+    { id: "f", title: "Quelques remèdes" },
+    { id: "g", title: "Le sevrage" },
+    { id: "h", title: "L'éducation" },
+  ],
+  "13": [
+    { id: "a", title: "La retraite légale" },
+    { id: "b", title: "Les cas de divorce" },
+  ],
+  "15": [
+    { id: "a", title: "Le chasseur" },
+    { id: "b", title: "Tabaski" },
+  ],
+  "17": [
+    { id: "a", title: "Pratiques interdites" },
+    { id: "b", title: "Interdictions formelles" },
+    { id: "c", title: "Causes de pauvreté" },
+    { id: "d", title: "Aisance matérielle" },
+    { id: "e", title: "Santé et longévité" },
+    { id: "f", title: "La Sounna" },
+    { id: "g", title: "Jours recommandés" },
+    { id: "h", title: "Le repentir" },
+  ],
+  "19": [
+    { id: "a", title: "L'aumône" },
+    { id: "b", title: "Lecture du Coran" },
+    { id: "c", title: "Sourates et versets" },
+    { id: "d", title: "Invocations & Wirds" },
+  ]
+};
+
 // ─── Theme Toggle Button ───────────────────────────────────────────────────────
 const ThemeToggle: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
@@ -70,22 +144,37 @@ const ChaptersDropdown: React.FC<{
             {group}
           </p>
           {chapters.map((chapter) => (
-            <Link
-              key={chapter.id}
-              href={`/partie/${chapter.id}`}
-              onClick={onClose}
-              className="flex items-center gap-3 p-2.5 rounded-xl text-sm font-medium transition-all group"
-              style={{ color: 'var(--text-secondary)' }}
-              role="menuitem"
-            >
-              <span className="material-symbols-rounded text-gold text-base w-5 text-center flex-shrink-0">{chapter.icon}</span>
-              <span className="flex-1 truncate group-hover:text-[#c9a961] transition-colors" style={{ color: 'var(--text-secondary)' }}>
-                {chapter.titleFr}
-              </span>
-              {isCompleted(chapter.id) && (
-                <span className="material-symbols-rounded text-sm text-[#c9a961]">check_circle</span>
+            <div key={chapter.id}>
+              <Link
+                href={`/partie/${chapter.id}`}
+                onClick={onClose}
+                className="flex items-center gap-3 p-2.5 rounded-xl text-sm font-medium transition-all group"
+                style={{ color: 'var(--text-secondary)' }}
+                role="menuitem"
+              >
+                <span className="material-symbols-rounded text-gold text-base w-5 text-center flex-shrink-0">{chapter.icon}</span>
+                <span className="flex-1 truncate group-hover:text-[#c9a961] transition-colors" style={{ color: 'var(--text-secondary)' }}>
+                  {chapter.titleFr}
+                </span>
+                {isCompleted(chapter.id) && (
+                  <span className="material-symbols-rounded text-sm text-[#c9a961]">check_circle</span>
+                )}
+              </Link>
+              {subSections[chapter.id] && (
+                <div className="pl-10 pr-2 pb-2 space-y-1">
+                  {subSections[chapter.id].map(sub => (
+                    <Link
+                      key={sub.id}
+                      href={`/partie/${chapter.id}/${sub.id}`}
+                      onClick={onClose}
+                      className="block py-1 text-xs text-[var(--text-muted)] hover:text-gold transition-colors truncate"
+                    >
+                      <span className="font-bold text-gold/60 mr-1 uppercase">{sub.id}.</span> {sub.title}
+                    </Link>
+                  ))}
+                </div>
               )}
-            </Link>
+            </div>
           ))}
         </div>
       );
@@ -150,26 +239,40 @@ const ChaptersBottomSheet: React.FC<{
                     </p>
                     <div className="space-y-1">
                       {chapters.map((chapter) => (
-                        <button
-                          key={chapter.id}
-                          onClick={() => { router.push(`/partie/${chapter.id}`); onClose(); }}
-                          className="w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all active:scale-[0.98]"
-                          style={{ background: 'var(--bg-card)', color: 'var(--text-primary)' }}
-                        >
-                          <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-                            style={{ background: 'rgba(201,169,97,0.1)', border: '1px solid rgba(201,169,97,0.2)' }}>
-                            <span className="material-symbols-rounded text-[#c9a961] text-base">{chapter.icon}</span>
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="font-semibold text-sm truncate">{chapter.titleFr}</p>
-                            <p className="text-xs truncate" style={{ color: 'var(--text-muted)' }}>{chapter.titleAr}</p>
-                          </div>
-                          {isCompleted(chapter.id) && (
-                            <span className="material-symbols-rounded text-sm flex-shrink-0" style={{ color: '#c9a961' }}>
-                              task_alt
-                            </span>
+                        <div key={chapter.id}>
+                          <button
+                            onClick={() => { router.push(`/partie/${chapter.id}`); onClose(); }}
+                            className="w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all active:scale-[0.98]"
+                            style={{ background: 'var(--bg-card)', color: 'var(--text-primary)' }}
+                          >
+                            <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                              style={{ background: 'rgba(201,169,97,0.1)', border: '1px solid rgba(201,169,97,0.2)' }}>
+                              <span className="material-symbols-rounded text-[#c9a961] text-base">{chapter.icon}</span>
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="font-semibold text-sm truncate">{chapter.titleFr}</p>
+                              <p className="text-xs truncate" style={{ color: 'var(--text-muted)' }}>{chapter.titleAr}</p>
+                            </div>
+                            {isCompleted(chapter.id) && (
+                              <span className="material-symbols-rounded text-sm flex-shrink-0" style={{ color: '#c9a961' }}>
+                                task_alt
+                              </span>
+                            )}
+                          </button>
+                          {subSections[chapter.id] && (
+                            <div className="pl-14 pr-4 py-2 space-y-2 border-l border-[var(--border-subtle)] ml-8 mb-2">
+                              {subSections[chapter.id].map(sub => (
+                                <button
+                                  key={sub.id}
+                                  onClick={() => { router.push(`/partie/${chapter.id}/${sub.id}`); onClose(); }}
+                                  className="w-full text-left text-xs text-[var(--text-muted)] active:text-gold truncate"
+                                >
+                                  <span className="font-bold text-gold/60 mr-1 uppercase">{sub.id}.</span> {sub.title}
+                                </button>
+                              ))}
+                            </div>
                           )}
-                        </button>
+                        </div>
                       ))}
                     </div>
                   </div>
