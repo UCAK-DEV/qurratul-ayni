@@ -39,38 +39,7 @@
   color-scheme: dark;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   MODE JOUR (Light) — Clair, Net, Haute Lisibilité
-   ═══════════════════════════════════════════════════════════ */
-[data-theme="light"] {
-  --bg-base: #FFFFFF;
-  --bg-surface: #F8FAFC;
-  --bg-card: #FFFFFF;
-  --bg-card-hover: #F1F5F9;
-  --bg-nav: rgba(255, 255, 255, 0.95);
-  --bg-overlay: rgba(255, 255, 255, 0.6);
 
-  --text-primary: #0F172A;
-  --text-secondary: #475569;
-  --text-muted: #94A3B8;
-  --text-inverse: #FFFFFF;
-
-  --border-subtle: rgba(0, 0, 0, 0.06);
-  --border-medium: rgba(0, 0, 0, 0.12);
-  --border-gold: rgba(160, 120, 50, 0.4);
-
-  /* Redéfinir les couleurs or pour le mode jour (plus foncées pour le contraste) */
-  --color-gold: #a67c00;
-  --color-gold-light: #8a6a20;
-
-  --selection-bg: rgba(201, 169, 97, 0.25);
-
-  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.05);
-  --shadow-nav: 0 -1px 0 rgba(0, 0, 0, 0.05);
-  --shadow-gold: 0 0 20px rgba(201, 169, 97, 0.15);
-
-  color-scheme: light;
-}
 
 /* ═══════════════════════════════════════════════════════════
    BASE STYLES (adaptatifs via variables)
@@ -164,81 +133,7 @@ body.modal-open {
   background: rgba(201, 169, 97, 0.45);
 }
 
-/* ═══════════════════════════════════════════════════════════
-   OVERRIDES MODE JOUR — composants spécifiques
-   ═══════════════════════════════════════════════════════════ */
 
-/* Page principale */
-[data-theme="light"] main {
-  background-color: var(--bg-base) !important;
-  color: var(--text-primary);
-}
-
-/* Blocs de contenu */
-[data-theme="light"] .block-text {
-  background: rgba(0, 0, 0, 0.02) !important;
-  border-color: rgba(201, 169, 97, 0.2) !important;
-}
-
-/* Ambient background gradient */
-[data-theme="light"] .ambient-gradient {
-  background: linear-gradient(to bottom, rgba(201, 169, 97, 0.05), transparent) !important;
-}
-
-/* Textes blancs en mode sombre → sombres en mode jour */
-[data-theme="light"] .text-white\/80  { color: rgba(15, 23, 42, 0.8) !important; }
-[data-theme="light"] .text-white\/70  { color: rgba(15, 23, 42, 0.7) !important; }
-[data-theme="light"] .text-white\/60  { color: rgba(15, 23, 42, 0.6) !important; }
-[data-theme="light"] .text-white\/50  { color: rgba(15, 23, 42, 0.5) !important; }
-[data-theme="light"] .text-white\/40  { color: rgba(15, 23, 42, 0.4) !important; }
-[data-theme="light"] .text-white\/30  { color: rgba(15, 23, 42, 0.3) !important; }
-[data-theme="light"] .text-white\/20  { color: rgba(15, 23, 42, 0.2) !important; }
-[data-theme="light"] .text-white      { color: var(--text-primary) !important; }
-[data-theme="light"] .text-white\/90  { color: rgba(15, 23, 42, 0.9) !important; }
-
-/* Fonds blancs transparents (pour mode sombre) → gris clair/transparent en mode jour */
-[data-theme="light"] .bg-white\/\[0\.03\]  { background: rgba(0, 0, 0, 0.03) !important; }
-[data-theme="light"] .bg-white\/\[0\.02\]  { background: rgba(0, 0, 0, 0.02) !important; }
-[data-theme="light"] .bg-white\/\[0\.04\]  { background: rgba(0, 0, 0, 0.04) !important; }
-[data-theme="light"] .bg-white\/\[0\.05\]  { background: rgba(0, 0, 0, 0.05) !important; }
-[data-theme="light"] .bg-white\/\[0\.06\]  { background: rgba(0, 0, 0, 0.06) !important; }
-[data-theme="light"] .bg-white\/5          { background: rgba(0, 0, 0, 0.05) !important; }
-[data-theme="light"] .bg-white\/10         { background: rgba(0, 0, 0, 0.08) !important; }
-
-/* Bordures */
-[data-theme="light"] .border-white\/5   { border-color: rgba(0, 0, 0, 0.05) !important; }
-[data-theme="light"] .border-white\/10  { border-color: rgba(0, 0, 0, 0.1) !important; }
-
-/* Blocs colorés de contenu (BlockRenderer) */
-[data-theme="light"] .bg-emerald-950\/20 { background-color: rgba(16, 185, 129, 0.05) !important; }
-[data-theme="light"] .bg-emerald-950\/30 { background-color: rgba(16, 185, 129, 0.08) !important; }
-[data-theme="light"] .bg-emerald-950\/25 { background-color: rgba(16, 185, 129, 0.06) !important; }
-[data-theme="light"] .border-emerald-900\/30 { border-color: rgba(16, 185, 129, 0.2) !important; }
-[data-theme="light"] .border-emerald-700\/25 { border-color: rgba(16, 185, 129, 0.2) !important; }
-
-[data-theme="light"] .text-emerald-400 { color: rgba(5, 150, 105, 1) !important; }
-[data-theme="light"] .text-emerald-500\/50 { color: rgba(5, 150, 105, 0.7) !important; }
-[data-theme="light"] .bg-emerald-500\/50 { background-color: rgba(5, 150, 105, 0.7) !important; }
-
-[data-theme="light"] .bg-amber-950\/20 { background-color: rgba(217, 119, 6, 0.05) !important; }
-
-/* Fond de page et backgrounds sombres */
-[data-theme="light"] .bg-\[\#010302\]   { background-color: var(--bg-base) !important; }
-[data-theme="light"] .bg-emerald-950\/80 { background-color: var(--bg-nav) !important; }
-[data-theme="light"] .bg-\[#0A1A14\]    { background-color: var(--bg-surface) !important; }
-[data-theme="light"] .bg-black\/60      { background-color: rgba(255, 255, 255, 0.6) !important; }
-[data-theme="light"] .bg-black\/80      { background-color: rgba(255, 255, 255, 0.85) !important; }
-
-/* Navbar en mode jour */
-[data-theme="light"] nav.fixed {
-  color: var(--text-primary);
-}
-
-/* Bottom nav adaptatif */
-[data-theme="light"] .bottom-nav-mobile {
-  background: var(--bg-nav) !important;
-  border-color: var(--border-subtle) !important;
-}
 
 /* ═══════════════════════════════════════════════════════════
    TOGGLE THÈME — Animation soleil/lune
@@ -252,7 +147,6 @@ body.modal-open {
 }
 
 [data-theme="dark"] .theme-toggle-track  { background: rgba(201, 169, 97, 0.15); border: 1px solid rgba(201,169,97,0.3); }
-[data-theme="light"] .theme-toggle-track { background: rgba(201, 169, 97, 0.3);  border: 1px solid rgba(201,169,97,0.5); }
 
 .theme-toggle-thumb {
   position: absolute;
@@ -268,7 +162,6 @@ body.modal-open {
 }
 
 [data-theme="dark"]  .theme-toggle-thumb { transform: translateX(3px);  background: #c9a961; }
-[data-theme="light"] .theme-toggle-thumb { transform: translateX(27px); background: #c9a961; }
 
 /* ═══════════════════════════════════════════════════════════
    FLASHCARD 3D FLIP
@@ -306,7 +199,7 @@ a:focus-visible {
   left: 0;
   right: 0;
   height: 64px;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: space-around;
   z-index: 100;
@@ -315,6 +208,12 @@ a:focus-visible {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   box-shadow: var(--shadow-nav);
+}
+
+@media (max-width: 767px) {
+  .bottom-tab-bar {
+    display: flex;
+  }
 }
 
 .bottom-tab-btn {

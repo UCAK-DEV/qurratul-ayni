@@ -11,6 +11,7 @@ import { useLearning } from '@/context/LearningContext';
 import Fuse from 'fuse.js';
 import { useDebounce } from '@/hooks/useDebounce';
 import { ReadingSettings } from './ReadingSettings';
+import { SearchOverlay } from './SearchOverlay';
 
 const GROUP_ORDER = ["Introduction", "Les Piliers", "Rites et Société", "Jurisprudence", "Spiritualité"];
 
@@ -88,37 +89,7 @@ const subSections: Record<string, { id: string; title: string }[]> = {
   ]
 };
 
-// ─── Theme Toggle Button ───────────────────────────────────────────────────────
-const ThemeToggle: React.FC = () => {
-  const { theme, toggleTheme } = useTheme();
-  return (
-    <motion.button
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.92 }}
-      onClick={toggleTheme}
-      aria-label={theme === 'dark' ? 'Passer en mode jour' : 'Passer en mode nuit'}
-      className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border transition-all"
-      style={{
-        background: 'var(--bg-card)',
-        borderColor: 'var(--border-gold)',
-        color: '#c9a961',
-      }}
-    >
-      <motion.span
-        key={theme}
-        initial={{ rotate: -30, opacity: 0, scale: 0.6 }}
-        animate={{ rotate: 0, opacity: 1, scale: 1 }}
-        transition={{ type: 'spring', damping: 12 }}
-        className="material-symbols-rounded text-lg"
-      >
-        {theme === 'dark' ? 'light_mode' : 'dark_mode'}
-      </motion.span>
-      <span className="text-[10px] font-bold uppercase tracking-wider hidden sm:block">
-        {theme === 'dark' ? 'Jour' : 'Nuit'}
-      </span>
-    </motion.button>
-  );
-};
+
 
 // ─── Desktop Chapters Dropdown ────────────────────────────────────────────────
 const ChaptersDropdown: React.FC<{
@@ -127,58 +98,70 @@ const ChaptersDropdown: React.FC<{
   onClose: () => void;
 }> = ({ groupedChapters, isCompleted, onClose }) => (
   <motion.div
-    initial={{ opacity: 0, y: 10, scale: 0.97 }}
+    initial={{ opacity: 0, y: 15, scale: 0.95 }}
     animate={{ opacity: 1, y: 0, scale: 1 }}
-    exit={{ opacity: 0, y: 10, scale: 0.97 }}
-    transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-    className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-80 rounded-2xl border shadow-2xl p-2 z-50 max-h-[70vh] overflow-y-auto"
-    style={{ background: 'var(--bg-surface)', borderColor: 'var(--border-medium)' }}
+    exit={{ opacity: 0, y: 15, scale: 0.95 }}
+    transition={{ type: 'spring', damping: 22, stiffness: 280 }}
+    className="absolute top-[calc(100%+0.75rem)] left-1/2 -translate-x-1/2 w-80 rounded-2xl border p-3 z-50 max-h-[65vh] overflow-y-auto"
+    style={{
+      background: 'rgba(10, 18, 13, 0.96)',
+      backdropFilter: 'blur(20px)',
+      borderColor: 'rgba(201, 169, 97, 0.35)',
+      boxShadow: '0 20px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(201, 169, 97, 0.05)',
+    }}
     role="menu"
   >
-    {GROUP_ORDER.map((group) => {
-      const chapters = groupedChapters[group];
-      if (!chapters) return null;
-      return (
-        <div key={group} className="mb-3" role="none">
-          <p className="px-3 pt-2 pb-1 text-[9px] uppercase font-black tracking-widest" style={{ color: 'rgba(201,169,97,0.7)' }}>
-            {group}
-          </p>
-          {chapters.map((chapter) => (
-            <div key={chapter.id}>
-              <Link
-                href={`/partie/${chapter.id}`}
-                onClick={onClose}
-                className="flex items-center gap-3 p-2.5 rounded-xl text-sm font-medium transition-all group"
-                style={{ color: 'var(--text-secondary)' }}
-                role="menuitem"
-              >
-                <span className="material-symbols-rounded text-gold text-base w-5 text-center flex-shrink-0">{chapter.icon}</span>
-                <span className="flex-1 truncate group-hover:text-[#c9a961] transition-colors" style={{ color: 'var(--text-secondary)' }}>
-                  {chapter.titleFr}
-                </span>
-                {isCompleted(chapter.id) && (
-                  <span className="material-symbols-rounded text-sm text-[#c9a961]">check_circle</span>
+    {Object.keys(groupedChapters).length === 0 ? (
+      <div className="p-8 text-center text-xs text-gold/60 font-serif italic flex flex-col items-center gap-3">
+        <div className="animate-spin rounded-full h-5 w-5 border-2 border-transparent border-t-gold/80"></div>
+        Chargement des chapitres...
+      </div>
+    ) : (
+      GROUP_ORDER.map((group) => {
+        const chapters = groupedChapters[group];
+        if (!chapters) return null;
+        return (
+          <div key={group} className="mb-4 last:mb-1" role="none">
+            <p className="px-3 pt-2 pb-1.5 text-[9px] uppercase font-black tracking-[0.2em]" style={{ color: 'rgba(201,169,97,0.75)' }}>
+              {group}
+            </p>
+            {chapters.map((chapter) => (
+              <div key={chapter.id}>
+                <Link
+                  href={`/partie/${chapter.id}`}
+                  onClick={onClose}
+                  className="flex items-center gap-3 p-2.5 rounded-xl text-sm font-semibold transition-all group hover:bg-white/[0.02]"
+                  style={{ color: 'var(--text-secondary)' }}
+                  role="menuitem"
+                >
+                  <span className="material-symbols-rounded text-gold text-base w-5 text-center flex-shrink-0">{chapter.icon}</span>
+                  <span className="flex-grow truncate group-hover:text-[#c9a961] transition-colors" style={{ color: 'var(--text-secondary)' }}>
+                    {chapter.titleFr}
+                  </span>
+                  {isCompleted(chapter.id) && (
+                    <span className="material-symbols-rounded text-sm text-[#c9a961]">check_circle</span>
+                  )}
+                </Link>
+                {subSections[chapter.id] && (
+                  <div className="pl-10 pr-2 pb-2 space-y-1.5 border-l border-white/5 ml-5 mt-1 mb-2">
+                    {subSections[chapter.id].map(sub => (
+                      <Link
+                        key={sub.id}
+                        href={`/partie/${chapter.id}/${sub.id}`}
+                        onClick={onClose}
+                        className="block py-0.5 text-xs text-slate-400 hover:text-[#c9a961] transition-colors truncate"
+                      >
+                        <span className="font-bold text-gold/60 mr-1.5 uppercase">{sub.id}.</span> {sub.title}
+                      </Link>
+                    ))}
+                  </div>
                 )}
-              </Link>
-              {subSections[chapter.id] && (
-                <div className="pl-10 pr-2 pb-2 space-y-1">
-                  {subSections[chapter.id].map(sub => (
-                    <Link
-                      key={sub.id}
-                      href={`/partie/${chapter.id}/${sub.id}`}
-                      onClick={onClose}
-                      className="block py-1 text-xs text-[var(--text-muted)] hover:text-gold transition-colors truncate"
-                    >
-                      <span className="font-bold text-gold/60 mr-1 uppercase">{sub.id}.</span> {sub.title}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      );
-    })}
+              </div>
+            ))}
+          </div>
+        );
+      })
+    )}
   </motion.div>
 );
 
@@ -379,22 +362,15 @@ export const Navbar = () => {
   const [showNav, setShowNav] = useState(true);
   const lastScrollY = useRef(0);
   const [isChaptersOpen, setIsChaptersOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isSearchOverlayOpen, setIsSearchOverlayOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [mobileChaptersOpen, setMobileChaptersOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const debouncedSearch = useDebounce(searchQuery, 250);
-  const [desktopResults, setDesktopResults] = useState<Chapter[]>([]);
 
   const pathname = usePathname();
   const chaptersRef = useRef<HTMLLIElement>(null);
-  const searchRef = useRef<HTMLDivElement>(null);
   const { chapters } = useData();
   const { isCompleted } = useLearning();
-  const { theme } = useTheme();
-
-  const fuse = useMemo(() => new Fuse(chapters, { keys: ['titleFr', 'titleAr', 'desc'], threshold: 0.3 }), [chapters]);
 
   const groupedChapters = useMemo(() =>
     chapters.reduce((acc, c) => { (acc[c.group] = acc[c.group] || []).push(c); return acc; }, {} as Record<string, Chapter[]>)
@@ -427,17 +403,8 @@ export const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    if (debouncedSearch.length > 1) {
-      setDesktopResults(fuse.search(debouncedSearch).map(r => r.item));
-    } else {
-      setDesktopResults([]);
-    }
-  }, [debouncedSearch, fuse]);
-
-  useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (chaptersRef.current && !chaptersRef.current.contains(e.target as Node)) setIsChaptersOpen(false);
-      if (searchRef.current && !searchRef.current.contains(e.target as Node)) { setIsSearchOpen(false); setSearchQuery(''); }
     };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
@@ -451,45 +418,52 @@ export const Navbar = () => {
       {/* ── DESKTOP NAVBAR ─────────────────────────────────────────────────── */}
       <nav
         aria-label="Navigation principale"
-        className={`hidden md:block fixed top-0 w-full z-[100] transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)] ${
-          isScrolled ? 'py-2' : 'py-5'
-        } ${!showNav ? '-translate-y-full opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'}`}
-        style={isScrolled ? { background: 'var(--bg-nav)', borderBottom: '1px solid var(--border-subtle)', boxShadow: '0 4px 24px rgba(0,0,0,0.15)' } : {}}
+        className={`hidden md:block fixed left-1/2 z-[100] transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)] ${
+          isScrolled ? 'top-2 py-2 w-[90%] max-w-5xl' : 'top-4 py-3.5 w-[92%] max-w-6xl'
+        } ${!showNav ? 'translate-y-[-150%] opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'} -translate-x-1/2`}
+        style={{
+          background: 'rgba(10, 18, 13, 0.75)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: '1px solid rgba(201, 169, 97, 0.25)',
+          borderRadius: '1.5rem',
+          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
+        }}
       >
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+        <div className="px-6 flex items-center justify-between">
 
           {/* ── LOGO DESKTOP ── */}
           <Link href="/" className="hidden md:flex items-center gap-3 z-50 group" aria-label="Accueil Qurratul Ayni">
-            <div className="w-10 h-10 border rounded-xl flex items-center justify-center transition-all" style={{ background: 'rgba(201,169,97,0.1)', borderColor: 'rgba(201,169,97,0.4)' }}>
-              <span className="material-symbols-rounded text-[#c9a961] text-2xl group-hover:scale-110 transition-transform">auto_stories</span>
+            <div className="w-9 h-9 border rounded-xl flex items-center justify-center transition-all bg-[#c9a961]/10 border-[#c9a961]/30 group-hover:border-[#c9a961] group-hover:bg-[#c9a961]/20">
+              <span className="material-symbols-rounded text-[#c9a961] text-xl group-hover:scale-110 transition-transform">auto_stories</span>
             </div>
             <div className="flex flex-col opacity-90 group-hover:opacity-100 transition-opacity">
-              <span className="font-amiri text-[#c9a961] text-[13px] leading-none tracking-wider mb-0.5">
+              <span className="font-amiri text-[#c9a961] text-[12px] leading-none tracking-wider mb-0.5">
                 قرة العين
               </span>
-              <span className="text-xl font-serif font-black tracking-[0.15em] uppercase leading-none text-adaptive-primary">
+              <span className="text-lg font-serif font-black tracking-[0.15em] uppercase leading-none text-white">
                 Qurratul Ayni
               </span>
             </div>
           </Link>
 
           {/* Desktop Nav Links */}
-          <ul className="hidden md:flex items-center gap-5">
+          <ul className="hidden md:flex items-center gap-6">
             <li>
               <Link
                 href="/accueil"
-                className="text-xs uppercase tracking-widest font-bold flex items-center gap-2 transition-colors relative group"
+                className="text-xs uppercase tracking-widest font-bold flex items-center gap-2 transition-colors relative group py-2 px-3 rounded-xl hover:bg-white/[0.03]"
                 style={{ color: pathname === '/accueil' ? '#c9a961' : 'var(--text-secondary)' }}
               >
                 <span className="material-symbols-rounded text-base">home</span>
                 Accueil
-                <span className={`absolute -bottom-1 left-0 h-0.5 bg-[#c9a961] rounded-full transition-all ${pathname === '/accueil' ? 'w-full' : 'w-0 group-hover:w-full'}`} />
+                <span className={`absolute bottom-0 left-3 right-3 h-0.5 bg-[#c9a961] rounded-full transition-all ${pathname === '/accueil' ? 'w-[calc(100%-24px)]' : 'w-0 group-hover:w-[calc(100%-24px)]'}`} />
               </Link>
             </li>
             <li className="relative" ref={chaptersRef}>
               <button
                 onClick={() => setIsChaptersOpen(!isChaptersOpen)}
-                className="text-xs uppercase tracking-widest font-bold flex items-center gap-1.5 transition-colors"
+                className="text-xs uppercase tracking-widest font-bold flex items-center gap-1.5 transition-colors py-2 px-3 rounded-xl hover:bg-white/[0.03] cursor-pointer"
                 style={{ color: isChaptersOpen ? '#c9a961' : 'var(--text-secondary)' }}
                 aria-expanded={isChaptersOpen}
                 aria-haspopup="true"
@@ -514,70 +488,28 @@ export const Navbar = () => {
 
           {/* Desktop Right Controls */}
           <div className="hidden md:flex items-center gap-3">
-            <div className="h-5 w-px" style={{ background: 'var(--border-medium)' }} />
+            <div className="h-5 w-px bg-white/10 mr-1" />
 
-            {/* Theme Toggle */}
-            <ThemeToggle />
+            {/* Search Button */}
+            <button
+              onClick={() => setIsSearchOverlayOpen(true)}
+              className="w-9 h-9 flex items-center justify-center rounded-xl border transition-all hover:bg-white/[0.03] hover:scale-105 active:scale-95 cursor-pointer"
+              style={{ background: 'var(--bg-card)', borderColor: 'var(--border-subtle)', color: 'var(--text-muted)' }}
+              aria-label="Rechercher"
+            >
+              <span className="material-symbols-rounded text-lg">search</span>
+            </button>
 
             {/* Settings */}
             <button
               onClick={() => setIsSettingsOpen(true)}
-              className="w-9 h-9 flex items-center justify-center rounded-xl border transition-all"
+              className="w-9 h-9 flex items-center justify-center rounded-xl border transition-all hover:bg-white/[0.03] hover:scale-105 active:scale-95 cursor-pointer"
               style={{ background: 'var(--bg-card)', borderColor: 'var(--border-subtle)', color: 'var(--text-muted)' }}
               aria-label="Réglages de lecture"
             >
               <span className="material-symbols-rounded text-lg">settings_accessibility</span>
             </button>
-
-            {/* Search */}
-            <div className="relative" ref={searchRef}>
-              <motion.div
-                animate={{ width: isSearchOpen ? '220px' : '36px' }}
-                className="h-9 rounded-xl border flex items-center overflow-hidden"
-                style={{ background: 'var(--bg-card)', borderColor: 'var(--border-subtle)' }}
-              >
-                <button
-                  onClick={() => setIsSearchOpen(!isSearchOpen)}
-                  className="w-9 h-9 flex-shrink-0 flex items-center justify-center transition-colors"
-                  style={{ color: isSearchOpen ? '#c9a961' : 'var(--text-muted)' }}
-                  aria-label={isSearchOpen ? 'Fermer la recherche' : 'Rechercher'}
-                >
-                  <span className="material-symbols-rounded text-lg">{isSearchOpen ? 'close' : 'search'}</span>
-                </button>
-                <input
-                  type="text"
-                  placeholder="Rechercher..."
-                  value={searchQuery}
-                  onChange={e => setSearchQuery(e.target.value)}
-                  className="bg-transparent outline-none text-sm w-full pr-3"
-                  style={{ color: 'var(--text-primary)' }}
-                  aria-label="Champ de recherche"
-                />
-              </motion.div>
-              {/* Search results dropdown */}
-              <AnimatePresence>
-                {desktopResults.length > 0 && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 8 }}
-                    className="absolute top-full right-0 mt-2 w-72 rounded-2xl border shadow-xl py-2 max-h-64 overflow-y-auto"
-                    style={{ background: 'var(--bg-surface)', borderColor: 'var(--border-medium)' }}
-                  >
-                    {desktopResults.map(c => (
-                      <Link key={c.id} href={`/partie/${c.id}`} onClick={() => { setIsSearchOpen(false); setSearchQuery(''); }}
-                        className="flex items-center gap-3 px-4 py-2.5 hover:bg-[rgba(201,169,97,0.05)] transition-colors"
-                      >
-                        <span className="material-symbols-rounded text-[#c9a961] text-base">{c.icon}</span>
-                        <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{c.titleFr}</span>
-                      </Link>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
           </div>
-
 
         </div>
       </nav>
@@ -642,6 +574,9 @@ export const Navbar = () => {
 
       {/* ── READING SETTINGS MODAL ─────────────────────────────────────────── */}
       <ReadingSettings isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
+
+      {/* ── SEARCH OVERLAY ─────────────────────────────────────────────────── */}
+      <SearchOverlay isOpen={isSearchOverlayOpen} onClose={() => setIsSearchOverlayOpen(false)} />
     </>
   );
 };

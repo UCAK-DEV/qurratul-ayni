@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import { useChapterSearch } from '@/hooks/useChapterSearch';
 import { useAudio } from '@/context/AudioContext';
 import { Chapter } from '@/data/chapters';
@@ -15,6 +16,7 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
   const [query, setQuery] = useState('');
   const results = useChapterSearch(query);
   const { setChapter } = useAudio();
+  const router = useRouter();
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -29,7 +31,7 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
   }, [isOpen]);
 
   const handleResultClick = (chapter: Chapter) => {
-    setChapter(chapter);
+    router.push(`/partie/${chapter.id}`);
     onClose();
   };
 
@@ -51,28 +53,31 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
           animate="visible"
           exit="hidden"
           onClick={onClose}
-          className="fixed inset-0 z-50 bg-black/50 dark:bg-black/70 backdrop-blur-sm flex justify-center pt-20"
+          className="fixed inset-0 z-[200] flex justify-center pt-20"
+          style={{ background: 'var(--bg-overlay)', backdropFilter: 'blur(8px)' }}
         >
           <motion.div
             variants={panelVariants}
             onClick={(e) => e.stopPropagation()}
-            className="w-[90vw] max-w-2xl h-fit max-h-[70vh] flex flex-col bg-white/90 dark:bg-gray-900/80 backdrop-blur-xl border border-gray-200 dark:border-gray-700 rounded-2xl shadow-2xl"
+            className="w-[90vw] max-w-2xl h-fit max-h-[70vh] flex flex-col rounded-[2rem] border shadow-2xl"
+            style={{ background: 'var(--bg-surface)', borderColor: 'var(--border-gold)' }}
           >
-            <div className="flex-shrink-0 flex items-center gap-4 p-4 border-b border-gray-200 dark:border-gray-700">
-              <span className="material-symbols-rounded text-2xl text-gray-500">search</span>
+            <div className="flex-shrink-0 flex items-center gap-4 p-5 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
+              <span className="material-symbols-rounded text-2xl text-[#c9a961]">search</span>
               <input
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 autoFocus
                 placeholder="Rechercher par titre ou description..."
-                className="w-full bg-transparent text-lg text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 outline-none"
+                className="w-full bg-transparent text-lg outline-none placeholder:text-white/30"
+                style={{ color: 'var(--text-primary)' }}
               />
             </div>
             
-            <div className="flex-grow overflow-y-auto custom-scrollbar">
+            <div className="flex-grow overflow-y-auto custom-scrollbar p-3">
               {query && results.length === 0 && (
-                <div className="text-center p-10 text-gray-500">
+                <div className="text-center p-10 font-serif italic text-white/50">
                   <p>Aucun résultat pour "{query}"</p>
                 </div>
               )}
@@ -81,12 +86,14 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
                   <motion.li key={chapter.id} variants={itemVariants}>
                     <button
                       onClick={() => handleResultClick(chapter)}
-                      className="w-full text-left flex items-center gap-4 p-4 hover:bg-gold/10 transition-colors"
+                      className="w-full text-left flex items-center gap-4 p-4 hover:bg-white/[0.02] border-l-2 border-transparent hover:border-[#c9a961] rounded-xl transition-all group"
                     >
-                      <span className="material-symbols-rounded text-gold/80 text-2xl">{chapter.icon}</span>
+                      <div className="w-10 h-10 rounded-xl bg-[#c9a961]/10 border border-[#c9a961]/25 flex items-center justify-center text-[#c9a961] group-hover:scale-105 transition-all">
+                        <span className="material-symbols-rounded text-xl leading-none">{chapter.icon}</span>
+                      </div>
                       <div className="flex-grow">
-                        <h3 className="font-bold text-gray-800 dark:text-gray-100">{chapter.titleFr}</h3>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-1">{chapter.desc}</p>
+                        <h3 className="font-bold text-white/90 group-hover:text-[#c9a961] transition-colors">{chapter.titleFr}</h3>
+                        <p className="text-sm line-clamp-1" style={{ color: 'var(--text-secondary)' }}>{chapter.desc}</p>
                       </div>
                     </button>
                   </motion.li>
