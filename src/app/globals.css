@@ -87,8 +87,8 @@ body.modal-open {
 /* Navigation adaptative */
 .nav-adaptive {
   background: var(--bg-nav);
-  backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
   border-color: var(--border-subtle);
   transition: background 0.3s ease;
 }
@@ -103,8 +103,8 @@ body.modal-open {
    ═══════════════════════════════════════════════════════════ */
 .glass-card {
   background: var(--bg-card);
-  backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
   border: 1px solid var(--border-gold);
   transition: background 0.3s, border-color 0.3s;
 }
@@ -246,8 +246,8 @@ body.modal-open {
 .flashcard-inner.is-flipped { transform: rotateY(180deg); }
 .flashcard-face {
   position: absolute; inset: 0;
-  backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 .flashcard-face--back { transform: rotateY(180deg); }
 
@@ -276,8 +276,8 @@ a:focus-visible {
   z-index: 100;
   background: var(--bg-nav);
   border-top: 1px solid var(--border-subtle);
-  backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
   box-shadow: var(--shadow-nav);
 }
 
@@ -345,6 +345,7 @@ a:focus-visible {
   position: fixed;
   inset: 0;
   background: var(--bg-overlay);
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
   z-index: 200;
 }

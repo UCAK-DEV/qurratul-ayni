@@ -36,9 +36,12 @@ export const DataProvider = ({ children }: { children: ReactNode }) => {
             setError("Aucune donnée trouvée. Vérifiez votre configuration Supabase.");
           }
         }
-      } catch (e: any) {
+      } catch (e) {
         console.error("Failed to load data from Supabase:", e);
-        if (isMounted) setError(e.message || "Erreur de connexion à la base de données.");
+        if (isMounted) {
+          const errMsg = e instanceof Error ? e.message : "Erreur de connexion à la base de données.";
+          setError(errMsg);
+        }
       } finally {
         if (isMounted) setIsLoading(false);
       }

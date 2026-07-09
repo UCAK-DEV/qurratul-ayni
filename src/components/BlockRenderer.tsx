@@ -13,12 +13,42 @@ interface BlockRendererProps {
   chapterTitle?: string;
 }
 
+interface SummaryGridItem {
+  letter: string;
+  icon: string;
+  ar: string;
+  title: string;
+  sub: string[];
+}
+
+interface ComparisonItem {
+  titleFr: string;
+  titleAr?: string;
+  items: string[];
+}
+
+interface BioSectionItem {
+  label: string;
+  arabic?: string;
+  translation?: string;
+  paragraphs: string | string[];
+  signature?: { name: string; role: string };
+  quote?: string;
+  footer_doua?: { arabic: string; phonetic: string; translation: string };
+}
+
+interface TimelineStepItem {
+  age: string;
+  title: string;
+  text: string;
+}
+
 // Shared bookmark button
 const BookmarkBtn: React.FC<{
   id: string;
   isBookmarked: boolean;
   onToggle: () => void;
-}> = ({ id, isBookmarked, onToggle }) => (
+}> = ({ isBookmarked, onToggle }) => (
   <button
     onClick={onToggle}
     className={`absolute right-6 top-6 p-3 rounded-xl border transition-all opacity-0 group-hover:opacity-100 z-20 ${
@@ -221,7 +251,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({ blocks, slug = '',
             const chapterIdFromSlug = slug.split('-')[0];
             return (
               <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-5xl mx-auto">
-                {block.content.map((item: any, idx: number) => (
+                {block.content.map((item: SummaryGridItem, idx: number) => (
                   <motion.div
                     key={item.letter}
                     initial={{ opacity: 0, y: 20 }}
@@ -325,7 +355,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({ blocks, slug = '',
           case 'comparison':
             return (
               <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                {block.content.map((col: any, idx: number) => (
+                {block.content.map((col: ComparisonItem, idx: number) => (
                   <motion.div
                     key={idx}
                     initial={{ opacity: 0, y: 20 }}
@@ -399,7 +429,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({ blocks, slug = '',
                 viewport={{ once: true }}
                 className="relative space-y-20"
               >
-                {block.content.map((section: any, idx: number) => (
+                {block.content.map((section: BioSectionItem, idx: number) => (
                   <div key={idx} className="flex flex-col md:flex-row gap-8 md:gap-12">
                     <div className="md:w-1/4">
                       <h2 className="text-gold text-[10px] tracking-[0.4em] font-bold uppercase md:sticky md:top-32">
@@ -472,7 +502,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({ blocks, slug = '',
           case 'timeline':
             return (
               <div key={index} className="space-y-8">
-                {block.content.map((step: any, idx: number) => (
+                {block.content.map((step: TimelineStepItem, idx: number) => (
                   <motion.div
                     key={idx}
                     initial={{ opacity: 0, x: -20 }}

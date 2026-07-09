@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
 import { useAudio } from '@/context/AudioContext';
 import { BlockRenderer } from '@/components/BlockRenderer';
 import { useLearning } from '@/context/LearningContext';
@@ -114,7 +113,6 @@ export const ClientPageUI: React.FC<ClientPageUIProps> = ({
   chapterId,
   slugArray 
 }) => {
-  const router = useRouter();
   const { setChapter, currentChapter, isPlaying, togglePlay } = useAudio();
   const { markAsCompleted, setLastVisited, isCompleted } = useLearning();
   const { isFocusMode, toggleFocusMode } = useTheme();
@@ -238,7 +236,6 @@ export const ClientPageUI: React.FC<ClientPageUIProps> = ({
             <div className="pt-4">
               <ReadingProgress
                 chapterId={chapterId}
-                currentSlug={fullId}
                 chapterTitle={chapterData.titleFr}
               />
             </div>
@@ -279,7 +276,6 @@ export const ClientPageUI: React.FC<ClientPageUIProps> = ({
           prev={navPrev}
           next={navNext}
           summarySlug={parentChapterSlug}
-          currentTitle={pageContent.titleFr}
         />
       )}
     </main>

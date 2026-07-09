@@ -43,7 +43,6 @@ export function getDakarPrayerTimes(date: Date = new Date()): PrayerTimes {
   const q = 280.459 + 0.98564736 * d; // Mean longitude
   const L = q + 1.915 * Math.sin(degreesToRadians(g)) + 0.020 * Math.sin(degreesToRadians(2 * g)); // Ecliptic longitude
 
-  const R = 1.00014 - 0.01671 * Math.cos(degreesToRadians(g)) - 0.00014 * Math.cos(degreesToRadians(2 * g));
   const e = 23.439 - 0.00000036 * d; // Obliquity of the ecliptic
 
   const RA = radiansToDegrees(Math.atan2(Math.cos(degreesToRadians(e)) * Math.sin(degreesToRadians(L)), Math.cos(degreesToRadians(L)))) / 15;

@@ -5,7 +5,7 @@ import { getSupabaseClient } from './supabase';
 const getSafeSupabase = () => {
   try {
     return getSupabaseClient();
-  } catch (e) {
+  } catch {
     return null;
   }
 };

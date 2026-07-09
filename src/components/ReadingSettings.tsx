@@ -10,7 +10,7 @@ interface ReadingSettingsProps {
 }
 
 export const ReadingSettings: React.FC<ReadingSettingsProps> = ({ isOpen, onClose }) => {
-  const { readingSettings, setReadingSettings, theme, toggleTheme } = useTheme();
+  const { readingSettings, setReadingSettings } = useTheme();
 
   const fontSizes = [90, 100, 115, 130, 145];
   const lineHeights = [1.4, 1.6, 1.8, 2.0];

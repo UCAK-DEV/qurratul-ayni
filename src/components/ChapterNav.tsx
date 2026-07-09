@@ -13,13 +13,12 @@ interface ChapterNavProps {
   prev?: NavItem;
   next?: NavItem;
   summarySlug?: string; // e.g. "9" for the parent chapter overview
-  currentTitle: string;
 }
 
 // Build the URL path from a slug string (e.g. "9-b" → "/partie/9/b")
 const slugToPath = (slug: string) => `/partie/${slug.replace(/-/g, '/')}`;
 
-export const ChapterNav: React.FC<ChapterNavProps> = ({ prev, next, summarySlug, currentTitle }) => {
+export const ChapterNav: React.FC<ChapterNavProps> = ({ prev, next, summarySlug }) => {
   const router = useRouter();
   const [visible, setVisible] = useState(false);
   const [scrolled, setScrolled] = useState(false);

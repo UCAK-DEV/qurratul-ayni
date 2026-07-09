@@ -24,7 +24,10 @@ export const BookmarkProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     try {
       const saved = localStorage.getItem('bookmarks');
-      if (saved) setBookmarks(JSON.parse(saved));
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        setTimeout(() => setBookmarks(parsed), 0);
+      }
     } catch (e) {
       console.error("Failed to load bookmarks:", e);
     }

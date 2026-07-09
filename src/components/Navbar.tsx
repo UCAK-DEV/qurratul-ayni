@@ -9,7 +9,6 @@ import { useTheme } from '@/context/ThemeContext';
 import { useData } from '@/context/DataContext';
 import { useLearning } from '@/context/LearningContext';
 import Fuse from 'fuse.js';
-import { useDebounce } from '@/hooks/useDebounce';
 import { ReadingSettings } from './ReadingSettings';
 import { SearchOverlay } from './SearchOverlay';
 
@@ -287,8 +286,13 @@ const SearchSheet: React.FC<{
   const results = query.length > 1 ? fuse.search(query).map(r => r.item) : [];
 
   useEffect(() => {
-    if (isOpen) setTimeout(() => inputRef.current?.focus(), 200);
-    else setQuery('');
+    if (isOpen) {
+      setTimeout(() => inputRef.current?.focus(), 200);
+    } else {
+      // Reset query when sheet closes (deferred to avoid setState in effect body)
+      const timer = setTimeout(() => setQuery(''), 0);
+      return () => clearTimeout(timer);
+    }
   }, [isOpen]);
 
   return (
@@ -362,10 +366,13 @@ export const Navbar = () => {
   const [showNav, setShowNav] = useState(true);
   const lastScrollY = useRef(0);
   const [isChaptersOpen, setIsChaptersOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const [isSearchOverlayOpen, setIsSearchOverlayOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [mobileChaptersOpen, setMobileChaptersOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
 
   const pathname = usePathname();
   const chaptersRef = useRef<HTMLLIElement>(null);
@@ -376,6 +383,15 @@ export const Navbar = () => {
   const groupedChapters = useMemo(() =>
     chapters.reduce((acc, c) => { (acc[c.group] = acc[c.group] || []).push(c); return acc; }, {} as Record<string, Chapter[]>)
   , [chapters]);
+
+  const desktopFuse = useMemo(() => new Fuse(chapters, {
+    keys: ['titleFr', 'titleAr', 'desc'],
+    threshold: 0.35,
+  }), [chapters]);
+
+  const desktopResults: Chapter[] = searchQuery.length > 1
+    ? desktopFuse.search(searchQuery).map(r => r.item)
+    : [];
 
   useEffect(() => {
     const onScroll = () => {
@@ -528,7 +544,7 @@ export const Navbar = () => {
                     </div>
                     <div className="max-h-60 overflow-y-auto space-y-1">
                       {desktopResults.length > 0 ? (
-                        desktopResults.map(c => (
+                        desktopResults.map((c: Chapter) => (
                           <Link
                             key={c.id}
                             href={`/partie/${c.id}`}
@@ -573,7 +589,16 @@ export const Navbar = () => {
             <div className="h-5 w-px bg-white/10 mr-1" />
 
             {/* Theme Toggle */}
-            <ThemeToggle />
+            <button
+              onClick={toggleTheme}
+              aria-label="Changer le thème"
+              className="w-8 h-8 rounded-xl flex items-center justify-center transition-all hover:bg-white/10"
+              style={{ color: 'var(--text-secondary)' }}
+            >
+              <span className="material-symbols-rounded text-base">
+                {theme === 'dark' ? 'light_mode' : 'dark_mode'}
+              </span>
+            </button>
           </div>
 
         </div>

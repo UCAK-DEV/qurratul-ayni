@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useChapterSearch } from '@/hooks/useChapterSearch';
-import { useAudio } from '@/context/AudioContext';
 import { Chapter } from '@/data/chapters';
 
 interface SearchOverlayProps {
@@ -15,7 +14,6 @@ interface SearchOverlayProps {
 export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose }) => {
   const [query, setQuery] = useState('');
   const results = useChapterSearch(query);
-  const { setChapter } = useAudio();
   const router = useRouter();
 
   useEffect(() => {
@@ -27,7 +25,10 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
   }, [onClose]);
   
   useEffect(() => {
-    if (!isOpen) setQuery('');
+    if (!isOpen) {
+      const timer = setTimeout(() => setQuery(''), 0);
+      return () => clearTimeout(timer);
+    }
   }, [isOpen]);
 
   const handleResultClick = (chapter: Chapter) => {

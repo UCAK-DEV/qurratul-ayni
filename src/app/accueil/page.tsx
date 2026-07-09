@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useLearning } from '@/context/LearningContext';
 import { useData } from '@/context/DataContext';
 import { calculateHijriDate } from '@/utils/hijri';
-import { getDakarPrayerTimes } from '@/utils/prayerTimes';
+import { getDakarPrayerTimes, PrayerTimes } from '@/utils/prayerTimes';
 import { getSetting } from '@/utils/settings';
 import { getRecommendationForDate, NafilaRecommendation } from '@/data/nafilas';
 
@@ -25,9 +25,8 @@ export default function LibraryPage() {
 
   // Dashboard state variables
   const [hijriOffset, setHijriOffset] = useState<number>(0);
-  const [prayerTimes, setPrayerTimes] = useState<any>(null);
-  const [nextPrayer, setNextPrayer] = useState<any>(null);
-  const [dailyNafilas, setDailyNafilas] = useState<NafilaRecommendation[]>([]);
+  const [prayerTimes, setPrayerTimes] = useState<PrayerTimes | null>(null);
+  const [nextPrayer, setNextPrayer] = useState<{ name: string; time: string } | null>(null);
   const [selectedNafila, setSelectedNafila] = useState<NafilaRecommendation | null>(null);
 
   // Notification states
@@ -36,11 +35,14 @@ export default function LibraryPage() {
   const [inAppNotifications, setInAppNotifications] = useState<InAppNotification[]>([]);
 
   useEffect(() => {
-    setMounted(true);
-    initializeDashboard();
+    setTimeout(() => {
+      setMounted(true);
+      initializeDashboard();
+    }, 0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const initializeDashboard = async () => {
+  async function initializeDashboard() {
     // 1. Fetch Hijri Offset
     const offsetStr = await getSetting('hijri_offset', '0');
     const offset = parseInt(offsetStr, 10);
@@ -57,7 +59,6 @@ export default function LibraryPage() {
     const hijriDate = calculateHijriDate(offset);
     const dayOfWeek = new Date().getDay();
     const recommendations = getRecommendationForDate(hijriDate.day, hijriDate.month, dayOfWeek);
-    setDailyNafilas(recommendations);
     if (recommendations.length > 0) {
       setSelectedNafila(recommendations[0]);
     }
@@ -93,15 +94,15 @@ export default function LibraryPage() {
     if (typeof window !== 'undefined' && 'Notification' in window) {
       setNotificationPermission(Notification.permission);
     }
-  };
+  }
 
-  const determineNextPrayer = (times: any) => {
+  function determineNextPrayer(times: PrayerTimes) {
     if (!times) return;
     const nextP = getNextPrayerInfo(times);
     setNextPrayer(nextP);
-  };
+  }
 
-  const getNextPrayerInfo = (times: any) => {
+  function getNextPrayerInfo(times: PrayerTimes) {
     const now = new Date();
     const currentMinutes = now.getHours() * 60 + now.getMinutes();
 

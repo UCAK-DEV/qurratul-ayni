@@ -21,31 +21,14 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [theme, setTheme] = useState<Theme>('dark');
+  const [theme] = useState<Theme>('dark');
   const [isFocusMode, setIsFocusMode] = useState(false);
   const [readingSettings, setReadingSettings] = useState<ReadingSettings>({
     fontSize: 100,
     lineHeight: 1.6
   });
 
-  useEffect(() => {
-    try {
-      // Always enforce dark theme
-      setTheme('dark');
-      applyTheme('dark');
-
-      // Load reading settings
-      const saved = localStorage.getItem('readingSettings');
-      if (saved) {
-        setReadingSettings(JSON.parse(saved));
-      }
-    } catch (error) {
-      console.error("Failed to load settings:", error);
-      applyTheme('dark');
-    }
-  }, []);
-
-  const applyTheme = (t: Theme) => {
+  const applyTheme = () => {
     const html = document.documentElement;
     html.setAttribute('data-theme', 'dark');
     // Update meta theme-color for mobile browser chrome
@@ -54,6 +37,23 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
       meta.setAttribute('content', '#020504');
     }
   };
+
+  useEffect(() => {
+    try {
+      // Always enforce dark theme
+      applyTheme();
+
+      // Load reading settings
+      const saved = localStorage.getItem('readingSettings');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        setTimeout(() => setReadingSettings(parsed), 0);
+      }
+    } catch (error) {
+      console.error("Failed to load settings:", error);
+      applyTheme();
+    }
+  }, []);
 
   const toggleTheme = () => {
     // No-op: only dark mode is allowed

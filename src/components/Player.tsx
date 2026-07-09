@@ -2,27 +2,20 @@
 
 import { useAudio } from '@/context/AudioContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 
 export const Player = () => {
   const { 
     currentChapter, isPlaying, progress, currentTime, duration,
-    volume, playbackRate, isLooping, isMuted, isLoading, error,
-    togglePlay, seekTo, setVolume, toggleMute, setPlaybackRate,
-    toggleLoop, playNext, playPrevious, stop, quitPlayback, formatTime
+    playbackRate, isLooping, isLoading, error,
+    togglePlay, seekTo, setPlaybackRate,
+    toggleLoop, playNext, playPrevious, quitPlayback, formatTime
   } = useAudio();
 
   const progressBarRef = useRef<HTMLDivElement>(null);
   const [isSeeking, setIsSeeking] = useState(false);
   const [seekTime, setSeekTime] = useState(0);
   const [isOptionsMenuOpen, setIsOptionsMenuOpen] = useState(false); // New state for options menu
-
-  // Local state for smooth volume slider interaction
-  const [localVolume, setLocalVolume] = useState(volume); 
-
-  useEffect(() => {
-    setLocalVolume(volume);
-  }, [volume]);
 
   // Handle seeking interaction
   const handleSeekStart = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -46,12 +39,6 @@ export const Player = () => {
     }
     setIsSeeking(false);
     setSeekTime(0);
-  };
-
-  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newVolume = parseFloat(e.target.value);
-    setLocalVolume(newVolume);
-    setVolume(newVolume);
   };
 
   const handlePlaybackRateChange = (rate: number) => {

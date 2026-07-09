@@ -7,13 +7,11 @@ import { useLearning } from '@/context/LearningContext';
 
 interface ReadingProgressProps {
   chapterId: string;
-  currentSlug: string;
   chapterTitle: string;
 }
 
 export const ReadingProgress: React.FC<ReadingProgressProps> = ({
   chapterId,
-  currentSlug,
   chapterTitle,
 }) => {
   const { getChapterProgress } = useLearning();

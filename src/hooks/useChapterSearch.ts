@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useMemo } from 'react';
 import type { IFuseOptions } from 'fuse.js';
 import Fuse from 'fuse.js';
 import { Chapter } from '@/data/chapters';
@@ -16,17 +16,14 @@ const fuseOptions: IFuseOptions<Chapter> = {
 
 export const useChapterSearch = (query: string, debounceMs: number = 300): Chapter[] => {
   const { chapters } = useData();
-  const [results, setResults] = useState<Chapter[]>([]);
   const debouncedQuery = useDebounce(query, debounceMs);
   const fuse = useMemo(() => new Fuse(chapters, fuseOptions), [chapters]);
 
-  useEffect(() => {
+  const results = useMemo(() => {
     if (debouncedQuery.trim().length > 1) {
-      const searchResults = fuse.search(debouncedQuery);
-      setResults(searchResults.map(result => result.item));
-    } else {
-      setResults([]);
+      return fuse.search(debouncedQuery).map(result => result.item);
     }
+    return [];
   }, [debouncedQuery, fuse]);
 
   return results;

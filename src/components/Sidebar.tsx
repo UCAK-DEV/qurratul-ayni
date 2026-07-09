@@ -89,7 +89,7 @@ export default function Sidebar() {
   const { chapters } = useData();
 
   useEffect(() => {
-    setMounted(true);
+    setTimeout(() => setMounted(true), 0);
   }, []);
 
   const toggleSidebar = () => setIsOpen(!isOpen);

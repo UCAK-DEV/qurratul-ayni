@@ -14,7 +14,7 @@ export const AppPWAProvider = ({ children }: { children: React.ReactNode }) => {
 
       navigator.serviceWorker
         .register('/sw.js')
-        .then((registration) => {
+        .then(() => {
           if (navigator.serviceWorker.controller) {
             setIsOfflineReady(true);
           }

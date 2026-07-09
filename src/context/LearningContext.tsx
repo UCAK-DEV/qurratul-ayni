@@ -53,8 +53,13 @@ export const LearningProvider = ({ children }: { children: ReactNode }) => {
     try {
       const savedCompleted = localStorage.getItem('completedChapters');
       const savedLast = localStorage.getItem('lastVisitedSlug');
-      if (savedCompleted) setCompletedChapters(JSON.parse(savedCompleted));
-      if (savedLast) setLastVisitedSlug(savedLast);
+      if (savedCompleted) {
+        const parsedCompleted = JSON.parse(savedCompleted);
+        setTimeout(() => setCompletedChapters(parsedCompleted), 0);
+      }
+      if (savedLast) {
+        setTimeout(() => setLastVisitedSlug(savedLast), 0);
+      }
     } catch (e) {
       console.error("Failed to load learning data:", e);
     }

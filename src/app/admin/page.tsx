@@ -3,10 +3,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { calculateHijriDate, HIJRI_MONTHS } from '@/utils/hijri';
+import { calculateHijriDate } from '@/utils/hijri';
 import { getSetting, setSetting } from '@/utils/settings';
 import { fetchChapters, fetchPageContent } from '@/utils/supabase';
 import { Chapter } from '@/data/chapters';
+import { PageContent } from '@/types/content';
 
 // Helper to update Supabase directly for audio files
 import { getSupabaseClient } from '@/utils/supabase';
@@ -17,7 +18,7 @@ export default function AdminPage() {
   const [hijriOffset, setHijriOffset] = useState<number>(0);
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [selectedChapterId, setSelectedChapterId] = useState<string>('5');
-  const [chapterPages, setChapterPages] = useState<any[]>([]);
+  const [chapterPages, setChapterPages] = useState<PageContent[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
@@ -71,8 +72,8 @@ export default function AdminPage() {
       };
 
       const sections = subSectionsMap[selectedChapterId] || [];
-      const pagesData: any[] = [];
-      const pgAudios: Record<string, string> = { ...pageAudioUrls };
+      const pagesData: PageContent[] = [];
+      const pgAudios: Record<string, string> = {};
 
       for (const sec of sections) {
         const fullId = `${selectedChapterId}-${sec}`;
@@ -83,7 +84,7 @@ export default function AdminPage() {
         }
       }
       setChapterPages(pagesData);
-      setPageAudioUrls(pgAudios);
+      setPageAudioUrls(prev => ({ ...prev, ...pgAudios }));
     };
 
     loadPagesForChapter();
@@ -98,7 +99,7 @@ export default function AdminPage() {
     try {
       await setSetting('hijri_offset', hijriOffset.toString());
       showNotification("Ajustement du calendrier musulman enregistré avec succès.");
-    } catch (e) {
+    } catch {
       showNotification("Erreur lors de la sauvegarde du réglage.", "error");
     }
   };
@@ -118,7 +119,7 @@ export default function AdminPage() {
 
       if (error) throw error;
       showNotification(`Audio du chapitre ${chapterId} mis à jour dans la base de données.`);
-    } catch (e) {
+    } catch {
       showNotification(`Audio du chapitre ${chapterId} sauvegardé localement (Hors-ligne).`);
     }
   };
@@ -138,7 +139,7 @@ export default function AdminPage() {
 
       if (error) throw error;
       showNotification(`Audio de la section ${pageId} mis à jour dans la base de données.`);
-    } catch (e) {
+    } catch {
       showNotification(`Audio de la section ${pageId} sauvegardé localement (Hors-ligne).`);
     }
   };

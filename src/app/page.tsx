@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -17,7 +17,7 @@ export default function HomePage() {
   const scalePortrait = useTransform(scrollY, [0, 300], [1, 0.95]);
 
   useEffect(() => {
-    setMounted(true);
+    setTimeout(() => setMounted(true), 0);
   }, []);
 
   if (!mounted) return null;

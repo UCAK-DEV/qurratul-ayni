@@ -28,6 +28,16 @@ const getLocalAudioUrl = (key: string, defaultUrl: string): string => {
   return defaultUrl;
 };
 
+interface SupabaseChapter {
+  id: string;
+  titlear: string;
+  titlefr: string;
+  desc: string;
+  audiourl?: string;
+  group: string;
+  icon: string;
+}
+
 // Fonctions de récupération des données avec mapping Minuscules -> CamelCase
 export const fetchChapters = async (): Promise<Chapter[]> => {
   try {
@@ -41,7 +51,7 @@ export const fetchChapters = async (): Promise<Chapter[]> => {
       return loadMockChapters();
     }
 
-    const mapped = (data || []).map((c: any) => ({
+    const mapped = (data || []).map((c: SupabaseChapter) => ({
       id: c.id,
       titleAr: c.titlear,
       titleFr: c.titlefr,
@@ -52,7 +62,7 @@ export const fetchChapters = async (): Promise<Chapter[]> => {
     }));
 
     return mapped.sort((a, b) => parseInt(a.id) - parseInt(b.id));
-  } catch (error) {
+  } catch {
     console.log('Supabase client failed initialization, using mock data.');
     return loadMockChapters();
   }
@@ -92,7 +102,7 @@ export const fetchPageContent = async (fullId: string): Promise<PageContent | nu
       audioUrl: getLocalAudioUrl(`page_${data.id}`, data.audiourl || ""),
       blocks: data.blocks
     };
-  } catch (error) {
+  } catch {
     return loadMockPage(fullId);
   }
 };

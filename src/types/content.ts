@@ -14,6 +14,7 @@ export interface ContentBlock {
   type: BlockType;
   titleFr?: string;
   titleAr?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   content?: any; // Dépend du type de bloc
 }
 
