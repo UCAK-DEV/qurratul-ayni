@@ -225,7 +225,7 @@ body.modal-open {
 /* Fond de page et backgrounds sombres */
 [data-theme="light"] .bg-\[\#010302\]   { background-color: var(--bg-base) !important; }
 [data-theme="light"] .bg-emerald-950\/80 { background-color: var(--bg-nav) !important; }
-[data-theme="light"] .bg-\[#0A1A14\]    { background-color: var(--bg-surface) !important; }
+[data-theme="light"] .bg-\[\#0A1A14\]    { background-color: var(--bg-surface) !important; }
 [data-theme="light"] .bg-black\/60      { background-color: rgba(255, 255, 255, 0.6) !important; }
 [data-theme="light"] .bg-black\/80      { background-color: rgba(255, 255, 255, 0.85) !important; }
 
@@ -306,7 +306,7 @@ a:focus-visible {
   left: 0;
   right: 0;
   height: 64px;
-  display: flex;
+  display: none; /* Cache par défaut sur grand écran */
   align-items: center;
   justify-content: space-around;
   z-index: 100;
@@ -315,6 +315,12 @@ a:focus-visible {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   box-shadow: var(--shadow-nav);
+}
+
+@media (max-width: 767px) {
+  .bottom-tab-bar {
+    display: flex; /* Affiche uniquement sur mobile */
+  }
 }
 
 .bottom-tab-btn {

@@ -389,7 +389,7 @@ export const Navbar = () => {
 
   const pathname = usePathname();
   const chaptersRef = useRef<HTMLLIElement>(null);
-  const searchRef = useRef<HTMLDivElement>(null);
+  const searchRef = useRef<HTMLLIElement>(null);
   const { chapters } = useData();
   const { isCompleted } = useLearning();
   const { theme } = useTheme();
@@ -474,7 +474,7 @@ export const Navbar = () => {
           </Link>
 
           {/* Desktop Nav Links */}
-          <ul className="hidden md:flex items-center gap-5">
+          <ul className="hidden md:flex items-center gap-8">
             <li>
               <Link
                 href="/accueil"
@@ -489,7 +489,7 @@ export const Navbar = () => {
             <li className="relative" ref={chaptersRef}>
               <button
                 onClick={() => setIsChaptersOpen(!isChaptersOpen)}
-                className="text-xs uppercase tracking-widest font-bold flex items-center gap-1.5 transition-colors"
+                className="text-xs uppercase tracking-widest font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
                 style={{ color: isChaptersOpen ? '#c9a961' : 'var(--text-secondary)' }}
                 aria-expanded={isChaptersOpen}
                 aria-haspopup="true"
@@ -510,6 +510,87 @@ export const Navbar = () => {
                 )}
               </AnimatePresence>
             </li>
+            <li className="relative" ref={searchRef}>
+              <button
+                onClick={() => setIsSearchOpen(!isSearchOpen)}
+                className="text-xs uppercase tracking-widest font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+                style={{ color: isSearchOpen ? '#c9a961' : 'var(--text-secondary)' }}
+                aria-expanded={isSearchOpen}
+                aria-haspopup="true"
+              >
+                <span className="material-symbols-rounded text-base">search</span>
+                Chercher
+                <motion.span animate={{ rotate: isSearchOpen ? 180 : 0 }} className="material-symbols-rounded text-base">
+                  expand_more
+                </motion.span>
+              </button>
+              <AnimatePresence>
+                {isSearchOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10, scale: 0.97 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.97 }}
+                    transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                    className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-80 rounded-2xl border shadow-2xl p-3.5 z-50"
+                    style={{ background: 'var(--bg-surface)', borderColor: 'var(--border-medium)' }}
+                  >
+                    <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl border mb-3" style={{ background: 'var(--bg-card)', borderColor: 'var(--border-subtle)' }}>
+                      <span className="material-symbols-rounded text-[#c9a961] text-lg">search</span>
+                      <input
+                        type="text"
+                        placeholder="Rechercher..."
+                        value={searchQuery}
+                        onChange={e => setSearchQuery(e.target.value)}
+                        className="bg-transparent outline-none text-xs w-full"
+                        style={{ color: 'var(--text-primary)' }}
+                        autoFocus
+                      />
+                      {searchQuery && (
+                        <button onClick={() => setSearchQuery('')} className="text-gray-400 hover:text-gray-200">
+                          <span className="material-symbols-rounded text-sm">close</span>
+                        </button>
+                      )}
+                    </div>
+                    <div className="max-h-60 overflow-y-auto space-y-1">
+                      {desktopResults.length > 0 ? (
+                        desktopResults.map(c => (
+                          <Link
+                            key={c.id}
+                            href={`/partie/${c.id}`}
+                            onClick={() => { setIsSearchOpen(false); setSearchQuery(''); }}
+                            className="flex items-center gap-3 p-2 rounded-lg hover:bg-[rgba(201,169,97,0.05)] transition-colors text-left"
+                          >
+                            <span className="material-symbols-rounded text-[#c9a961] text-base">{c.icon}</span>
+                            <div className="min-w-0 flex-1">
+                              <p className="text-xs font-semibold truncate" style={{ color: 'var(--text-primary)' }}>{c.titleFr}</p>
+                              <p className="text-[10px] truncate" style={{ color: 'var(--text-muted)' }}>{c.titleAr}</p>
+                            </div>
+                          </Link>
+                        ))
+                      ) : searchQuery.length > 1 ? (
+                        <p className="text-center py-4 text-xs italic" style={{ color: 'var(--text-muted)' }}>
+                          Aucun résultat pour « {searchQuery} »
+                        </p>
+                      ) : (
+                        <p className="text-center py-4 text-[10px] uppercase font-bold tracking-wider" style={{ color: 'var(--text-muted)' }}>
+                          Tapez pour rechercher...
+                        </p>
+                      )}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </li>
+            <li>
+              <button
+                onClick={() => setIsSettingsOpen(true)}
+                className="text-xs uppercase tracking-widest font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+                style={{ color: isSettingsOpen ? '#c9a961' : 'var(--text-secondary)' }}
+              >
+                <span className="material-symbols-rounded text-base">tune</span>
+                Réglages
+              </button>
+            </li>
           </ul>
 
           {/* Desktop Right Controls */}
@@ -518,64 +599,6 @@ export const Navbar = () => {
 
             {/* Theme Toggle */}
             <ThemeToggle />
-
-            {/* Settings */}
-            <button
-              onClick={() => setIsSettingsOpen(true)}
-              className="w-9 h-9 flex items-center justify-center rounded-xl border transition-all"
-              style={{ background: 'var(--bg-card)', borderColor: 'var(--border-subtle)', color: 'var(--text-muted)' }}
-              aria-label="Réglages de lecture"
-            >
-              <span className="material-symbols-rounded text-lg">settings_accessibility</span>
-            </button>
-
-            {/* Search */}
-            <div className="relative" ref={searchRef}>
-              <motion.div
-                animate={{ width: isSearchOpen ? '220px' : '36px' }}
-                className="h-9 rounded-xl border flex items-center overflow-hidden"
-                style={{ background: 'var(--bg-card)', borderColor: 'var(--border-subtle)' }}
-              >
-                <button
-                  onClick={() => setIsSearchOpen(!isSearchOpen)}
-                  className="w-9 h-9 flex-shrink-0 flex items-center justify-center transition-colors"
-                  style={{ color: isSearchOpen ? '#c9a961' : 'var(--text-muted)' }}
-                  aria-label={isSearchOpen ? 'Fermer la recherche' : 'Rechercher'}
-                >
-                  <span className="material-symbols-rounded text-lg">{isSearchOpen ? 'close' : 'search'}</span>
-                </button>
-                <input
-                  type="text"
-                  placeholder="Rechercher..."
-                  value={searchQuery}
-                  onChange={e => setSearchQuery(e.target.value)}
-                  className="bg-transparent outline-none text-sm w-full pr-3"
-                  style={{ color: 'var(--text-primary)' }}
-                  aria-label="Champ de recherche"
-                />
-              </motion.div>
-              {/* Search results dropdown */}
-              <AnimatePresence>
-                {desktopResults.length > 0 && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 8 }}
-                    className="absolute top-full right-0 mt-2 w-72 rounded-2xl border shadow-xl py-2 max-h-64 overflow-y-auto"
-                    style={{ background: 'var(--bg-surface)', borderColor: 'var(--border-medium)' }}
-                  >
-                    {desktopResults.map(c => (
-                      <Link key={c.id} href={`/partie/${c.id}`} onClick={() => { setIsSearchOpen(false); setSearchQuery(''); }}
-                        className="flex items-center gap-3 px-4 py-2.5 hover:bg-[rgba(201,169,97,0.05)] transition-colors"
-                      >
-                        <span className="material-symbols-rounded text-[#c9a961] text-base">{c.icon}</span>
-                        <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{c.titleFr}</span>
-                      </Link>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
           </div>
 
 
