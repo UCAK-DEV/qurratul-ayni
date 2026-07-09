@@ -39,38 +39,7 @@
   color-scheme: dark;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   MODE JOUR (Light) — Clair, Net, Haute Lisibilité
-   ═══════════════════════════════════════════════════════════ */
-[data-theme="light"] {
-  --bg-base: #FFFFFF;
-  --bg-surface: #F8FAFC;
-  --bg-card: #FFFFFF;
-  --bg-card-hover: #F1F5F9;
-  --bg-nav: rgba(255, 255, 255, 0.95);
-  --bg-overlay: rgba(255, 255, 255, 0.6);
 
-  --text-primary: #0F172A;
-  --text-secondary: #475569;
-  --text-muted: #94A3B8;
-  --text-inverse: #FFFFFF;
-
-  --border-subtle: rgba(0, 0, 0, 0.06);
-  --border-medium: rgba(0, 0, 0, 0.12);
-  --border-gold: rgba(160, 120, 50, 0.4);
-
-  /* Redéfinir les couleurs or pour le mode jour (plus foncées pour le contraste) */
-  --color-gold: #a67c00;
-  --color-gold-light: #8a6a20;
-
-  --selection-bg: rgba(201, 169, 97, 0.25);
-
-  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.05);
-  --shadow-nav: 0 -1px 0 rgba(0, 0, 0, 0.05);
-  --shadow-gold: 0 0 20px rgba(201, 169, 97, 0.15);
-
-  color-scheme: light;
-}
 
 /* ═══════════════════════════════════════════════════════════
    BASE STYLES (adaptatifs via variables)
@@ -164,9 +133,6 @@ body.modal-open {
   background: rgba(201, 169, 97, 0.45);
 }
 
-/* ═══════════════════════════════════════════════════════════
-   OVERRIDES MODE JOUR — composants spécifiques
-   ═══════════════════════════════════════════════════════════ */
 
 /* Page principale */
 [data-theme="light"] main {
@@ -252,7 +218,6 @@ body.modal-open {
 }
 
 [data-theme="dark"] .theme-toggle-track  { background: rgba(201, 169, 97, 0.15); border: 1px solid rgba(201,169,97,0.3); }
-[data-theme="light"] .theme-toggle-track { background: rgba(201, 169, 97, 0.3);  border: 1px solid rgba(201,169,97,0.5); }
 
 .theme-toggle-thumb {
   position: absolute;
@@ -268,7 +233,6 @@ body.modal-open {
 }
 
 [data-theme="dark"]  .theme-toggle-thumb { transform: translateX(3px);  background: #c9a961; }
-[data-theme="light"] .theme-toggle-thumb { transform: translateX(27px); background: #c9a961; }
 
 /* ═══════════════════════════════════════════════════════════
    FLASHCARD 3D FLIP

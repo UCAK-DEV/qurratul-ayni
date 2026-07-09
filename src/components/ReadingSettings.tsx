@@ -51,40 +51,7 @@ export const ReadingSettings: React.FC<ReadingSettingsProps> = ({ isOpen, onClos
 
             <div className="space-y-7">
 
-              {/* Mode Jour / Nuit */}
-              <div className="space-y-3">
-                <p className="text-[10px] uppercase font-black tracking-widest" style={{ color: 'var(--text-muted)' }}>
-                  Thème
-                </p>
-                <div className="grid grid-cols-2 gap-2">
-                  {/* Night mode button */}
-                  <motion.button
-                    whileTap={{ scale: 0.96 }}
-                    onClick={() => theme !== 'dark' && toggleTheme()}
-                    className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl border text-sm font-bold transition-all"
-                    style={theme === 'dark'
-                      ? { background: 'rgba(201,169,97,0.15)', borderColor: '#c9a961', color: '#c9a961' }
-                      : { background: 'var(--bg-card)', borderColor: 'var(--border-subtle)', color: 'var(--text-muted)' }
-                    }
-                  >
-                    <span className="material-symbols-rounded text-lg">dark_mode</span>
-                    Nuit
-                  </motion.button>
-                  {/* Day mode button */}
-                  <motion.button
-                    whileTap={{ scale: 0.96 }}
-                    onClick={() => theme !== 'light' && toggleTheme()}
-                    className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl border text-sm font-bold transition-all"
-                    style={theme === 'light'
-                      ? { background: 'rgba(201,169,97,0.2)', borderColor: '#c9a961', color: '#8a6a20' }
-                      : { background: 'var(--bg-card)', borderColor: 'var(--border-subtle)', color: 'var(--text-muted)' }
-                    }
-                  >
-                    <span className="material-symbols-rounded text-lg">light_mode</span>
-                    Jour
-                  </motion.button>
-                </div>
-              </div>
+
 
               {/* Taille de police */}
               <div className="space-y-3">

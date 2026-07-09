@@ -30,11 +30,9 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     try {
-      // Load saved theme
-      const savedTheme = localStorage.getItem('qa-theme') as Theme | null;
-      const resolvedTheme: Theme = savedTheme === 'light' ? 'light' : 'dark';
-      setTheme(resolvedTheme);
-      applyTheme(resolvedTheme);
+      // Always enforce dark theme
+      setTheme('dark');
+      applyTheme('dark');
 
       // Load reading settings
       const saved = localStorage.getItem('readingSettings');
@@ -49,23 +47,16 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 
   const applyTheme = (t: Theme) => {
     const html = document.documentElement;
-    html.setAttribute('data-theme', t);
+    html.setAttribute('data-theme', 'dark');
     // Update meta theme-color for mobile browser chrome
     const meta = document.querySelector('meta[name="theme-color"]');
     if (meta) {
-      meta.setAttribute('content', t === 'light' ? '#f5f0e4' : '#020504');
+      meta.setAttribute('content', '#020504');
     }
   };
 
   const toggleTheme = () => {
-    setTheme(prev => {
-      const next: Theme = prev === 'dark' ? 'light' : 'dark';
-      applyTheme(next);
-      try {
-        localStorage.setItem('qa-theme', next);
-      } catch (e) { /* ignore */ }
-      return next;
-    });
+    // No-op: only dark mode is allowed
   };
 
   const updateSettings = (newSettings: ReadingSettings) => {
