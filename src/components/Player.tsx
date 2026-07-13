@@ -1,205 +1,321 @@
 'use client';
 
-import { useAudio } from '@/context/AudioContext';
-import Icon from '@/components/Icon';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { useAudio } from '@/context/AudioContext';
+import { useData } from '@/context/DataContext';
+import Icon from '@/components/Icon';
+
+const SPEEDS = [1.0, 1.25, 1.5, 2.0, 0.75];
+
+/**
+ * Barre de recherche (seek) fiable — souris, tactile et clavier.
+ * Pendant le glissement, la valeur locale prime sur currentTime ;
+ * la position est appliquée au relâchement.
+ */
+const SeekBar: React.FC<{ compact?: boolean }> = ({ compact = false }) => {
+  const { currentTime, duration, seekTo, formatTime } = useAudio();
+  const [drag, setDrag] = useState<number | null>(null);
+
+  const value = drag ?? currentTime;
+  const commit = () => {
+    if (drag != null) {
+      seekTo(drag);
+      setDrag(null);
+    }
+  };
+
+  return (
+    <div className={compact ? '' : 'space-y-1.5'}>
+      <input
+        type="range"
+        min={0}
+        max={duration || 0}
+        step={1}
+        value={Number.isFinite(value) ? value : 0}
+        onChange={e => setDrag(Number(e.target.value))}
+        onPointerUp={commit}
+        onPointerCancel={() => setDrag(null)}
+        onKeyUp={commit}
+        onBlur={commit}
+        className="one-slider w-full"
+        style={compact ? { height: 4 } : undefined}
+        aria-label="Position de lecture"
+        aria-valuetext={formatTime(value)}
+      />
+      {!compact && (
+        <div className="flex justify-between text-xs tabular-nums" style={{ color: 'var(--text-muted)' }}>
+          <span>{formatTime(value)}</span>
+          <span>{formatTime(duration)}</span>
+        </div>
+      )}
+    </div>
+  );
+};
 
 export const Player = () => {
-  const { 
-    currentChapter, isPlaying, progress, currentTime, duration,
-    playbackRate, isLooping, isLoading, error,
-    togglePlay, seekTo, setPlaybackRate,
-    toggleLoop, playNext, playPrevious, quitPlayback, formatTime
+  const {
+    currentChapter, isPlaying, isLoading, isLooping, playbackRate, error,
+    togglePlay, toggleLoop, setPlaybackRate, playNext, playPrevious,
+    quitPlayback, setChapter,
   } = useAudio();
+  const { chapters } = useData();
 
-  const progressBarRef = useRef<HTMLDivElement>(null);
-  const [isSeeking, setIsSeeking] = useState(false);
-  const [seekTime, setSeekTime] = useState(0);
-  const [isOptionsMenuOpen, setIsOptionsMenuOpen] = useState(false); // New state for options menu
-
-  // Handle seeking interaction
-  const handleSeekStart = (e: React.MouseEvent<HTMLDivElement>) => {
-    setIsSeeking(true);
-    handleSeek(e);
-  };
-
-  const handleSeek = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (isSeeking && progressBarRef.current && duration > 0) {
-      const rect = progressBarRef.current.getBoundingClientRect();
-      let offsetX = e.clientX - rect.left;
-      offsetX = Math.max(0, Math.min(offsetX, rect.width));
-      const time = (offsetX / rect.width) * duration;
-      setSeekTime(time);
-    }
-  };
-
-  const handleSeekEnd = () => {
-    if (isSeeking && duration > 0) {
-      seekTo(seekTime);
-    }
-    setIsSeeking(false);
-    setSeekTime(0);
-  };
-
-  const handlePlaybackRateChange = (rate: number) => {
-    setPlaybackRate(rate);
-  };
+  const [expanded, setExpanded] = useState(false);
 
   if (!currentChapter) return null;
 
+  const playlist = chapters.filter(c => !!c.audioUrl);
+
+  const cycleSpeed = () => {
+    const idx = SPEEDS.indexOf(playbackRate);
+    setPlaybackRate(SPEEDS[(idx + 1) % SPEEDS.length]);
+  };
+
+  const playIcon = isLoading ? 'progress_activity' : isPlaying ? 'pause' : 'play_arrow';
+
   return (
-    <AnimatePresence>
-      <motion.div 
-        initial={{ y: 150, opacity: 0, scale: 0.95 }}
-        animate={{ y: 0, opacity: 1, scale: 1 }}
-        exit={{ y: 150, opacity: 0, scale: 0.95 }}
-        transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-        className="fixed z-[150] bottom-[80px] md:bottom-8 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:w-auto md:min-w-[600px] flex flex-col overflow-hidden rounded-3xl border border-[var(--border-gold)] shadow-[var(--shadow-gold)]"
-        style={{ background: 'var(--bg-nav)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}
-        onMouseUp={handleSeekEnd}
-        onMouseLeave={handleSeekEnd}
-      >
-        {/* Progress Bar (integrated at the very top of the pill) */}
-        <div 
-          ref={progressBarRef} 
-          className="relative w-full h-1.5 bg-black/5 dark:bg-white/5 cursor-pointer group"
-          onMouseDown={handleSeekStart}
-          onMouseMove={handleSeek}
-          onMouseUp={handleSeekEnd}
-        >
-          <motion.div 
-            className="h-full bg-gold rounded-r-full relative" 
-            style={{ width: `${isSeeking ? (seekTime / duration) * 100 : progress}%` }}
+    <>
+      {/* ══ MINI PLAYER (barre flottante) ══════════════════════════════ */}
+      <AnimatePresence>
+        {!expanded && (
+          <motion.div
+            initial={{ y: 120, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 120, opacity: 0 }}
+            transition={{ type: 'spring', damping: 26, stiffness: 300 }}
+            className="fixed z-[150] bottom-[78px] md:bottom-5 left-3 right-3 md:left-1/2 md:-translate-x-1/2 md:w-[560px] rounded-2xl border overflow-hidden"
+            style={{
+              background: 'var(--bg-surface)',
+              borderColor: 'var(--border-subtle)',
+              boxShadow: 'var(--shadow-card)',
+            }}
           >
-            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-[0_0_8px_rgba(201,169,97,0.8)] opacity-0 group-hover:opacity-100 transition-opacity translate-x-1/2" />
-          </motion.div>
-        </div>
-
-        <div className="flex items-center justify-between p-3 md:px-6 md:py-4 gap-4">
-          
-          {/* Left: Info & Close */}
-          <div className="flex items-center gap-3 w-1/3 md:w-[200px]">
-            <button 
-              onClick={quitPlayback} 
-              className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-red-500/10 text-[var(--text-muted)] hover:text-red-500 transition-colors"
-              aria-label="Fermer le lecteur"
-            >
-              <Icon name="close" className="text-lg" />
-            </button>
-            <div className="min-w-0 flex flex-col justify-center">
-              <p className="text-sm font-semibold text-gold truncate">
-                {currentChapter.titleFr}
-              </p>
-              <p className="text-xs text-[var(--text-secondary)] font-amiri truncate" lang="ar" dir="rtl">
-                {currentChapter.titleAr}
-              </p>
-            </div>
-          </div>
-
-          {/* Center: Playback Controls */}
-          <div className="flex items-center justify-center gap-2 md:gap-4">
-            <button 
-              onClick={playPrevious} 
-              className="text-[var(--text-muted)] hover:text-gold transition-colors p-2"
-              aria-label="Chapitre précédent"
-            >
-              <Icon name="skip_previous" className="text-2xl" />
-            </button>
-            
-            <button 
-              onClick={togglePlay} 
-              className="w-12 h-12 md:w-14 md:h-14 bg-gold rounded-full flex items-center justify-center shadow-[0_4px_15px_rgba(201,169,97,0.3)] hover:scale-105 transition-transform text-[#05110d]"
-              aria-label={isPlaying ? 'Pause' : 'Lecture'}
-            >
-              {isLoading ? (
-                <Icon name="progress_activity" className="text-3xl animate-spin" />
-              ) : (
-                <Icon 
-                  name={isPlaying ? 'pause' : 'play_arrow'} 
-                  className="text-3xl md:text-4xl translate-x-[1px]" 
-                />
-              )}
-            </button>
-            
-            <button 
-              onClick={playNext} 
-              className="text-[var(--text-muted)] hover:text-gold transition-colors p-2"
-              aria-label="Chapitre suivant"
-            >
-              <Icon name="skip_next" className="text-2xl" />
-            </button>
-          </div>
-
-          {/* Right: Secondary Controls */}
-          <div className="flex items-center justify-end gap-1 md:gap-3 w-1/3 md:w-[200px]">
-            <p className="hidden lg:block text-xs text-[var(--text-muted)] font-mono tracking-tighter w-20 text-right">
-              {formatTime(isSeeking ? seekTime : currentTime)}
-            </p>
-            
-            {/* Speed Control */}
-            <div className="relative group hidden sm:block">
-              <button className="text-[var(--text-muted)] hover:text-gold transition-colors p-2 font-black text-xs tracking-widest uppercase">
-                {playbackRate}x
+            <div className="flex items-center gap-3 p-2.5 pr-3">
+              {/* Pochette (motif + icône du chapitre) */}
+              <button
+                onClick={() => setExpanded(true)}
+                className="relative w-12 h-12 rounded-xl overflow-hidden flex items-center justify-center flex-shrink-0"
+                style={{ background: 'var(--accent-gradient)' }}
+                aria-label="Ouvrir le lecteur"
+              >
+                <span className="absolute inset-0" style={{ backgroundImage: 'var(--pattern-islamic)' }} />
+                <Icon name={currentChapter.icon || 'menu_book'} className="relative text-2xl" style={{ color: 'var(--accent-contrast)' }} />
               </button>
-              <div className="absolute bottom-full mb-4 right-1/2 translate-x-1/2 p-2 bg-[var(--bg-surface)] rounded-2xl shadow-xl border border-[var(--border-subtle)] opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-1 pointer-events-none group-hover:pointer-events-auto">
-                {[2.0, 1.5, 1.25, 1.0, 0.75].map(rate => (
-                  <button 
-                    key={rate} 
-                    onClick={() => handlePlaybackRateChange(rate)} 
-                    className={`text-xs px-4 py-2 rounded-xl text-center font-bold transition-colors ${playbackRate === rate ? 'bg-gold text-[#241c07]' : 'text-[var(--text-secondary)] hover:bg-[var(--bg-base)]'}`}
-                  > {rate}x </button>
-                ))}
+
+              {/* Titres — cliquer déplie le player */}
+              <button onClick={() => setExpanded(true)} className="flex-1 min-w-0 text-left" aria-label="Ouvrir le lecteur complet">
+                <p className="text-sm font-semibold truncate" style={{ color: 'var(--text-primary)' }}>
+                  {currentChapter.titleFr}
+                </p>
+                <p className="text-xs font-amiri truncate" style={{ color: 'var(--color-gold)' }} lang="ar" dir="rtl">
+                  {currentChapter.titleAr}
+                </p>
+              </button>
+
+              {/* Contrôles */}
+              <div className="flex items-center gap-1">
+                <button onClick={playPrevious} className="one-icon-btn !w-9 !h-9" aria-label="Piste précédente">
+                  <Icon name="skip_previous" className="text-xl" />
+                </button>
+                <button
+                  onClick={togglePlay}
+                  className="w-11 h-11 rounded-full flex items-center justify-center transition-transform active:scale-90"
+                  style={{ background: 'var(--accent-gradient)', color: 'var(--accent-contrast)' }}
+                  aria-label={isPlaying ? 'Pause' : 'Lecture'}
+                >
+                  <Icon name={playIcon} className={`text-2xl ${isLoading ? 'animate-spin' : ''}`} />
+                </button>
+                <button onClick={playNext} className="one-icon-btn !w-9 !h-9" aria-label="Piste suivante">
+                  <Icon name="skip_next" className="text-xl" />
+                </button>
+                <button onClick={quitPlayback} className="one-icon-btn !w-8 !h-8 ml-1" aria-label="Fermer le lecteur">
+                  <Icon name="close" className="text-base" />
+                </button>
               </div>
             </div>
 
-            {/* Mobile Options Menu */}
-            <div className="sm:hidden relative">
-              <button 
-                onClick={() => setIsOptionsMenuOpen(!isOptionsMenuOpen)} 
-                className={`p-2 rounded-full transition-colors ${isOptionsMenuOpen ? 'text-gold' : 'text-[var(--text-muted)] hover:text-gold'}`}
-              >
-                <Icon name="more_vert" />
-              </button>
-              <AnimatePresence>
-                {isOptionsMenuOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10, scale: 0.9 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 10, scale: 0.9 }}
-                    className="absolute bottom-full right-0 mb-4 p-4 min-w-[200px] bg-[var(--bg-surface)] backdrop-blur-xl rounded-2xl shadow-2xl border border-[var(--border-subtle)] flex flex-col gap-5 origin-bottom-right"
-                  >
-                    <div className="text-[var(--text-primary)] font-bold text-xs uppercase tracking-widest text-center border-b border-[var(--border-subtle)] pb-2 mb-1">Options audio</div>
-                    <div className="flex items-center gap-3">
-                      <Icon name="speed" className="text-xl text-gold" />
-                      <div className="flex flex-wrap gap-1 flex-1 justify-end">
-                        {[0.75, 1.0, 1.25, 1.5, 2.0].map(rate => (
-                          <button key={rate} onClick={() => handlePlaybackRateChange(rate)} className={`text-xs font-bold px-2 py-1 rounded-full ${playbackRate === rate ? 'bg-gold text-[#241c07]' : 'bg-[var(--bg-base)] text-[var(--text-secondary)]'}`} > {rate}x </button>
-                        ))}
-                      </div>
-                    </div>
-                    <button onClick={toggleLoop} className={`flex items-center justify-between w-full p-2 rounded-xl transition-colors ${isLooping ? 'bg-gold/10 text-gold' : 'hover:bg-[var(--bg-base)] text-[var(--text-secondary)]'}`}>
-                      <span className="text-xs font-bold uppercase tracking-widest">En Boucle</span>
-                      <Icon name="repeat" className="text-xl" />
-                    </button>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+            {/* Seek fin, fonctionnel (tactile + souris) */}
+            <div className="px-3 pb-2 -mt-1">
+              <SeekBar compact />
             </div>
-          </div>
 
-        </div>
-
-        {error && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="absolute -top-12 left-1/2 -translate-x-1/2 bg-red-500 text-white font-bold text-xs uppercase tracking-widest px-4 py-2 rounded-full shadow-lg"
-          >
-            {error}
+            {/* Erreur de lecture éventuelle */}
+            {error && (
+              <p className="px-3 pb-2 text-xs text-red-400 flex items-center gap-1.5">
+                <Icon name="error" className="text-sm" />
+                {error}
+              </p>
+            )}
           </motion.div>
         )}
-      </motion.div>
-    </AnimatePresence>
+      </AnimatePresence>
+
+      {/* ══ PLAYER PLEIN ÉCRAN (style Boomplay) ═══════════════════════ */}
+      <AnimatePresence>
+        {expanded && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[200]"
+              style={{ background: 'var(--bg-overlay)', backdropFilter: 'blur(4px)' }}
+              onClick={() => setExpanded(false)}
+            />
+            <motion.div
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '100%' }}
+              transition={{ type: 'spring', damping: 30, stiffness: 260 }}
+              className="fixed inset-x-0 bottom-0 z-[201] rounded-t-3xl border-t flex flex-col"
+              style={{
+                background: 'var(--bg-surface)',
+                borderColor: 'var(--border-medium)',
+                maxHeight: '92vh',
+              }}
+              role="dialog"
+              aria-label="Lecteur audio"
+            >
+              {/* Poignée + réduire */}
+              <div className="flex items-center justify-between px-5 pt-3 pb-1 flex-shrink-0">
+                <span className="w-8" />
+                <div className="bottom-sheet-handle !m-0" />
+                <button onClick={() => setExpanded(false)} className="one-icon-btn !w-8 !h-8" aria-label="Réduire le lecteur">
+                  <Icon name="expand_more" className="text-xl" />
+                </button>
+              </div>
+
+              <div className="overflow-y-auto px-5 pb-8" style={{ paddingBottom: 'calc(2rem + env(safe-area-inset-bottom))' }}>
+
+                {/* Pochette majeure — motif khatam sur dégradé Touba */}
+                <div className="max-w-xs mx-auto mt-4">
+                  <div
+                    className="relative aspect-square rounded-3xl flex flex-col items-center justify-center gap-4 overflow-hidden"
+                    style={{ background: 'var(--accent-gradient)', boxShadow: 'var(--shadow-card)' }}
+                  >
+                    <span className="absolute inset-0 opacity-70" style={{ backgroundImage: 'var(--pattern-islamic)' }} />
+                    <Icon name={currentChapter.icon || 'menu_book'} className="relative text-6xl" style={{ color: 'var(--accent-contrast)' }} />
+                    <p className="relative font-amiri text-3xl px-6 text-center leading-relaxed" style={{ color: 'var(--accent-contrast)' }} lang="ar" dir="rtl">
+                      {currentChapter.titleAr}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Titres */}
+                <div className="text-center mt-6 space-y-1">
+                  <h2 className="font-display text-2xl font-bold leading-snug" style={{ color: 'var(--text-primary)' }}>
+                    {currentChapter.titleFr}
+                  </h2>
+                  <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
+                    Qurratul Ayni · Audio wolof
+                  </p>
+                </div>
+
+                {/* Seek complet avec minutages */}
+                <div className="max-w-md mx-auto mt-6">
+                  <SeekBar />
+                </div>
+
+                {/* Contrôles principaux */}
+                <div className="flex items-center justify-center gap-3 sm:gap-5 mt-4">
+                  <button
+                    onClick={toggleLoop}
+                    className="one-icon-btn"
+                    style={isLooping ? { color: 'var(--accent)', background: 'var(--accent-soft)' } : undefined}
+                    aria-label="Lecture en boucle"
+                    aria-pressed={isLooping}
+                  >
+                    <Icon name="repeat" className="text-xl" />
+                  </button>
+
+                  <button onClick={playPrevious} className="one-icon-btn !w-12 !h-12" aria-label="Piste précédente">
+                    <Icon name="skip_previous" className="text-3xl" />
+                  </button>
+
+                  <button
+                    onClick={togglePlay}
+                    className="w-16 h-16 rounded-full flex items-center justify-center transition-transform active:scale-90"
+                    style={{ background: 'var(--accent-gradient)', color: 'var(--accent-contrast)', boxShadow: 'var(--shadow-card)' }}
+                    aria-label={isPlaying ? 'Pause' : 'Lecture'}
+                  >
+                    <Icon name={playIcon} className={`text-4xl ${isLoading ? 'animate-spin' : ''}`} />
+                  </button>
+
+                  <button onClick={playNext} className="one-icon-btn !w-12 !h-12" aria-label="Piste suivante">
+                    <Icon name="skip_next" className="text-3xl" />
+                  </button>
+
+                  <button
+                    onClick={cycleSpeed}
+                    className="one-icon-btn text-sm font-bold tabular-nums"
+                    style={playbackRate !== 1.0 ? { color: 'var(--accent)', background: 'var(--accent-soft)' } : undefined}
+                    aria-label={`Vitesse de lecture : ${playbackRate}x`}
+                  >
+                    {playbackRate}x
+                  </button>
+                </div>
+
+                {/* ── Liste des audios disponibles ── */}
+                <section className="max-w-md mx-auto mt-8 space-y-3">
+                  <div className="flex items-center justify-between px-1">
+                    <p className="one-ui-group-label !p-0 flex items-center gap-2">
+                      <Icon name="library_music" className="text-base" />
+                      Liste des audios
+                    </p>
+                    <span className="text-xs" style={{ color: 'var(--text-muted)' }}>
+                      {playlist.length} pistes
+                    </span>
+                  </div>
+
+                  <div className="one-ui-list">
+                    {playlist.map((chapter, i) => {
+                      const isCurrent = currentChapter.id === chapter.id;
+                      return (
+                        <React.Fragment key={chapter.id}>
+                          {i > 0 && <div className="one-ui-row-divider" />}
+                          <button
+                            onClick={() => setChapter(chapter)}
+                            className="one-ui-row"
+                            style={isCurrent ? { background: 'var(--accent-soft)' } : undefined}
+                            aria-current={isCurrent ? 'true' : undefined}
+                          >
+                            <div className="one-ui-row-icon !w-9 !h-9 text-sm">
+                              {isCurrent ? (
+                                <span className="eq-bars" data-paused={!isPlaying}>
+                                  <span /><span /><span />
+                                </span>
+                              ) : (
+                                <Icon name={chapter.icon || 'music_note'} className="text-lg" />
+                              )}
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p
+                                className="text-sm font-medium truncate"
+                                style={{ color: isCurrent ? 'var(--accent)' : 'var(--text-primary)' }}
+                              >
+                                {chapter.titleFr}
+                              </p>
+                              <p className="text-xs font-amiri truncate" style={{ color: 'var(--text-muted)' }} lang="ar" dir="rtl">
+                                {chapter.titleAr}
+                              </p>
+                            </div>
+                            {isCurrent && isPlaying ? (
+                              <Icon name="pause" className="text-lg flex-shrink-0" style={{ color: 'var(--accent)' }} />
+                            ) : (
+                              <Icon name="play_arrow" className="text-lg flex-shrink-0" style={{ color: 'var(--text-muted)' }} />
+                            )}
+                          </button>
+                        </React.Fragment>
+                      );
+                    })}
+                  </div>
+                </section>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 };

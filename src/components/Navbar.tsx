@@ -177,7 +177,7 @@ const ChaptersDropdown: React.FC<{
         if (!chapters) return null;
         return (
           <div key={group} className="mb-4 last:mb-1" role="none">
-            <p className="px-3 pt-2 pb-1.5 text-xs uppercase font-black tracking-[0.2em]" style={{ color: 'rgba(201,169,97,0.75)' }}>
+            <p className="px-3 pt-2 pb-1.5 text-xs uppercase font-black tracking-[0.2em]" style={{ color: 'color-mix(in srgb, var(--accent) 75%, transparent)' }}>
               {group}
             </p>
             {chapters.map((chapter) => (
@@ -190,11 +190,11 @@ const ChaptersDropdown: React.FC<{
                   role="menuitem"
                 >
                   <Icon name={chapter.icon} className="text-gold text-base w-5 text-center flex-shrink-0" />
-                  <span className="flex-grow truncate group-hover:text-[#c9a961] transition-colors" style={{ color: 'var(--text-secondary)' }}>
+                  <span className="flex-grow truncate group-hover:text-gold transition-colors" style={{ color: 'var(--text-secondary)' }}>
                     {chapter.titleFr}
                   </span>
                   {isCompleted(chapter.id) && (
-                    <Icon name="check_circle" className="text-sm text-[#c9a961]" />
+                    <Icon name="check_circle" className="text-sm text-gold" />
                   )}
                 </Link>
                 {subSections[chapter.id] && (
@@ -204,7 +204,7 @@ const ChaptersDropdown: React.FC<{
                         key={sub.id}
                         href={`/partie/${chapter.id}/${sub.id}`}
                         onClick={onClose}
-                        className="block py-0.5 text-xs text-slate-400 hover:text-[#c9a961] transition-colors truncate"
+                        className="block py-0.5 text-xs text-slate-400 hover:text-gold transition-colors truncate"
                       >
                         <span className="font-bold text-gold/60 mr-1.5 uppercase">{sub.id}.</span> {sub.title}
                       </Link>
@@ -250,8 +250,8 @@ const ChaptersBottomSheet: React.FC<{
             {/* Header */}
             <div className="flex items-center justify-between px-5 py-4 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
               <div className="flex items-center gap-2">
-                <Icon name="menu_book" className="text-[#c9a961]" />
-                <h2 className="font-black text-sm uppercase tracking-widest" style={{ color: '#c9a961' }}>
+                <Icon name="menu_book" className="text-gold" />
+                <h2 className="font-black text-sm uppercase tracking-widest" style={{ color: 'var(--accent)' }}>
                   Chapitres
                 </h2>
               </div>
@@ -272,7 +272,7 @@ const ChaptersBottomSheet: React.FC<{
                 if (!chapters) return null;
                 return (
                   <div key={group} className="mb-5">
-                    <p className="px-2 mb-2 text-xs font-black uppercase tracking-widest" style={{ color: 'rgba(201,169,97,0.6)' }}>
+                    <p className="px-2 mb-2 text-xs font-black uppercase tracking-widest" style={{ color: 'color-mix(in srgb, var(--accent) 60%, transparent)' }}>
                       {group}
                     </p>
                     <div className="space-y-1">
@@ -284,15 +284,15 @@ const ChaptersBottomSheet: React.FC<{
                             style={{ background: 'var(--bg-card)', color: 'var(--text-primary)' }}
                           >
                             <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-                              style={{ background: 'rgba(201,169,97,0.1)', border: '1px solid rgba(201,169,97,0.2)' }}>
-                              <Icon name={chapter.icon} className="text-[#c9a961] text-base" />
+                              style={{ background: 'color-mix(in srgb, var(--accent) 10%, transparent)', border: '1px solid color-mix(in srgb, var(--accent) 20%, transparent)' }}>
+                              <Icon name={chapter.icon} className="text-gold text-base" />
                             </div>
                             <div className="flex-1 min-w-0">
                               <p className="font-semibold text-sm truncate">{chapter.titleFr}</p>
                               <p className="text-xs truncate" style={{ color: 'var(--text-muted)' }}>{chapter.titleAr}</p>
                             </div>
                             {isCompleted(chapter.id) && (
-                              <Icon name="task_alt" className="text-sm flex-shrink-0" style={{ color: '#c9a961' }} />
+                              <Icon name="task_alt" className="text-sm flex-shrink-0" style={{ color: 'var(--accent)' }} />
                             )}
                           </button>
                           {subSections[chapter.id] && (
@@ -364,7 +364,7 @@ const SearchSheet: React.FC<{
             <div className="bottom-sheet-handle" />
             <div className="px-4 py-3">
               <div className="flex items-center gap-3 px-4 py-3 rounded-2xl" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-medium)' }}>
-                <Icon name="search" style={{ color: '#c9a961' }} />
+                <Icon name="search" style={{ color: 'var(--accent)' }} />
                 <input
                   ref={inputRef}
                   type="text"
@@ -394,7 +394,7 @@ const SearchSheet: React.FC<{
                   className="w-full flex items-center gap-3 p-3 rounded-xl mb-2 text-left active:scale-[0.98] transition-all"
                   style={{ background: 'var(--bg-card)' }}
                 >
-                  <Icon name={chapter.icon} className="text-[#c9a961] text-lg" />
+                  <Icon name={chapter.icon} className="text-gold text-lg" />
                   <div>
                     <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>{chapter.titleFr}</p>
                     <p className="text-xs font-amiri" style={{ color: 'var(--text-muted)' }}>{chapter.titleAr}</p>
@@ -500,11 +500,11 @@ export const Navbar = () => {
 
           {/* ── LOGO DESKTOP ── */}
           <Link href="/" className="hidden md:flex items-center gap-3 z-50 group" aria-label="Accueil Qurratul Ayni">
-            <div className="w-9 h-9 border rounded-xl flex items-center justify-center transition-all bg-[#c9a961]/10 border-[#c9a961]/30 group-hover:border-[#c9a961] group-hover:bg-[#c9a961]/20">
-              <Icon name="auto_stories" className="text-[#c9a961] text-xl group-hover:scale-110 transition-transform" />
+            <div className="w-10 h-10 border rounded-[0.85rem] flex items-center justify-center transition-all bg-gold/10 border-gold/30 group-hover:border-gold group-hover:bg-gold/20">
+              <Icon name="auto_stories" className="text-gold text-xl group-hover:scale-110 transition-transform" />
             </div>
             <div className="flex flex-col opacity-90 group-hover:opacity-100 transition-opacity">
-              <span className="font-amiri text-[#c9a961] text-[12px] leading-none tracking-wider mb-0.5">
+              <span className="font-amiri text-gold text-[12px] leading-none tracking-wider mb-0.5">
                 قرة العين
               </span>
               <span className="text-lg font-serif font-black tracking-[0.15em] uppercase leading-none text-white">
@@ -519,22 +519,20 @@ export const Navbar = () => {
               <Link
                 href="/accueil"
                 className="text-sm font-medium flex items-center gap-2 transition-colors relative group py-2 px-3 rounded-xl hover:bg-white/[0.03]"
-                style={{ color: pathname === '/accueil' ? '#c9a961' : 'var(--text-secondary)' }}
+                style={{ color: pathname === '/accueil' ? 'var(--accent)' : 'var(--text-secondary)' }}
               >
-                <Icon name="home" className="text-base" />
                 Accueil
-                <span className={`absolute bottom-0 left-3 right-3 h-0.5 bg-[#c9a961] rounded-full transition-all ${pathname === '/accueil' ? 'w-[calc(100%-24px)]' : 'w-0 group-hover:w-[calc(100%-24px)]'}`} />
+                <span className={`absolute bottom-0 left-3 right-3 h-0.5 bg-gold rounded-full transition-all ${pathname === '/accueil' ? 'w-[calc(100%-24px)]' : 'w-0 group-hover:w-[calc(100%-24px)]'}`} />
               </Link>
             </li>
             <li className="relative" ref={chaptersRef}>
               <button
                 onClick={() => setIsChaptersOpen(!isChaptersOpen)}
                 className="text-sm font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
-                style={{ color: isChaptersOpen ? '#c9a961' : 'var(--text-secondary)' }}
+                style={{ color: isChaptersOpen ? 'var(--accent)' : 'var(--text-secondary)' }}
                 aria-expanded={isChaptersOpen}
                 aria-haspopup="true"
               >
-                <Icon name="menu_book" className="text-base" />
                 Chapitres
                 <motion.span animate={{ rotate: isChaptersOpen ? 180 : 0 }} className="inline-flex text-base">
                   <Icon name="expand_more" />
@@ -554,11 +552,10 @@ export const Navbar = () => {
               <button
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
                 className="text-sm font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
-                style={{ color: isSearchOpen ? '#c9a961' : 'var(--text-secondary)' }}
+                style={{ color: isSearchOpen ? 'var(--accent)' : 'var(--text-secondary)' }}
                 aria-expanded={isSearchOpen}
                 aria-haspopup="true"
               >
-                <Icon name="search" className="text-base" />
                 Chercher
                 <motion.span animate={{ rotate: isSearchOpen ? 180 : 0 }} className="inline-flex text-base">
                   <Icon name="expand_more" />
@@ -575,7 +572,7 @@ export const Navbar = () => {
                     style={{ background: 'var(--bg-surface)', borderColor: 'var(--border-medium)' }}
                   >
                     <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl border mb-3" style={{ background: 'var(--bg-card)', borderColor: 'var(--border-subtle)' }}>
-                      <Icon name="search" className="text-[#c9a961] text-lg" />
+                      <Icon name="search" className="text-gold text-lg" />
                       <input
                         type="text"
                         placeholder="Rechercher..."
@@ -598,9 +595,9 @@ export const Navbar = () => {
                             key={c.id}
                             href={`/partie/${c.id}`}
                             onClick={() => { setIsSearchOpen(false); setSearchQuery(''); }}
-                            className="flex items-center gap-3 p-2 rounded-lg hover:bg-[rgba(201,169,97,0.05)] transition-colors text-left"
+                            className="flex items-center gap-3 p-2 rounded-lg hover:bg-[color-mix(in srgb, var(--accent) 5%, transparent)] transition-colors text-left"
                           >
-                            <Icon name={c.icon} className="text-[#c9a961] text-base" />
+                            <Icon name={c.icon} className="text-gold text-base" />
                             <div className="min-w-0 flex-1">
                               <p className="text-xs font-semibold truncate" style={{ color: 'var(--text-primary)' }}>{c.titleFr}</p>
                               <p className="text-sm truncate" style={{ color: 'var(--text-muted)' }}>{c.titleAr}</p>
@@ -621,19 +618,9 @@ export const Navbar = () => {
                 )}
               </AnimatePresence>
             </li>
-            <li>
-              <Link
-                href="/reglages"
-                className={`text-sm font-medium flex items-center gap-1.5 transition-colors cursor-pointer ${pathname === '/reglages' ? 'text-gold' : 'text-white/60'}`}
-                style={{ color: pathname === '/reglages' ? '#c9a961' : 'var(--text-secondary)' }}
-              >
-                <Icon name="tune" className="text-base" />
-                Réglages
-              </Link>
-            </li>
           </ul>
 
-          {/* Desktop Right Controls — Thème + Réglages */}
+          {/* Desktop Right Controls — utilitaires (thème + réglages) */}
           <div className="hidden md:flex items-center gap-2">
             <button
               onClick={toggleTheme}
@@ -641,16 +628,18 @@ export const Navbar = () => {
               title={theme === 'dark' ? 'Mode clair' : 'Mode sombre'}
               className="w-9 h-9 liquid-glass-btn"
             >
-              <Icon 
-                name={theme === 'dark' ? 'light_mode' : 'dark_mode'} 
-                className="text-lg" 
-                suppressHydrationWarning 
+              <Icon
+                name={theme === 'dark' ? 'light_mode' : 'dark_mode'}
+                className="text-lg"
+                suppressHydrationWarning
               />
             </button>
             <Link
               href="/reglages"
               aria-label="Réglages de lecture"
+              title="Réglages"
               className="w-9 h-9 liquid-glass-btn"
+              style={pathname === '/reglages' ? { color: 'var(--accent)', borderColor: 'var(--accent)' } : undefined}
             >
               <Icon name="tune" className="text-lg" />
             </Link>

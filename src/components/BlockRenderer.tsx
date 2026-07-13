@@ -230,12 +230,13 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({ blocks, slug = '',
                 viewport={{ once: true }}
                 className="relative py-10 flex flex-col items-center justify-center"
               >
-                {/* Ambient glow */}
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <div className="w-48 h-16 bg-gold/10 rounded-full blur-2xl animate-pulse" />
+                {/* Filets calligraphiques sobres de part et d'autre */}
+                <div className="absolute inset-x-0 top-1/2 flex items-center justify-between pointer-events-none px-2 sm:px-8" aria-hidden="true">
+                  <span className="h-px w-1/5 bg-gradient-to-r from-transparent to-[var(--border-gold)]" />
+                  <span className="h-px w-1/5 bg-gradient-to-l from-transparent to-[var(--border-gold)]" />
                 </div>
                 <p
-                  className="relative font-amiri text-3xl sm:text-4xl md:text-5xl text-gold-light drop-shadow-[0_0_20px_rgba(212,175,55,0.4)] text-center leading-loose break-words px-4"
+                  className="relative font-amiri text-3xl sm:text-4xl md:text-5xl text-gold-light text-center leading-loose break-words px-4"
                   lang="ar"
                   dir="rtl"
                 >

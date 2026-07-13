@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import type { SvgIconComponent } from '@mui/icons-material';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 import ArrowForward from '@mui/icons-material/ArrowForward';
 import ArrowForwardIos from '@mui/icons-material/ArrowForwardIos';
@@ -119,7 +120,7 @@ import TrendingDown from '@mui/icons-material/TrendingDown';
 import HealthAndSafety from '@mui/icons-material/HealthAndSafety';
 
 // Map Google Material Symbols names to MUI SVG Icon components
-const iconMap: Record<string, React.ComponentType<any>> = {
+const iconMap: Record<string, SvgIconComponent> = {
   arrow_back: ArrowBack,
   arrow_forward: ArrowForward,
   arrow_forward_ios: ArrowForwardIos,

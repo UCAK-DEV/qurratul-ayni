@@ -21,8 +21,8 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 const THEME_COLORS: Record<Theme, string> = {
-  dark: '#05100b',
-  light: '#f4f0e6',
+  dark: '#0b1710',
+  light: '#f7f4e9',
 };
 
 const applyTheme = (t: Theme) => {

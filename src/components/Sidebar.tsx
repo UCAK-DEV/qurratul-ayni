@@ -173,7 +173,7 @@ export default function Sidebar() {
       >
         <motion.button
           initial={{ opacity: 0.5 }}
-          whileHover={{ opacity: 1, scale: 1.1, backgroundColor: 'rgba(201, 169, 97, 0.2)' }}
+          whileHover={{ opacity: 1, scale: 1.1, backgroundColor: 'color-mix(in srgb, var(--accent) 20%, transparent)' }}
           onClick={toggleSidebar}
           className="w-12 h-12 flex items-center justify-center bg-gold/10 border border-gold/30 rounded-full backdrop-blur-md shadow-2xl"
           aria-label={isOpen ? 'Fermer le sommaire' : 'Ouvrir le sommaire'}
@@ -336,11 +336,11 @@ export default function Sidebar() {
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { 
-          background: rgba(201, 169, 97, 0.1); 
+          background: color-mix(in srgb, var(--accent) 10%, transparent); 
           border-radius: 20px;
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { 
-          background: rgba(201, 169, 97, 0.4); 
+          background: color-mix(in srgb, var(--accent) 40%, transparent); 
         }
       `}</style>
     </>

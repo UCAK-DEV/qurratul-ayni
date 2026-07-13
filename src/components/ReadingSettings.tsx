@@ -43,8 +43,8 @@ export const ReadingSettings: React.FC<ReadingSettingsProps> = ({ isOpen, onClos
             {/* Header */}
             <div className="flex justify-between items-center mb-7">
               <div className="flex items-center gap-2">
-                <Icon name="tune" className="text-[#c9a961] text-lg" />
-                <h2 className="font-black text-xs uppercase tracking-[0.35em]" style={{ color: '#c9a961' }}>
+                <Icon name="tune" className="text-gold text-lg" />
+                <h2 className="font-black text-xs uppercase tracking-[0.35em]" style={{ color: 'var(--accent)' }}>
                   Réglages
                 </h2>
               </div>
@@ -71,7 +71,7 @@ export const ReadingSettings: React.FC<ReadingSettingsProps> = ({ isOpen, onClos
                       onClick={() => selectTheme(opt.key)}
                       className="flex-1 py-2.5 rounded-xl border text-sm font-medium transition-all flex items-center justify-center gap-2"
                       style={theme === opt.key
-                        ? { background: 'rgba(201,169,97,0.15)', borderColor: '#c9a961', color: 'var(--accent)' }
+                        ? { background: 'color-mix(in srgb, var(--accent) 15%, transparent)', borderColor: 'var(--accent)', color: 'var(--accent)' }
                         : { background: 'var(--bg-card)', borderColor: 'var(--border-subtle)', color: 'var(--text-secondary)' }
                       }
                     >
@@ -94,7 +94,7 @@ export const ReadingSettings: React.FC<ReadingSettingsProps> = ({ isOpen, onClos
                       onClick={() => setReadingSettings({ ...readingSettings, fontSize: size })}
                       className="flex-1 py-2.5 rounded-xl border text-xs font-bold transition-all"
                       style={readingSettings.fontSize === size
-                        ? { background: 'rgba(201,169,97,0.15)', borderColor: '#c9a961', color: '#c9a961' }
+                        ? { background: 'color-mix(in srgb, var(--accent) 15%, transparent)', borderColor: 'var(--accent)', color: 'var(--accent)' }
                         : { background: 'var(--bg-card)', borderColor: 'var(--border-subtle)', color: 'var(--text-muted)' }
                       }
                     >
@@ -116,7 +116,7 @@ export const ReadingSettings: React.FC<ReadingSettingsProps> = ({ isOpen, onClos
                       onClick={() => setReadingSettings({ ...readingSettings, lineHeight: h })}
                       className="flex-1 py-2.5 rounded-xl border text-xs font-bold transition-all"
                       style={readingSettings.lineHeight === h
-                        ? { background: 'rgba(201,169,97,0.15)', borderColor: '#c9a961', color: '#c9a961' }
+                        ? { background: 'color-mix(in srgb, var(--accent) 15%, transparent)', borderColor: 'var(--accent)', color: 'var(--accent)' }
                         : { background: 'var(--bg-card)', borderColor: 'var(--border-subtle)', color: 'var(--text-muted)' }
                       }
                     >

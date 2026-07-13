@@ -80,7 +80,7 @@ export const ReadingProgress: React.FC<ReadingProgressProps> = ({
             <motion.circle
               cx="24" cy="24" r="20"
               fill="none"
-              stroke="#c9a961"
+              stroke="var(--accent)"
               strokeWidth="3"
               strokeLinecap="round"
               strokeDasharray={circumference}
@@ -112,7 +112,7 @@ export const ReadingProgress: React.FC<ReadingProgressProps> = ({
                       w-7 h-7 rounded-lg flex items-center justify-center text-xs font-black
                       transition-all duration-300 cursor-pointer
                       ${section.completed
-                        ? 'bg-gold text-[#241c07] shadow-[0_0_8px_rgba(201,169,97,0.4)]'
+                        ? 'bg-gold text-[#241c07] shadow-[0_0_8px_color-mix(in srgb, var(--accent) 40%, transparent)]'
                         : section.isCurrentVisit
                           ? 'bg-white/10 border-2 border-gold/60 text-gold'
                           : 'bg-white/[0.04] border border-white/10 text-white/30 hover:border-white/20'

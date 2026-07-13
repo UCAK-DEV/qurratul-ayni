@@ -65,7 +65,7 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
             style={{ background: 'var(--bg-surface)', borderColor: 'var(--border-gold)' }}
           >
             <div className="flex-shrink-0 flex items-center gap-4 p-5 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
-              <Icon name="search" className="text-2xl text-[#c9a961]" />
+              <Icon name="search" className="text-2xl text-gold" />
               <input
                 type="text"
                 value={query}
@@ -88,13 +88,13 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
                   <motion.li key={chapter.id} variants={itemVariants}>
                     <button
                       onClick={() => handleResultClick(chapter)}
-                      className="w-full text-left flex items-center gap-4 p-4 hover:bg-white/[0.02] border-l-2 border-transparent hover:border-[#c9a961] rounded-xl transition-all group"
+                      className="w-full text-left flex items-center gap-4 p-4 hover:bg-white/[0.02] border-l-2 border-transparent hover:border-gold rounded-xl transition-all group"
                     >
-                      <div className="w-10 h-10 rounded-xl bg-[#c9a961]/10 border border-[#c9a961]/25 flex items-center justify-center text-[#c9a961] group-hover:scale-105 transition-all">
+                      <div className="w-10 h-10 rounded-xl bg-gold/10 border border-gold/25 flex items-center justify-center text-gold group-hover:scale-105 transition-all">
                         <Icon name={chapter.icon} className="text-xl leading-none" />
                       </div>
                       <div className="flex-grow">
-                        <h3 className="font-bold text-white/90 group-hover:text-[#c9a961] transition-colors">{chapter.titleFr}</h3>
+                        <h3 className="font-bold text-white/90 group-hover:text-gold transition-colors">{chapter.titleFr}</h3>
                         <p className="text-sm line-clamp-1" style={{ color: 'var(--text-secondary)' }}>{chapter.desc}</p>
                       </div>
                     </button>

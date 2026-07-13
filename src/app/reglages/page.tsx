@@ -5,111 +5,137 @@ import { useRouter } from 'next/navigation';
 import { useTheme } from '@/context/ThemeContext';
 import Icon from '@/components/Icon';
 
+const FONT_SIZES = [90, 100, 115, 130, 145];
+const FONT_LABELS = ['XS', 'S', 'M', 'L', 'XL'];
+const LINE_HEIGHTS = [1.4, 1.6, 1.8, 2.0];
+const LINE_LABELS = ['Compact', 'Normal', 'Aéré', 'Large'];
+
 export default function SettingsPage() {
   const { readingSettings, setReadingSettings, theme, toggleTheme } = useTheme();
   const router = useRouter();
 
-  const fontSizes = [90, 100, 115, 130, 145];
-  const lineHeights = [1.4, 1.6, 1.8, 2.0];
+  const fontIndex = Math.max(0, FONT_SIZES.indexOf(readingSettings.fontSize));
+  const lineIndex = Math.max(0, LINE_HEIGHTS.indexOf(readingSettings.lineHeight));
 
-  const selectTheme = (target: 'dark' | 'light') => {
-    if (theme !== target) toggleTheme();
+  const handleFontIndex = (i: number) => {
+    setReadingSettings({ ...readingSettings, fontSize: FONT_SIZES[i] });
+  };
+  const handleLineIndex = (i: number) => {
+    setReadingSettings({ ...readingSettings, lineHeight: LINE_HEIGHTS[i] });
   };
 
   return (
-    <main className="min-h-screen pt-28 pb-16 px-4 flex items-center justify-center">
-      <div className="w-full max-w-lg m3-card relative overflow-hidden">
-        {/* Back Button */}
-        <button
-          onClick={() => router.back()}
-          className="absolute top-6 left-6 p-2 rounded-full hover:bg-white/5 transition-all text-white/60 hover:text-gold flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider active:scale-95 cursor-pointer"
-        >
-          <Icon name="arrow_back" className="text-base" />
-          Retour
-        </button>
+    <main className="min-h-screen pt-8 md:pt-14 pb-24 px-4">
+      <div className="max-w-xl mx-auto space-y-8">
 
-        <div className="pt-8 text-center mb-8">
-          <div className="w-12 h-12 rounded-2xl bg-gold/10 border border-gold/20 flex items-center justify-center mx-auto mb-3 text-gold">
-            <Icon name="tune" className="text-2xl" />
-          </div>
-          <h1 className="text-3xl font-black tracking-tight text-white mb-2">Réglages</h1>
-          <p className="text-sm text-white/50">Personnalisez votre expérience de lecture et d'écoute</p>
+        {/* Barre du haut */}
+        <div className="-ml-1">
+          <button onClick={() => router.back()} className="one-icon-btn" aria-label="Retour">
+            <Icon name="arrow_back" className="text-xl" />
+          </button>
         </div>
 
-        <div className="space-y-8">
-          {/* Appearance */}
-          <div className="space-y-3">
-            <h2 className="text-xs font-black uppercase tracking-[0.2em] text-gold/60 border-l border-gold/30 pl-3">Apparence</h2>
-            <div className="grid grid-cols-2 gap-3">
-              {([
-                { key: 'light', label: 'Mode Clair', icon: 'light_mode' },
-                { key: 'dark', label: 'Mode Sombre', icon: 'dark_mode' },
-              ] as const).map(opt => (
-                <button
-                  key={opt.key}
-                  onClick={() => selectTheme(opt.key)}
-                  className="py-4 rounded-2xl border text-sm font-bold transition-all flex items-center justify-center gap-2.5 active:scale-[0.98] cursor-pointer"
-                  style={theme === opt.key
-                    ? { background: 'rgba(201,169,97,0.15)', borderColor: 'var(--color-gold)', color: 'var(--color-gold)' }
-                    : { background: 'var(--bg-card)', borderColor: 'var(--border-subtle)', color: 'var(--text-secondary)' }
-                  }
-                >
-                  <Icon name={opt.icon} className="text-xl" />
-                  {opt.label}
-                </button>
-              ))}
+        {/* Grand titre plein écran (langage One UI) */}
+        <header className="px-1 space-y-1.5">
+          <h1 className="font-display text-4xl sm:text-5xl font-bold tracking-tight">Réglages</h1>
+          <p className="text-adaptive-secondary">Personnalisez votre expérience de lecture et d’écoute</p>
+        </header>
+
+        {/* Groupe : Apparence */}
+        <section className="space-y-3">
+          <p className="one-ui-group-label">Apparence</p>
+          <div className="one-ui-list">
+            <div className="one-ui-row">
+              <div className="one-ui-row-icon">
+                <Icon name={theme === 'dark' ? 'dark_mode' : 'light_mode'} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="one-ui-row-title">Mode sombre</p>
+                <p className="one-ui-row-sub">{theme === 'dark' ? 'Activé' : 'Désactivé — mode clair'}</p>
+              </div>
+              <button
+                role="switch"
+                aria-checked={theme === 'dark'}
+                aria-label="Basculer le mode sombre"
+                className="one-toggle"
+                data-on={theme === 'dark'}
+                onClick={toggleTheme}
+              >
+                <span className="one-toggle-thumb" />
+              </button>
             </div>
           </div>
+        </section>
 
-          {/* Font Size */}
-          <div className="space-y-3">
-            <h2 className="text-xs font-black uppercase tracking-[0.2em] text-gold/60 border-l border-gold/30 pl-3">Taille du texte</h2>
-            <div className="grid grid-cols-5 gap-2">
-              {fontSizes.map(size => (
-                <button
-                  key={size}
-                  onClick={() => setReadingSettings({ ...readingSettings, fontSize: size })}
-                  className="py-3.5 rounded-xl border text-xs font-black transition-all active:scale-[0.98] cursor-pointer"
-                  style={readingSettings.fontSize === size
-                    ? { background: 'rgba(201,169,97,0.15)', borderColor: 'var(--color-gold)', color: 'var(--color-gold)' }
-                    : { background: 'var(--bg-card)', borderColor: 'var(--border-subtle)', color: 'var(--text-muted)' }
-                  }
-                >
-                  {size === 90 ? 'XS' : size === 100 ? 'S' : size === 115 ? 'M' : size === 130 ? 'L' : 'XL'}
-                  <span className="block text-[9px] opacity-40 font-mono mt-0.5">{size}%</span>
-                </button>
-              ))}
+        {/* Groupe : Lecture */}
+        <section className="space-y-3">
+          <p className="one-ui-group-label">Lecture</p>
+          <div className="one-ui-list">
+
+            {/* Taille du texte */}
+            <div className="one-ui-row items-start">
+              <div className="one-ui-row-icon mt-0.5">
+                <Icon name="text_fields" />
+              </div>
+              <div className="flex-1 min-w-0 space-y-3">
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="one-ui-row-title">Taille du texte</p>
+                    <p className="one-ui-row-sub">{FONT_LABELS[fontIndex]} · {readingSettings.fontSize}%</p>
+                  </div>
+                  <span
+                    className="font-reading text-adaptive-primary shrink-0"
+                    style={{ fontSize: `${1.1 * (readingSettings.fontSize / 100)}rem` }}
+                    aria-hidden="true"
+                  >
+                    Aa
+                  </span>
+                </div>
+                <input
+                  type="range"
+                  min={0}
+                  max={FONT_SIZES.length - 1}
+                  step={1}
+                  value={fontIndex}
+                  onChange={e => handleFontIndex(Number(e.target.value))}
+                  className="one-slider"
+                  aria-label="Taille du texte"
+                />
+              </div>
             </div>
-          </div>
 
-          {/* Line Height */}
-          <div className="space-y-3">
-            <h2 className="text-xs font-black uppercase tracking-[0.2em] text-gold/60 border-l border-gold/30 pl-3">Espacement des lignes</h2>
-            <div className="grid grid-cols-4 gap-2">
-              {lineHeights.map(h => (
-                <button
-                  key={h}
-                  onClick={() => setReadingSettings({ ...readingSettings, lineHeight: h })}
-                  className="py-3.5 rounded-xl border text-xs font-black transition-all active:scale-[0.98] cursor-pointer"
-                  style={readingSettings.lineHeight === h
-                    ? { background: 'rgba(201,169,97,0.15)', borderColor: 'var(--color-gold)', color: 'var(--color-gold)' }
-                    : { background: 'var(--bg-card)', borderColor: 'var(--border-subtle)', color: 'var(--text-muted)' }
-                  }
-                >
-                  {h === 1.4 ? 'Compact' : h === 1.6 ? 'Normal' : h === 1.8 ? 'Aéré' : 'Large'}
-                  <span className="block text-[9px] opacity-40 font-mono mt-0.5">{h.toFixed(1)}</span>
-                </button>
-              ))}
+            <div className="one-ui-row-divider" />
+
+            {/* Espacement des lignes */}
+            <div className="one-ui-row items-start">
+              <div className="one-ui-row-icon mt-0.5">
+                <Icon name="format_line_spacing" />
+              </div>
+              <div className="flex-1 min-w-0 space-y-3">
+                <div>
+                  <p className="one-ui-row-title">Espacement des lignes</p>
+                  <p className="one-ui-row-sub">{LINE_LABELS[lineIndex]} · {LINE_HEIGHTS[lineIndex].toFixed(1)}</p>
+                </div>
+                <input
+                  type="range"
+                  min={0}
+                  max={LINE_HEIGHTS.length - 1}
+                  step={1}
+                  value={lineIndex}
+                  onChange={e => handleLineIndex(Number(e.target.value))}
+                  className="one-slider"
+                  aria-label="Espacement des lignes"
+                />
+              </div>
             </div>
-          </div>
 
-          <div className="pt-4 border-t text-center" style={{ borderColor: 'var(--border-subtle)' }}>
-            <p className="text-xs font-reading text-white/30 flex items-center justify-center gap-1.5">
-              <Icon name="check_circle" className="text-gold text-sm" />
-              Réglages sauvegardés automatiquement
-            </p>
           </div>
-        </div>
+        </section>
+
+        <p className="text-center text-sm text-adaptive-muted flex items-center justify-center gap-1.5 pt-2">
+          <Icon name="check_circle" className="text-gold text-base" />
+          Réglages sauvegardés automatiquement
+        </p>
       </div>
     </main>
   );

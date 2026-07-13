@@ -215,12 +215,6 @@ export default function LibraryPage() {
     <div className="min-h-screen pt-28 pb-32 px-6 md:px-16 overflow-x-hidden relative"
       style={{ backgroundColor: 'var(--bg-base)', color: 'var(--text-primary)' }}
     >
-      {/* Fond d'ambiance doux */}
-      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-15%] left-[-10%] w-[55%] h-[55%] bg-gold/[0.04] rounded-full blur-[130px] animate-float-slow" />
-        <div className="absolute bottom-[-15%] right-[-10%] w-[45%] h-[45%] bg-emerald-500/[0.04] rounded-full blur-[120px]" />
-      </div>
-
       <div className="relative z-10 max-w-6xl mx-auto space-y-16">
 
         {/* ─── Barre discrète : notifications + admin ─── */}
@@ -262,7 +256,7 @@ export default function LibraryPage() {
                       <div key={notification.id}
                         className="p-3 rounded-xl border transition-all"
                         style={{
-                          background: notification.read ? 'transparent' : 'rgba(201,169,97,0.06)',
+                          background: notification.read ? 'transparent' : 'color-mix(in srgb, var(--accent) 6%, transparent)',
                           borderColor: notification.read ? 'var(--border-subtle)' : 'var(--border-gold)',
                         }}>
                         <div className="flex justify-between items-start gap-2 mb-1">
@@ -278,7 +272,7 @@ export default function LibraryPage() {
                   <button
                     onClick={requestNotificationPermission}
                     className="mt-4 w-full py-2.5 rounded-xl text-sm font-medium text-gold transition-all"
-                    style={{ background: 'rgba(201,169,97,0.1)', border: '1px solid var(--border-gold)' }}
+                    style={{ background: 'color-mix(in srgb, var(--accent) 10%, transparent)', border: '1px solid var(--border-gold)' }}
                   >
                     Activer les alertes
                   </button>
@@ -294,7 +288,7 @@ export default function LibraryPage() {
         </div>
 
         {/* ─── Hero serein ─── */}
-        <header className="space-y-5">
+        <header className="islamic-pattern-header space-y-5 rounded-3xl p-6 -m-6">
           <span className="eyebrow">Bibliothèque spirituelle</span>
           <h1 className="font-display text-5xl sm:text-6xl md:text-7xl font-bold leading-[1.05] tracking-tight">
             Assalâmou <span className="gold-gradient-text">aleykoum</span>
@@ -322,7 +316,7 @@ export default function LibraryPage() {
                     <div key={i}
                       className="text-center py-3 rounded-xl transition-all"
                       style={isNext
-                        ? { background: 'rgba(201,169,97,0.12)', border: '1px solid var(--border-gold)' }
+                        ? { background: 'color-mix(in srgb, var(--accent) 12%, transparent)', border: '1px solid var(--border-gold)' }
                         : { background: 'var(--bg-card)', border: '1px solid var(--border-subtle)' }}>
                       <p className={`text-xs font-semibold tracking-wide ${isNext ? 'text-gold' : 'text-adaptive-muted'}`}>{p.name}</p>
                       <p className={`text-base mt-1 tabular-nums ${isNext ? 'text-adaptive-primary font-semibold' : 'text-adaptive-secondary'}`}>{p.val}</p>
@@ -369,7 +363,7 @@ export default function LibraryPage() {
           {lastVisitedSlug && lastChapter && (
             <motion.div initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }}>
               <div className="card p-5 flex items-center justify-between gap-4 flex-wrap"
-                style={{ borderColor: 'var(--border-gold)', background: 'rgba(201,169,97,0.05)' }}>
+                style={{ borderColor: 'var(--border-gold)', background: 'color-mix(in srgb, var(--accent) 5%, transparent)' }}>
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-full bg-gold/10 flex items-center justify-center text-gold shrink-0">
                     <Icon name="history" />

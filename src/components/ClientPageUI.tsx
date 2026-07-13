@@ -153,11 +153,6 @@ export const ClientPageUI: React.FC<ClientPageUIProps> = ({
       style={{ backgroundColor: 'var(--bg-base)', color: 'var(--text-primary)' }}
     >
       
-      {/* Background ambient */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none ambient-gradient">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[50vh] bg-gradient-to-b from-gold/5 to-transparent blur-3xl" />
-      </div>
-
       {/* Scroll progress bar (top of page) */}
       <ScrollProgressBar />
 
@@ -192,7 +187,7 @@ export const ClientPageUI: React.FC<ClientPageUIProps> = ({
             className="space-y-6 w-full"
           >
             {pageContent.basmala && (
-               <p className="font-amiri text-4xl text-gold-light mb-8 drop-shadow-[0_0_15px_rgba(212,175,55,0.3)]" lang="ar" dir="rtl">
+               <p className="font-amiri text-4xl text-gold-light mb-8" lang="ar" dir="rtl">
                  بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيمِ
                </p>
             )}
@@ -221,7 +216,7 @@ export const ClientPageUI: React.FC<ClientPageUIProps> = ({
                   : 'bg-white/[0.01] border-white/5 opacity-50 cursor-not-allowed'
                 }`}
               >
-                {hasAudio && <div className={`absolute inset-0 bg-gold blur-md rounded-full transition-opacity ${isThisChapterPlaying ? 'opacity-20' : 'opacity-0'}`} />}
+                {/* État de lecture : bordure accentuée, sans halo */}
                 <Icon 
                   name={!hasAudio ? 'volume_off' : isThisChapterPlaying ? 'pause_circle' : 'play_circle'} 
                   className={`text-4xl relative z-10 ${hasAudio ? 'text-gold' : 'text-white/20'}`} 
