@@ -249,15 +249,21 @@ export default function LibraryPage() {
           </Link>
         </div>
 
-        {/* ─── Hero serein ─── */}
-        <header className="islamic-pattern-header space-y-5 rounded-3xl p-6 -m-6">
-          <span className="eyebrow">Bibliothèque spirituelle</span>
-          <h1 className="font-display text-5xl sm:text-6xl md:text-7xl font-bold leading-[1.05] tracking-tight">
-            Assalâmou <span className="gold-gradient-text">aleykoum</span>
-          </h1>
-          <p className="font-reading text-lg text-adaptive-secondary max-w-xl leading-relaxed">
-            Les enseignements de Serigne Shouhaïbou Mbacké, à lire et à écouter,
-            aujourd’hui le <span className="text-adaptive-primary">{currentHijri.formattedFr}</span>.
+        {/* ─── Hero / Titre du livre ─── */}
+        <header className="islamic-pattern-header space-y-4 rounded-3xl p-6 -m-6 text-left">
+          <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-gold/80 block">
+            Serigne Shouhaïbou Mbacké
+          </span>
+          <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-4">
+            <h1 className="font-display text-5xl sm:text-6xl font-black leading-none tracking-tight text-white">
+              Qurratul <span className="gold-gradient-text">Ayni</span>
+            </h1>
+            <span className="font-amiri text-4xl text-gold/45 block sm:inline" dir="rtl">
+              قرة العين
+            </span>
+          </div>
+          <p className="font-reading text-lg text-white/70 max-w-2xl leading-relaxed">
+            Recueil de recommandations spirituelles et de jurisprudence islamique pour le mouride, aujourd’hui le <span className="text-gold font-medium">{currentHijri.formattedFr}</span>.
           </p>
         </header>
 
