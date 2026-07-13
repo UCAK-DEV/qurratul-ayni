@@ -269,14 +269,15 @@ export default function LibraryPage() {
 
         {/* ─── Nafila du jour ─── */}
         <section>
-          <div className="relative p-8 rounded-3xl overflow-hidden border border-white/5 bg-black/40 group">
-            {/* Inset gold frame (Jadwal) */}
-            <div className="absolute inset-3 rounded-2xl border border-gold/10 pointer-events-none transition-colors duration-500 group-hover:border-gold/25" />
-            
-            {/* Background pattern */}
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-repeat" style={{ backgroundImage: 'var(--pattern-islamic)' }} />
-
-            <div className="relative z-10 space-y-6 p-2">
+          <div 
+            className="relative p-10 md:p-12 rounded-3xl overflow-hidden border border-white/10 group transition-all duration-500 hover:shadow-2xl hover:shadow-gold/5"
+            style={{ 
+              backgroundImage: 'url("/images/nafilah-bg.jpg")', 
+              backgroundSize: 'cover', 
+              backgroundPosition: 'center' 
+            }}
+          >
+            <div className="relative z-10 space-y-6">
               {/* Header */}
               <div className="flex items-center justify-between gap-4">
                 <div className="flex items-center gap-2">
