@@ -107,7 +107,76 @@ export const fetchPageContent = async (fullId: string): Promise<PageContent | nu
   }
 };
 
+const extraPagesData: Record<string, { titleFr: string; audioUrl: string }> = {
+  "5-g": { titleFr: "L'usage du Siwak (Sotju)", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C007.mp3" },
+  "5-h": { titleFr: "Règles diverses de purification", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C009.mp3" },
+  "6-l": { titleFr: "Invocations post-prière", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C014.mp3" },
+  "6-m": { titleFr: "Bienséance de la mosquée", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C015.mp3" },
+  "6-n": { titleFr: "Règles de l'Imam et Qunut", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C016.mp3" },
+  "6-o": { titleFr: "La Sutrah (Obstacle)", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C017.mp3" },
+  "6-p": { titleFr: "Suivre l'Imam", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C020.mp3" },
+  "10-e": { titleFr: "L'aumône de rupture (Fitr)", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C034.mp3" },
+  "10-f": { titleFr: "Jours de jeûne conseillés/interdits", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C040.mp3" },
+  "17-i": { titleFr: "Les bons comportements", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C060.mp3" },
+  "17-j": { titleFr: "Jours à éviter", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C061.mp3" },
+  "17-k": { titleFr: "Le mois de Tamharit", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C062.mp3" },
+  "17-l": { titleFr: "Le mois de Maouloud (Gamou)", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C063.mp3" },
+  "17-m": { titleFr: "La mi-Sha'ban", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C064.mp3" },
+  "17-n": { titleFr: "Premier jour de l'année", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C065.mp3" },
+  "18-dimanche": { titleFr: "Nafila du Dimanche", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C067.mp3" },
+  "18-lundi": { titleFr: "Nafila du Lundi", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C068.mp3" },
+  "18-mardi": { titleFr: "Nafila du Mardi", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C069.mp3" },
+  "18-mercredi": { titleFr: "Nafila du Mercredi", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C070.mp3" },
+  "18-jeudi": { titleFr: "Nafila du Jeudi", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C071.mp3" },
+  "18-vendredi": { titleFr: "Nafila du Vendredi", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C072.mp3" },
+  "18-samedi": { titleFr: "Nafila du Samedi", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C073.mp3" },
+  "19-e": { titleFr: "Les mérites du Basmala", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C105.mp3" },
+  "19-f": { titleFr: "Le Rappel d'Allah (Dhikr)", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C107.mp3" }
+};
+
 const loadMockPage = (fullId: string): PageContent | null => {
+  // Check if it's a Ramadan Nafila day
+  if (fullId.startsWith("18-")) {
+    const suffix = fullId.split("-")[1];
+    const day = parseInt(suffix);
+    if (!isNaN(day) && day >= 1 && day <= 30) {
+      const index = 74 + day - 1;
+      const padded = String(index).padStart(3, '0');
+      return {
+        id: fullId,
+        chapterId: "18",
+        sectionId: suffix,
+        titleFr: `Nafila Ramadan - Jour ${day}`,
+        titleAr: `Nafila Ramadan - Jour ${day}`,
+        basmala: false,
+        audioUrl: getLocalAudioUrl(`page_${fullId}`, `https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C${padded}.mp3`),
+        blocks: [
+          { type: "text_block", content: `Explication audio en Wolof par S. Omar Kane Balla Aissa pour la Nafila du jour ${day} du mois de Ramadan.` }
+        ]
+      };
+    }
+  }
+
+  // Check extra page details
+  const extra = extraPagesData[fullId];
+  if (extra) {
+    const parts = fullId.split('-');
+    const chapterId = parts[0];
+    const sectionId = parts[1] || "";
+    return {
+      id: fullId,
+      chapterId,
+      sectionId,
+      titleFr: extra.titleFr,
+      titleAr: extra.titleFr,
+      basmala: false,
+      audioUrl: getLocalAudioUrl(`page_${fullId}`, extra.audioUrl),
+      blocks: [
+        { type: "text_block", content: `Explication audio en Wolof par S. Omar Kane Balla Aissa pour la section : ${extra.titleFr}.` }
+      ]
+    };
+  }
+
   const mockPage = MOCK_PAGES[fullId];
   if (mockPage) {
     return {
@@ -115,6 +184,7 @@ const loadMockPage = (fullId: string): PageContent | null => {
       audioUrl: getLocalAudioUrl(`page_${fullId}`, mockPage.audioUrl || "")
     };
   }
+
   // Safe default page structure if not mocked
   const parts = fullId.split('-');
   const chapterId = parts[0];
