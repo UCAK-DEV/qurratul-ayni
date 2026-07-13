@@ -211,6 +211,17 @@ export default function LibraryPage() {
     { name: 'Isha', val: prayerTimes.isha },
   ] : [];
 
+  const getNafilaUrl = (nafilah: NafilaRecommendation) => {
+    if (nafilah.month === 9 && nafilah.day !== null) {
+      return `/partie/18/${nafilah.day}`;
+    }
+    if (nafilah.dayOfWeek !== undefined && nafilah.dayOfWeek !== null) {
+      const days = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
+      return `/partie/18/${days[nafilah.dayOfWeek]}`;
+    }
+    return '/partie/18';
+  };
+
   return (
     <div className="min-h-screen pt-28 pb-32 px-6 md:px-16 overflow-x-hidden relative"
       style={{ backgroundColor: 'var(--bg-base)', color: 'var(--text-primary)' }}
@@ -316,7 +327,7 @@ export default function LibraryPage() {
                     <div key={i}
                       className="text-center py-3 rounded-xl transition-all"
                       style={isNext
-                        ? { background: 'color-mix(in srgb, var(--accent) 12%, transparent)', border: '1px solid var(--border-gold)' }
+                         ? { background: 'color-mix(in srgb, var(--accent) 12%, transparent)', border: '1px solid var(--border-gold)' }
                         : { background: 'var(--bg-card)', border: '1px solid var(--border-subtle)' }}>
                       <p className={`text-xs font-semibold tracking-wide ${isNext ? 'text-gold' : 'text-adaptive-muted'}`}>{p.name}</p>
                       <p className={`text-base mt-1 tabular-nums ${isNext ? 'text-adaptive-primary font-semibold' : 'text-adaptive-secondary'}`}>{p.val}</p>
@@ -339,15 +350,26 @@ export default function LibraryPage() {
               <Icon name="auto_awesome" className="text-gold text-2xl" />
             </div>
             {selectedNafila ? (
-              <div className="space-y-3">
-                <h3 className="font-display text-2xl font-semibold leading-snug">{selectedNafila.title}</h3>
-                <p className="text-sm text-adaptive-secondary leading-relaxed line-clamp-3">{selectedNafila.description}</p>
-                <div className="flex flex-wrap gap-2">
-                  {selectedNafila.wird && (
-                    <span className="px-3 py-1.5 rounded-lg text-sm text-adaptive-secondary" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-subtle)' }}>
-                      📿 {selectedNafila.wird}
-                    </span>
-                  )}
+              <div className="space-y-3 flex flex-col justify-between h-full">
+                <div className="space-y-2">
+                  <h3 className="font-display text-2xl font-semibold leading-snug">{selectedNafila.title}</h3>
+                  <p className="text-sm text-adaptive-secondary leading-relaxed line-clamp-3">{selectedNafila.description}</p>
+                </div>
+                <div className="flex items-center justify-between gap-2 pt-2">
+                  <div className="flex flex-wrap gap-2">
+                    {selectedNafila.wird && (
+                      <span className="px-3 py-1.5 rounded-lg text-sm text-adaptive-secondary" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-subtle)' }}>
+                        📿 {selectedNafila.wird}
+                      </span>
+                    )}
+                  </div>
+                  <Link 
+                    href={getNafilaUrl(selectedNafila)} 
+                    className="btn-gold !py-2 !px-4 !text-xs whitespace-nowrap"
+                  >
+                    Ouvrir la Nafila
+                    <Icon name="arrow_forward" className="text-xs" />
+                  </Link>
                 </div>
               </div>
             ) : (
