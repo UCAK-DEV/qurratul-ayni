@@ -147,78 +147,145 @@ const subSections: Record<string, { id: string; title: string }[]> = {
 
 
 // ─── Desktop Chapters Dropdown ────────────────────────────────────────────────
+// ─── Desktop Chapters Dropdown ────────────────────────────────────────────────
 const ChaptersDropdown: React.FC<{
   groupedChapters: Record<string, Chapter[]>;
   isCompleted: (id: string) => boolean;
   onClose: () => void;
-}> = ({ groupedChapters, isCompleted, onClose }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 15, scale: 0.95 }}
-    animate={{ opacity: 1, y: 0, scale: 1 }}
-    exit={{ opacity: 0, y: 15, scale: 0.95 }}
-    transition={{ type: 'spring', damping: 22, stiffness: 280 }}
-    className="absolute top-[calc(100%+0.75rem)] left-1/2 -translate-x-1/2 w-80 rounded-2xl border p-3 z-50 max-h-[65vh] overflow-y-auto"
-    style={{
-      background: 'var(--bg-nav)',
-      backdropFilter: 'blur(20px)',
-      borderColor: 'var(--border-gold)',
-      boxShadow: 'var(--shadow-card)',
-    }}
-    role="menu"
-  >
-    {Object.keys(groupedChapters).length === 0 ? (
-      <div className="p-8 text-center text-xs text-gold/60 font-reading flex flex-col items-center gap-3">
-        <div className="animate-spin rounded-full h-5 w-5 border-2 border-transparent border-t-gold/80"></div>
-        Chargement des chapitres...
-      </div>
-    ) : (
-      GROUP_ORDER.map((group) => {
-        const chapters = groupedChapters[group];
-        if (!chapters) return null;
-        return (
-          <div key={group} className="mb-4 last:mb-1" role="none">
-            <p className="px-3 pt-2 pb-1.5 text-xs uppercase font-black tracking-[0.2em]" style={{ color: 'color-mix(in srgb, var(--accent) 75%, transparent)' }}>
-              {group}
-            </p>
-            {chapters.map((chapter) => (
-              <div key={chapter.id}>
-                <Link
-                  href={`/partie/${chapter.id}`}
-                  onClick={onClose}
-                  className="flex items-center gap-3 p-2.5 rounded-xl text-sm font-semibold transition-all group hover:bg-white/[0.02]"
-                  style={{ color: 'var(--text-secondary)' }}
-                  role="menuitem"
-                >
-                  <Icon name={chapter.icon} className="text-gold text-base w-5 text-center flex-shrink-0" />
-                  <span className="flex-grow truncate group-hover:text-gold transition-colors" style={{ color: 'var(--text-secondary)' }}>
-                    {chapter.titleFr}
-                  </span>
-                  {isCompleted(chapter.id) && (
-                    <Icon name="check_circle" className="text-sm text-gold" />
-                  )}
-                </Link>
-                {subSections[chapter.id] && (
-                  <div className="pl-10 pr-2 pb-2 space-y-1.5 border-l border-white/5 ml-5 mt-1 mb-2">
-                    {subSections[chapter.id].map(sub => (
+}> = ({ groupedChapters, isCompleted, onClose }) => {
+  const [hoveredChapterId, setHoveredChapterId] = useState<string>('1');
+  const { chapters } = useData();
+
+  const activeChapter = chapters.find(c => c.id === hoveredChapterId) || chapters[0];
+  const activeSubSections = subSections[hoveredChapterId] || [];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 15, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: 15, scale: 0.95 }}
+      transition={{ type: 'spring', damping: 22, stiffness: 280 }}
+      className="absolute top-[calc(100%+0.75rem)] left-1/2 -translate-x-1/2 w-[620px] h-[380px] rounded-3xl border z-50 flex overflow-hidden shadow-2xl"
+      style={{
+        background: 'var(--bg-nav)',
+        backdropFilter: 'blur(20px)',
+        borderColor: 'var(--border-gold)',
+      }}
+      role="menu"
+    >
+      {Object.keys(groupedChapters).length === 0 ? (
+        <div className="w-full h-full flex flex-col items-center justify-center gap-3 text-xs text-gold/60 font-reading">
+          <div className="animate-spin rounded-full h-5 w-5 border-2 border-transparent border-t-gold/80"></div>
+          Chargement des chapitres...
+        </div>
+      ) : (
+        <>
+          {/* Left Column: Chapters scroll list */}
+          <div className="w-[45%] h-full overflow-y-auto border-r border-white/5 p-4 space-y-4 scrollbar-thin">
+            {GROUP_ORDER.map((group) => {
+              const chs = groupedChapters[group];
+              if (!chs) return null;
+              return (
+                <div key={group} className="space-y-1.5" role="none">
+                  <p className="px-2 text-[10px] uppercase font-black tracking-[0.2em] text-white/40">
+                    {group}
+                  </p>
+                  <div className="space-y-0.5">
+                    {chs.map((chapter) => (
                       <Link
-                        key={sub.id}
-                        href={`/partie/${chapter.id}/${sub.id}`}
+                        key={chapter.id}
+                        href={`/partie/${chapter.id}`}
+                        onMouseEnter={() => setHoveredChapterId(chapter.id)}
                         onClick={onClose}
-                        className="block py-0.5 text-xs text-slate-400 hover:text-gold transition-colors truncate"
+                        className={`w-full flex items-center gap-2.5 p-2 rounded-xl text-left transition-all group ${
+                          hoveredChapterId === chapter.id
+                            ? 'bg-gold/10 text-gold font-bold border-l-2 border-gold pl-1.5'
+                            : 'text-adaptive-secondary hover:bg-white/[0.02]'
+                        }`}
+                        role="menuitem"
                       >
-                        <span className="font-bold text-gold/60 mr-1.5 uppercase">{sub.id}.</span> {sub.title}
+                        <Icon 
+                          name={chapter.icon} 
+                          className="text-sm shrink-0" 
+                          style={{ color: hoveredChapterId === chapter.id ? 'var(--gold)' : 'var(--text-muted)' }} 
+                        />
+                        <span className="text-xs truncate flex-grow">
+                          {chapter.titleFr}
+                        </span>
+                        {isCompleted(chapter.id) && (
+                          <Icon name="check_circle" className="text-[10px] text-gold shrink-0" />
+                        )}
                       </Link>
                     ))}
                   </div>
-                )}
-              </div>
-            ))}
+                </div>
+              );
+            })}
           </div>
-        );
-      })
-    )}
-  </motion.div>
-);
+
+          {/* Right Column: Active Chapter preview & sub-sections */}
+          <div className="w-[55%] h-full p-6 flex flex-col justify-between" style={{ background: 'rgba(212, 175, 55, 0.02)' }}>
+            {activeChapter && (
+              <div className="space-y-4 flex flex-col h-full justify-between">
+                <div className="space-y-2 text-left">
+                  <div className="flex justify-between items-center">
+                    <span className="text-[10px] font-mono text-gold bg-gold/10 border border-gold/20 px-2 py-0.5 rounded uppercase">
+                      Partie {activeChapter.id.padStart(2, '0')}
+                    </span>
+                    <span className="font-amiri text-lg text-gold/60" lang="ar" dir="rtl">
+                      {activeChapter.titleAr}
+                    </span>
+                  </div>
+                  <h3 className="text-base font-bold text-white leading-snug">
+                    {activeChapter.titleFr}
+                  </h3>
+                </div>
+
+                <div className="flex-1 flex flex-col justify-center text-left">
+                  {activeSubSections.length > 0 ? (
+                    <div className="space-y-1.5 max-h-[190px] overflow-y-auto pr-1 scrollbar-thin">
+                      <p className="text-[10px] uppercase tracking-wider font-bold text-gold/60 mb-2">
+                        Sous-sections :
+                      </p>
+                      {activeSubSections.map((sub) => (
+                        <Link
+                          key={sub.id}
+                          href={`/partie/${activeChapter.id}/${sub.id}`}
+                          onClick={onClose}
+                          className="flex items-center gap-2 py-1.5 px-2.5 rounded-lg hover:bg-gold/10 text-xs text-adaptive-secondary hover:text-gold transition-all truncate"
+                        >
+                          <span className="font-bold text-gold/60 uppercase text-[10px]">{sub.id}</span>
+                          <span className="truncate">{sub.title}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="py-2 space-y-2">
+                      <p className="text-xs text-adaptive-secondary italic leading-relaxed font-reading">
+                        {activeChapter.desc}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                <div className="pt-3 border-t border-white/5">
+                  <Link
+                    href={`/partie/${activeChapter.id}`}
+                    onClick={onClose}
+                    className="btn-gold w-full !py-2.5 text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2"
+                  >
+                    Ouvrir la section
+                    <Icon name="arrow_forward" className="text-xs" />
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
+        </>
+      )}
+    </motion.div>
+  );
+};
 
 // ─── Mobile Bottom Sheet (Chapitres) ─────────────────────────────────────────
 const ChaptersBottomSheet: React.FC<{
@@ -228,6 +295,12 @@ const ChaptersBottomSheet: React.FC<{
   isCompleted: (id: string) => boolean;
 }> = ({ isOpen, onClose, groupedChapters, isCompleted }) => {
   const router = useRouter();
+  const [expandedChapterId, setExpandedChapterId] = useState<string | null>(null);
+
+  const toggleExpand = (id: string) => {
+    setExpandedChapterId(prev => (prev === id ? null : id));
+  };
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -272,44 +345,70 @@ const ChaptersBottomSheet: React.FC<{
                 if (!chapters) return null;
                 return (
                   <div key={group} className="mb-5">
-                    <p className="px-2 mb-2 text-xs font-black uppercase tracking-widest" style={{ color: 'color-mix(in srgb, var(--accent) 60%, transparent)' }}>
+                    <p className="px-2 mb-2 text-[10px] font-black uppercase tracking-widest text-white/40">
                       {group}
                     </p>
                     <div className="space-y-1">
-                      {chapters.map((chapter) => (
-                        <div key={chapter.id}>
-                          <button
-                            onClick={() => { router.push(`/partie/${chapter.id}`); onClose(); }}
-                            className="w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all active:scale-[0.98]"
-                            style={{ background: 'var(--bg-card)', color: 'var(--text-primary)' }}
-                          >
-                            <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-                              style={{ background: 'color-mix(in srgb, var(--accent) 10%, transparent)', border: '1px solid color-mix(in srgb, var(--accent) 20%, transparent)' }}>
-                              <Icon name={chapter.icon} className="text-gold text-base" />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <p className="font-semibold text-sm truncate">{chapter.titleFr}</p>
-                              <p className="text-xs truncate" style={{ color: 'var(--text-muted)' }}>{chapter.titleAr}</p>
-                            </div>
-                            {isCompleted(chapter.id) && (
-                              <Icon name="task_alt" className="text-sm flex-shrink-0" style={{ color: 'var(--accent)' }} />
-                            )}
-                          </button>
-                          {subSections[chapter.id] && (
-                            <div className="pl-14 pr-4 py-2 space-y-2 border-l border-[var(--border-subtle)] ml-8 mb-2">
-                              {subSections[chapter.id].map(sub => (
+                      {chapters.map((chapter) => {
+                        const hasSubs = !!subSections[chapter.id];
+                        const isExpanded = expandedChapterId === chapter.id;
+                        return (
+                          <div key={chapter.id} className="border-b border-white/[0.02] py-1 last:border-0">
+                            <div className="flex items-center justify-between gap-1">
+                              <button
+                                onClick={() => { router.push(`/partie/${chapter.id}`); onClose(); }}
+                                className="flex-grow flex items-center gap-3 p-2.5 rounded-xl text-left active:bg-white/[0.02] transition-colors min-w-0"
+                              >
+                                <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
+                                  style={{ background: 'color-mix(in srgb, var(--accent) 10%, transparent)', border: '1px solid color-mix(in srgb, var(--accent) 20%, transparent)' }}>
+                                  <Icon name={chapter.icon} className="text-gold text-sm" />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <p className="font-semibold text-xs truncate text-white">{chapter.titleFr}</p>
+                                  <p className="text-[10px] truncate text-white/40" style={{ fontFamily: 'var(--font-reading)' }}>{chapter.titleAr}</p>
+                                </div>
+                                {isCompleted(chapter.id) && (
+                                  <Icon name="task_alt" className="text-xs flex-shrink-0" style={{ color: 'var(--accent)' }} />
+                                )}
+                              </button>
+
+                              {hasSubs && (
                                 <button
-                                  key={sub.id}
-                                  onClick={() => { router.push(`/partie/${chapter.id}/${sub.id}`); onClose(); }}
-                                  className="w-full text-left text-xs text-[var(--text-muted)] active:text-gold truncate"
+                                  onClick={() => toggleExpand(chapter.id)}
+                                  className="p-2.5 text-gold/70 hover:text-gold active:bg-white/[0.02] rounded-xl flex items-center justify-center flex-shrink-0"
+                                  aria-label="Voir les sous-sections"
                                 >
-                                  <span className="font-bold text-gold/60 mr-1 uppercase">{sub.id}.</span> {sub.title}
+                                  <motion.div animate={{ rotate: isExpanded ? 180 : 0 }} className="flex">
+                                    <Icon name="expand_more" className="text-base" />
+                                  </motion.div>
                                 </button>
-                              ))}
+                              )}
                             </div>
-                          )}
-                        </div>
-                      ))}
+
+                            <AnimatePresence>
+                              {isExpanded && hasSubs && (
+                                <motion.div
+                                  initial={{ opacity: 0, height: 0 }}
+                                  animate={{ opacity: 1, height: 'auto' }}
+                                  exit={{ opacity: 0, height: 0 }}
+                                  className="pl-12 pr-2 py-1.5 space-y-1.5 ml-4 border-l border-gold/20"
+                                >
+                                  {subSections[chapter.id].map(sub => (
+                                    <button
+                                      key={sub.id}
+                                      onClick={() => { router.push(`/partie/${chapter.id}/${sub.id}`); onClose(); }}
+                                      className="w-full text-left py-1.5 text-xs text-white/60 active:text-gold transition-colors flex items-center gap-2 truncate"
+                                    >
+                                      <span className="font-bold text-gold/60 uppercase text-[10px]">{sub.id}.</span>
+                                      <span className="truncate">{sub.title}</span>
+                                    </button>
+                                  ))}
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 );
