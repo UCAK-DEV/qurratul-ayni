@@ -124,7 +124,7 @@ export default function LibraryPage() {
 
         {/* ─── Nafila du jour ─── */}
         <section>
-          <div className="relative p-10 md:p-12 rounded-3xl overflow-hidden border border-white/10 group transition-all duration-500 hover:shadow-2xl hover:shadow-gold/5">
+          <div className="relative p-10 md:p-12 rounded-3xl overflow-hidden border border-white/10 bg-black group transition-all duration-500 hover:shadow-2xl hover:shadow-gold/5">
             {/* Background image blurred and darkened */}
             <div 
               className="absolute inset-0 transition-transform duration-700 group-hover:scale-105 pointer-events-none"
