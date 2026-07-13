@@ -15,6 +15,10 @@ import Icon from '@/components/Icon';
 
 export default function AdminPage() {
   const [mounted, setMounted] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [passwordInput, setPasswordInput] = useState<string>('');
+  const [authError, setAuthError] = useState<string | null>(null);
+
   const [activeTab, setActiveTab] = useState<'calendar' | 'audio'>('calendar');
   const [hijriOffset, setHijriOffset] = useState<number>(0);
   const [chapters, setChapters] = useState<Chapter[]>([]);
@@ -29,8 +33,26 @@ export default function AdminPage() {
 
   useEffect(() => {
     setMounted(true);
+    const sessionAuth = typeof window !== 'undefined' ? sessionStorage.getItem('admin_authenticated') : null;
+    if (sessionAuth === 'true') {
+      setIsAuthenticated(true);
+    }
     loadData();
   }, []);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    const correctPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'BallaAissa2026!';
+    if (passwordInput === correctPassword) {
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('admin_authenticated', 'true');
+      }
+      setIsAuthenticated(true);
+      setAuthError(null);
+    } else {
+      setAuthError('Mot de passe incorrect. Veuillez réessayer.');
+    }
+  };
 
   const loadData = async () => {
     setIsLoading(true);
@@ -146,6 +168,82 @@ export default function AdminPage() {
   };
 
   if (!mounted) return null;
+
+  if (!isAuthenticated) {
+    return (
+      <div 
+        className="min-h-screen flex items-center justify-center p-6 relative overflow-hidden"
+        style={{ backgroundColor: 'var(--bg-base)' }}
+      >
+        {/* Dynamic mesh background spots */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-gold/5 blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-emerald-500/5 blur-[120px] pointer-events-none" />
+
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="w-full max-w-md p-8 sm:p-10 rounded-[2.25rem] card relative z-10 border border-gold/20 flex flex-col justify-between"
+          style={{ background: 'var(--bg-card)' }}
+        >
+          <div className="text-center space-y-4 mb-8">
+            <div className="w-16 h-16 rounded-2xl bg-gold/10 flex items-center justify-center text-gold mx-auto border border-gold/20">
+              <Icon name="lock" className="text-3xl" />
+            </div>
+            <h1 className="font-display text-3xl font-bold tracking-tight text-white">Administration</h1>
+            <p className="text-sm text-adaptive-muted">
+              Veuillez saisir le mot de passe administrateur pour accéder à la gestion du site.
+            </p>
+          </div>
+
+          <form onSubmit={handleLogin} className="space-y-6">
+            <div className="space-y-2">
+              <label htmlFor="pass" className="text-xs font-semibold uppercase tracking-wider text-gold/80 block">
+                Mot de passe
+              </label>
+              <input 
+                id="pass"
+                type="password"
+                value={passwordInput}
+                onChange={(e) => setPasswordInput(e.target.value)}
+                placeholder="••••••••••••"
+                className="w-full px-5 py-4 rounded-xl border transition-all text-white placeholder-white/20 bg-black/20 focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold"
+                style={{ borderColor: 'var(--border-medium)' }}
+                required
+              />
+            </div>
+
+            <AnimatePresence>
+              {authError && (
+                <motion.div 
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center font-medium"
+                >
+                  {authError}
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <button 
+              type="submit"
+              className="w-full btn-gold !py-4 text-sm font-semibold rounded-xl active:scale-[0.98] transition-all"
+            >
+              <Icon name="vpn_key" className="text-lg" />
+              Se connecter
+            </button>
+          </form>
+
+          <div className="text-center mt-8">
+            <Link href="/accueil" className="text-xs text-adaptive-muted hover:text-gold transition-colors">
+              Retour à la bibliothèque
+            </Link>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
 
   const currentHijri = calculateHijriDate(hijriOffset);
 
