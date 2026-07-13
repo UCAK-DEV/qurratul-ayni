@@ -269,14 +269,20 @@ export default function LibraryPage() {
 
         {/* ─── Nafila du jour ─── */}
         <section>
-          <div 
-            className="relative p-10 md:p-12 rounded-3xl overflow-hidden border border-white/10 group transition-all duration-500 hover:shadow-2xl hover:shadow-gold/5"
-            style={{ 
-              backgroundImage: 'url("/images/nafilah-bg.jpg")', 
-              backgroundSize: 'cover', 
-              backgroundPosition: 'center' 
-            }}
-          >
+          <div className="relative p-10 md:p-12 rounded-3xl overflow-hidden border border-white/10 group transition-all duration-500 hover:shadow-2xl hover:shadow-gold/5">
+            {/* Background image blurred and darkened */}
+            <div 
+              className="absolute inset-0 transition-transform duration-700 group-hover:scale-105 pointer-events-none"
+              style={{ 
+                backgroundImage: 'url("/images/nafilah-bg.jpg")', 
+                backgroundSize: 'cover', 
+                backgroundPosition: 'center',
+                filter: 'blur(3px) brightness(0.35)'
+              }}
+            />
+            {/* Dark gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 pointer-events-none" />
+
             <div className="relative z-10 space-y-6">
               {/* Header */}
               <div className="flex items-center justify-between gap-4">
