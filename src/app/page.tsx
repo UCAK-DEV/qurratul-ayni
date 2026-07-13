@@ -250,7 +250,7 @@ export default function LibraryPage() {
         </div>
 
         {/* ─── Hero / Titre du livre ─── */}
-        <header className="islamic-pattern-header space-y-4 rounded-3xl p-6 -m-6 text-left">
+        <header className="islamic-pattern-header space-y-4 text-left pb-2">
           <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-gold/80 block">
             Serigne Shouhaïbou Mbacké
           </span>
