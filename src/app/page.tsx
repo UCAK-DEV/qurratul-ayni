@@ -263,55 +263,77 @@ export default function LibraryPage() {
 
         {/* ─── Nafila du jour ─── */}
         <section>
-          <div className="card p-8 flex flex-col justify-between gap-6 relative overflow-hidden group border border-[var(--border-gold)]"
-            style={{ background: 'color-mix(in srgb, var(--accent) 5%, transparent)' }}>
-            <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:scale-110 group-hover:opacity-[0.06] transition-all select-none pointer-events-none">
-              <Icon name="auto_awesome" className="text-[140px] text-gold" />
-            </div>
-            <div className="flex items-center justify-between gap-3">
-              <div className="flex items-center gap-2.5">
-                <div className="w-10 h-10 rounded-xl bg-gold/10 flex items-center justify-center text-gold">
-                  <Icon name="auto_awesome" className="text-xl" />
+          <div className="relative p-8 rounded-3xl overflow-hidden border border-white/5 bg-black/40 group">
+            {/* Inset gold frame (Jadwal) */}
+            <div className="absolute inset-3 rounded-2xl border border-gold/10 pointer-events-none transition-colors duration-500 group-hover:border-gold/25" />
+            
+            {/* Background pattern */}
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-repeat" style={{ backgroundImage: 'var(--pattern-islamic)' }} />
+
+            <div className="relative z-10 space-y-6 p-2">
+              {/* Header */}
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-2">
+                  <span className="text-gold text-lg">❖</span>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-gold/90">
+                    Recommandation du Jour
+                  </span>
                 </div>
-                <span className="eyebrow no-rule">Recommandation du jour</span>
+                <span className="font-amiri text-xl text-gold/50" dir="rtl">
+                  نافلَة اليَوم
+                </span>
               </div>
-              <span className="text-xs text-gold/70 px-3 py-1 rounded-full border border-gold/20 bg-gold/5 font-semibold">
-                Nafila Hebdo
-              </span>
-            </div>
-            {selectedNafila ? (
-              <div className="space-y-6">
-                <div className="space-y-2.5">
-                  <h3 className="font-display text-3xl sm:text-4xl font-bold leading-tight tracking-tight text-white">{selectedNafila.title}</h3>
-                  <p className="text-base sm:text-lg text-adaptive-secondary leading-relaxed max-w-3xl">{selectedNafila.description}</p>
-                </div>
-                {selectedNafila.reward && (
-                  <div className="p-4 rounded-xl border border-gold/10 bg-gold/[0.02] text-sm text-gold/90 leading-relaxed italic max-w-3xl">
-                    ✨ <strong>Bienfaits :</strong> {selectedNafila.reward}
+
+              {selectedNafila ? (
+                <div className="space-y-6">
+                  {/* Title & Description */}
+                  <div className="space-y-3 text-left">
+                    <h3 className="font-display text-3xl font-light tracking-tight text-white">
+                      {selectedNafila.title}
+                    </h3>
+                    <p className="font-reading text-base text-white/70 leading-relaxed max-w-3xl">
+                      {selectedNafila.description}
+                    </p>
                   </div>
-                )}
-                <div className="flex items-center justify-between gap-4 flex-wrap pt-4 border-t border-[var(--border-subtle)]">
-                  <div className="flex flex-wrap gap-2">
-                    {selectedNafila.wird && (
-                      <span className="px-3 py-1.5 rounded-lg text-sm text-adaptive-secondary" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-subtle)' }}>
-                        📿 {selectedNafila.wird}
+
+                  {/* Rewards / Bienfaits */}
+                  {selectedNafila.reward && (
+                    <div className="pl-4 border-l border-gold/30 py-0.5 space-y-1 text-left">
+                      <span className="text-[9px] uppercase tracking-widest font-black text-gold/60 block">
+                        Bienfaits & Grâce
                       </span>
-                    )}
+                      <p className="text-sm text-white/60 italic leading-relaxed max-w-3xl">
+                        {selectedNafila.reward}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Actions / Wird */}
+                  <div className="flex items-center justify-between gap-6 flex-wrap pt-4 border-t border-white/5">
+                    <div className="flex items-center gap-3">
+                      {selectedNafila.wird && (
+                        <div className="flex items-center gap-2 text-xs text-white/50">
+                          <span className="text-gold">❖</span>
+                          <span className="font-medium">Litanies : <span className="text-white/80">{selectedNafila.wird}</span></span>
+                        </div>
+                      )}
+                    </div>
+                    
+                    <Link 
+                      href={getNafilaUrl(selectedNafila)} 
+                      className="px-6 py-2.5 rounded-lg border border-gold/30 text-gold text-xs font-bold uppercase tracking-wider hover:bg-gold hover:text-black hover:border-gold transition-all duration-300 flex items-center gap-2 active:scale-95"
+                    >
+                      Ouvrir la Nafila
+                      <Icon name="arrow_forward" className="text-xs" />
+                    </Link>
                   </div>
-                  <Link 
-                    href={getNafilaUrl(selectedNafila)} 
-                    className="btn-gold !py-3 !px-6 text-sm whitespace-nowrap"
-                  >
-                    Ouvrir la Nafila
-                    <Icon name="arrow_forward" className="text-sm" />
-                  </Link>
                 </div>
-              </div>
-            ) : (
-              <p className="font-reading text-base text-adaptive-secondary leading-relaxed italic">
-                Retrouvez les wirds quotidiens et lectures recommandées aux Parties 17 et 19.
-              </p>
-            )}
+              ) : (
+                <p className="font-reading text-sm text-white/50 italic leading-relaxed text-left">
+                  Retrouvez les wirds quotidiens et lectures recommandées aux Parties 17 et 19.
+                </p>
+              )}
+            </div>
           </div>
         </section>
 
