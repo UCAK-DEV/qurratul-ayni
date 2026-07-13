@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import Icon from '@/components/Icon';
 import { Chapter } from '@/data/chapters';
 import { useTheme } from '@/context/ThemeContext';
 import { useData } from '@/context/DataContext';
@@ -111,7 +112,7 @@ const ChaptersDropdown: React.FC<{
     role="menu"
   >
     {Object.keys(groupedChapters).length === 0 ? (
-      <div className="p-8 text-center text-xs text-gold/60 font-serif italic flex flex-col items-center gap-3">
+      <div className="p-8 text-center text-xs text-gold/60 font-reading flex flex-col items-center gap-3">
         <div className="animate-spin rounded-full h-5 w-5 border-2 border-transparent border-t-gold/80"></div>
         Chargement des chapitres...
       </div>
@@ -121,7 +122,7 @@ const ChaptersDropdown: React.FC<{
         if (!chapters) return null;
         return (
           <div key={group} className="mb-4 last:mb-1" role="none">
-            <p className="px-3 pt-2 pb-1.5 text-[9px] uppercase font-black tracking-[0.2em]" style={{ color: 'rgba(201,169,97,0.75)' }}>
+            <p className="px-3 pt-2 pb-1.5 text-xs uppercase font-black tracking-[0.2em]" style={{ color: 'rgba(201,169,97,0.75)' }}>
               {group}
             </p>
             {chapters.map((chapter) => (
@@ -133,12 +134,12 @@ const ChaptersDropdown: React.FC<{
                   style={{ color: 'var(--text-secondary)' }}
                   role="menuitem"
                 >
-                  <span className="material-symbols-rounded text-gold text-base w-5 text-center flex-shrink-0">{chapter.icon}</span>
+                  <Icon name={chapter.icon} className="text-gold text-base w-5 text-center flex-shrink-0" />
                   <span className="flex-grow truncate group-hover:text-[#c9a961] transition-colors" style={{ color: 'var(--text-secondary)' }}>
                     {chapter.titleFr}
                   </span>
                   {isCompleted(chapter.id) && (
-                    <span className="material-symbols-rounded text-sm text-[#c9a961]">check_circle</span>
+                    <Icon name="check_circle" className="text-sm text-[#c9a961]" />
                   )}
                 </Link>
                 {subSections[chapter.id] && (
@@ -194,7 +195,7 @@ const ChaptersBottomSheet: React.FC<{
             {/* Header */}
             <div className="flex items-center justify-between px-5 py-4 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
               <div className="flex items-center gap-2">
-                <span className="material-symbols-rounded text-[#c9a961]">menu_book</span>
+                <Icon name="menu_book" className="text-[#c9a961]" />
                 <h2 className="font-black text-sm uppercase tracking-widest" style={{ color: '#c9a961' }}>
                   Chapitres
                 </h2>
@@ -205,7 +206,7 @@ const ChaptersBottomSheet: React.FC<{
                 style={{ background: 'var(--border-subtle)', color: 'var(--text-muted)' }}
                 aria-label="Fermer"
               >
-                <span className="material-symbols-rounded text-base">close</span>
+                <Icon name="close" className="text-base" />
               </button>
             </div>
 
@@ -216,7 +217,7 @@ const ChaptersBottomSheet: React.FC<{
                 if (!chapters) return null;
                 return (
                   <div key={group} className="mb-5">
-                    <p className="px-2 mb-2 text-[9px] font-black uppercase tracking-widest" style={{ color: 'rgba(201,169,97,0.6)' }}>
+                    <p className="px-2 mb-2 text-xs font-black uppercase tracking-widest" style={{ color: 'rgba(201,169,97,0.6)' }}>
                       {group}
                     </p>
                     <div className="space-y-1">
@@ -229,16 +230,14 @@ const ChaptersBottomSheet: React.FC<{
                           >
                             <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
                               style={{ background: 'rgba(201,169,97,0.1)', border: '1px solid rgba(201,169,97,0.2)' }}>
-                              <span className="material-symbols-rounded text-[#c9a961] text-base">{chapter.icon}</span>
+                              <Icon name={chapter.icon} className="text-[#c9a961] text-base" />
                             </div>
                             <div className="flex-1 min-w-0">
                               <p className="font-semibold text-sm truncate">{chapter.titleFr}</p>
                               <p className="text-xs truncate" style={{ color: 'var(--text-muted)' }}>{chapter.titleAr}</p>
                             </div>
                             {isCompleted(chapter.id) && (
-                              <span className="material-symbols-rounded text-sm flex-shrink-0" style={{ color: '#c9a961' }}>
-                                task_alt
-                              </span>
+                              <Icon name="task_alt" className="text-sm flex-shrink-0" style={{ color: '#c9a961' }} />
                             )}
                           </button>
                           {subSections[chapter.id] && (
@@ -310,7 +309,7 @@ const SearchSheet: React.FC<{
             <div className="bottom-sheet-handle" />
             <div className="px-4 py-3">
               <div className="flex items-center gap-3 px-4 py-3 rounded-2xl" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-medium)' }}>
-                <span className="material-symbols-rounded" style={{ color: '#c9a961' }}>search</span>
+                <Icon name="search" style={{ color: '#c9a961' }} />
                 <input
                   ref={inputRef}
                   type="text"
@@ -322,14 +321,14 @@ const SearchSheet: React.FC<{
                 />
                 {query && (
                   <button onClick={() => setQuery('')} style={{ color: 'var(--text-muted)' }}>
-                    <span className="material-symbols-rounded text-base">close</span>
+                    <Icon name="close" className="text-base" />
                   </button>
                 )}
               </div>
             </div>
             <div className="flex-1 overflow-y-auto px-4 pt-2 pb-6" style={{ paddingBottom: 'calc(1.5rem + env(safe-area-inset-bottom))' }}>
               {query.length > 1 && results.length === 0 && (
-                <p className="text-center py-8 text-sm font-serif italic" style={{ color: 'var(--text-muted)' }}>
+                <p className="text-center py-8 text-sm font-reading" style={{ color: 'var(--text-muted)' }}>
                   Aucun résultat pour « {query} »
                 </p>
               )}
@@ -340,7 +339,7 @@ const SearchSheet: React.FC<{
                   className="w-full flex items-center gap-3 p-3 rounded-xl mb-2 text-left active:scale-[0.98] transition-all"
                   style={{ background: 'var(--bg-card)' }}
                 >
-                  <span className="material-symbols-rounded text-[#c9a961] text-lg">{chapter.icon}</span>
+                  <Icon name={chapter.icon} className="text-[#c9a961] text-lg" />
                   <div>
                     <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>{chapter.titleFr}</p>
                     <p className="text-xs font-amiri" style={{ color: 'var(--text-muted)' }}>{chapter.titleAr}</p>
@@ -452,7 +451,7 @@ export const Navbar = () => {
           {/* ── LOGO DESKTOP ── */}
           <Link href="/" className="hidden md:flex items-center gap-3 z-50 group" aria-label="Accueil Qurratul Ayni">
             <div className="w-9 h-9 border rounded-xl flex items-center justify-center transition-all bg-[#c9a961]/10 border-[#c9a961]/30 group-hover:border-[#c9a961] group-hover:bg-[#c9a961]/20">
-              <span className="material-symbols-rounded text-[#c9a961] text-xl group-hover:scale-110 transition-transform">auto_stories</span>
+              <Icon name="auto_stories" className="text-[#c9a961] text-xl group-hover:scale-110 transition-transform" />
             </div>
             <div className="flex flex-col opacity-90 group-hover:opacity-100 transition-opacity">
               <span className="font-amiri text-[#c9a961] text-[12px] leading-none tracking-wider mb-0.5">
@@ -469,10 +468,10 @@ export const Navbar = () => {
             <li>
               <Link
                 href="/accueil"
-                className="text-xs uppercase tracking-widest font-bold flex items-center gap-2 transition-colors relative group py-2 px-3 rounded-xl hover:bg-white/[0.03]"
+                className="text-sm font-medium flex items-center gap-2 transition-colors relative group py-2 px-3 rounded-xl hover:bg-white/[0.03]"
                 style={{ color: pathname === '/accueil' ? '#c9a961' : 'var(--text-secondary)' }}
               >
-                <span className="material-symbols-rounded text-base">home</span>
+                <Icon name="home" className="text-base" />
                 Accueil
                 <span className={`absolute bottom-0 left-3 right-3 h-0.5 bg-[#c9a961] rounded-full transition-all ${pathname === '/accueil' ? 'w-[calc(100%-24px)]' : 'w-0 group-hover:w-[calc(100%-24px)]'}`} />
               </Link>
@@ -480,15 +479,15 @@ export const Navbar = () => {
             <li className="relative" ref={chaptersRef}>
               <button
                 onClick={() => setIsChaptersOpen(!isChaptersOpen)}
-                className="text-xs uppercase tracking-widest font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+                className="text-sm font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
                 style={{ color: isChaptersOpen ? '#c9a961' : 'var(--text-secondary)' }}
                 aria-expanded={isChaptersOpen}
                 aria-haspopup="true"
               >
-                <span className="material-symbols-rounded text-base">menu_book</span>
+                <Icon name="menu_book" className="text-base" />
                 Chapitres
-                <motion.span animate={{ rotate: isChaptersOpen ? 180 : 0 }} className="material-symbols-rounded text-base">
-                  expand_more
+                <motion.span animate={{ rotate: isChaptersOpen ? 180 : 0 }} className="inline-flex text-base">
+                  <Icon name="expand_more" />
                 </motion.span>
               </button>
               <AnimatePresence>
@@ -504,15 +503,15 @@ export const Navbar = () => {
             <li className="relative" ref={searchRef}>
               <button
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
-                className="text-xs uppercase tracking-widest font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+                className="text-sm font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
                 style={{ color: isSearchOpen ? '#c9a961' : 'var(--text-secondary)' }}
                 aria-expanded={isSearchOpen}
                 aria-haspopup="true"
               >
-                <span className="material-symbols-rounded text-base">search</span>
+                <Icon name="search" className="text-base" />
                 Chercher
-                <motion.span animate={{ rotate: isSearchOpen ? 180 : 0 }} className="material-symbols-rounded text-base">
-                  expand_more
+                <motion.span animate={{ rotate: isSearchOpen ? 180 : 0 }} className="inline-flex text-base">
+                  <Icon name="expand_more" />
                 </motion.span>
               </button>
               <AnimatePresence>
@@ -526,7 +525,7 @@ export const Navbar = () => {
                     style={{ background: 'var(--bg-surface)', borderColor: 'var(--border-medium)' }}
                   >
                     <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl border mb-3" style={{ background: 'var(--bg-card)', borderColor: 'var(--border-subtle)' }}>
-                      <span className="material-symbols-rounded text-[#c9a961] text-lg">search</span>
+                      <Icon name="search" className="text-[#c9a961] text-lg" />
                       <input
                         type="text"
                         placeholder="Rechercher..."
@@ -538,7 +537,7 @@ export const Navbar = () => {
                       />
                       {searchQuery && (
                         <button onClick={() => setSearchQuery('')} className="text-gray-400 hover:text-gray-200">
-                          <span className="material-symbols-rounded text-sm">close</span>
+                          <Icon name="close" className="text-sm" />
                         </button>
                       )}
                     </div>
@@ -551,10 +550,10 @@ export const Navbar = () => {
                             onClick={() => { setIsSearchOpen(false); setSearchQuery(''); }}
                             className="flex items-center gap-3 p-2 rounded-lg hover:bg-[rgba(201,169,97,0.05)] transition-colors text-left"
                           >
-                            <span className="material-symbols-rounded text-[#c9a961] text-base">{c.icon}</span>
+                            <Icon name={c.icon} className="text-[#c9a961] text-base" />
                             <div className="min-w-0 flex-1">
                               <p className="text-xs font-semibold truncate" style={{ color: 'var(--text-primary)' }}>{c.titleFr}</p>
-                              <p className="text-[10px] truncate" style={{ color: 'var(--text-muted)' }}>{c.titleAr}</p>
+                              <p className="text-sm truncate" style={{ color: 'var(--text-muted)' }}>{c.titleAr}</p>
                             </div>
                           </Link>
                         ))
@@ -563,7 +562,7 @@ export const Navbar = () => {
                           Aucun résultat pour « {searchQuery} »
                         </p>
                       ) : (
-                        <p className="text-center py-4 text-[10px] uppercase font-bold tracking-wider" style={{ color: 'var(--text-muted)' }}>
+                        <p className="text-center py-4 text-sm uppercase font-bold tracking-wider" style={{ color: 'var(--text-muted)' }}>
                           Tapez pour rechercher...
                         </p>
                       )}
@@ -575,29 +574,37 @@ export const Navbar = () => {
             <li>
               <button
                 onClick={() => setIsSettingsOpen(true)}
-                className="text-xs uppercase tracking-widest font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+                className="text-sm font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
                 style={{ color: isSettingsOpen ? '#c9a961' : 'var(--text-secondary)' }}
               >
-                <span className="material-symbols-rounded text-base">tune</span>
+                <Icon name="tune" className="text-base" />
                 Réglages
               </button>
             </li>
           </ul>
 
-          {/* Desktop Right Controls */}
-          <div className="hidden md:flex items-center gap-3">
-            <div className="h-5 w-px bg-white/10 mr-1" />
-
-            {/* Theme Toggle */}
+          {/* Desktop Right Controls — Thème + Réglages */}
+          <div className="hidden md:flex items-center gap-2">
             <button
               onClick={toggleTheme}
-              aria-label="Changer le thème"
-              className="w-8 h-8 rounded-xl flex items-center justify-center transition-all hover:bg-white/10"
+              aria-label={theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
+              title={theme === 'dark' ? 'Mode clair' : 'Mode sombre'}
+              className="w-9 h-9 rounded-xl flex items-center justify-center transition-all hover:bg-white/5"
               style={{ color: 'var(--text-secondary)' }}
             >
-              <span className="material-symbols-rounded text-base">
-                {theme === 'dark' ? 'light_mode' : 'dark_mode'}
-              </span>
+              <Icon 
+                name={theme === 'dark' ? 'light_mode' : 'dark_mode'} 
+                className="text-lg" 
+                suppressHydrationWarning 
+              />
+            </button>
+            <button
+              onClick={() => setIsSettingsOpen(true)}
+              aria-label="Réglages de lecture"
+              className="w-9 h-9 rounded-xl flex items-center justify-center transition-all hover:bg-white/5"
+              style={{ color: 'var(--text-secondary)' }}
+            >
+              <Icon name="tune" className="text-lg" />
             </button>
           </div>
 
@@ -614,7 +621,7 @@ export const Navbar = () => {
 
         {/* Home */}
         <Link href="/accueil" className={`bottom-tab-btn ${activeMobileTab === 'home' ? 'active' : ''}`}>
-          <span className="tab-icon material-symbols-rounded">home</span>
+          <Icon name="home" className="tab-icon" />
           <span className="tab-label">Accueil</span>
         </Link>
 
@@ -624,7 +631,7 @@ export const Navbar = () => {
           onClick={() => { setMobileChaptersOpen(true); setMobileSearchOpen(false); }}
           aria-label="Ouvrir les chapitres"
         >
-          <span className="tab-icon material-symbols-rounded">menu_book</span>
+          <Icon name="menu_book" className="tab-icon" />
           <span className="tab-label">Chapitres</span>
         </button>
 
@@ -634,7 +641,7 @@ export const Navbar = () => {
           onClick={() => { setMobileSearchOpen(true); setMobileChaptersOpen(false); }}
           aria-label="Rechercher"
         >
-          <span className="tab-icon material-symbols-rounded">search</span>
+          <Icon name="search" className="tab-icon" />
           <span className="tab-label">Chercher</span>
         </button>
 
@@ -644,7 +651,7 @@ export const Navbar = () => {
           onClick={() => setIsSettingsOpen(true)}
           aria-label="Réglages"
         >
-          <span className="tab-icon material-symbols-rounded">tune</span>
+          <Icon name="tune" className="tab-icon" />
           <span className="tab-label">Réglages</span>
         </button>
       </nav>

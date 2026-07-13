@@ -20,30 +20,41 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+const THEME_COLORS: Record<Theme, string> = {
+  dark: '#05100b',
+  light: '#f4f0e6',
+};
+
+const applyTheme = (t: Theme) => {
+  const html = document.documentElement;
+  html.setAttribute('data-theme', t);
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', THEME_COLORS[t]);
+};
+
+// Résout le thème initial depuis le DOM (déjà positionné par le script
+// anti-scintillement dans <head>), sinon « sombre » par défaut.
+const getInitialTheme = (): Theme => {
+  if (typeof document !== 'undefined') {
+    const t = document.documentElement.getAttribute('data-theme');
+    if (t === 'light' || t === 'dark') return t;
+  }
+  return 'dark';
+};
+
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [theme] = useState<Theme>('dark');
+  const [theme, setTheme] = useState<Theme>(getInitialTheme);
   const [isFocusMode, setIsFocusMode] = useState(false);
   const [readingSettings, setReadingSettings] = useState<ReadingSettings>({
     fontSize: 100,
     lineHeight: 1.6
   });
 
-  const applyTheme = () => {
-    const html = document.documentElement;
-    html.setAttribute('data-theme', 'dark');
-    // Update meta theme-color for mobile browser chrome
-    const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) {
-      meta.setAttribute('content', '#020504');
-    }
-  };
-
   useEffect(() => {
+    // Le thème est déjà résolu (script <head> + initialisation ci-dessus).
+    // On ne charge ici que les préférences de lecture (de façon différée
+    // pour ne pas déclencher de rendu en cascade).
     try {
-      // Always enforce dark theme
-      applyTheme();
-
-      // Load reading settings
       const saved = localStorage.getItem('readingSettings');
       if (saved) {
         const parsed = JSON.parse(saved);
@@ -51,12 +62,16 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
       }
     } catch (error) {
       console.error("Failed to load settings:", error);
-      applyTheme();
     }
   }, []);
 
   const toggleTheme = () => {
-    // No-op: only dark mode is allowed
+    setTheme(prev => {
+      const next: Theme = prev === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+      try { localStorage.setItem('theme', next); } catch { /* ignore */ }
+      return next;
+    });
   };
 
   const updateSettings = (newSettings: ReadingSettings) => {

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import Icon from '@/components/Icon';
 import { Chapter } from '@/data/chapters';
 import { useLearning } from '@/context/LearningContext';
 import { useData } from '@/context/DataContext';
@@ -121,9 +122,7 @@ export default function Sidebar() {
           className="w-12 h-12 flex items-center justify-center bg-gold/10 border border-gold/30 rounded-full backdrop-blur-md shadow-2xl"
           aria-label={isOpen ? 'Fermer le sommaire' : 'Ouvrir le sommaire'}
         >
-          <span className="material-symbols-rounded text-gold text-3xl">
-            {isOpen ? 'close' : 'chevron_right'}
-          </span>
+          <Icon name={isOpen ? 'close' : 'chevron_right'} className="text-gold text-3xl" />
         </motion.button>
       </motion.div>
 
@@ -160,10 +159,10 @@ export default function Sidebar() {
               className="p-2 hover:bg-white/5 rounded-full transition-colors"
               aria-label="Fermer le sommaire"
             >
-              <span className="material-symbols-rounded text-white/50">close</span>
+              <Icon name="close" className="text-white/50" />
             </button>
           </div>
-          <p className="text-white/60 text-[9px] uppercase tracking-widest font-medium italic">Khouratoul Ayni Digital</p>
+          <p className="text-white/60 text-xs uppercase tracking-widest font-medium italic">Khouratoul Ayni Digital</p>
         </div>
 
         <nav className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
@@ -174,10 +173,10 @@ export default function Sidebar() {
               onClick={() => setIsOpen(false)}
               className="flex items-center gap-4 p-5 rounded-2xl bg-gold/10 border border-gold/20 hover:bg-gold/20 transition-all group"
             >
-              <span className="material-symbols-rounded text-gold group-hover:scale-110 transition-transform">bookmark_heart</span>
+              <Icon name="bookmark_heart" className="text-gold group-hover:scale-110 transition-transform" />
               <div>
                 <p className="text-xs font-black text-white uppercase tracking-widest leading-none">Mes Favoris</p>
-                <p className="text-[9px] text-gold/60 uppercase mt-1">Leçons sauvegardées</p>
+                <p className="text-xs text-gold/60 uppercase mt-1">Leçons sauvegardées</p>
               </div>
             </Link>
           </div>
@@ -187,7 +186,7 @@ export default function Sidebar() {
             if (!chaptersInGroup) return null;
             return (
               <div key={group} className="space-y-3">
-                <h3 className="px-4 text-[10px] font-black text-gold/40 uppercase tracking-[0.2em] border-l border-gold/20 ml-2">{group}</h3>
+                <h3 className="px-4 text-xs font-black text-gold/40 uppercase tracking-[0.2em] border-l border-gold/20 ml-2">{group}</h3>
                 <div className="space-y-1">
                   {chaptersInGroup.map((chapter) => (
                   <div key={chapter.id} className="relative">
@@ -203,12 +202,10 @@ export default function Sidebar() {
                     >
                       <div className="flex items-center gap-4 text-left">
                         <div className="relative">
-                          <span className={`material-symbols-rounded text-xl ${expandedChapter === chapter.id ? 'text-gold' : 'text-white/60'}`}>
-                            {chapter.icon}
-                          </span>
+                          <Icon name={chapter.icon} className={`text-xl ${expandedChapter === chapter.id ? 'text-gold' : 'text-white/60'}`} />
                           {isCompleted(chapter.id) && (
                             <span className="absolute -top-1 -right-1 w-3 h-3 bg-gold rounded-full border-2 border-[#05110d] flex items-center justify-center">
-                              <span className="material-symbols-rounded text-[6px] text-black font-black">check</span>
+                              <Icon name="check" className="text-[6px] text-black font-black" />
                             </span>
                           )}
                         </div>
@@ -216,9 +213,7 @@ export default function Sidebar() {
                           {chapter.titleFr}
                         </span>
                       </div>
-                      <span className={`material-symbols-rounded text-xs transition-transform duration-300 ${expandedChapter === chapter.id ? 'rotate-90 text-gold' : 'text-white/20'}`}>
-                        arrow_forward_ios
-                      </span>
+                      <Icon name="arrow_forward_ios" className={`text-xs transition-transform duration-300 ${expandedChapter === chapter.id ? 'rotate-90 text-gold' : 'text-white/20'}`} />
                     </button>
 
                     <AnimatePresence>
@@ -234,7 +229,7 @@ export default function Sidebar() {
                             <Link
                               href={`/partie/${chapter.id}`}
                               onClick={() => setIsOpen(false)}
-                              className="text-[11px] text-white/60 hover:text-gold py-2 transition-all flex items-center gap-2 group"
+                              className="text-sm text-white/60 hover:text-gold py-2 transition-all flex items-center gap-2 group"
                             >
                               <span className="w-1 h-1 rounded-full bg-white/10 group-hover:bg-gold transition-colors" />
                               Introduction générale
@@ -246,7 +241,7 @@ export default function Sidebar() {
                                 key={sub.id}
                                 href={`/partie/${chapter.id}/${sub.id}`}
                                 onClick={() => setIsOpen(false)}
-                                className="text-[11px] text-white/60 hover:text-gold py-2 transition-all flex items-center gap-2 group"
+                                className="text-sm text-white/60 hover:text-gold py-2 transition-all flex items-center gap-2 group"
                               >
                                 <span className="w-1 h-1 rounded-full bg-white/10 group-hover:bg-gold transition-colors" />
                                 <span className="uppercase text-gold/60 font-bold mr-1">{sub.id}.</span>
@@ -269,8 +264,8 @@ export default function Sidebar() {
           <div className="flex items-center gap-4 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-700">
             <div className="w-10 h-10 rounded-lg bg-gold/10 border border-gold/20 flex items-center justify-center font-black text-gold text-sm tracking-tighter">QA</div>
             <div>
-              <p className="text-[10px] uppercase font-bold text-white/60">Qurratul Ayni</p>
-              <p className="text-[8px] uppercase tracking-widest text-white/60">Édition Numérique v2.0</p>
+              <p className="text-xs uppercase font-bold text-white/60">Qurratul Ayni</p>
+              <p className="text-xs uppercase tracking-widest text-white/60">Édition Numérique v2.0</p>
             </div>
           </div>
           <div className="text-center mt-6">

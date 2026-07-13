@@ -13,14 +13,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" className="scroll-smooth">
+    <html lang="fr" className="scroll-smooth" data-theme="dark">
       <head>
-        <meta name="theme-color" content="#c9a961" />
+        {/* Applique le thème sauvegardé avant le premier rendu (anti-scintillement) */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark')t='dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();`,
+          }}
+        />
+        <meta name="theme-color" content="#05100b" />
         <link rel="apple-touch-icon" href="/mosque-192.png"></link>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" />
-        <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* Inter = UI/texte lisible · Lora = lecture long format · Playfair = grands titres · Amiri = arabe */}
+        <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:wght@600;700;800;900&display=swap" rel="stylesheet" />
       </head>
-      <body className="antialiased selection:bg-gold/30 dark:selection:text-gray-900 bg-white dark:bg-gray-950">
+      <body className="antialiased">
         <AppProviders>
           {children}
         </AppProviders>

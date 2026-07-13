@@ -1,6 +1,7 @@
 'use client';
 
 import { useAudio } from '@/context/AudioContext';
+import Icon from '@/components/Icon';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRef, useState } from 'react';
 
@@ -84,10 +85,10 @@ export const Player = () => {
               className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-red-500/10 text-[var(--text-muted)] hover:text-red-500 transition-colors"
               aria-label="Fermer le lecteur"
             >
-              <span className="material-symbols-rounded text-lg">close</span>
+              <Icon name="close" className="text-lg" />
             </button>
             <div className="min-w-0 flex flex-col justify-center">
-              <p className="text-[10px] font-black text-gold uppercase tracking-widest truncate">
+              <p className="text-sm font-semibold text-gold truncate">
                 {currentChapter.titleFr}
               </p>
               <p className="text-xs text-[var(--text-secondary)] font-amiri truncate" lang="ar" dir="rtl">
@@ -103,7 +104,7 @@ export const Player = () => {
               className="text-[var(--text-muted)] hover:text-gold transition-colors p-2"
               aria-label="Chapitre précédent"
             >
-              <span className="material-symbols-rounded text-2xl">skip_previous</span>
+              <Icon name="skip_previous" className="text-2xl" />
             </button>
             
             <button 
@@ -112,11 +113,12 @@ export const Player = () => {
               aria-label={isPlaying ? 'Pause' : 'Lecture'}
             >
               {isLoading ? (
-                <span className="material-symbols-rounded text-3xl animate-spin">progress_activity</span>
+                <Icon name="progress_activity" className="text-3xl animate-spin" />
               ) : (
-                <span className="material-symbols-rounded text-3xl md:text-4xl translate-x-[1px]">
-                  {isPlaying ? 'pause' : 'play_arrow'}
-                </span>
+                <Icon 
+                  name={isPlaying ? 'pause' : 'play_arrow'} 
+                  className="text-3xl md:text-4xl translate-x-[1px]" 
+                />
               )}
             </button>
             
@@ -125,7 +127,7 @@ export const Player = () => {
               className="text-[var(--text-muted)] hover:text-gold transition-colors p-2"
               aria-label="Chapitre suivant"
             >
-              <span className="material-symbols-rounded text-2xl">skip_next</span>
+              <Icon name="skip_next" className="text-2xl" />
             </button>
           </div>
 
@@ -137,7 +139,7 @@ export const Player = () => {
             
             {/* Speed Control */}
             <div className="relative group hidden sm:block">
-              <button className="text-[var(--text-muted)] hover:text-gold transition-colors p-2 font-black text-[10px] tracking-widest uppercase">
+              <button className="text-[var(--text-muted)] hover:text-gold transition-colors p-2 font-black text-xs tracking-widest uppercase">
                 {playbackRate}x
               </button>
               <div className="absolute bottom-full mb-4 right-1/2 translate-x-1/2 p-2 bg-[var(--bg-surface)] rounded-2xl shadow-xl border border-[var(--border-subtle)] opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-1 pointer-events-none group-hover:pointer-events-auto">
@@ -145,7 +147,7 @@ export const Player = () => {
                   <button 
                     key={rate} 
                     onClick={() => handlePlaybackRateChange(rate)} 
-                    className={`text-xs px-4 py-2 rounded-xl text-center font-bold transition-colors ${playbackRate === rate ? 'bg-gold text-white' : 'text-[var(--text-secondary)] hover:bg-[var(--bg-base)]'}`}
+                    className={`text-xs px-4 py-2 rounded-xl text-center font-bold transition-colors ${playbackRate === rate ? 'bg-gold text-[#241c07]' : 'text-[var(--text-secondary)] hover:bg-[var(--bg-base)]'}`}
                   > {rate}x </button>
                 ))}
               </div>
@@ -157,7 +159,7 @@ export const Player = () => {
                 onClick={() => setIsOptionsMenuOpen(!isOptionsMenuOpen)} 
                 className={`p-2 rounded-full transition-colors ${isOptionsMenuOpen ? 'text-gold' : 'text-[var(--text-muted)] hover:text-gold'}`}
               >
-                <span className="material-symbols-rounded">more_vert</span>
+                <Icon name="more_vert" />
               </button>
               <AnimatePresence>
                 {isOptionsMenuOpen && (
@@ -169,16 +171,16 @@ export const Player = () => {
                   >
                     <div className="text-[var(--text-primary)] font-bold text-xs uppercase tracking-widest text-center border-b border-[var(--border-subtle)] pb-2 mb-1">Options audio</div>
                     <div className="flex items-center gap-3">
-                      <span className="material-symbols-rounded text-xl text-gold">speed</span>
+                      <Icon name="speed" className="text-xl text-gold" />
                       <div className="flex flex-wrap gap-1 flex-1 justify-end">
                         {[0.75, 1.0, 1.25, 1.5, 2.0].map(rate => (
-                          <button key={rate} onClick={() => handlePlaybackRateChange(rate)} className={`text-[10px] font-bold px-2 py-1 rounded-full ${playbackRate === rate ? 'bg-gold text-white' : 'bg-[var(--bg-base)] text-[var(--text-secondary)]'}`} > {rate}x </button>
+                          <button key={rate} onClick={() => handlePlaybackRateChange(rate)} className={`text-xs font-bold px-2 py-1 rounded-full ${playbackRate === rate ? 'bg-gold text-[#241c07]' : 'bg-[var(--bg-base)] text-[var(--text-secondary)]'}`} > {rate}x </button>
                         ))}
                       </div>
                     </div>
                     <button onClick={toggleLoop} className={`flex items-center justify-between w-full p-2 rounded-xl transition-colors ${isLooping ? 'bg-gold/10 text-gold' : 'hover:bg-[var(--bg-base)] text-[var(--text-secondary)]'}`}>
                       <span className="text-xs font-bold uppercase tracking-widest">En Boucle</span>
-                      <span className="material-symbols-rounded text-xl">repeat</span>
+                      <Icon name="repeat" className="text-xl" />
                     </button>
                   </motion.div>
                 )}
@@ -192,7 +194,7 @@ export const Player = () => {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="absolute -top-12 left-1/2 -translate-x-1/2 bg-red-500 text-white font-bold text-[10px] uppercase tracking-widest px-4 py-2 rounded-full shadow-lg"
+            className="absolute -top-12 left-1/2 -translate-x-1/2 bg-red-500 text-white font-bold text-xs uppercase tracking-widest px-4 py-2 rounded-full shadow-lg"
           >
             {error}
           </motion.div>

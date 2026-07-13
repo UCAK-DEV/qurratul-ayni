@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Flashcard as FlashcardType } from '@/types/content';
+import Icon from '@/components/Icon';
 
 interface FlashcardProps {
   card: FlashcardType;
@@ -27,7 +28,7 @@ export const Flashcard: React.FC<FlashcardProps> = ({ card, index, total }) => {
   return (
     <div className="flex flex-col items-center gap-4 w-full">
       {/* Card Counter */}
-      <p className="text-[10px] uppercase tracking-widest text-white/30 font-bold">
+      <p className="text-xs uppercase tracking-widest text-white/30 font-bold">
         Carte {index + 1} / {total}
       </p>
 
@@ -59,7 +60,7 @@ export const Flashcard: React.FC<FlashcardProps> = ({ card, index, total }) => {
             }`}
           >
             {card.category && (
-              <span className="text-[9px] uppercase tracking-widest text-gold/50 font-bold mb-3">
+              <span className="text-xs uppercase tracking-widest text-gold/50 font-bold mb-3">
                 {card.category}
               </span>
             )}
@@ -68,10 +69,10 @@ export const Flashcard: React.FC<FlashcardProps> = ({ card, index, total }) => {
                 {card.frontAr}
               </p>
             )}
-            <p className="text-white/80 font-serif italic text-base leading-relaxed">
+            <p className="text-white/80 font-reading text-base leading-relaxed">
               {card.front}
             </p>
-            <p className="text-[9px] text-white/20 uppercase tracking-widest mt-4">
+            <p className="text-xs text-white/20 uppercase tracking-widest mt-4">
               Appuyez pour retourner
             </p>
           </div>
@@ -81,7 +82,7 @@ export const Flashcard: React.FC<FlashcardProps> = ({ card, index, total }) => {
             style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
             className="absolute inset-0 rounded-2xl bg-gradient-to-br from-gold/10 to-transparent border border-gold/20 flex flex-col items-center justify-center p-6 text-center"
           >
-            <span className="material-symbols-rounded text-gold text-2xl mb-3">lightbulb</span>
+            <Icon name="lightbulb" className="text-gold text-2xl mb-3" />
             <p className="text-white font-bold text-base leading-relaxed">
               {card.back}
             </p>
@@ -105,7 +106,7 @@ export const Flashcard: React.FC<FlashcardProps> = ({ card, index, total }) => {
               className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-bold hover:bg-red-500/20 transition-all"
               aria-label="Je ne savais pas"
             >
-              <span className="material-symbols-rounded text-sm">close</span>
+              <Icon name="close" className="text-sm" />
               À revoir
             </motion.button>
             <motion.button
@@ -115,7 +116,7 @@ export const Flashcard: React.FC<FlashcardProps> = ({ card, index, total }) => {
               className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold hover:bg-emerald-500/20 transition-all"
               aria-label="Je savais"
             >
-              <span className="material-symbols-rounded text-sm">check</span>
+              <Icon name="check" className="text-sm" />
               Je savais !
             </motion.button>
           </motion.div>
@@ -135,9 +136,7 @@ export const Flashcard: React.FC<FlashcardProps> = ({ card, index, total }) => {
                 : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
             }`}
           >
-            <span className="material-symbols-rounded text-sm">
-              {known ? 'check_circle' : 'refresh'}
-            </span>
+            <Icon name={known ? 'check_circle' : 'refresh'} className="text-sm" />
             {known ? 'Mémorisé !' : 'À réviser'}
           </motion.div>
         )}

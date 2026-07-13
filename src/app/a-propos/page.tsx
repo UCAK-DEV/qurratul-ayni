@@ -31,7 +31,7 @@ const AboutPage = () => {
           </div>
         </div>
 
-        <p className="text-md text-white/80 font-serif italic mb-8">
+        <p className="text-md text-white/80 font-reading mb-8">
           Étudiants à l'Université Cheikh Ahmadoul Khadim de Touba.
         </p>
 

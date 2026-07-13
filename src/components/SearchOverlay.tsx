@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useChapterSearch } from '@/hooks/useChapterSearch';
+import Icon from '@/components/Icon';
 import { Chapter } from '@/data/chapters';
 
 interface SearchOverlayProps {
@@ -64,7 +65,7 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
             style={{ background: 'var(--bg-surface)', borderColor: 'var(--border-gold)' }}
           >
             <div className="flex-shrink-0 flex items-center gap-4 p-5 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
-              <span className="material-symbols-rounded text-2xl text-[#c9a961]">search</span>
+              <Icon name="search" className="text-2xl text-[#c9a961]" />
               <input
                 type="text"
                 value={query}
@@ -78,7 +79,7 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
             
             <div className="flex-grow overflow-y-auto custom-scrollbar p-3">
               {query && results.length === 0 && (
-                <div className="text-center p-10 font-serif italic text-white/50">
+                <div className="text-center p-10 font-reading text-white/50">
                   <p>Aucun résultat pour "{query}"</p>
                 </div>
               )}
@@ -90,7 +91,7 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
                       className="w-full text-left flex items-center gap-4 p-4 hover:bg-white/[0.02] border-l-2 border-transparent hover:border-[#c9a961] rounded-xl transition-all group"
                     >
                       <div className="w-10 h-10 rounded-xl bg-[#c9a961]/10 border border-[#c9a961]/25 flex items-center justify-center text-[#c9a961] group-hover:scale-105 transition-all">
-                        <span className="material-symbols-rounded text-xl leading-none">{chapter.icon}</span>
+                        <Icon name={chapter.icon} className="text-xl leading-none" />
                       </div>
                       <div className="flex-grow">
                         <h3 className="font-bold text-white/90 group-hover:text-[#c9a961] transition-colors">{chapter.titleFr}</h3>

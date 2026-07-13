@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { ContentBlock } from '@/types/content';
 import { useTheme } from '@/context/ThemeContext';
 import { useBookmarks } from '@/context/BookmarkContext';
+import Icon from '@/components/Icon';
 
 interface BlockRendererProps {
   blocks: ContentBlock[];
@@ -58,9 +59,7 @@ const BookmarkBtn: React.FC<{
     }`}
     aria-label={isBookmarked ? 'Retirer des favoris' : 'Ajouter aux favoris'}
   >
-    <span className="material-symbols-rounded text-xl">
-      {isBookmarked ? 'bookmark_added' : 'bookmark_add'}
-    </span>
+    <Icon name={isBookmarked ? 'bookmark_added' : 'bookmark_add'} className="text-xl" />
   </button>
 );
 
@@ -72,10 +71,10 @@ const SectionLabel: React.FC<{ titleFr?: string; titleAr?: string; accent?: stri
 }) => (
   <div className="flex items-center gap-4 mb-8">
     <div className="h-5 w-0.5 bg-gold rounded-full" />
-    <h2 className={`text-xs font-black uppercase tracking-[0.35em] ${accent}`}>{titleFr}</h2>
+    <h2 className={`text-sm font-semibold uppercase tracking-[0.14em] ${accent}`}>{titleFr}</h2>
     <div className="h-[1px] flex-1 bg-white/5" />
     {titleAr && (
-      <span className="text-lg font-amiri text-gold/40" lang="ar" dir="rtl">
+      <span className="text-xl font-amiri text-gold/50" lang="ar" dir="rtl">
         {titleAr}
       </span>
     )}
@@ -129,7 +128,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({ blocks, slug = '',
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#010302] via-transparent to-transparent opacity-60" />
                     <div className="absolute bottom-8 left-8">
-                      <p className="text-gold font-serif italic text-2xl tracking-tight">
+                      <p className="text-gold font-reading text-2xl tracking-tight">
                         {block.content.years}
                       </p>
                     </div>
@@ -165,7 +164,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({ blocks, slug = '',
                             0{idx + 1}
                           </span>
                           <p
-                            className="text-xl md:text-2xl text-white/80 font-serif leading-relaxed italic hover:text-white transition-colors"
+                            className="text-xl md:text-2xl text-white/90 font-reading leading-relaxed italic hover:text-white transition-colors"
                             style={textStyle}
                           >
                             &quot;{section}&quot;
@@ -208,7 +207,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({ blocks, slug = '',
                       </span>
                       <div className="max-w-2xl mx-auto">
                         <p
-                          className="text-lg sm:text-xl md:text-2xl text-white/80 font-serif leading-relaxed italic text-center"
+                          className="text-lg sm:text-xl md:text-2xl text-white/90 font-reading leading-relaxed italic text-center"
                           style={textStyle}
                         >
                           &quot;{text}&quot;
@@ -265,7 +264,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({ blocks, slug = '',
                   >
                     <div className="relative z-10 flex justify-between items-start mb-6">
                       <div className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/10 text-gold group-hover:scale-110 group-hover:bg-gold/10 transition-all duration-500">
-                        <span className="material-symbols-rounded text-2xl">{item.icon}</span>
+                        <Icon name={item.icon} className="text-2xl" />
                       </div>
                       <span
                         className="font-amiri text-2xl text-gold/30 group-hover:text-gold/70 transition-colors"
@@ -276,7 +275,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({ blocks, slug = '',
                       </span>
                     </div>
                     <div className="relative z-10">
-                      <span className="text-[9px] font-bold text-gold tracking-widest uppercase opacity-60 block mb-1">
+                      <span className="text-xs font-bold text-gold tracking-widest uppercase opacity-60 block mb-1">
                         Section {item.letter}
                       </span>
                       <h3 className="text-xl font-bold text-white tracking-tight group-hover:text-gold transition-colors mb-3">
@@ -286,7 +285,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({ blocks, slug = '',
                         {item.sub.map((sub: string, sIdx: number) => (
                           <li
                             key={sIdx}
-                            className="text-white/50 group-hover:text-white/60 text-sm flex items-center gap-2.5"
+                            className="text-white/70 group-hover:text-white/75 text-sm flex items-center gap-2.5"
                           >
                             <span className="w-1 h-1 bg-gold/40 rounded-full flex-shrink-0" />
                             {sub}
@@ -338,7 +337,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({ blocks, slug = '',
                           <span className="text-gold font-black text-sm">{(idx + 1).toString().padStart(2, '0')}</span>
                         </div>
                         <p
-                          className="text-base md:text-lg text-white/60 group-hover/item:text-white/85 transition-colors font-serif italic leading-relaxed tracking-tight pt-1.5"
+                          className="text-base md:text-lg text-white/75 group-hover/item:text-white/85 transition-colors font-reading leading-relaxed tracking-tight pt-1.5"
                           style={textStyle}
                         >
                           {step}
@@ -381,14 +380,14 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({ blocks, slug = '',
                         <h3
                           className={`${
                             idx === 0 ? 'text-emerald-400' : 'text-gold'
-                          } font-black text-[11px] uppercase tracking-widest`}
+                          } font-semibold text-sm uppercase tracking-wider`}
                         >
                           {col.titleFr}
                         </h3>
                         {idx === 0 ? (
-                          <span className="text-[9px] text-emerald-500/50 uppercase tracking-wider font-bold">Obligatoire</span>
+                          <span className="text-xs text-emerald-500/50 uppercase tracking-wider font-bold">Obligatoire</span>
                         ) : (
-                          <span className="text-[9px] text-gold/40 uppercase tracking-wider font-bold">Recommandé</span>
+                          <span className="text-xs text-gold/40 uppercase tracking-wider font-bold">Recommandé</span>
                         )}
                       </div>
                       {col.titleAr && (
@@ -401,7 +400,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({ blocks, slug = '',
                         </span>
                       )}
                     </div>
-                    <ul className="space-y-4 text-white/65 font-serif italic text-base md:text-lg leading-snug" style={textStyle}>
+                    <ul className="space-y-4 text-white/80 font-reading text-base md:text-lg leading-snug" style={textStyle}>
                       {col.items.map((item: string, i: number) => (
                         <li key={i} className="flex items-start gap-2.5">
                           <span
@@ -432,11 +431,11 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({ blocks, slug = '',
                 {block.content.map((section: BioSectionItem, idx: number) => (
                   <div key={idx} className="flex flex-col md:flex-row gap-8 md:gap-12">
                     <div className="md:w-1/4">
-                      <h2 className="text-gold text-[10px] tracking-[0.4em] font-bold uppercase md:sticky md:top-32">
+                      <h2 className="text-gold text-xs tracking-[0.4em] font-bold uppercase md:sticky md:top-32">
                         {section.label}
                       </h2>
                     </div>
-                    <div className="md:w-3/4 space-y-6 text-white/80 font-serif text-base md:text-lg leading-relaxed">
+                    <div className="md:w-3/4 space-y-6 text-white/90 font-reading text-base md:text-lg leading-relaxed">
                       {section.arabic && (
                         <div className="p-5 rounded-xl bg-gold/[0.06] border border-gold/15 text-gold-light italic border-b-0">
                           <p className="text-2xl font-amiri mb-2 leading-loose" lang="ar" dir="rtl">
@@ -459,7 +458,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({ blocks, slug = '',
                           <div className="h-12 w-[1px] bg-gold" />
                           <div>
                             <p className="font-bold text-white tracking-tight">{section.signature.name}</p>
-                            <p className="text-[10px] text-gold/60 uppercase tracking-widest">{section.signature.role}</p>
+                            <p className="text-xs text-gold/60 uppercase tracking-widest">{section.signature.role}</p>
                           </div>
                         </div>
                       )}
@@ -486,7 +485,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({ blocks, slug = '',
                             « {section.footer_doua.phonetic} »
                           </p>
                           <div className="h-[1px] w-12 bg-gold/30 mx-auto mb-3" />
-                          <p className="relative text-[10px] uppercase tracking-[0.3em] text-white/40">
+                          <p className="relative text-xs uppercase tracking-[0.3em] text-white/40">
                             {section.footer_doua.translation}
                           </p>
                         </div>
@@ -521,13 +520,13 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({ blocks, slug = '',
                     <div className="flex-1 pb-12">
                       <div className="p-6 md:p-10 rounded-2xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] hover:border-white/10 transition-all">
                         <div className="flex justify-between items-center mb-4">
-                          <span className="text-gold font-black text-[10px] uppercase tracking-widest">
+                          <span className="text-gold font-black text-xs uppercase tracking-widest">
                             {step.title}
                           </span>
                           <span className="md:hidden text-gold/60 text-xs font-bold">{step.age} ans</span>
                         </div>
                         <p
-                          className="text-base md:text-lg text-white/70 font-serif italic leading-relaxed"
+                          className="text-base md:text-lg text-white/70 font-reading leading-relaxed"
                           style={textStyle}
                         >
                           &ldquo;{step.text}&rdquo;
@@ -564,7 +563,7 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({ blocks, slug = '',
                   &ldquo;
                 </span>
                 <div
-                  className="relative max-w-4xl mx-auto text-white/65 font-serif italic text-base md:text-lg leading-relaxed space-y-5 text-justify"
+                  className="relative max-w-4xl mx-auto text-white/80 font-reading text-base md:text-lg leading-relaxed space-y-5 text-justify"
                   style={textStyle}
                 >
                   {Array.isArray(block.content)

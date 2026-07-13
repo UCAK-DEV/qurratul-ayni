@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import Icon from '@/components/Icon';
 
 export default function HomePage() {
   const [mounted, setMounted] = useState(false);
@@ -102,7 +103,7 @@ export default function HomePage() {
           <div className="space-y-4 px-2 text-center">
             <motion.span 
               variants={itemVariants}
-              className="text-gold text-[9px] sm:text-xs uppercase font-black tracking-[0.6em] block opacity-70"
+              className="text-gold text-xs sm:text-xs uppercase font-black tracking-[0.6em] block opacity-70"
             >
               Œuvre Spirituelle Majeure
             </motion.span>
@@ -131,17 +132,17 @@ export default function HomePage() {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-full sm:px-12 py-4 md:py-5 rounded-2xl bg-gold text-[#010503] font-black text-[11px] sm:text-sm tracking-[0.3em] uppercase flex items-center justify-center gap-3 shadow-2xl"
+                className="w-full sm:px-12 py-4 md:py-5 rounded-2xl bg-gold text-[#010503] font-black text-sm sm:text-sm tracking-[0.3em] uppercase flex items-center justify-center gap-3 shadow-2xl"
               >
                 Commencer
-                <span className="material-symbols-rounded text-lg">menu_book</span>
+                <Icon name="menu_book" className="text-lg" />
               </motion.button>
             </Link>
             
             <motion.button 
                whileHover={{ backgroundColor: "rgba(255,255,255,0.05)" }}
                onClick={() => router.push('/partie/1')}
-               className="w-full sm:px-12 py-4 md:py-5 rounded-2xl border border-white/10 text-white font-bold text-[11px] sm:text-sm tracking-[0.3em] uppercase transition-all backdrop-blur-md"
+               className="w-full sm:px-12 py-4 md:py-5 rounded-2xl border border-white/10 text-white font-bold text-sm sm:text-sm tracking-[0.3em] uppercase transition-all backdrop-blur-md"
             >
               L&apos;Auteur
             </motion.button>
@@ -164,7 +165,7 @@ export default function HomePage() {
               Une Voie vers la <br />
               <span className="gold-gradient-text italic font-serif">Lumière Divine</span>
             </h2>
-            <p className="text-white/50 text-lg sm:text-xl leading-relaxed font-serif italic max-w-lg mx-auto lg:mx-0">
+            <p className="text-white/50 text-lg sm:text-xl leading-relaxed font-reading max-w-lg mx-auto lg:mx-0">
               Qurratul Ayni est un guide méthodique structuré, alliant poésie mystique et enseignements pratiques pour le croyant.
             </p>
             
@@ -179,7 +180,7 @@ export default function HomePage() {
                   className="p-6 rounded-3xl bg-white/[0.03] border border-white/5 text-center"
                 >
                   <span className="text-gold text-4xl font-black block">{stat.val}</span>
-                  <span className="text-white/60 text-[10px] uppercase font-bold tracking-widest">{stat.label}</span>
+                  <span className="text-white/60 text-xs uppercase font-bold tracking-widest">{stat.label}</span>
                 </motion.div>
               ))}
             </div>
@@ -208,7 +209,7 @@ export default function HomePage() {
         <motion.p 
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          className="text-white/20 text-[10px] tracking-[0.5em] uppercase font-bold px-4"
+          className="text-white/20 text-xs tracking-[0.5em] uppercase font-bold px-4"
         >
           © 2026 Qurratul Ayni • Bibliothèque Spirituelle Digitale
         </motion.p>

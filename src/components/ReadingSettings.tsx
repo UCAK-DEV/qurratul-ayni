@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '@/context/ThemeContext';
+import Icon from '@/components/Icon';
 
 interface ReadingSettingsProps {
   isOpen: boolean;
@@ -10,10 +11,14 @@ interface ReadingSettingsProps {
 }
 
 export const ReadingSettings: React.FC<ReadingSettingsProps> = ({ isOpen, onClose }) => {
-  const { readingSettings, setReadingSettings } = useTheme();
+  const { readingSettings, setReadingSettings, theme, toggleTheme } = useTheme();
 
   const fontSizes = [90, 100, 115, 130, 145];
   const lineHeights = [1.4, 1.6, 1.8, 2.0];
+
+  const selectTheme = (target: 'dark' | 'light') => {
+    if (theme !== target) toggleTheme();
+  };
 
   return (
     <AnimatePresence>
@@ -38,24 +43,48 @@ export const ReadingSettings: React.FC<ReadingSettingsProps> = ({ isOpen, onClos
             {/* Header */}
             <div className="flex justify-between items-center mb-7">
               <div className="flex items-center gap-2">
-                <span className="material-symbols-rounded text-[#c9a961] text-lg">tune</span>
+                <Icon name="tune" className="text-[#c9a961] text-lg" />
                 <h2 className="font-black text-xs uppercase tracking-[0.35em]" style={{ color: '#c9a961' }}>
                   Réglages
                 </h2>
               </div>
               <button onClick={onClose} className="w-8 h-8 flex items-center justify-center rounded-full transition-colors"
                 style={{ background: 'var(--border-subtle)', color: 'var(--text-muted)' }}>
-                <span className="material-symbols-rounded text-base">close</span>
+                <Icon name="close" className="text-base" />
               </button>
             </div>
 
             <div className="space-y-7">
 
-
+              {/* Thème */}
+              <div className="space-y-3">
+                <p className="text-sm font-semibold" style={{ color: 'var(--text-secondary)' }}>
+                  Apparence
+                </p>
+                <div className="flex gap-2">
+                  {([
+                    { key: 'light', label: 'Clair', icon: 'light_mode' },
+                    { key: 'dark', label: 'Sombre', icon: 'dark_mode' },
+                  ] as const).map(opt => (
+                    <button
+                      key={opt.key}
+                      onClick={() => selectTheme(opt.key)}
+                      className="flex-1 py-2.5 rounded-xl border text-sm font-medium transition-all flex items-center justify-center gap-2"
+                      style={theme === opt.key
+                        ? { background: 'rgba(201,169,97,0.15)', borderColor: '#c9a961', color: 'var(--accent)' }
+                        : { background: 'var(--bg-card)', borderColor: 'var(--border-subtle)', color: 'var(--text-secondary)' }
+                      }
+                    >
+                      <Icon name={opt.icon} className="text-lg" />
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
               {/* Taille de police */}
               <div className="space-y-3">
-                <p className="text-[10px] uppercase font-black tracking-widest" style={{ color: 'var(--text-muted)' }}>
+                <p className="text-sm font-semibold" style={{ color: 'var(--text-secondary)' }}>
                   Taille du texte
                 </p>
                 <div className="flex gap-2">
@@ -77,7 +106,7 @@ export const ReadingSettings: React.FC<ReadingSettingsProps> = ({ isOpen, onClos
 
               {/* Interlignage */}
               <div className="space-y-3">
-                <p className="text-[10px] uppercase font-black tracking-widest" style={{ color: 'var(--text-muted)' }}>
+                <p className="text-sm font-semibold" style={{ color: 'var(--text-secondary)' }}>
                   Espacement des lignes
                 </p>
                 <div className="flex gap-2">
@@ -98,7 +127,7 @@ export const ReadingSettings: React.FC<ReadingSettingsProps> = ({ isOpen, onClos
               </div>
 
               <div className="pt-2 border-t" style={{ borderColor: 'var(--border-subtle)' }}>
-                <p className="text-[9px] text-center font-serif italic" style={{ color: 'var(--text-muted)' }}>
+                <p className="text-xs text-center font-reading" style={{ color: 'var(--text-muted)' }}>
                   Réglages sauvegardés automatiquement
                 </p>
               </div>

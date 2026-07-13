@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import Icon from '@/components/Icon';
 
 interface NavItem {
   slug: string;       // e.g. "9-b" → /partie/9/b
@@ -58,11 +59,9 @@ export const ChapterNav: React.FC<ChapterNavProps> = ({ prev, next, summarySlug 
                   className="group flex items-center gap-2 md:gap-3 flex-1 px-3 py-3 md:px-6 md:py-4 rounded-xl md:rounded-2xl bg-white/[0.04] border border-white/10 hover:bg-white/[0.07] hover:border-white/20 transition-all text-left min-w-0"
                   aria-label={`Partie précédente: ${prev.label}`}
                 >
-                  <span className="material-symbols-rounded text-white/50 group-hover:text-gold transition-colors text-lg md:text-xl flex-shrink-0">
-                    arrow_back
-                  </span>
+                  <Icon name="arrow_back" className="text-white/50 group-hover:text-gold transition-colors text-lg md:text-xl flex-shrink-0" />
                   <div className="min-w-0">
-                    <p className="text-[9px] uppercase tracking-widest font-bold text-white/30 leading-none mb-0.5">
+                    <p className="text-xs uppercase tracking-widest font-bold text-white/30 leading-none mb-0.5">
                       Précédent
                     </p>
                     <p className="text-xs font-semibold text-white/70 group-hover:text-white transition-colors truncate">
@@ -80,11 +79,9 @@ export const ChapterNav: React.FC<ChapterNavProps> = ({ prev, next, summarySlug 
                     className="group flex items-center gap-2 md:gap-3 flex-1 px-3 py-3 md:px-6 md:py-4 rounded-xl md:rounded-2xl bg-white/[0.04] border border-white/10 hover:bg-white/[0.07] hover:border-white/20 transition-all text-left min-w-0"
                     aria-label="Retour au sommaire du chapitre"
                   >
-                    <span className="material-symbols-rounded text-white/50 group-hover:text-gold transition-colors text-lg md:text-xl flex-shrink-0">
-                      list
-                    </span>
+                    <Icon name="list" className="text-white/50 group-hover:text-gold transition-colors text-lg md:text-xl flex-shrink-0" />
                     <div className="min-w-0">
-                      <p className="text-[9px] uppercase tracking-widest font-bold text-white/30 leading-none mb-0.5">
+                      <p className="text-xs uppercase tracking-widest font-bold text-white/30 leading-none mb-0.5">
                         Sommaire
                       </p>
                       <p className="text-xs font-semibold text-white/70 group-hover:text-white transition-colors truncate">
@@ -108,7 +105,7 @@ export const ChapterNav: React.FC<ChapterNavProps> = ({ prev, next, summarySlug 
                     aria-label="Revenir en haut"
                     className="w-12 md:w-14 h-12 md:h-14 flex-shrink-0 flex items-center justify-center rounded-xl md:rounded-2xl bg-white/[0.04] border border-white/10 hover:border-gold/30 hover:text-gold text-white/40 transition-all"
                   >
-                    <span className="material-symbols-rounded text-lg md:text-xl">vertical_align_top</span>
+                    <Icon name="vertical_align_top" className="text-lg md:text-xl" />
                   </motion.button>
                 )}
               </AnimatePresence>
@@ -123,16 +120,14 @@ export const ChapterNav: React.FC<ChapterNavProps> = ({ prev, next, summarySlug 
                   aria-label={`Partie suivante: ${next.label}`}
                 >
                   <div className="min-w-0 flex-1">
-                    <p className="text-[9px] uppercase tracking-widest font-bold text-gold/50 leading-none mb-0.5">
+                    <p className="text-xs uppercase tracking-widest font-bold text-gold/50 leading-none mb-0.5">
                       Suivant
                     </p>
                     <p className="text-xs font-semibold text-gold/80 group-hover:text-gold transition-colors truncate">
                       {next.label}
                     </p>
                   </div>
-                  <span className="material-symbols-rounded text-gold/70 group-hover:text-gold transition-colors text-lg md:text-xl flex-shrink-0">
-                    arrow_forward
-                  </span>
+                  <Icon name="arrow_forward" className="text-gold/70 group-hover:text-gold transition-colors text-lg md:text-xl flex-shrink-0" />
                 </motion.button>
               ) : (
                 /* Accueil fallback if no next */
@@ -144,16 +139,14 @@ export const ChapterNav: React.FC<ChapterNavProps> = ({ prev, next, summarySlug 
                   aria-label="Retour au sommaire général"
                 >
                   <div className="min-w-0 flex-1">
-                    <p className="text-[9px] uppercase tracking-widest font-bold text-gold/50 leading-none mb-0.5">
+                    <p className="text-xs uppercase tracking-widest font-bold text-gold/50 leading-none mb-0.5">
                       Fin du chapitre
                     </p>
                     <p className="text-xs font-semibold text-gold/80 group-hover:text-gold transition-colors truncate">
                       Retour au sommaire
                     </p>
                   </div>
-                  <span className="material-symbols-rounded text-gold/70 group-hover:text-gold transition-colors text-lg md:text-xl flex-shrink-0">
-                    home
-                  </span>
+                  <Icon name="home" className="text-gold/70 group-hover:text-gold transition-colors text-lg md:text-xl flex-shrink-0" />
                 </motion.button>
               )}
             </div>

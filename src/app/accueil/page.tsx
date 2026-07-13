@@ -9,6 +9,7 @@ import { calculateHijriDate } from '@/utils/hijri';
 import { getDakarPrayerTimes, PrayerTimes } from '@/utils/prayerTimes';
 import { getSetting } from '@/utils/settings';
 import { getRecommendationForDate, NafilaRecommendation } from '@/data/nafilas';
+import Icon from '@/components/Icon';
 
 interface InAppNotification {
   id: string;
@@ -178,20 +179,20 @@ export default function LibraryPage() {
     return (
       <div className="min-h-screen text-white flex flex-col items-center justify-center p-6 text-center" style={{ backgroundColor: 'var(--bg-base)', color: 'var(--text-primary)' }}>
         <div className="w-20 h-20 rounded-full bg-red-500/10 flex items-center justify-center mb-6 border border-red-500/20">
-          <span className="material-symbols-rounded text-4xl text-red-500">cloud_off</span>
+          <Icon name="cloud_off" className="text-4xl text-red-500" />
         </div>
         <h1 className="text-3xl font-black mb-4 uppercase tracking-tighter">Données Inaccessibles</h1>
-        <p className="text-white/60 mb-8 max-w-md font-serif italic">
+        <p className="text-white/60 mb-8 max-w-md font-reading">
           {error}. Vérifiez votre connexion ou la configuration de vos clés Supabase sur Vercel.
         </p>
         <div className="flex gap-4">
           <button 
             onClick={retry}
-            className="px-8 py-3 bg-gold text-black rounded-full text-[10px] font-black uppercase hover:scale-105 transition-all shadow-lg shadow-gold/20"
+            className="px-8 py-3 bg-gold text-[#241c07] rounded-full text-xs font-black uppercase hover:scale-105 transition-all shadow-lg shadow-gold/20"
           >
             Réessayer
           </button>
-          <Link href="/" className="px-8 py-3 bg-white/5 text-white rounded-full text-[10px] font-black uppercase hover:bg-white/10 transition-all border border-white/10">
+          <Link href="/" className="px-8 py-3 bg-white/5 text-white rounded-full text-xs font-black uppercase hover:bg-white/10 transition-all border border-white/10">
             Accueil
           </Link>
         </div>
@@ -201,301 +202,253 @@ export default function LibraryPage() {
 
   const currentHijri = calculateHijriDate(hijriOffset);
 
+  const prayerList = prayerTimes ? [
+    { name: 'Fajr', val: prayerTimes.fajr },
+    { name: 'Chourouq', val: prayerTimes.sunrise },
+    { name: 'Dhuhr', val: prayerTimes.dhuhr },
+    { name: 'Asr', val: prayerTimes.asr },
+    { name: 'Maghrib', val: prayerTimes.maghrib },
+    { name: 'Isha', val: prayerTimes.isha },
+  ] : [];
+
   return (
-    <div className="min-h-screen pt-24 pb-32 px-6 md:px-16 overflow-x-hidden selection:bg-gold/30 relative"
+    <div className="min-h-screen pt-28 pb-32 px-6 md:px-16 overflow-x-hidden relative"
       style={{ backgroundColor: 'var(--bg-base)', color: 'var(--text-primary)' }}
     >
-      {/* Dynamic Background */}
+      {/* Fond d'ambiance doux */}
       <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-gold/5 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-emerald-500/5 rounded-full blur-[100px]" />
+        <div className="absolute top-[-15%] left-[-10%] w-[55%] h-[55%] bg-gold/[0.04] rounded-full blur-[130px] animate-float-slow" />
+        <div className="absolute bottom-[-15%] right-[-10%] w-[45%] h-[45%] bg-emerald-500/[0.04] rounded-full blur-[120px]" />
       </div>
 
-      {/* Main Container */}
-      <div className="relative z-10 max-w-7xl mx-auto space-y-12">
-        
-        {/* top header area with Admin Link & Notification Bell */}
-        <div className="flex justify-between items-center pb-4 border-b border-white/5">
-          <div className="flex items-center gap-4">
-            <span className="text-gold text-[10px] uppercase tracking-[0.3em] font-bold">QA DIGITAL CONTROL</span>
-          </div>
+      <div className="relative z-10 max-w-6xl mx-auto space-y-16">
 
-          <div className="flex items-center gap-4 relative">
-            {/* Notification Bell */}
-            <button
-              onClick={() => setShowNotificationCenter(!showNotificationCenter)}
-              className="relative w-10 h-10 flex items-center justify-center rounded-xl bg-white/[0.03] border border-white/10 hover:border-gold/30 hover:text-gold transition-all"
-              aria-label="Notification Center"
-            >
-              <span className="material-symbols-rounded text-lg">notifications</span>
-              {unreadCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-gold text-[#010503] font-black text-[9px] flex items-center justify-center border-2 border-[#010503] animate-pulse">
-                  {unreadCount}
-                </span>
-              )}
-            </button>
+        {/* ─── Barre discrète : notifications + admin ─── */}
+        <div className="flex justify-end items-center gap-3 relative">
+          <button
+            onClick={() => setShowNotificationCenter(!showNotificationCenter)}
+            className="relative w-11 h-11 flex items-center justify-center rounded-xl card"
+            aria-label="Centre de notifications"
+          >
+            <Icon name="notifications" className="text-xl text-adaptive-secondary" />
+            {unreadCount > 0 && (
+              <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 rounded-full bg-gold text-[#241c07] font-bold text-sm flex items-center justify-center">
+                {unreadCount}
+              </span>
+            )}
+          </button>
 
-            {/* Notification Center Dropdown */}
-            <AnimatePresence>
-              {showNotificationCenter && (
-                <motion.div
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 15 }}
-                  className="absolute right-0 top-12 w-80 rounded-2xl border border-white/10 shadow-2xl p-5 z-40 backdrop-blur-xl"
-                  style={{ background: 'var(--bg-nav)' }}
-                >
-                  <div className="flex justify-between items-center pb-3 border-b border-white/5 mb-3">
-                    <h4 className="text-xs font-black uppercase tracking-wider text-gold">Notifications</h4>
-                    <div className="flex gap-2">
-                      <button onClick={markAllNotificationsAsRead} className="text-[9px] uppercase font-bold text-white/40 hover:text-gold">Lire tout</button>
-                      <span className="text-white/20">|</span>
-                      <button onClick={clearNotifications} className="text-[9px] uppercase font-bold text-white/40 hover:text-gold">Effacer</button>
-                    </div>
+          <AnimatePresence>
+            {showNotificationCenter && (
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 12 }}
+                className="absolute right-0 top-14 w-80 rounded-2xl border p-5 z-40 backdrop-blur-xl"
+                style={{ background: 'var(--bg-nav)', borderColor: 'var(--border-medium)' }}
+              >
+                <div className="flex justify-between items-center pb-3 border-b mb-3" style={{ borderColor: 'var(--border-subtle)' }}>
+                  <h4 className="text-sm font-semibold text-gold">Notifications</h4>
+                  <div className="flex gap-3 text-xs">
+                    <button onClick={markAllNotificationsAsRead} className="text-adaptive-muted hover:text-gold transition-colors">Tout lire</button>
+                    <button onClick={clearNotifications} className="text-adaptive-muted hover:text-gold transition-colors">Effacer</button>
                   </div>
-
-                  <div className="space-y-3 max-h-60 overflow-y-auto pr-1">
-                    {inAppNotifications.length === 0 ? (
-                      <p className="text-[10px] text-white/40 italic text-center py-4">Aucune notification.</p>
-                    ) : (
-                      inAppNotifications.map(notification => (
-                        <div 
-                          key={notification.id} 
-                          className={`p-3 rounded-xl border transition-all ${
-                            notification.read ? 'bg-white/[0.01] border-white/5' : 'bg-gold/5 border-gold/20'
-                          }`}
-                        >
-                          <div className="flex justify-between items-start gap-2 mb-1">
-                            <h5 className={`text-xs font-bold ${notification.read ? 'text-white/80' : 'text-white'}`}>{notification.title}</h5>
-                            <span className="text-[8px] text-white/30 whitespace-nowrap">{notification.time}</span>
-                          </div>
-                          <p className="text-[10px] text-white/60 leading-relaxed">{notification.body}</p>
+                </div>
+                <div className="space-y-2.5 max-h-64 overflow-y-auto pr-1">
+                  {inAppNotifications.length === 0 ? (
+                    <p className="text-sm text-adaptive-muted italic text-center py-5">Aucune notification.</p>
+                  ) : (
+                    inAppNotifications.map(notification => (
+                      <div key={notification.id}
+                        className="p-3 rounded-xl border transition-all"
+                        style={{
+                          background: notification.read ? 'transparent' : 'rgba(201,169,97,0.06)',
+                          borderColor: notification.read ? 'var(--border-subtle)' : 'var(--border-gold)',
+                        }}>
+                        <div className="flex justify-between items-start gap-2 mb-1">
+                          <h5 className="text-sm font-semibold text-adaptive-primary">{notification.title}</h5>
+                          <span className="text-xs text-adaptive-muted whitespace-nowrap">{notification.time}</span>
                         </div>
-                      ))
-                    )}
-                  </div>
-
-                  {notificationPermission === 'default' && (
-                    <div className="mt-4 pt-3 border-t border-white/5">
-                      <button
-                        onClick={requestNotificationPermission}
-                        className="w-full py-2 bg-gold/10 hover:bg-gold/20 text-gold border border-gold/20 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all"
-                      >
-                        Activer les alertes système
-                      </button>
-                    </div>
+                        <p className="text-sm text-adaptive-secondary leading-relaxed">{notification.body}</p>
+                      </div>
+                    ))
                   )}
-                </motion.div>
-              )}
-            </AnimatePresence>
+                </div>
+                {notificationPermission === 'default' && (
+                  <button
+                    onClick={requestNotificationPermission}
+                    className="mt-4 w-full py-2.5 rounded-xl text-sm font-medium text-gold transition-all"
+                    style={{ background: 'rgba(201,169,97,0.1)', border: '1px solid var(--border-gold)' }}
+                  >
+                    Activer les alertes
+                  </button>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-            {/* Admin Link */}
-            <Link 
-              href="/admin" 
-              className="px-5 py-2.5 bg-white/[0.03] border border-white/10 hover:border-gold/30 hover:text-gold rounded-xl text-[9px] font-black uppercase tracking-widest transition-all flex items-center gap-1.5"
-            >
-              <span className="material-symbols-rounded text-sm">settings</span>
-              Admin
-            </Link>
-          </div>
+          <Link href="/admin" className="btn-ghost !py-2.5 !px-4 !text-sm">
+            <Icon name="settings" className="text-lg" />
+            Admin
+          </Link>
         </div>
 
-        {/* ─── NEW PREMIUM DASHBOARD HEADER ─── */}
-        <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          
-          {/* Widget 1: Islamic Clock & Hijri Date */}
-          <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/10 flex flex-col justify-between space-y-4">
-            <div className="flex justify-between items-start">
-              <div>
-                <span className="text-gold text-[9px] uppercase tracking-widest font-black">Calendrier Lunaire</span>
-                <h2 className="text-xl font-serif text-white font-bold leading-tight mt-1">{currentHijri.formattedFr}</h2>
-              </div>
-              <span className="text-2xl font-amiri text-gold/60" dir="rtl">{currentHijri.monthAr}</span>
-            </div>
+        {/* ─── Hero serein ─── */}
+        <header className="space-y-5">
+          <span className="eyebrow">Bibliothèque spirituelle</span>
+          <h1 className="font-display text-5xl sm:text-6xl md:text-7xl font-bold leading-[1.05] tracking-tight">
+            Assalâmou <span className="gold-gradient-text">aleykoum</span>
+          </h1>
+          <p className="font-reading text-lg text-adaptive-secondary max-w-xl leading-relaxed">
+            Les enseignements de Serigne Shouhaïbou Mbacké, à lire et à écouter,
+            aujourd’hui le <span className="text-adaptive-primary">{currentHijri.formattedFr}</span>.
+          </p>
+        </header>
 
-            {/* Prayer Times Horizontal Ribbon */}
+        {/* ─── Prière du jour + Nafila ─── */}
+        <section className="grid grid-cols-1 lg:grid-cols-5 gap-5">
+
+          {/* Horaires de prière (Dakar) */}
+          <div className="card p-6 lg:col-span-3 space-y-5">
+            <div className="flex items-center justify-between">
+              <span className="eyebrow no-rule">Prières · Dakar</span>
+              <span className="font-amiri text-2xl text-gold/70" dir="rtl">{currentHijri.monthAr}</span>
+            </div>
             {prayerTimes && (
-              <div className="space-y-2">
-                <p className="text-[9px] uppercase font-bold text-white/40 tracking-wider">Heures de Prières (Dakar)</p>
-                <div className="grid grid-cols-6 gap-1 bg-black/40 p-2 rounded-xl border border-white/5">
-                  {[
-                    { name: 'Fajr', val: prayerTimes.fajr },
-                    { name: 'Chor.', val: prayerTimes.sunrise },
-                    { name: 'Dhuhr', val: prayerTimes.dhuhr },
-                    { name: 'Asr', val: prayerTimes.asr },
-                    { name: 'Maghr.', val: prayerTimes.maghrib },
-                    { name: 'Isha', val: prayerTimes.isha }
-                  ].map((p, i) => {
-                    const isNext = nextPrayer && nextPrayer.name.startsWith(p.name.slice(0, 4));
-                    return (
-                      <div 
-                        key={i} 
-                        className={`text-center py-1 rounded transition-all ${
-                          isNext ? 'bg-gold/10 border border-gold/30' : ''
-                        }`}
-                      >
-                        <p className={`text-[8px] uppercase font-black ${isNext ? 'text-gold' : 'text-white/40'}`}>{p.name}</p>
-                        <p className={`text-[10px] font-mono mt-0.5 ${isNext ? 'text-white font-bold' : 'text-white/80'}`}>{p.val}</p>
-                      </div>
-                    );
-                  })}
-                </div>
+              <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                {prayerList.map((p, i) => {
+                  const isNext = !!nextPrayer && nextPrayer.name.startsWith(p.name.slice(0, 4));
+                  return (
+                    <div key={i}
+                      className="text-center py-3 rounded-xl transition-all"
+                      style={isNext
+                        ? { background: 'rgba(201,169,97,0.12)', border: '1px solid var(--border-gold)' }
+                        : { background: 'var(--bg-card)', border: '1px solid var(--border-subtle)' }}>
+                      <p className={`text-xs font-semibold tracking-wide ${isNext ? 'text-gold' : 'text-adaptive-muted'}`}>{p.name}</p>
+                      <p className={`text-base mt-1 tabular-nums ${isNext ? 'text-adaptive-primary font-semibold' : 'text-adaptive-secondary'}`}>{p.val}</p>
+                    </div>
+                  );
+                })}
               </div>
+            )}
+            {nextPrayer && (
+              <p className="text-sm text-adaptive-muted">
+                Prochaine prière : <span className="text-gold font-medium">{nextPrayer.name}</span> à {nextPrayer.time}.
+              </p>
             )}
           </div>
 
-          {/* Widget 2: Nafila / Recommendation of the Day */}
-          <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/10 flex flex-col justify-between lg:col-span-2 space-y-4">
-            <div className="flex justify-between items-start">
-              <div>
-                <span className="text-gold text-[9px] uppercase tracking-widest font-black">Recommandation & Nafila du Jour</span>
-                {selectedNafila ? (
-                  <h3 className="text-lg font-bold text-white mt-1">{selectedNafila.title}</h3>
-                ) : (
-                  <h3 className="text-lg font-bold text-white/40 italic mt-1">Aucune nafila spécifique aujourd'hui</h3>
-                )}
-              </div>
-              <span className="material-symbols-rounded text-gold text-2xl">auto_awesome</span>
+          {/* Nafila du jour */}
+          <div className="card p-6 lg:col-span-2 flex flex-col justify-between gap-4">
+            <div className="flex items-start justify-between gap-3">
+              <span className="eyebrow no-rule">Recommandation du jour</span>
+              <Icon name="auto_awesome" className="text-gold text-2xl" />
             </div>
-
             {selectedNafila ? (
               <div className="space-y-3">
-                <p className="text-xs text-white/70 leading-relaxed line-clamp-2">{selectedNafila.description}</p>
-                
-                <div className="flex flex-wrap gap-2 pt-1">
-                  {selectedNafila.reward && (
-                    <span className="px-2.5 py-1 rounded-md bg-gold/10 border border-gold/20 text-gold text-[8px] font-bold uppercase tracking-wider max-w-xs truncate">
-                      ★ {selectedNafila.reward.slice(0, 40)}...
-                    </span>
-                  )}
+                <h3 className="font-display text-2xl font-semibold leading-snug">{selectedNafila.title}</h3>
+                <p className="text-sm text-adaptive-secondary leading-relaxed line-clamp-3">{selectedNafila.description}</p>
+                <div className="flex flex-wrap gap-2">
                   {selectedNafila.wird && (
-                    <span className="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-white/75 text-[8px] font-mono max-w-xs truncate">
+                    <span className="px-3 py-1.5 rounded-lg text-sm text-adaptive-secondary" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-subtle)' }}>
                       📿 {selectedNafila.wird}
                     </span>
                   )}
                 </div>
               </div>
             ) : (
-              <p className="text-xs text-white/50 leading-relaxed font-serif italic">Consultez les recommandations de wirds quotidiens et de lectures du Coran recommandés dans le livre à la Partie 17 et 19.</p>
+              <p className="font-reading text-base text-adaptive-secondary leading-relaxed italic">
+                Retrouvez les wirds quotidiens et lectures recommandées aux Parties 17 et 19.
+              </p>
             )}
           </div>
         </section>
 
-        {/* Reprise Automatique Banner */}
+        {/* ─── Reprendre la lecture ─── */}
         <AnimatePresence>
           {lastVisitedSlug && lastChapter && (
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="relative z-20"
-            >
-              <div className="p-1 rounded-2xl bg-gradient-to-r from-gold/50 via-gold/10 to-transparent">
-                <div className="bg-[#010302] rounded-[0.9rem] p-4 flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center text-gold">
-                      <span className="material-symbols-rounded">history</span>
-                    </div>
-                    <div>
-                      <p className="text-[10px] uppercase font-bold text-gold tracking-widest leading-none mb-1">Continuer l'étude</p>
-                      <p className="text-sm font-medium text-white/80">{lastChapter.titleFr}</p>
-                    </div>
+            <motion.div initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }}>
+              <div className="card p-5 flex items-center justify-between gap-4 flex-wrap"
+                style={{ borderColor: 'var(--border-gold)', background: 'rgba(201,169,97,0.05)' }}>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-gold/10 flex items-center justify-center text-gold shrink-0">
+                    <Icon name="history" />
                   </div>
-                  <Link 
-                    href={`/partie/${lastVisitedSlug.split('-').join('/')}`}
-                    className="px-6 py-2 bg-gold text-black rounded-xl text-[10px] font-black uppercase hover:scale-105 transition-all shadow-lg shadow-gold/20"
-                  >
-                    Reprendre
-                  </Link>
+                  <div>
+                    <span className="eyebrow no-rule">Reprendre l’étude</span>
+                    <p className="text-lg font-medium text-adaptive-primary mt-1">{lastChapter.titleFr}</p>
+                  </div>
                 </div>
+                <Link href={`/partie/${lastVisitedSlug.split('-').join('/')}`} className="btn-gold">
+                  Reprendre
+                  <Icon name="arrow_forward" className="text-lg" />
+                </Link>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
 
-        {/* Header - Sommaire */}
-        <header className="mb-8 space-y-4">
-          <div className="flex items-center gap-4 mb-2">
-            <span className="h-[1px] w-12 bg-gold/50" />
-            <span className="text-gold text-[10px] uppercase tracking-[0.5em] font-bold">
-              Bibliothèque Numérique
-            </span>
+        {/* ─── Sommaire ─── */}
+        <section className="space-y-8">
+          <div className="space-y-3">
+            <span className="eyebrow">Sommaire général</span>
+            <h2 className="font-display text-4xl sm:text-5xl font-bold tracking-tight">
+              Les chapitres du livre
+            </h2>
           </div>
-          <h1 className="text-5xl sm:text-6xl md:text-8xl font-black tracking-tight leading-[0.9]">
-            Sommaire <br />
-            <span className="gold-gradient-text opacity-90">Général</span>
-          </h1>
-        </header>
 
-        {/* Grille de Navigation */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {chapters.map((chapter, index) => (
-            <motion.div
-              key={chapter.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: index * 0.04 }}
-              className="group"
-            >
-              <Link href={`/partie/${chapter.id}`}>
-                <div className="relative h-48 w-full rounded-2xl bg-white/[0.03] border border-white/10 p-6 flex flex-col justify-between transition-all duration-500 hover:bg-white/[0.06] hover:border-gold/50 hover:shadow-[0_0_30px_-10px_rgba(212,175,55,0.2)] overflow-hidden">
-                  
-                  {/* Effet de brillance au survol */}
-                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  
-                  {/* L'Icône */}
-                  <div className="flex justify-between items-start">
-                    <div className="flex flex-col">
-                      <span className="text-3xl font-black text-white/5 group-hover:text-gold/10 transition-colors duration-500">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {chapters.map((chapter, index) => (
+              <motion.div
+                key={chapter.id}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.5, delay: Math.min(index * 0.03, 0.3) }}
+                className="group"
+              >
+                <Link href={`/partie/${chapter.id}`}>
+                  <div className="card relative h-44 p-6 flex flex-col justify-between overflow-hidden group-hover:-translate-y-1 group-hover:border-[var(--border-gold)]">
+                    <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-gold to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                    <div className="flex justify-between items-start">
+                      <span className="font-display text-4xl font-bold text-white/[0.07] group-hover:text-gold/20 transition-colors duration-500">
                         {chapter.id.toString().padStart(2, '0')}
                       </span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      {isCompleted(chapter.id) && (
-                        <motion.div 
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          className="w-8 h-8 rounded-full bg-gold/20 border border-gold/40 flex items-center justify-center text-gold"
-                        >
-                          <span className="material-symbols-rounded text-lg">check_circle</span>
-                        </motion.div>
-                      )}
-                      <div className="p-3 rounded-xl bg-white/[0.03] border border-white/10 text-gold/80 group-hover:text-gold group-hover:scale-110 group-hover:bg-gold/10 transition-all duration-500">
-                        <span className="material-symbols-rounded text-2xl leading-none">
-                          {chapter.icon}
-                        </span>
+                      <div className="flex items-center gap-2.5">
+                        {isCompleted(chapter.id) && (
+                          <span className="w-8 h-8 rounded-full bg-gold/15 border border-[var(--border-gold)] flex items-center justify-center text-gold">
+                            <Icon name="check" className="text-lg" />
+                          </span>
+                        )}
+                        <div className="w-11 h-11 rounded-xl flex items-center justify-center text-gold/80 group-hover:text-gold group-hover:bg-gold/10 transition-all duration-500"
+                          style={{ background: 'var(--bg-card)', border: '1px solid var(--border-subtle)' }}>
+                          <Icon name={chapter.icon} className="text-2xl leading-none" />
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Textes */}
-                  <div className="space-y-1">
-                    <div className="flex items-baseline justify-between gap-2">
-                      <h3 className="text-lg font-bold text-white/90 group-hover:text-white truncate">
+                    <div className="flex items-end justify-between gap-3">
+                      <h3 className="text-lg font-semibold text-adaptive-primary leading-snug">
                         {chapter.titleFr}
                       </h3>
-                      <span className="text-xl font-amiri text-gold/40 group-hover:text-gold/90 transition-colors" lang="ar" dir="rtl">
+                      <span className="font-amiri text-2xl text-gold/50 group-hover:text-gold/90 transition-colors shrink-0" lang="ar" dir="rtl">
                         {chapter.titleAr}
                       </span>
                     </div>
-                    <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-x-[-10px] group-hover:translate-x-0">
-                      <span className="text-[10px] font-bold text-gold uppercase tracking-tighter">Découvrir la partie</span>
-                      <span className="material-symbols-rounded text-sm text-gold">arrow_forward</span>
-                    </div>
                   </div>
-
-                </div>
-              </Link>
-            </motion.div>
-          ))}
-        </div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </section>
       </div>
 
       {/* Footer */}
-      <footer className="mt-24 border-t border-white/5 pt-12 text-center opacity-40 hover:opacity-100 transition-opacity">
-        <p className="text-[10px] tracking-[0.2em] uppercase">
-          Projet Khouratoul Ayni • 2026
-        </p>
+      <footer className="relative z-10 mt-24 pt-10 max-w-6xl mx-auto text-center">
+        <div className="section-rule mb-6" />
+        <p className="font-amiri text-xl text-gold/60 mb-2" dir="rtl">قرة العين</p>
+        <p className="text-sm text-adaptive-muted">Projet Qurratul Ayni · 2026</p>
       </footer>
     </div>
   );

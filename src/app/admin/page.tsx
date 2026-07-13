@@ -11,6 +11,7 @@ import { PageContent } from '@/types/content';
 
 // Helper to update Supabase directly for audio files
 import { getSupabaseClient } from '@/utils/supabase';
+import Icon from '@/components/Icon';
 
 export default function AdminPage() {
   const [mounted, setMounted] = useState(false);
@@ -163,9 +164,10 @@ export default function AdminPage() {
               borderColor: notification.type === 'success' ? 'var(--gold)' : 'rgba(239, 68, 68, 0.3)'
             }}
           >
-            <span className="material-symbols-rounded" style={{ color: notification.type === 'success' ? 'var(--gold)' : 'rgb(239, 68, 68)' }}>
-              {notification.type === 'success' ? 'check_circle' : 'error'}
-            </span>
+            <Icon 
+              name={notification.type === 'success' ? 'check_circle' : 'error'} 
+              style={{ color: notification.type === 'success' ? 'var(--gold)' : 'rgb(239, 68, 68)' }} 
+            />
             <p className="text-xs font-bold uppercase tracking-wider">{notification.message}</p>
           </motion.div>
         )}
@@ -177,9 +179,9 @@ export default function AdminPage() {
           <div>
             <div className="flex items-center gap-3 mb-1">
               <Link href="/accueil" className="flex items-center justify-center w-8 h-8 rounded-full bg-white/5 border border-white/10 hover:bg-gold/10 hover:border-gold/30 hover:text-gold transition-all">
-                <span className="material-symbols-rounded text-sm">arrow_back</span>
+                <Icon name="arrow_back" className="text-sm" />
               </Link>
-              <span className="text-gold text-[9px] uppercase tracking-[0.4em] font-black">Espace Gestion</span>
+              <span className="text-gold text-xs uppercase tracking-[0.4em] font-black">Espace Gestion</span>
             </div>
             <h1 className="text-3xl font-black uppercase tracking-tighter">Administration</h1>
           </div>
@@ -187,7 +189,7 @@ export default function AdminPage() {
           <div className="flex bg-white/[0.03] p-1 rounded-xl border border-white/5">
             <button
               onClick={() => setActiveTab('calendar')}
-              className={`px-5 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${
+              className={`px-5 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition-all ${
                 activeTab === 'calendar' ? 'bg-gold text-[#010503] shadow-lg shadow-gold/10' : 'text-white/60 hover:text-white'
               }`}
             >
@@ -195,7 +197,7 @@ export default function AdminPage() {
             </button>
             <button
               onClick={() => setActiveTab('audio')}
-              className={`px-5 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${
+              className={`px-5 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition-all ${
                 activeTab === 'audio' ? 'bg-gold text-[#010503] shadow-lg shadow-gold/10' : 'text-white/60 hover:text-white'
               }`}
             >
@@ -213,18 +215,18 @@ export default function AdminPage() {
           >
             <div className="flex items-center gap-4">
               <div className="p-3 rounded-xl bg-gold/10 border border-gold/20 text-gold">
-                <span className="material-symbols-rounded text-2xl">calendar_month</span>
+                <Icon name="calendar_month" className="text-2xl" />
               </div>
               <div>
                 <h2 className="text-lg font-bold text-white">Ajustement Date Musulmane (Hijri)</h2>
-                <p className="text-[10px] text-white/50 uppercase tracking-widest">Ajuster la date lunaire en fonction de la lune observée</p>
+                <p className="text-xs text-white/50 uppercase tracking-widest">Ajuster la date lunaire en fonction de la lune observée</p>
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center pt-4">
               {/* Preview Card */}
               <div className="p-6 rounded-xl bg-black/40 border border-gold/10 text-center space-y-2">
-                <span className="text-gold text-[9px] uppercase tracking-[0.22em] font-bold">Date Musulmane Actuelle</span>
+                <span className="text-gold text-xs uppercase tracking-[0.22em] font-bold">Date Musulmane Actuelle</span>
                 <p className="text-3xl font-serif text-white font-bold leading-tight">{currentHijri.formattedFr}</p>
                 <p className="text-xl font-amiri text-gold/80" dir="rtl">{currentHijri.formattedAr}</p>
               </div>
@@ -232,7 +234,7 @@ export default function AdminPage() {
               {/* Control Panel */}
               <div className="space-y-4">
                 <div className="space-y-2">
-                  <label className="text-[10px] uppercase font-bold tracking-widest text-white/60 block">Décalage Calendrier (Jours)</label>
+                  <label className="text-xs uppercase font-bold tracking-widest text-white/60 block">Décalage Calendrier (Jours)</label>
                   <div className="flex items-center gap-4 bg-[#010302] p-2 rounded-xl border border-white/5">
                     <button 
                       onClick={() => setHijriOffset(prev => Math.max(-5, prev - 1))}
@@ -250,14 +252,14 @@ export default function AdminPage() {
                       +
                     </button>
                   </div>
-                  <p className="text-[9px] text-white/40 italic">Ajuste le calendrier musulman de -5 à +5 jours pour corriger les observations de la nouvelle lune.</p>
+                  <p className="text-xs text-white/40 italic">Ajuste le calendrier musulman de -5 à +5 jours pour corriger les observations de la nouvelle lune.</p>
                 </div>
 
                 <button
                   onClick={handleSaveOffset}
                   className="w-full py-4 rounded-xl bg-gold text-[#010503] text-xs font-black uppercase tracking-widest hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg shadow-gold/10"
                 >
-                  <span className="material-symbols-rounded text-base">save</span>
+                  <Icon name="save" className="text-base" />
                   Enregistrer l'ajustement
                 </button>
               </div>
@@ -276,17 +278,17 @@ export default function AdminPage() {
             <div className="p-6 rounded-2xl bg-white/[0.02] border border-white/10 space-y-6">
               <div className="flex items-center gap-4">
                 <div className="p-3 rounded-xl bg-gold/10 border border-gold/20 text-gold">
-                  <span className="material-symbols-rounded text-2xl">music_note</span>
+                  <Icon name="music_note" className="text-2xl" />
                 </div>
                 <div>
                   <h2 className="text-lg font-bold text-white">Sons des Chapitres</h2>
-                  <p className="text-[10px] text-white/50 uppercase tracking-widest">Configurer les fichiers audio principaux des chapitres</p>
+                  <p className="text-xs text-white/50 uppercase tracking-widest">Configurer les fichiers audio principaux des chapitres</p>
                 </div>
               </div>
 
               {isLoading ? (
                 <div className="flex justify-center py-10">
-                  <span className="material-symbols-rounded animate-spin text-gold text-3xl">sync</span>
+                  <Icon name="sync" className="animate-spin text-gold text-3xl" />
                 </div>
               ) : (
                 <div className="divide-y divide-white/5 max-h-[400px] overflow-y-auto pr-2 space-y-4">
@@ -296,7 +298,7 @@ export default function AdminPage() {
                         <span className="text-xs font-mono text-gold bg-gold/10 px-2 py-1 rounded border border-gold/20">Ch {chapter.id}</span>
                         <div className="truncate">
                           <p className="text-xs font-bold text-white truncate">{chapter.titleFr}</p>
-                          <p className="text-[9px] text-white/40 truncate font-serif italic">{chapter.desc}</p>
+                          <p className="text-xs text-white/40 truncate font-reading">{chapter.desc}</p>
                         </div>
                       </div>
 
@@ -310,9 +312,9 @@ export default function AdminPage() {
                         />
                         <button
                           onClick={() => handleSaveChapterAudio(chapter.id)}
-                          className="px-4 py-2 bg-white/5 border border-white/10 text-white rounded-lg text-[9px] font-black uppercase tracking-wider hover:bg-gold hover:text-black hover:border-gold transition-all flex items-center gap-1 flex-shrink-0"
+                          className="px-4 py-2 bg-white/5 border border-white/10 text-white rounded-lg text-xs font-black uppercase tracking-wider hover:bg-gold hover:text-black hover:border-gold transition-all flex items-center gap-1 flex-shrink-0"
                         >
-                          <span className="material-symbols-rounded text-[10px]">save</span>
+                          <Icon name="save" className="text-xs" />
                           Sauver
                         </button>
                       </div>
@@ -327,16 +329,16 @@ export default function AdminPage() {
               <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4">
                 <div className="flex items-center gap-4">
                   <div className="p-3 rounded-xl bg-gold/10 border border-gold/20 text-gold">
-                    <span className="material-symbols-rounded text-2xl">library_music</span>
+                    <Icon name="library_music" className="text-2xl" />
                   </div>
                   <div>
                     <h2 className="text-lg font-bold text-white">Sons des Sections / Leçons</h2>
-                    <p className="text-[10px] text-white/50 uppercase tracking-widest">Configurer l'audio spécifique à chaque sous-section</p>
+                    <p className="text-xs text-white/50 uppercase tracking-widest">Configurer l'audio spécifique à chaque sous-section</p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-2">
-                  <label className="text-[9px] uppercase font-bold text-white/40 tracking-wider">Chapitre :</label>
+                  <label className="text-xs uppercase font-bold text-white/40 tracking-wider">Chapitre :</label>
                   <select
                     value={selectedChapterId}
                     onChange={(e) => setSelectedChapterId(e.target.value)}
@@ -356,7 +358,7 @@ export default function AdminPage() {
                   {chapterPages.map(page => (
                     <div key={page.id} className="pt-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
                       <div className="flex items-center gap-3 md:w-1/3">
-                        <span className="text-[10px] font-mono text-gold bg-gold/10 px-2 py-0.5 rounded border border-gold/20">{page.id.toUpperCase()}</span>
+                        <span className="text-xs font-mono text-gold bg-gold/10 px-2 py-0.5 rounded border border-gold/20">{page.id.toUpperCase()}</span>
                         <div className="truncate">
                           <p className="text-xs font-bold text-white truncate">{page.titleFr}</p>
                           <p className="font-amiri text-gold/40 text-xs truncate" dir="rtl">{page.titleAr}</p>
@@ -373,9 +375,9 @@ export default function AdminPage() {
                         />
                         <button
                           onClick={() => handleSavePageAudio(page.id)}
-                          className="px-4 py-2 bg-white/5 border border-white/10 text-white rounded-lg text-[9px] font-black uppercase tracking-wider hover:bg-gold hover:text-black hover:border-gold transition-all flex items-center gap-1 flex-shrink-0"
+                          className="px-4 py-2 bg-white/5 border border-white/10 text-white rounded-lg text-xs font-black uppercase tracking-wider hover:bg-gold hover:text-black hover:border-gold transition-all flex items-center gap-1 flex-shrink-0"
                         >
-                          <span className="material-symbols-rounded text-[10px]">save</span>
+                          <Icon name="save" className="text-xs" />
                           Sauver
                         </button>
                       </div>

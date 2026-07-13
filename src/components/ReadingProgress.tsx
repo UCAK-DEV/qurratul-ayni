@@ -4,6 +4,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useLearning } from '@/context/LearningContext';
+import Icon from '@/components/Icon';
 
 interface ReadingProgressProps {
   chapterId: string;
@@ -51,11 +52,11 @@ export const ReadingProgress: React.FC<ReadingProgressProps> = ({
             className="mb-6 p-4 rounded-2xl bg-gradient-to-r from-gold/20 via-gold/10 to-transparent border border-gold/30 flex items-center gap-4"
           >
             <div className="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center flex-shrink-0">
-              <span className="material-symbols-rounded text-gold text-xl">auto_awesome</span>
+              <Icon name="auto_awesome" className="text-gold text-xl" />
             </div>
             <div>
               <p className="text-gold font-black text-xs uppercase tracking-widest">Chapitre complété !</p>
-              <p className="text-white/60 text-xs font-serif italic mt-0.5">
+              <p className="text-white/60 text-xs font-reading mt-0.5">
                 Vous avez lu toutes les sections de «&nbsp;{chapterTitle}&nbsp;»
               </p>
             </div>
@@ -89,13 +90,13 @@ export const ReadingProgress: React.FC<ReadingProgressProps> = ({
             />
           </svg>
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-[11px] font-black text-gold">{progress.percentage}%</span>
+            <span className="text-sm font-black text-gold">{progress.percentage}%</span>
           </div>
         </div>
 
         {/* Label & Section Dots */}
         <div className="flex-1 min-w-0">
-          <p className="text-[10px] uppercase font-bold tracking-widest text-white/40 mb-2">
+          <p className="text-xs uppercase font-bold tracking-widest text-white/40 mb-2">
             {progress.completed}/{progress.total} sections lues
           </p>
           <div className="flex items-center gap-1.5 flex-wrap">
@@ -108,10 +109,10 @@ export const ReadingProgress: React.FC<ReadingProgressProps> = ({
                     whileHover={{ scale: 1.15 }}
                     whileTap={{ scale: 0.95 }}
                     className={`
-                      w-7 h-7 rounded-lg flex items-center justify-center text-[10px] font-black
+                      w-7 h-7 rounded-lg flex items-center justify-center text-xs font-black
                       transition-all duration-300 cursor-pointer
                       ${section.completed
-                        ? 'bg-gold text-black shadow-[0_0_8px_rgba(201,169,97,0.4)]'
+                        ? 'bg-gold text-[#241c07] shadow-[0_0_8px_rgba(201,169,97,0.4)]'
                         : section.isCurrentVisit
                           ? 'bg-white/10 border-2 border-gold/60 text-gold'
                           : 'bg-white/[0.04] border border-white/10 text-white/30 hover:border-white/20'
@@ -119,7 +120,7 @@ export const ReadingProgress: React.FC<ReadingProgressProps> = ({
                     `}
                   >
                     {section.completed ? (
-                      <span className="material-symbols-rounded text-xs leading-none">check</span>
+                      <Icon name="check" className="text-xs leading-none" />
                     ) : (
                       label
                     )}

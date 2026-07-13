@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { QuizData, QuizQuestion as QuizQuestionType } from '@/types/content';
 import { Flashcard } from './Flashcard';
+import Icon from '@/components/Icon';
 
 interface QuizSectionProps {
   quiz: QuizData;
@@ -144,8 +145,8 @@ const QuizQuestionCard: React.FC<{ question: QuizQuestionType; onAnswer: (correc
             className="overflow-hidden"
           >
             <div className="p-4 rounded-xl bg-gold/[0.08] border border-gold/20 flex gap-3">
-              <span className="material-symbols-rounded text-gold text-lg flex-shrink-0 mt-0.5">info</span>
-              <p className="text-white/70 text-sm font-serif italic leading-relaxed">
+              <Icon name="info" className="text-gold text-lg flex-shrink-0 mt-0.5" />
+              <p className="text-white/70 text-sm font-reading leading-relaxed">
                 {question.explanation}
               </p>
             </div>
@@ -202,14 +203,14 @@ export const QuizSection: React.FC<QuizSectionProps> = ({ quiz, chapterTitle }) 
       {/* Header */}
       <div className="text-center mb-10">
         <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-gold/10 border border-gold/20 mb-5">
-          <span className="material-symbols-rounded text-gold text-base">school</span>
-          <span className="text-[10px] uppercase tracking-widest text-gold font-black">Révision & Mémorisation</span>
+          <Icon name="school" className="text-gold text-base" />
+          <span className="text-xs uppercase tracking-widest text-gold font-black">Révision & Mémorisation</span>
         </div>
         <h2 className="text-2xl md:text-3xl font-black tracking-tight">
           Testez vos <span className="gold-gradient-text">connaissances</span>
         </h2>
         {chapterTitle && (
-          <p className="text-white/40 text-sm font-serif italic mt-2">sur le chapitre «&nbsp;{chapterTitle}&nbsp;»</p>
+          <p className="text-white/40 text-sm font-reading mt-2">sur le chapitre «&nbsp;{chapterTitle}&nbsp;»</p>
         )}
       </div>
 
@@ -220,11 +221,11 @@ export const QuizSection: React.FC<QuizSectionProps> = ({ quiz, chapterTitle }) 
             onClick={() => setActiveTab('flashcards')}
             className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${
               activeTab === 'flashcards'
-                ? 'bg-gold text-black shadow-md shadow-gold/20'
+                ? 'bg-gold text-[#241c07] shadow-md shadow-gold/20'
                 : 'text-white/40 hover:text-white'
             }`}
           >
-            <span className="material-symbols-rounded text-base">style</span>
+            <Icon name="style" className="text-base" />
             Flashcards
           </button>
         )}
@@ -233,11 +234,11 @@ export const QuizSection: React.FC<QuizSectionProps> = ({ quiz, chapterTitle }) 
             onClick={() => setActiveTab('quiz')}
             className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${
               activeTab === 'quiz'
-                ? 'bg-gold text-black shadow-md shadow-gold/20'
+                ? 'bg-gold text-[#241c07] shadow-md shadow-gold/20'
                 : 'text-white/40 hover:text-white'
             }`}
           >
-            <span className="material-symbols-rounded text-base">quiz</span>
+            <Icon name="quiz" className="text-base" />
             Quiz
           </button>
         )}
@@ -271,7 +272,7 @@ export const QuizSection: React.FC<QuizSectionProps> = ({ quiz, chapterTitle }) 
                   className="w-10 h-10 flex items-center justify-center rounded-xl bg-white/[0.05] border border-white/10 text-white/50 hover:text-gold disabled:opacity-20 transition-all"
                   aria-label="Carte précédente"
                 >
-                  <span className="material-symbols-rounded text-lg">arrow_back</span>
+                  <Icon name="arrow_back" className="text-lg" />
                 </motion.button>
 
                 <div className="flex gap-1.5">
@@ -295,7 +296,7 @@ export const QuizSection: React.FC<QuizSectionProps> = ({ quiz, chapterTitle }) 
                   className="w-10 h-10 flex items-center justify-center rounded-xl bg-white/[0.05] border border-white/10 text-white/50 hover:text-gold disabled:opacity-20 transition-all"
                   aria-label="Carte suivante"
                 >
-                  <span className="material-symbols-rounded text-lg">arrow_forward</span>
+                  <Icon name="arrow_forward" className="text-lg" />
                 </motion.button>
               </div>
             </motion.div>
@@ -321,7 +322,7 @@ export const QuizSection: React.FC<QuizSectionProps> = ({ quiz, chapterTitle }) 
                         className="h-full bg-gold rounded-full"
                       />
                     </div>
-                    <span className="text-[10px] text-white/30 font-bold uppercase tracking-wider">
+                    <span className="text-xs text-white/30 font-bold uppercase tracking-wider">
                       {quizIndex + 1}/{questions.length}
                     </span>
                   </div>
@@ -351,7 +352,7 @@ export const QuizSection: React.FC<QuizSectionProps> = ({ quiz, chapterTitle }) 
                         animate={{ scale: 1 }}
                         className="absolute -top-2 -right-2"
                       >
-                        <span className="material-symbols-rounded text-3xl text-gold">star</span>
+                        <Icon name="star" className="text-3xl text-gold" />
                       </motion.div>
                     )}
                   </div>
@@ -364,7 +365,7 @@ export const QuizSection: React.FC<QuizSectionProps> = ({ quiz, chapterTitle }) 
                           ? 'Bien joué, continuez ainsi !'
                           : 'Relisez le chapitre, vous progresserez !'}
                     </h3>
-                    <p className="text-white/40 text-sm font-serif italic">
+                    <p className="text-white/40 text-sm font-reading">
                       {score} bonne{score > 1 ? 's' : ''} réponse{score > 1 ? 's' : ''} sur {questions.length}
                     </p>
                   </div>
@@ -376,7 +377,7 @@ export const QuizSection: React.FC<QuizSectionProps> = ({ quiz, chapterTitle }) 
                       onClick={resetQuiz}
                       className="flex items-center gap-2 px-5 py-3 rounded-xl bg-white/[0.06] border border-white/10 text-white/70 text-xs font-bold uppercase tracking-wider hover:border-white/20 transition-all"
                     >
-                      <span className="material-symbols-rounded text-base">refresh</span>
+                      <Icon name="refresh" className="text-base" />
                       Recommencer
                     </motion.button>
                   </div>

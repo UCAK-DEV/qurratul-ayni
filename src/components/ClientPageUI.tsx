@@ -12,6 +12,7 @@ import { ReadingProgress } from '@/components/ReadingProgress';
 import { ChapterNav } from '@/components/ChapterNav';
 import { ReadingToolbar } from '@/components/ReadingToolbar';
 import { QuizSection, ZAKAT_QUIZ_DEMO } from '@/components/QuizSection';
+import Icon from '@/components/Icon';
 
 // ─── Navigation map: slug → { prev, next, label } ────────────────────────────
 // Build the ordered sequence of all known slugs so we can compute prev/next
@@ -178,9 +179,7 @@ export const ClientPageUI: React.FC<ClientPageUIProps> = ({
             }`}
             aria-label={isFocusMode ? 'Quitter le mode focus' : 'Mode lecture immersive'}
           >
-            <span className="material-symbols-rounded">
-              {isFocusMode ? 'visibility' : 'visibility_off'}
-            </span>
+            <Icon name={isFocusMode ? 'visibility' : 'visibility_off'} />
           </motion.button>
         </div>
 
@@ -200,13 +199,13 @@ export const ClientPageUI: React.FC<ClientPageUIProps> = ({
             
             <div className="flex items-center justify-center gap-4">
               <span className="h-[1px] w-8 bg-gold/50" />
-              <span className="text-gold tracking-[0.5em] text-[10px] uppercase font-bold">
+              <span className="text-gold tracking-[0.14em] text-sm uppercase font-semibold">
                 {slugArray.length > 1 ? `Chapitre ${chapterId} — Section ${slugArray[1].toUpperCase()}` : `Chapitre ${chapterId}`}
               </span>
               <span className="h-[1px] w-8 bg-gold/50" />
             </div>
-            
-            <h1 className="hidden md:block text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter leading-none uppercase break-words px-2">
+
+            <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.05] break-words px-2">
               {pageContent.titleFr}
             </h1>
 
@@ -223,10 +222,11 @@ export const ClientPageUI: React.FC<ClientPageUIProps> = ({
                 }`}
               >
                 {hasAudio && <div className={`absolute inset-0 bg-gold blur-md rounded-full transition-opacity ${isThisChapterPlaying ? 'opacity-20' : 'opacity-0'}`} />}
-                <span className={`material-symbols-rounded text-4xl relative z-10 ${hasAudio ? 'text-gold' : 'text-white/20'}`}>
-                  {!hasAudio ? 'volume_off' : isThisChapterPlaying ? 'pause_circle' : 'play_circle'}
-                </span>
-                <span className={`text-sm font-bold tracking-tight relative z-10 italic font-serif ${hasAudio ? '' : 'text-white/40'}`}>
+                <Icon 
+                  name={!hasAudio ? 'volume_off' : isThisChapterPlaying ? 'pause_circle' : 'play_circle'} 
+                  className={`text-4xl relative z-10 ${hasAudio ? 'text-gold' : 'text-white/20'}`} 
+                />
+                <span className={`text-base font-medium tracking-tight relative z-10 ${hasAudio ? '' : 'text-white/50'}`}>
                   {!hasAudio ? 'Audio non disponible' : isThisChapterPlaying ? 'Mettre en pause' : 'Écouter l\'enseignement'}
                 </span>
               </motion.button>
@@ -253,14 +253,15 @@ export const ClientPageUI: React.FC<ClientPageUIProps> = ({
             onClick={() => markAsCompleted(fullId)}
             className={`flex items-center gap-4 px-12 py-6 rounded-2xl border transition-all ${
               isCompleted(fullId) 
-              ? 'bg-gold/10 border-gold text-gold' 
-              : 'bg-white/5 border-white/10 text-white/40 hover:border-gold/50 hover:text-white'
+              ? 'bg-gold/10 border-gold text-gold'
+              : 'bg-white/5 border-white/10 text-white/60 hover:border-gold/50 hover:text-white'
             }`}
           >
-            <span className="material-symbols-rounded text-3xl">
-              {isCompleted(fullId) ? 'task_alt' : 'check_circle'}
-            </span>
-            <span className="text-sm font-black uppercase tracking-[0.2em]">
+            <Icon 
+              name={isCompleted(fullId) ? 'task_alt' : 'check_circle'} 
+              className="text-3xl" 
+            />
+            <span className="text-base font-semibold tracking-wide">
               {isCompleted(fullId) ? 'Leçon mémorisée ✓' : 'Marquer comme lu'}
             </span>
           </motion.button>

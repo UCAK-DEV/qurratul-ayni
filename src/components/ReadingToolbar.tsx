@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '@/context/ThemeContext';
+import Icon from '@/components/Icon';
 
 type FontChoice = 'playfair' | 'georgia' | 'inter';
 
@@ -51,7 +52,7 @@ export const ReadingToolbar: React.FC = () => {
         aria-label={expanded ? 'Fermer les réglages de lecture' : 'Réglages de lecture rapides'}
         aria-expanded={expanded}
       >
-        <span className="material-symbols-rounded text-lg">text_fields</span>
+        <Icon name="text_fields" className="text-lg" />
       </motion.button>
 
       {/* Controls Panel */}
@@ -67,7 +68,7 @@ export const ReadingToolbar: React.FC = () => {
           >
             {/* Font Size Controls */}
             <div className="flex flex-col gap-1 items-center">
-              <p className="text-[8px] uppercase tracking-widest text-white/30 font-bold mb-1">Taille</p>
+              <p className="text-xs uppercase tracking-widest text-white/30 font-bold mb-1">Taille</p>
 
               <motion.button
                 whileHover={{ scale: 1.1 }}
@@ -83,7 +84,7 @@ export const ReadingToolbar: React.FC = () => {
               {/* Current size indicator */}
               <button
                 onClick={resetFontSize}
-                className="text-[10px] text-gold/60 font-bold hover:text-gold transition-colors"
+                className="text-xs text-gold/60 font-bold hover:text-gold transition-colors"
                 aria-label="Réinitialiser la taille"
                 title="Réinitialiser"
               >
@@ -107,7 +108,7 @@ export const ReadingToolbar: React.FC = () => {
 
             {/* Line Height */}
             <div className="flex flex-col gap-1 items-center">
-              <p className="text-[8px] uppercase tracking-widest text-white/30 font-bold mb-1">Lignes</p>
+              <p className="text-xs uppercase tracking-widest text-white/30 font-bold mb-1">Lignes</p>
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
@@ -116,9 +117,9 @@ export const ReadingToolbar: React.FC = () => {
                 aria-label="Augmenter l'interlignage"
                 className="w-9 h-9 flex items-center justify-center rounded-xl bg-white/[0.06] border border-white/10 text-white/60 hover:text-gold hover:border-gold/30 disabled:opacity-20 transition-all"
               >
-                <span className="material-symbols-rounded text-base">format_line_spacing</span>
+                <Icon name="format_line_spacing" className="text-base" />
               </motion.button>
-              <span className="text-[10px] text-gold/60 font-bold">
+              <span className="text-xs text-gold/60 font-bold">
                 {readingSettings.lineHeight.toFixed(1)}
               </span>
               <motion.button
@@ -129,7 +130,7 @@ export const ReadingToolbar: React.FC = () => {
                 aria-label="Réduire l'interlignage"
                 className="w-9 h-9 flex items-center justify-center rounded-xl bg-white/[0.06] border border-white/10 text-white/60 hover:text-gold hover:border-gold/30 disabled:opacity-20 transition-all"
               >
-                <span className="material-symbols-rounded text-base" style={{ transform: 'scaleY(-1)' }}>format_line_spacing</span>
+                <Icon name="format_line_spacing" className="text-base" style={{ transform: 'scaleY(-1)' }} />
               </motion.button>
             </div>
 
@@ -138,14 +139,14 @@ export const ReadingToolbar: React.FC = () => {
 
             {/* Font Picker */}
             <div className="flex flex-col gap-1 items-center w-full">
-              <p className="text-[8px] uppercase tracking-widest text-white/30 font-bold mb-1">Police</p>
+              <p className="text-xs uppercase tracking-widest text-white/30 font-bold mb-1">Police</p>
               {FONT_OPTIONS.map((opt) => (
                 <motion.button
                   key={opt.value}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setFont(opt.value)}
-                  className={`w-full px-3 py-1.5 rounded-lg text-[11px] font-bold transition-all ${opt.className} ${
+                  className={`w-full px-3 py-1.5 rounded-lg text-sm font-bold transition-all ${opt.className} ${
                     font === opt.value
                       ? 'bg-gold/20 border border-gold/40 text-gold'
                       : 'bg-white/[0.04] border border-transparent text-white/40 hover:text-white/70'

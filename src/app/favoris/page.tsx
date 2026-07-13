@@ -4,6 +4,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useBookmarks } from '@/context/BookmarkContext';
+import Icon from '@/components/Icon';
 
 export default function FavorisPage() {
   const { bookmarks, removeBookmark } = useBookmarks();
@@ -21,7 +22,7 @@ export default function FavorisPage() {
           >
             <div className="flex items-center justify-center md:justify-start gap-4 mb-2">
               <span className="h-[1px] w-12 bg-gold/50" />
-              <span className="text-gold text-[10px] uppercase tracking-[0.5em] font-bold">
+              <span className="text-gold text-xs uppercase tracking-[0.5em] font-bold">
                 Espace Personnel
               </span>
             </div>
@@ -33,9 +34,9 @@ export default function FavorisPage() {
 
         {bookmarks.length === 0 ? (
           <div className="py-32 text-center border border-white/5 rounded-[3rem] bg-white/[0.02]">
-            <span className="material-symbols-rounded text-6xl text-white/10 mb-6 block">bookmark_add</span>
-            <p className="text-xl font-serif italic text-white/40 mb-8">Vous n'avez pas encore de passages sauvegardés.</p>
-            <Link href="/accueil" className="px-10 py-4 bg-gold text-black rounded-2xl text-xs font-black uppercase hover:scale-105 transition-all">
+            <Icon name="bookmark_add" className="text-6xl text-white/10 mb-6 mx-auto block" />
+            <p className="text-xl font-reading text-white/40 mb-8">Vous n'avez pas encore de passages sauvegardés.</p>
+            <Link href="/accueil" className="px-10 py-4 bg-gold text-[#241c07] rounded-2xl text-xs font-black uppercase hover:scale-105 transition-all">
               Découvrir les enseignements
             </Link>
           </div>
@@ -53,7 +54,7 @@ export default function FavorisPage() {
                 >
                   <div className="flex flex-col md:flex-row justify-between items-start gap-6 mb-8">
                     <div>
-                      <p className="text-[10px] font-black text-gold uppercase tracking-[0.3em] mb-2">{bookmark.chapterTitle}</p>
+                      <p className="text-xs font-black text-gold uppercase tracking-[0.3em] mb-2">{bookmark.chapterTitle}</p>
                       <h2 className="text-sm font-bold text-white/40 italic">Section {bookmark.slug.split('-').pop()?.toUpperCase()}</h2>
                     </div>
                     <div className="flex gap-4">
@@ -62,14 +63,14 @@ export default function FavorisPage() {
                         className="p-4 rounded-2xl bg-white/5 text-gold hover:bg-gold hover:text-black transition-all"
                         aria-label="Voir la leçon complète"
                       >
-                        <span className="material-symbols-rounded text-xl">open_in_new</span>
+                        <Icon name="open_in_new" className="text-xl" />
                       </Link>
                       <button 
                         onClick={() => removeBookmark(bookmark.id)}
                         className="p-4 rounded-2xl bg-white/5 text-red-400 hover:bg-red-500 hover:text-white transition-all"
                         aria-label="Supprimer des favoris"
                       >
-                        <span className="material-symbols-rounded text-xl">delete</span>
+                        <Icon name="delete" className="text-xl" />
                       </button>
                     </div>
                   </div>
