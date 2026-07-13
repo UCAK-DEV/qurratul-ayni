@@ -550,40 +550,37 @@ export const Navbar = () => {
   const [inAppNotifications, setInAppNotifications] = useState<InAppNotification[]>([]);
   const [showNotificationCenter, setShowNotificationCenter] = useState<boolean>(false);
   const [notificationPermission, setNotificationPermission] = useState<string>('default');
-  const [hijriOffset, setHijriOffset] = useState<number>(0);
 
   useEffect(() => {
+    async function initializeNotifications() {
+      const offsetStr = await getSetting('hijri_offset', '0');
+      const offset = parseInt(offsetStr, 10);
+
+      const hijriDate = calculateHijriDate(offset);
+      const dayOfWeek = new Date().getDay();
+      const recommendations = getRecommendationForDate(hijriDate.day, hijriDate.month, dayOfWeek);
+      const recommendation = recommendations.length > 0 ? recommendations[0] : null;
+
+      const samples: InAppNotification[] = [
+        {
+          id: '1',
+          title: 'Recommandation du Jour',
+          body: recommendation
+            ? `Aujourd'hui : ${recommendation.title}. Découvrez la pratique recommandée.`
+            : 'Découvrez les lectures et wirds recommandés pour aujourd\'hui.',
+          time: 'Il y a 5 min',
+          read: false
+        }
+      ];
+      setInAppNotifications(samples);
+
+      if (typeof window !== 'undefined' && 'Notification' in window) {
+        setNotificationPermission(Notification.permission);
+      }
+    }
+
     initializeNotifications();
   }, []);
-
-  async function initializeNotifications() {
-    const offsetStr = await getSetting('hijri_offset', '0');
-    const offset = parseInt(offsetStr, 10);
-    setHijriOffset(offset);
-
-    const hijriDate = calculateHijriDate(offset);
-    const dayOfWeek = new Date().getDay();
-    const recommendations = getRecommendationForDate(hijriDate.day, hijriDate.month, dayOfWeek);
-    let recommendation = recommendations.length > 0 ? recommendations[0] : null;
-
-    const samples: InAppNotification[] = [
-      {
-        id: '1',
-        title: 'Recommandation du Jour',
-        body: recommendation 
-          ? `Aujourd'hui : ${recommendation.title}. Découvrez la pratique recommandée.`
-          : 'Découvrez les lectures et wirds recommandés pour aujourd\'hui.',
-        time: 'Il y a 5 min',
-        read: false
-      }
-    ];
-    setInAppNotifications(samples);
-
-    if (typeof window !== 'undefined' && 'Notification' in window) {
-      const permission = Notification.permission;
-      setNotificationPermission(permission);
-    }
-  }
 
   const requestNotificationPermission = async () => {
     if (typeof window === 'undefined' || !('Notification' in window)) return;

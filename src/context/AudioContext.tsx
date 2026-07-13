@@ -109,6 +109,11 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
         // If same chapter, just toggle play
         togglePlay();
       } else {
+        // Guard: skip chapters with no audio source to avoid Format/src errors
+        if (!chapter.audioUrl) {
+          setError('Aucun audio disponible pour ce chapitre.');
+          return;
+        }
         setIsLoading(true);
         setError(null);
         audioRef.current.src = chapter.audioUrl;
@@ -174,6 +179,8 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
       }
     };
     const handleError = () => {
+      // Ignore errors caused by intentionally clearing the src (quitPlayback)
+      if (!audio.src || audio.src === window.location.href) return;
       setError('Erreur de lecture audio. Veuillez réessayer.');
       setIsLoading(false);
       setIsPlaying(false);

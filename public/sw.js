@@ -1,13 +1,13 @@
  
 
-const CACHE_NAME = 'qurratul-ayni-v1';
+const CACHE_NAME = 'qurratul-ayni-v2';
+// Only pre-cache static files that are guaranteed to succeed.
+// Avoid dynamic Next.js routes (e.g. /accueil) — they may redirect or fail.
 const STATIC_ASSETS = [
-  '/',
   '/manifest.json',
   '/favicon.ico',
   '/mosque-192.png',
   '/mosque-512.png',
-  '/accueil',
 ];
 
 self.addEventListener('install', (event) => {
@@ -48,12 +48,18 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     fetch(request)
       .then(response => {
-        if (response.ok) {
+        // Only cache valid, non-opaque responses (status 200)
+        if (response.status === 200) {
           const copy = response.clone();
           caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
         }
         return response;
       })
-      .catch(() => caches.match(request))
+      .catch(() =>
+        caches.match(request).then(cached =>
+          // Always return a valid Response — never undefined
+          cached || new Response('Offline', { status: 503, statusText: 'Service Unavailable' })
+        )
+      )
   );
 });
