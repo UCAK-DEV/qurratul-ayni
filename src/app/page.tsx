@@ -359,7 +359,7 @@ export default function LibraryPage() {
                 className="group"
               >
                 <Link href={`/partie/${chapter.id}`}>
-                  <div className="card relative h-44 p-6 flex flex-col justify-between overflow-hidden group-hover:-translate-y-1 group-hover:border-[var(--border-gold)]">
+                  <div className="card relative min-h-[12rem] p-6 flex flex-col justify-between overflow-hidden group-hover:-translate-y-1 group-hover:border-[var(--border-gold)]">
                     <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-gold to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                     <div className="flex justify-between items-start">
@@ -379,13 +379,13 @@ export default function LibraryPage() {
                       </div>
                     </div>
 
-                    <div className="flex items-end justify-between gap-3">
-                      <h3 className="text-lg font-semibold text-adaptive-primary leading-snug">
+                    <div className="space-y-2 mt-4 text-left">
+                      <h3 className="text-lg font-semibold text-adaptive-primary leading-snug group-hover:text-gold transition-colors">
                         {chapter.titleFr}
                       </h3>
-                      <span className="font-amiri text-2xl text-gold/50 group-hover:text-gold/90 transition-colors shrink-0" lang="ar" dir="rtl">
+                      <p className="font-amiri text-2xl text-gold/50 group-hover:text-gold/85 transition-colors text-right" lang="ar" dir="rtl">
                         {chapter.titleAr}
-                      </span>
+                      </p>
                     </div>
                   </div>
                 </Link>
