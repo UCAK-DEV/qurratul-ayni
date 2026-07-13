@@ -434,16 +434,11 @@ export const Navbar = () => {
       {/* ── DESKTOP NAVBAR ─────────────────────────────────────────────────── */}
       <nav
         aria-label="Navigation principale"
-        className={`hidden md:block fixed left-1/2 z-[100] transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)] ${
+        className={`hidden md:block fixed left-1/2 z-[100] transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)] liquid-glass-nav ${
           isScrolled ? 'top-2 py-2 w-[90%] max-w-5xl' : 'top-4 py-3.5 w-[92%] max-w-6xl'
         } ${!showNav ? 'translate-y-[-150%] opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'} -translate-x-1/2`}
         style={{
-          background: 'var(--bg-nav)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-          border: '1px solid var(--border-gold)',
           borderRadius: '1.5rem',
-          boxShadow: 'var(--shadow-card)',
         }}
       >
         <div className="px-6 flex items-center justify-between">
@@ -589,8 +584,7 @@ export const Navbar = () => {
               onClick={toggleTheme}
               aria-label={theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
               title={theme === 'dark' ? 'Mode clair' : 'Mode sombre'}
-              className="w-9 h-9 rounded-xl flex items-center justify-center transition-all hover:bg-white/5"
-              style={{ color: 'var(--text-secondary)' }}
+              className="w-9 h-9 liquid-glass-btn"
             >
               <Icon 
                 name={theme === 'dark' ? 'light_mode' : 'dark_mode'} 
@@ -601,8 +595,7 @@ export const Navbar = () => {
             <button
               onClick={() => setIsSettingsOpen(true)}
               aria-label="Réglages de lecture"
-              className="w-9 h-9 rounded-xl flex items-center justify-center transition-all hover:bg-white/5"
-              style={{ color: 'var(--text-secondary)' }}
+              className="w-9 h-9 liquid-glass-btn"
             >
               <Icon name="tune" className="text-lg" />
             </button>
