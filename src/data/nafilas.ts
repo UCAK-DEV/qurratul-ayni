@@ -172,36 +172,69 @@ export const NAFILA_RECOMMENDATIONS: NafilaRecommendation[] = [
     isSpecial: true
   },
 
-  // ─── RECOMMANDATIONS HEBDOMADAIRES ──────────────────────────────────────────
+  // ─── RECOMMANDATIONS HEBDOMADAIRES (Nafilas Hebdo du Chapitre 18) ────────────
   {
-    id: "weekly-friday",
+    id: "weekly-sunday",
     month: null,
     day: null,
-    dayOfWeek: 5, // Vendredi
-    title: "Recommandations du Vendredi (Joumou'ah)",
-    description: "Accomplir les grandes ablutions (bain rituel), se parfumer, porter des vêtements propres. Lire la sourate Al-Kahf (La Caverne) avant le coucher du soleil et se rendre tôt à la mosquée.",
-    reward: "Une lumière brillera pour le croyant d'un vendredi à l'autre et pardon des péchés entre les deux vendredis.",
-    wird: "Multiplier les prières sur le Prophète (Salat ala Nabi) en grand nombre."
+    dayOfWeek: 0, // Dimanche
+    title: "Nafila du Dimanche",
+    description: "Accomplir 4 Rakkas (2 Salama) : réciter après la Fatiha, la sourate Al-Ikhlas (10 fois) dans chaque rakka.",
+    reward: "Protection divine tout au long de la semaine et bénédictions pour le foyer."
   },
   {
     id: "weekly-monday",
     month: null,
     day: null,
     dayOfWeek: 1, // Lundi
-    title: "Jeûne Recommandé du Lundi",
-    description: "Jeûne surérogatoire traditionnel suivant la pratique (Sounna) du Prophète Muhammad (PSL).",
-    reward: "Les actions des serviteurs sont présentées à Dieu le lundi et le jeudi, et il est recommandé d'être en état de jeûne.",
-    wird: "Repentir et wirds habituels."
+    title: "Nafila du Lundi",
+    description: "Accomplir 4 Rakkas (2 Salama) : réciter après la Fatiha, la sourate Al-Ikhlas (10 fois) dans chaque rakka.",
+    reward: "Pardon des péchés de la semaine et augmentation de la foi."
+  },
+  {
+    id: "weekly-tuesday",
+    month: null,
+    day: null,
+    dayOfWeek: 2, // Mardi
+    title: "Nafila du Mardi",
+    description: "Accomplir 4 Rakkas (2 Salama) : réciter après la Fatiha, la sourate Al-Ikhlas (10 fois) dans chaque rakka.",
+    reward: "Préservation contre les épreuves et bénédiction dans les entreprises."
+  },
+  {
+    id: "weekly-wednesday",
+    month: null,
+    day: null,
+    dayOfWeek: 3, // Mercredi
+    title: "Nafila du Mercredi",
+    description: "Accomplir 4 Rakkas (2 Salama) : réciter après la Fatiha, la sourate Al-Ikhlas (10 fois) dans chaque rakka.",
+    reward: "Tranquillité d'esprit et purification spirituelle."
   },
   {
     id: "weekly-thursday",
     month: null,
     day: null,
     dayOfWeek: 4, // Jeudi
-    title: "Jeûne Recommandé du Jeudi",
-    description: "Jeûne surérogatoire traditionnel suivant la pratique (Sounna) du Prophète Muhammad (PSL).",
-    reward: "Présentation hebdomadaire des œuvres à Dieu.",
-    wird: "Invocations et wirds de fin de semaine."
+    title: "Nafila du Jeudi",
+    description: "Accomplir 4 Rakkas (2 Salama) : réciter après la Fatiha, la sourate Al-Ikhlas (10 fois) dans chaque rakka.",
+    reward: "Récompense équivalente à celle de nombreuses œuvres de bienfaisance."
+  },
+  {
+    id: "weekly-friday",
+    month: null,
+    day: null,
+    dayOfWeek: 5, // Vendredi
+    title: "Nafila du Vendredi",
+    description: "Accomplir 4 Rakkas (2 Salama) : réciter après la Fatiha, la sourate Al-Ikhlas (10 fois) dans chaque rakka.",
+    reward: "Lumière spirituelle éclatante et expiation des manquements entre deux vendredis."
+  },
+  {
+    id: "weekly-saturday",
+    month: null,
+    day: null,
+    dayOfWeek: 6, // Samedi
+    title: "Nafila du Samedi",
+    description: "Accomplir 4 Rakkas (2 Salama) : réciter après la Fatiha, la sourate Al-Ikhlas (10 fois) dans chaque rakka.",
+    reward: "Protection contre les épreuves physiques et spirituelles de la journée."
   }
 ];
 

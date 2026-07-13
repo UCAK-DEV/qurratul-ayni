@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { useLearning } from '@/context/LearningContext';
 import { useData } from '@/context/DataContext';
 import { calculateHijriDate } from '@/utils/hijri';
-import { getDakarPrayerTimes, PrayerTimes } from '@/utils/prayerTimes';
 import { getSetting } from '@/utils/settings';
 import { getRecommendationForDate, NafilaRecommendation } from '@/data/nafilas';
 import Icon from '@/components/Icon';
@@ -26,8 +25,6 @@ export default function LibraryPage() {
 
   // Dashboard state variables
   const [hijriOffset, setHijriOffset] = useState<number>(0);
-  const [prayerTimes, setPrayerTimes] = useState<PrayerTimes | null>(null);
-  const [nextPrayer, setNextPrayer] = useState<{ name: string; time: string } | null>(null);
   const [selectedNafila, setSelectedNafila] = useState<NafilaRecommendation | null>(null);
 
   // Notification states
@@ -49,81 +46,44 @@ export default function LibraryPage() {
     const offset = parseInt(offsetStr, 10);
     setHijriOffset(offset);
 
-    // 2. Fetch Prayer Times
-    const times = getDakarPrayerTimes();
-    setPrayerTimes(times);
-
-    // 3. Determine next prayer
-    determineNextPrayer(times);
-
-    // 4. Load daily Nafila recommendations
+    // 2. Load daily Nafila recommendations
     const hijriDate = calculateHijriDate(offset);
     const dayOfWeek = new Date().getDay();
     const recommendations = getRecommendationForDate(hijriDate.day, hijriDate.month, dayOfWeek);
+    let recommendation: NafilaRecommendation | null = null;
     if (recommendations.length > 0) {
-      setSelectedNafila(recommendations[0]);
+      recommendation = recommendations[0];
+      setSelectedNafila(recommendation);
     }
 
-    // 5. Setup sample in-app notifications
+    // 3. Setup sample in-app notifications
     const samples: InAppNotification[] = [
       {
         id: '1',
         title: 'Recommandation du Jour',
-        body: recommendations.length > 0 
-          ? `Aujourd'hui : ${recommendations[0].title}. Découvrez la pratique recommandée.`
+        body: recommendation 
+          ? `Aujourd'hui : ${recommendation.title}. Découvrez la pratique recommandée.`
           : 'Découvrez les lectures et wirds recommandés pour aujourd\'hui.',
         time: 'Il y a 5 min',
         read: false
       }
     ];
 
-    // Add alert about next prayer if exists
-    if (times) {
-      const nextP = getNextPrayerInfo(times);
-      samples.push({
-        id: '2',
-        title: 'Prochaine Prière',
-        body: `La prière de ${nextP.name} est à ${nextP.time}.`,
-        time: 'À l\'instant',
-        read: false
-      });
-    }
-
     setInAppNotifications(samples);
 
-    // 6. Check Browser Notification Permission
+    // 4. Check Browser Notification Permission and notify Nafila if granted
     if (typeof window !== 'undefined' && 'Notification' in window) {
-      setNotificationPermission(Notification.permission);
+      const permission = Notification.permission;
+      setNotificationPermission(permission);
+      
+      if (permission === 'granted' && recommendation) {
+        new Notification("Nafila du Jour", {
+          body: `${recommendation.title} : ${recommendation.description}`,
+          icon: "/mosque-192.png"
+        });
+      }
     }
   }
-
-  function determineNextPrayer(times: PrayerTimes) {
-    if (!times) return;
-    const nextP = getNextPrayerInfo(times);
-    setNextPrayer(nextP);
-  }
-
-  function getNextPrayerInfo(times: PrayerTimes) {
-    const now = new Date();
-    const currentMinutes = now.getHours() * 60 + now.getMinutes();
-
-    const parseTimeToMinutes = (timeStr: string) => {
-      const [h, m] = timeStr.split(':').map(Number);
-      return h * 60 + m;
-    };
-
-    const prayers = [
-      { name: 'Fajr', time: times.fajr, mins: parseTimeToMinutes(times.fajr) },
-      { name: 'Chourouq', time: times.sunrise, mins: parseTimeToMinutes(times.sunrise) },
-      { name: 'Dhuhr', time: times.dhuhr, mins: parseTimeToMinutes(times.dhuhr) },
-      { name: 'Asr', time: times.asr, mins: parseTimeToMinutes(times.asr) },
-      { name: 'Maghrib', time: times.maghrib, mins: parseTimeToMinutes(times.maghrib) },
-      { name: 'Isha', time: times.isha, mins: parseTimeToMinutes(times.isha) },
-    ];
-
-    const next = prayers.find(p => p.mins > currentMinutes);
-    return next || prayers[0]; // defaults to Fajr if all passed today
-  };
 
   const requestNotificationPermission = async () => {
     if (typeof window === 'undefined' || !('Notification' in window)) return;
@@ -134,7 +94,7 @@ export default function LibraryPage() {
       
       if (permission === 'granted') {
         new Notification("Notifications Activées", {
-          body: "Vous recevrez des rappels quotidiens pour les prières et Nafilas.",
+          body: "Vous recevrez des rappels quotidiens pour les Nafilas.",
           icon: "/mosque-192.png"
         });
         
@@ -143,7 +103,7 @@ export default function LibraryPage() {
           {
             id: Date.now().toString(),
             title: 'Notifications activées',
-            body: 'Les rappels de prières et de nafilas sur le bureau sont maintenant fonctionnels.',
+            body: 'Les rappels de nafilas sur le bureau sont maintenant fonctionnels.',
             time: 'Maintenant',
             read: false
           },
@@ -201,15 +161,6 @@ export default function LibraryPage() {
   }
 
   const currentHijri = calculateHijriDate(hijriOffset);
-
-  const prayerList = prayerTimes ? [
-    { name: 'Fajr', val: prayerTimes.fajr },
-    { name: 'Chourouq', val: prayerTimes.sunrise },
-    { name: 'Dhuhr', val: prayerTimes.dhuhr },
-    { name: 'Asr', val: prayerTimes.asr },
-    { name: 'Maghrib', val: prayerTimes.maghrib },
-    { name: 'Isha', val: prayerTimes.isha },
-  ] : [];
 
   const getNafilaUrl = (nafilah: NafilaRecommendation) => {
     if (nafilah.month === 9 && nafilah.day !== null) {
@@ -310,52 +261,36 @@ export default function LibraryPage() {
           </p>
         </header>
 
-        {/* ─── Prière du jour + Nafila ─── */}
-        <section className="grid grid-cols-1 lg:grid-cols-5 gap-5">
-
-          {/* Horaires de prière (Dakar) */}
-          <div className="card p-6 lg:col-span-3 space-y-5">
-            <div className="flex items-center justify-between">
-              <span className="eyebrow no-rule">Prières · Dakar</span>
-              <span className="font-amiri text-2xl text-gold/70" dir="rtl">{currentHijri.monthAr}</span>
+        {/* ─── Nafila du jour ─── */}
+        <section>
+          <div className="card p-8 flex flex-col justify-between gap-6 relative overflow-hidden group border border-[var(--border-gold)]"
+            style={{ background: 'color-mix(in srgb, var(--accent) 5%, transparent)' }}>
+            <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:scale-110 group-hover:opacity-[0.06] transition-all select-none pointer-events-none">
+              <Icon name="auto_awesome" className="text-[140px] text-gold" />
             </div>
-            {prayerTimes && (
-              <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
-                {prayerList.map((p, i) => {
-                  const isNext = !!nextPrayer && nextPrayer.name.startsWith(p.name.slice(0, 4));
-                  return (
-                    <div key={i}
-                      className="text-center py-3 rounded-xl transition-all"
-                      style={isNext
-                         ? { background: 'color-mix(in srgb, var(--accent) 12%, transparent)', border: '1px solid var(--border-gold)' }
-                        : { background: 'var(--bg-card)', border: '1px solid var(--border-subtle)' }}>
-                      <p className={`text-xs font-semibold tracking-wide ${isNext ? 'text-gold' : 'text-adaptive-muted'}`}>{p.name}</p>
-                      <p className={`text-base mt-1 tabular-nums ${isNext ? 'text-adaptive-primary font-semibold' : 'text-adaptive-secondary'}`}>{p.val}</p>
-                    </div>
-                  );
-                })}
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-10 h-10 rounded-xl bg-gold/10 flex items-center justify-center text-gold">
+                  <Icon name="auto_awesome" className="text-xl" />
+                </div>
+                <span className="eyebrow no-rule">Recommandation du jour</span>
               </div>
-            )}
-            {nextPrayer && (
-              <p className="text-sm text-adaptive-muted">
-                Prochaine prière : <span className="text-gold font-medium">{nextPrayer.name}</span> à {nextPrayer.time}.
-              </p>
-            )}
-          </div>
-
-          {/* Nafila du jour */}
-          <div className="card p-6 lg:col-span-2 flex flex-col justify-between gap-4">
-            <div className="flex items-start justify-between gap-3">
-              <span className="eyebrow no-rule">Recommandation du jour</span>
-              <Icon name="auto_awesome" className="text-gold text-2xl" />
+              <span className="text-xs text-gold/70 px-3 py-1 rounded-full border border-gold/20 bg-gold/5 font-semibold">
+                Nafila Hebdo
+              </span>
             </div>
             {selectedNafila ? (
-              <div className="space-y-3 flex flex-col justify-between h-full">
-                <div className="space-y-2">
-                  <h3 className="font-display text-2xl font-semibold leading-snug">{selectedNafila.title}</h3>
-                  <p className="text-sm text-adaptive-secondary leading-relaxed line-clamp-3">{selectedNafila.description}</p>
+              <div className="space-y-6">
+                <div className="space-y-2.5">
+                  <h3 className="font-display text-3xl sm:text-4xl font-bold leading-tight tracking-tight text-white">{selectedNafila.title}</h3>
+                  <p className="text-base sm:text-lg text-adaptive-secondary leading-relaxed max-w-3xl">{selectedNafila.description}</p>
                 </div>
-                <div className="flex items-center justify-between gap-2 pt-2">
+                {selectedNafila.reward && (
+                  <div className="p-4 rounded-xl border border-gold/10 bg-gold/[0.02] text-sm text-gold/90 leading-relaxed italic max-w-3xl">
+                    ✨ <strong>Bienfaits :</strong> {selectedNafila.reward}
+                  </div>
+                )}
+                <div className="flex items-center justify-between gap-4 flex-wrap pt-4 border-t border-[var(--border-subtle)]">
                   <div className="flex flex-wrap gap-2">
                     {selectedNafila.wird && (
                       <span className="px-3 py-1.5 rounded-lg text-sm text-adaptive-secondary" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-subtle)' }}>
@@ -365,10 +300,10 @@ export default function LibraryPage() {
                   </div>
                   <Link 
                     href={getNafilaUrl(selectedNafila)} 
-                    className="btn-gold !py-2 !px-4 !text-xs whitespace-nowrap"
+                    className="btn-gold !py-3 !px-6 text-sm whitespace-nowrap"
                   >
                     Ouvrir la Nafila
-                    <Icon name="arrow_forward" className="text-xs" />
+                    <Icon name="arrow_forward" className="text-sm" />
                   </Link>
                 </div>
               </div>
