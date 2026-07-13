@@ -104,10 +104,10 @@ const ChaptersDropdown: React.FC<{
     transition={{ type: 'spring', damping: 22, stiffness: 280 }}
     className="absolute top-[calc(100%+0.75rem)] left-1/2 -translate-x-1/2 w-80 rounded-2xl border p-3 z-50 max-h-[65vh] overflow-y-auto"
     style={{
-      background: 'rgba(10, 18, 13, 0.96)',
+      background: 'var(--bg-nav)',
       backdropFilter: 'blur(20px)',
-      borderColor: 'rgba(201, 169, 97, 0.35)',
-      boxShadow: '0 20px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(201, 169, 97, 0.05)',
+      borderColor: 'var(--border-gold)',
+      boxShadow: 'var(--shadow-card)',
     }}
     role="menu"
   >
@@ -438,12 +438,12 @@ export const Navbar = () => {
           isScrolled ? 'top-2 py-2 w-[90%] max-w-5xl' : 'top-4 py-3.5 w-[92%] max-w-6xl'
         } ${!showNav ? 'translate-y-[-150%] opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'} -translate-x-1/2`}
         style={{
-          background: 'rgba(10, 18, 13, 0.75)',
+          background: 'var(--bg-nav)',
           backdropFilter: 'blur(16px)',
           WebkitBackdropFilter: 'blur(16px)',
-          border: '1px solid rgba(201, 169, 97, 0.25)',
+          border: '1px solid var(--border-gold)',
           borderRadius: '1.5rem',
-          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
+          boxShadow: 'var(--shadow-card)',
         }}
       >
         <div className="px-6 flex items-center justify-between">

@@ -85,6 +85,10 @@
   --accent: #8a6512; /* doré assombri pour contraste sur parchemin */
 
   color-scheme: light;
+
+  /* Redefine Tailwind v4 theme colors for light mode to fix contrast on text and dynamic backgrounds */
+  --color-white: #23302a;
+  --color-black: #ffffff;
 }
 
 /* ═══════════════════════════════════════════════════════════
