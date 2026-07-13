@@ -27,11 +27,6 @@ export default function LibraryPage() {
   const [hijriOffset, setHijriOffset] = useState<number>(0);
   const [selectedNafila, setSelectedNafila] = useState<NafilaRecommendation | null>(null);
 
-  // Notification states
-  const [showNotificationCenter, setShowNotificationCenter] = useState<boolean>(false);
-  const [notificationPermission, setNotificationPermission] = useState<string>('default');
-  const [inAppNotifications, setInAppNotifications] = useState<InAppNotification[]>([]);
-
   useEffect(() => {
     setTimeout(() => {
       setMounted(true);
@@ -50,80 +45,10 @@ export default function LibraryPage() {
     const hijriDate = calculateHijriDate(offset);
     const dayOfWeek = new Date().getDay();
     const recommendations = getRecommendationForDate(hijriDate.day, hijriDate.month, dayOfWeek);
-    let recommendation: NafilaRecommendation | null = null;
     if (recommendations.length > 0) {
-      recommendation = recommendations[0];
-      setSelectedNafila(recommendation);
-    }
-
-    // 3. Setup sample in-app notifications
-    const samples: InAppNotification[] = [
-      {
-        id: '1',
-        title: 'Recommandation du Jour',
-        body: recommendation 
-          ? `Aujourd'hui : ${recommendation.title}. Découvrez la pratique recommandée.`
-          : 'Découvrez les lectures et wirds recommandés pour aujourd\'hui.',
-        time: 'Il y a 5 min',
-        read: false
-      }
-    ];
-
-    setInAppNotifications(samples);
-
-    // 4. Check Browser Notification Permission and notify Nafila if granted
-    if (typeof window !== 'undefined' && 'Notification' in window) {
-      const permission = Notification.permission;
-      setNotificationPermission(permission);
-      
-      if (permission === 'granted' && recommendation) {
-        new Notification("Nafila du Jour", {
-          body: `${recommendation.title} : ${recommendation.description}`,
-          icon: "/mosque-192.png"
-        });
-      }
+      setSelectedNafila(recommendations[0]);
     }
   }
-
-  const requestNotificationPermission = async () => {
-    if (typeof window === 'undefined' || !('Notification' in window)) return;
-    
-    try {
-      const permission = await Notification.requestPermission();
-      setNotificationPermission(permission);
-      
-      if (permission === 'granted') {
-        new Notification("Notifications Activées", {
-          body: "Vous recevrez des rappels quotidiens pour les Nafilas.",
-          icon: "/mosque-192.png"
-        });
-        
-        // Add success notification in-app
-        setInAppNotifications(prev => [
-          {
-            id: Date.now().toString(),
-            title: 'Notifications activées',
-            body: 'Les rappels de nafilas sur le bureau sont maintenant fonctionnels.',
-            time: 'Maintenant',
-            read: false
-          },
-          ...prev
-        ]);
-      }
-    } catch (e) {
-      console.error("Error requesting notification permission", e);
-    }
-  };
-
-  const markAllNotificationsAsRead = () => {
-    setInAppNotifications(prev => prev.map(n => ({ ...n, read: true })));
-  };
-
-  const clearNotifications = () => {
-    setInAppNotifications([]);
-  };
-
-  const unreadCount = inAppNotifications.filter(n => !n.read).length;
 
   const lastChapter = lastVisitedSlug ? chapters.find(c => c.id === lastVisitedSlug.split('-')[0]) : null;
 
@@ -178,76 +103,6 @@ export default function LibraryPage() {
       style={{ backgroundColor: 'var(--bg-base)', color: 'var(--text-primary)' }}
     >
       <div className="relative z-10 max-w-6xl mx-auto space-y-16">
-
-        {/* ─── Barre discrète : notifications + admin ─── */}
-        <div className="flex justify-end items-center gap-3 relative">
-          <button
-            onClick={() => setShowNotificationCenter(!showNotificationCenter)}
-            className="relative w-11 h-11 flex items-center justify-center rounded-xl card"
-            aria-label="Centre de notifications"
-          >
-            <Icon name="notifications" className="text-xl text-adaptive-secondary" />
-            {unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 rounded-full bg-gold text-[#241c07] font-bold text-sm flex items-center justify-center">
-                {unreadCount}
-              </span>
-            )}
-          </button>
-
-          <AnimatePresence>
-            {showNotificationCenter && (
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 12 }}
-                className="absolute right-0 top-14 w-80 rounded-2xl border p-5 z-40 backdrop-blur-xl"
-                style={{ background: 'var(--bg-nav)', borderColor: 'var(--border-medium)' }}
-              >
-                <div className="flex justify-between items-center pb-3 border-b mb-3" style={{ borderColor: 'var(--border-subtle)' }}>
-                  <h4 className="text-sm font-semibold text-gold">Notifications</h4>
-                  <div className="flex gap-3 text-xs">
-                    <button onClick={markAllNotificationsAsRead} className="text-adaptive-muted hover:text-gold transition-colors">Tout lire</button>
-                    <button onClick={clearNotifications} className="text-adaptive-muted hover:text-gold transition-colors">Effacer</button>
-                  </div>
-                </div>
-                <div className="space-y-2.5 max-h-64 overflow-y-auto pr-1">
-                  {inAppNotifications.length === 0 ? (
-                    <p className="text-sm text-adaptive-muted italic text-center py-5">Aucune notification.</p>
-                  ) : (
-                    inAppNotifications.map(notification => (
-                      <div key={notification.id}
-                        className="p-3 rounded-xl border transition-all"
-                        style={{
-                          background: notification.read ? 'transparent' : 'color-mix(in srgb, var(--accent) 6%, transparent)',
-                          borderColor: notification.read ? 'var(--border-subtle)' : 'var(--border-gold)',
-                        }}>
-                        <div className="flex justify-between items-start gap-2 mb-1">
-                          <h5 className="text-sm font-semibold text-adaptive-primary">{notification.title}</h5>
-                          <span className="text-xs text-adaptive-muted whitespace-nowrap">{notification.time}</span>
-                        </div>
-                        <p className="text-sm text-adaptive-secondary leading-relaxed">{notification.body}</p>
-                      </div>
-                    ))
-                  )}
-                </div>
-                {notificationPermission === 'default' && (
-                  <button
-                    onClick={requestNotificationPermission}
-                    className="mt-4 w-full py-2.5 rounded-xl text-sm font-medium text-gold transition-all"
-                    style={{ background: 'color-mix(in srgb, var(--accent) 10%, transparent)', border: '1px solid var(--border-gold)' }}
-                  >
-                    Activer les alertes
-                  </button>
-                )}
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <Link href="/admin" className="btn-ghost !py-2.5 !px-4 !text-sm">
-            <Icon name="settings" className="text-lg" />
-            Admin
-          </Link>
-        </div>
 
         {/* ─── Hero / Titre du livre ─── */}
         <header className="islamic-pattern-header space-y-4 text-left pb-2">

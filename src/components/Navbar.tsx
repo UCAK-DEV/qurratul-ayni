@@ -11,6 +11,9 @@ import { useData } from '@/context/DataContext';
 import { useLearning } from '@/context/LearningContext';
 import Fuse from 'fuse.js';
 import { SearchOverlay } from './SearchOverlay';
+import { getSetting } from '@/utils/settings';
+import { calculateHijriDate } from '@/utils/hijri';
+import { getRecommendationForDate } from '@/data/nafilas';
 
 const GROUP_ORDER = ["Introduction", "Les Piliers", "Rites et Société", "Jurisprudence", "Spiritualité"];
 
@@ -513,6 +516,14 @@ const SearchSheet: React.FC<{
   );
 };
 
+interface InAppNotification {
+  id: string;
+  title: string;
+  body: string;
+  time: string;
+  read: boolean;
+}
+
 // ─── Main Navbar ───────────────────────────────────────────────────────────────
 export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -525,13 +536,90 @@ export const Navbar = () => {
   // settings state removed
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [mobileChaptersOpen, setMobileChaptersOpen] = useState(false);
+  const [mobileNotificationsOpen, setMobileNotificationsOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
   const pathname = usePathname();
   const chaptersRef = useRef<HTMLLIElement>(null);
   const searchRef = useRef<HTMLLIElement>(null);
+  const notificationsRef = useRef<HTMLDivElement>(null);
   const { chapters } = useData();
   const { isCompleted } = useLearning();
+
+  // Notification states
+  const [inAppNotifications, setInAppNotifications] = useState<InAppNotification[]>([]);
+  const [showNotificationCenter, setShowNotificationCenter] = useState<boolean>(false);
+  const [notificationPermission, setNotificationPermission] = useState<string>('default');
+  const [hijriOffset, setHijriOffset] = useState<number>(0);
+
+  useEffect(() => {
+    initializeNotifications();
+  }, []);
+
+  async function initializeNotifications() {
+    const offsetStr = await getSetting('hijri_offset', '0');
+    const offset = parseInt(offsetStr, 10);
+    setHijriOffset(offset);
+
+    const hijriDate = calculateHijriDate(offset);
+    const dayOfWeek = new Date().getDay();
+    const recommendations = getRecommendationForDate(hijriDate.day, hijriDate.month, dayOfWeek);
+    let recommendation = recommendations.length > 0 ? recommendations[0] : null;
+
+    const samples: InAppNotification[] = [
+      {
+        id: '1',
+        title: 'Recommandation du Jour',
+        body: recommendation 
+          ? `Aujourd'hui : ${recommendation.title}. Découvrez la pratique recommandée.`
+          : 'Découvrez les lectures et wirds recommandés pour aujourd\'hui.',
+        time: 'Il y a 5 min',
+        read: false
+      }
+    ];
+    setInAppNotifications(samples);
+
+    if (typeof window !== 'undefined' && 'Notification' in window) {
+      const permission = Notification.permission;
+      setNotificationPermission(permission);
+    }
+  }
+
+  const requestNotificationPermission = async () => {
+    if (typeof window === 'undefined' || !('Notification' in window)) return;
+    try {
+      const permission = await Notification.requestPermission();
+      setNotificationPermission(permission);
+      if (permission === 'granted') {
+        new Notification("Notifications Activées", {
+          body: "Vous recevrez des rappels quotidiens pour les Nafilas.",
+          icon: "/mosque-192.png"
+        });
+        setInAppNotifications(prev => [
+          {
+            id: Date.now().toString(),
+            title: 'Notifications activées',
+            body: 'Les rappels de nafilas sur le bureau sont maintenant fonctionnels.',
+            time: 'Maintenant',
+            read: false
+          },
+          ...prev
+        ]);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const markAllNotificationsAsRead = () => {
+    setInAppNotifications(prev => prev.map(n => ({ ...n, read: true })));
+  };
+
+  const clearNotifications = () => {
+    setInAppNotifications([]);
+  };
+
+  const unreadCount = inAppNotifications.filter(n => !n.read).length;
 
   const groupedChapters = useMemo(() =>
     chapters.reduce((acc, c) => { (acc[c.group] = acc[c.group] || []).push(c); return acc; }, {} as Record<string, Chapter[]>)
@@ -577,6 +665,9 @@ export const Navbar = () => {
       if (chaptersRef.current && !chaptersRef.current.contains(e.target as Node)) setIsChaptersOpen(false);
       if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
         setIsSearchOpen(false);
+      }
+      if (notificationsRef.current && !notificationsRef.current.contains(e.target as Node)) {
+        setShowNotificationCenter(false);
       }
     };
     document.addEventListener('mousedown', handler);
@@ -718,8 +809,71 @@ export const Navbar = () => {
             </li>
           </ul>
 
-          {/* Desktop Right Controls — utilitaires (thème + réglages) */}
-          <div className="hidden md:flex items-center gap-2">
+          {/* Desktop Right Controls — utilitaires (notifications + thème + réglages) */}
+          <div className="hidden md:flex items-center gap-2 relative" ref={notificationsRef}>
+            <button
+              onClick={() => setShowNotificationCenter(!showNotificationCenter)}
+              aria-label="Centre de notifications"
+              title="Notifications"
+              className="w-9 h-9 liquid-glass-btn relative"
+            >
+              <Icon name="notifications" className="text-lg" />
+              {unreadCount > 0 && (
+                <span className="absolute -top-1 -right-1 min-w-4 h-4 px-1 rounded-full bg-gold text-[#241c07] font-bold text-[9px] flex items-center justify-center">
+                  {unreadCount}
+                </span>
+              )}
+            </button>
+            
+            <AnimatePresence>
+              {showNotificationCenter && (
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 12 }}
+                  className="absolute right-0 top-[calc(100%+0.5rem)] w-80 rounded-2xl border p-4 z-50 backdrop-blur-xl text-left animate-in fade-in slide-in-from-top-1"
+                  style={{ background: 'var(--bg-nav)', borderColor: 'var(--border-medium)' }}
+                >
+                  <div className="flex justify-between items-center pb-2 border-b mb-3" style={{ borderColor: 'var(--border-subtle)' }}>
+                    <h4 className="text-xs font-semibold text-gold">Notifications</h4>
+                    <div className="flex gap-2.5 text-[10px]">
+                      <button onClick={markAllNotificationsAsRead} className="text-white/40 hover:text-gold transition-colors">Tout lire</button>
+                      <button onClick={clearNotifications} className="text-white/40 hover:text-gold transition-colors">Effacer</button>
+                    </div>
+                  </div>
+                  <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
+                    {inAppNotifications.length === 0 ? (
+                      <p className="text-xs text-white/40 italic text-center py-4">Aucune notification.</p>
+                    ) : (
+                      inAppNotifications.map(notification => (
+                        <div key={notification.id}
+                          className="p-2.5 rounded-xl border transition-all"
+                          style={{
+                            background: notification.read ? 'transparent' : 'rgba(212, 175, 55, 0.05)',
+                            borderColor: notification.read ? 'var(--border-subtle)' : 'var(--border-gold)',
+                          }}>
+                          <div className="flex justify-between items-start gap-2 mb-1">
+                            <h5 className="text-[10px] font-bold text-white uppercase tracking-wider">{notification.title}</h5>
+                            <span className="text-[9px] text-white/40 whitespace-nowrap">{notification.time}</span>
+                          </div>
+                          <p className="text-xs text-white/70 leading-relaxed font-reading">{notification.body}</p>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                  {notificationPermission === 'default' && (
+                    <button
+                      onClick={requestNotificationPermission}
+                      className="mt-3 w-full py-2 rounded-xl text-xs font-bold uppercase tracking-wider text-gold transition-all"
+                      style={{ background: 'rgba(212, 175, 55, 0.1)', border: '1px solid var(--border-gold)' }}
+                    >
+                      Activer les alertes
+                    </button>
+                  )}
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             <button
               onClick={toggleTheme}
               aria-label={theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
@@ -749,13 +903,12 @@ export const Navbar = () => {
       {/* ── MOBILE BOTTOM TAB BAR ──────────────────────────────────────────── */}
       <nav 
         className={`bottom-tab-bar md:hidden transition-transform duration-500 ease-[cubic-bezier(0.33,1,0.68,1)] ${
-          !showNav && !mobileChaptersOpen && !mobileSearchOpen && pathname !== '/reglages' ? 'translate-y-[150%]' : 'translate-y-0'
+          !showNav && !mobileChaptersOpen && !mobileSearchOpen && !mobileNotificationsOpen && pathname !== '/reglages' ? 'translate-y-[150%]' : 'translate-y-0'
         }`} 
         aria-label="Navigation mobile"
       >
-
         {/* Home */}
-        <Link href="/" className={`bottom-tab-btn ${activeMobileTab === 'home' ? 'active' : ''}`}>
+        <Link href="/" className={`bottom-tab-btn ${activeMobileTab === 'home' && !mobileNotificationsOpen && !mobileChaptersOpen && !mobileSearchOpen ? 'active' : ''}`} onClick={() => { setMobileChaptersOpen(false); setMobileSearchOpen(false); setMobileNotificationsOpen(false); }}>
           <Icon name="home" className="tab-icon" />
           <span className="tab-label">Accueil</span>
         </Link>
@@ -763,17 +916,32 @@ export const Navbar = () => {
         {/* Chapitres */}
         <button
           className={`bottom-tab-btn ${mobileChaptersOpen ? 'active' : ''}`}
-          onClick={() => { setMobileChaptersOpen(true); setMobileSearchOpen(false); }}
+          onClick={() => { setMobileChaptersOpen(true); setMobileSearchOpen(false); setMobileNotificationsOpen(false); }}
           aria-label="Ouvrir les chapitres"
         >
           <Icon name="menu_book" className="tab-icon" />
           <span className="tab-label">Chapitres</span>
         </button>
 
+        {/* Notifications */}
+        <button
+          className={`bottom-tab-btn ${mobileNotificationsOpen ? 'active' : ''} relative`}
+          onClick={() => { setMobileNotificationsOpen(true); setMobileChaptersOpen(false); setMobileSearchOpen(false); }}
+          aria-label="Notifications"
+        >
+          <Icon name="notifications" className="tab-icon" />
+          {unreadCount > 0 && (
+            <span className="absolute top-1 right-3 min-w-3.5 h-3.5 px-0.5 rounded-full bg-gold text-[#241c07] font-bold text-[8px] flex items-center justify-center">
+              {unreadCount}
+            </span>
+          )}
+          <span className="tab-label">Alertes</span>
+        </button>
+
         {/* Search */}
         <button
           className={`bottom-tab-btn ${mobileSearchOpen ? 'active' : ''}`}
-          onClick={() => { setMobileSearchOpen(true); setMobileChaptersOpen(false); }}
+          onClick={() => { setMobileSearchOpen(true); setMobileChaptersOpen(false); setMobileNotificationsOpen(false); }}
           aria-label="Rechercher"
         >
           <Icon name="search" className="tab-icon" />
@@ -783,7 +951,8 @@ export const Navbar = () => {
         {/* Settings */}
         <Link
           href="/reglages"
-          className={`bottom-tab-btn ${pathname === '/reglages' ? 'active' : ''}`}
+          className={`bottom-tab-btn ${pathname === '/reglages' && !mobileNotificationsOpen && !mobileChaptersOpen && !mobileSearchOpen ? 'active' : ''}`}
+          onClick={() => { setMobileChaptersOpen(false); setMobileSearchOpen(false); setMobileNotificationsOpen(false); }}
           aria-label="Réglages"
         >
           <Icon name="tune" className="tab-icon" />
@@ -803,11 +972,119 @@ export const Navbar = () => {
         onClose={() => setMobileSearchOpen(false)}
         chapters={chapters}
       />
-
-
+      <NotificationsBottomSheet
+        isOpen={mobileNotificationsOpen}
+        onClose={() => setMobileNotificationsOpen(false)}
+        notifications={inAppNotifications}
+        unreadCount={unreadCount}
+        markAllRead={markAllNotificationsAsRead}
+        clearAll={clearNotifications}
+        permission={notificationPermission}
+        requestPermission={requestNotificationPermission}
+      />
 
       {/* ── SEARCH OVERLAY ─────────────────────────────────────────────────── */}
       <SearchOverlay isOpen={isSearchOverlayOpen} onClose={() => setIsSearchOverlayOpen(false)} />
     </>
+  );
+};
+
+// Helper Component for Mobile Notifications Bottom Sheet
+const NotificationsBottomSheet: React.FC<{
+  isOpen: boolean;
+  onClose: () => void;
+  notifications: InAppNotification[];
+  unreadCount: number;
+  markAllRead: () => void;
+  clearAll: () => void;
+  permission: string;
+  requestPermission: () => void;
+}> = ({ isOpen, onClose, notifications, unreadCount, markAllRead, clearAll, permission, requestPermission }) => {
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="bottom-sheet-backdrop"
+            onClick={onClose}
+          />
+          <motion.div
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '100%' }}
+            transition={{ type: 'spring', damping: 32, stiffness: 280 }}
+            className="bottom-sheet-panel"
+          >
+            <div className="bottom-sheet-handle" />
+            
+            {/* Header */}
+            <div className="flex items-center justify-between px-5 py-4 border-b" style={{ borderColor: 'var(--border-subtle)' }}>
+              <div className="flex items-center gap-2">
+                <Icon name="notifications" className="text-gold" />
+                <h2 className="font-black text-sm uppercase tracking-widest text-white">
+                  Notifications
+                </h2>
+                {unreadCount > 0 && (
+                  <span className="bg-gold text-[#241c07] font-bold text-xs px-1.5 py-0.5 rounded-full ml-1">
+                    {unreadCount}
+                  </span>
+                )}
+              </div>
+              <div className="flex gap-3 text-xs">
+                <button 
+                  onClick={markAllRead} 
+                  className="text-gold hover:underline"
+                >
+                  Tout lire
+                </button>
+                <button 
+                  onClick={clearAll} 
+                  className="text-gold hover:underline"
+                >
+                  Effacer
+                </button>
+              </div>
+            </div>
+
+            {/* Notifications list */}
+            <div className="overflow-y-auto flex-1 px-4 pt-3 pb-8 space-y-3" style={{ paddingBottom: 'calc(1.5rem + env(safe-area-inset-bottom))' }}>
+              {notifications.length === 0 ? (
+                <p className="text-sm text-white/40 italic text-center py-8">Aucune notification.</p>
+              ) : (
+                notifications.map(n => (
+                  <div 
+                    key={n.id}
+                    className="p-3.5 rounded-xl border text-left transition-all"
+                    style={{
+                      background: n.read ? 'transparent' : 'rgba(212, 175, 55, 0.05)',
+                      borderColor: n.read ? 'var(--border-subtle)' : 'var(--border-gold)',
+                    }}
+                  >
+                    <div className="flex justify-between items-start gap-2 mb-1">
+                      <h5 className="text-xs font-bold text-white uppercase tracking-wider">{n.title}</h5>
+                      <span className="text-[10px] text-white/40 whitespace-nowrap">{n.time}</span>
+                    </div>
+                    <p className="text-xs text-white/70 leading-relaxed font-reading">{n.body}</p>
+                  </div>
+                ))
+              )}
+
+              {permission === 'default' && (
+                <button
+                  onClick={requestPermission}
+                  className="w-full mt-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-gold transition-all"
+                  style={{ background: 'rgba(212, 175, 55, 0.1)', border: '1px solid var(--border-gold)' }}
+                >
+                  Activer les notifications
+                </button>
+              )}
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
   );
 };
