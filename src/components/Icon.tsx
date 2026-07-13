@@ -74,6 +74,50 @@ import Balance from '@mui/icons-material/Balance';
 import Psychology from '@mui/icons-material/Psychology';
 import Cached from '@mui/icons-material/Cached';
 
+// Dynamic Database mapped icons
+import Person from '@mui/icons-material/Person';
+import BrightnessHigh from '@mui/icons-material/BrightnessHigh';
+import Spa from '@mui/icons-material/Spa';
+import Mosque from '@mui/icons-material/Mosque';
+import PersonalInjury from '@mui/icons-material/PersonalInjury';
+import Nightlight from '@mui/icons-material/Nightlight';
+import VolunteerActivism from '@mui/icons-material/VolunteerActivism';
+import NightsStay from '@mui/icons-material/NightsStay';
+import DirectionsWalk from '@mui/icons-material/DirectionsWalk';
+import HeartBroken from '@mui/icons-material/HeartBroken';
+import Rule from '@mui/icons-material/Rule';
+import ContentCut from '@mui/icons-material/ContentCut';
+import SelfImprovement from '@mui/icons-material/SelfImprovement';
+import ListAlt from '@mui/icons-material/ListAlt';
+import WaterDrop from '@mui/icons-material/WaterDrop';
+import Waves from '@mui/icons-material/Waves';
+import Landscape from '@mui/icons-material/Landscape';
+import CleaningServices from '@mui/icons-material/CleaningServices';
+import ChildCare from '@mui/icons-material/ChildCare';
+import NotificationsActive from '@mui/icons-material/NotificationsActive';
+import Schedule from '@mui/icons-material/Schedule';
+import Groups from '@mui/icons-material/Groups';
+import FlightTakeoff from '@mui/icons-material/FlightTakeoff';
+import AccessibilityNew from '@mui/icons-material/AccessibilityNew';
+import Celebration from '@mui/icons-material/Celebration';
+import Opacity from '@mui/icons-material/Opacity';
+import Church from '@mui/icons-material/Church';
+import AccountBalanceWallet from '@mui/icons-material/AccountBalanceWallet';
+import Savings from '@mui/icons-material/Savings';
+import Agriculture from '@mui/icons-material/Agriculture';
+import Pets from '@mui/icons-material/Pets';
+import Redeem from '@mui/icons-material/Redeem';
+import HowToReg from '@mui/icons-material/HowToReg';
+import Loyalty from '@mui/icons-material/Loyalty';
+import Favorite from '@mui/icons-material/Favorite';
+import PregnantWoman from '@mui/icons-material/PregnantWoman';
+import MedicalServices from '@mui/icons-material/MedicalServices';
+import HourglassEmpty from '@mui/icons-material/HourglassEmpty';
+import Festival from '@mui/icons-material/Festival';
+import Block from '@mui/icons-material/Block';
+import TrendingDown from '@mui/icons-material/TrendingDown';
+import HealthAndSafety from '@mui/icons-material/HealthAndSafety';
+
 // Map Google Material Symbols names to MUI SVG Icon components
 const iconMap: Record<string, React.ComponentType<any>> = {
   arrow_back: ArrowBack,
@@ -148,6 +192,54 @@ const iconMap: Record<string, React.ComponentType<any>> = {
   shield: Shield,
   balance: Balance,
   psychology: Psychology,
+
+  // Database dynamic additions
+  person: Person,
+  brightness_high: BrightnessHigh,
+  spa: Spa,
+  mosque: Mosque,
+  personal_injury: PersonalInjury,
+  nightlight: Nightlight,
+  volunteer_activism: VolunteerActivism,
+  nights_stay: NightsStay,
+  directions_walk: DirectionsWalk,
+  heart_broken: HeartBroken,
+  rule: Rule,
+  cut: ContentCut,
+  self_improvement: SelfImprovement,
+  list_alt: ListAlt,
+  water_drop: WaterDrop,
+  waves: Waves,
+  landscape: Landscape,
+  cleaning_services: CleaningServices,
+  child_care: ChildCare,
+  notifications_active: NotificationsActive,
+  schedule: Schedule,
+  assignment: Assignment,
+  groups: Groups,
+  flight_takeoff: FlightTakeoff,
+  accessibility_new: AccessibilityNew,
+  celebration: Celebration,
+  opacity: Opacity,
+  church: Church,
+  account_balance_wallet: AccountBalanceWallet,
+  savings: Savings,
+  agriculture: Agriculture,
+  pets: Pets,
+  redeem: Redeem,
+  person_check: HowToReg,
+  error_outline: ErrorIcon,
+  how_to_reg: HowToReg,
+  loyalty: Loyalty,
+  favorite: Favorite,
+  pregnant_woman: PregnantWoman,
+  medical_services: MedicalServices,
+  styler: Style,
+  hourglass_empty: HourglassEmpty,
+  festival: Festival,
+  block: Block,
+  trending_down: TrendingDown,
+  health_and_safety: HealthAndSafety,
 };
 
 interface IconProps {
