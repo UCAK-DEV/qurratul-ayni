@@ -2,6 +2,7 @@ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { PageContent } from '@/types/content';
 import { Chapter } from '@/data/chapters';
 import { MOCK_CHAPTERS, MOCK_PAGES } from '@/data/mockChaptersData';
+import { NAFILA_RECOMMENDATIONS } from '@/data/nafilas';
 
 let supabase: SupabaseClient | undefined;
 
@@ -107,7 +108,7 @@ export const fetchPageContent = async (fullId: string): Promise<PageContent | nu
   }
 };
 
-const extraPagesData: Record<string, { titleFr: string; audioUrl: string }> = {
+const extraPagesData: Record<string, { titleFr: string; audioUrl: string; description?: string; reward?: string }> = {
   "5-g": { titleFr: "L'usage du Siwak (Sotju)", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C007.mp3" },
   "5-h": { titleFr: "Règles diverses de purification", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C009.mp3" },
   "6-l": { titleFr: "Invocations post-prière", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C014.mp3" },
@@ -123,13 +124,48 @@ const extraPagesData: Record<string, { titleFr: string; audioUrl: string }> = {
   "17-l": { titleFr: "Le mois de Maouloud (Gamou)", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C063.mp3" },
   "17-m": { titleFr: "La mi-Sha'ban", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C064.mp3" },
   "17-n": { titleFr: "Premier jour de l'année", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C065.mp3" },
-  "18-dimanche": { titleFr: "Nafila du Dimanche", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C067.mp3" },
-  "18-lundi": { titleFr: "Nafila du Lundi", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C068.mp3" },
-  "18-mardi": { titleFr: "Nafila du Mardi", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C069.mp3" },
-  "18-mercredi": { titleFr: "Nafila du Mercredi", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C070.mp3" },
-  "18-jeudi": { titleFr: "Nafila du Jeudi", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C071.mp3" },
-  "18-vendredi": { titleFr: "Nafila du Vendredi", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C072.mp3" },
-  "18-samedi": { titleFr: "Nafila du Samedi", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C073.mp3" },
+  "18-dimanche": { 
+    titleFr: "Nafila du Dimanche", 
+    audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C067.mp3",
+    description: "Accomplir 4 Rakkas (2 Salama) : réciter après la Fatiha, la sourate Al-Ikhlas (10 fois) dans chaque rakka.",
+    reward: "Protection divine tout au long de la semaine et bénédictions pour le foyer."
+  },
+  "18-lundi": { 
+    titleFr: "Nafila du Lundi", 
+    audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C068.mp3",
+    description: "Accomplir 4 Rakkas (2 Salama) : réciter après la Fatiha, la sourate Al-Ikhlas (10 fois) dans chaque rakka.",
+    reward: "Pardon des péchés de la semaine et augmentation de la foi."
+  },
+  "18-mardi": { 
+    titleFr: "Nafila du Mardi", 
+    audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C069.mp3",
+    description: "Accomplir 4 Rakkas (2 Salama) : réciter après la Fatiha, la sourate Al-Ikhlas (10 fois) dans chaque rakka.",
+    reward: "Préservation contre les épreuves et bénédiction dans les entreprises."
+  },
+  "18-mercredi": { 
+    titleFr: "Nafila du Mercredi", 
+    audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C070.mp3",
+    description: "Accomplir 4 Rakkas (2 Salama) : réciter après la Fatiha, la sourate Al-Ikhlas (10 fois) dans chaque rakka.",
+    reward: "Tranquillité d'esprit et purification spirituelle."
+  },
+  "18-jeudi": { 
+    titleFr: "Nafila du Jeudi", 
+    audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C071.mp3",
+    description: "Accomplir 4 Rakkas (2 Salama) : réciter après la Fatiha, la sourate Al-Ikhlas (10 fois) dans chaque rakka.",
+    reward: "Récompense équivalente à celle de nombreuses œuvres de bienfaisance."
+  },
+  "18-vendredi": { 
+    titleFr: "Nafila du Vendredi", 
+    audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C072.mp3",
+    description: "Accomplir 4 Rakkas (2 Salama) : réciter après la Fatiha, la sourate Al-Ikhlas (10 fois) dans chaque rakka.",
+    reward: "Lumière spirituelle éclatante et expiation des manquements entre deux vendredis."
+  },
+  "18-samedi": { 
+    titleFr: "Nafila du Samedi", 
+    audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C073.mp3",
+    description: "Accomplir 4 Rakkas (2 Salama) : réciter après la Fatiha, la sourate Al-Ikhlas (10 fois) dans chaque rakka.",
+    reward: "Protection contre les épreuves physiques et spirituelles de la journée."
+  },
   "19-e": { titleFr: "Les mérites du Basmala", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C105.mp3" },
   "19-f": { titleFr: "Le Rappel d'Allah (Dhikr)", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C107.mp3" }
 };
@@ -142,17 +178,36 @@ const loadMockPage = (fullId: string): PageContent | null => {
     if (!isNaN(day) && day >= 1 && day <= 30) {
       const index = 74 + day - 1;
       const padded = String(index).padStart(3, '0');
+      
+      // Look up detailed recommendations
+      const rec = NAFILA_RECOMMENDATIONS.find(r => r.month === 9 && r.day === day);
+      const blocks: any[] = [];
+      let customTitle = `Nafila Ramadan - Jour ${day}`;
+      
+      if (rec) {
+        customTitle = rec.title;
+        if (rec.description) {
+          blocks.push({ type: "text_block" as const, content: rec.description });
+        }
+        if (rec.reward) {
+          blocks.push({ type: "quote" as const, content: `Bienfaits : ${rec.reward}` });
+        }
+        if (rec.wird) {
+          blocks.push({ type: "text_block" as const, content: `Litanies / Wird : ${rec.wird}` });
+        }
+      } else {
+        blocks.push({ type: "text_block" as const, content: `Explication audio en Wolof par S. Omar Kane Balla Aissa pour la Nafila du jour ${day} du mois de Ramadan.` });
+      }
+
       return {
         id: fullId,
         chapterId: "18",
         sectionId: suffix,
-        titleFr: `Nafila Ramadan - Jour ${day}`,
-        titleAr: `Nafila Ramadan - Jour ${day}`,
+        titleFr: customTitle,
+        titleAr: customTitle,
         basmala: false,
         audioUrl: getLocalAudioUrl(`page_${fullId}`, `https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C${padded}.mp3`),
-        blocks: [
-          { type: "text_block", content: `Explication audio en Wolof par S. Omar Kane Balla Aissa pour la Nafila du jour ${day} du mois de Ramadan.` }
-        ]
+        blocks
       };
     }
   }
@@ -163,6 +218,18 @@ const loadMockPage = (fullId: string): PageContent | null => {
     const parts = fullId.split('-');
     const chapterId = parts[0];
     const sectionId = parts[1] || "";
+    const blocks: any[] = [];
+    
+    if (extra.description) {
+      blocks.push({ type: "text_block" as const, content: extra.description });
+    } else {
+      blocks.push({ type: "text_block" as const, content: `Explication audio en Wolof par S. Omar Kane Balla Aissa pour la section : ${extra.titleFr}.` });
+    }
+    
+    if (extra.reward) {
+      blocks.push({ type: "quote" as const, content: extra.reward });
+    }
+
     return {
       id: fullId,
       chapterId,
@@ -171,9 +238,7 @@ const loadMockPage = (fullId: string): PageContent | null => {
       titleAr: extra.titleFr,
       basmala: false,
       audioUrl: getLocalAudioUrl(`page_${fullId}`, extra.audioUrl),
-      blocks: [
-        { type: "text_block", content: `Explication audio en Wolof par S. Omar Kane Balla Aissa pour la section : ${extra.titleFr}.` }
-      ]
+      blocks
     };
   }
 
