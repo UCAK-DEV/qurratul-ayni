@@ -10,7 +10,6 @@ import { useTheme } from '@/context/ThemeContext';
 import { useData } from '@/context/DataContext';
 import { useLearning } from '@/context/LearningContext';
 import Fuse from 'fuse.js';
-import { ReadingSettings } from './ReadingSettings';
 import { SearchOverlay } from './SearchOverlay';
 
 const GROUP_ORDER = ["Introduction", "Les Piliers", "Rites et Société", "Jurisprudence", "Spiritualité"];
@@ -368,7 +367,7 @@ export const Navbar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchOverlayOpen, setIsSearchOverlayOpen] = useState(false);
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  // settings state removed
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [mobileChaptersOpen, setMobileChaptersOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
@@ -567,14 +566,14 @@ export const Navbar = () => {
               </AnimatePresence>
             </li>
             <li>
-              <button
-                onClick={() => setIsSettingsOpen(true)}
-                className="text-sm font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
-                style={{ color: isSettingsOpen ? '#c9a961' : 'var(--text-secondary)' }}
+              <Link
+                href="/reglages"
+                className={`text-sm font-medium flex items-center gap-1.5 transition-colors cursor-pointer ${pathname === '/reglages' ? 'text-gold' : 'text-white/60'}`}
+                style={{ color: pathname === '/reglages' ? '#c9a961' : 'var(--text-secondary)' }}
               >
                 <Icon name="tune" className="text-base" />
                 Réglages
-              </button>
+              </Link>
             </li>
           </ul>
 
@@ -592,13 +591,13 @@ export const Navbar = () => {
                 suppressHydrationWarning 
               />
             </button>
-            <button
-              onClick={() => setIsSettingsOpen(true)}
+            <Link
+              href="/reglages"
               aria-label="Réglages de lecture"
               className="w-9 h-9 liquid-glass-btn"
             >
               <Icon name="tune" className="text-lg" />
-            </button>
+            </Link>
           </div>
 
         </div>
@@ -607,7 +606,7 @@ export const Navbar = () => {
       {/* ── MOBILE BOTTOM TAB BAR ──────────────────────────────────────────── */}
       <nav 
         className={`bottom-tab-bar md:hidden transition-transform duration-500 ease-[cubic-bezier(0.33,1,0.68,1)] ${
-          !showNav && !mobileChaptersOpen && !mobileSearchOpen && !isSettingsOpen ? 'translate-y-[150%]' : 'translate-y-0'
+          !showNav && !mobileChaptersOpen && !mobileSearchOpen && pathname !== '/reglages' ? 'translate-y-[150%]' : 'translate-y-0'
         }`} 
         aria-label="Navigation mobile"
       >
@@ -639,14 +638,14 @@ export const Navbar = () => {
         </button>
 
         {/* Settings */}
-        <button
-          className={`bottom-tab-btn ${isSettingsOpen ? 'active' : ''}`}
-          onClick={() => setIsSettingsOpen(true)}
+        <Link
+          href="/reglages"
+          className={`bottom-tab-btn ${pathname === '/reglages' ? 'active' : ''}`}
           aria-label="Réglages"
         >
           <Icon name="tune" className="tab-icon" />
           <span className="tab-label">Réglages</span>
-        </button>
+        </Link>
       </nav>
 
       {/* ── MOBILE SHEETS ──────────────────────────────────────────────────── */}
@@ -662,8 +661,7 @@ export const Navbar = () => {
         chapters={chapters}
       />
 
-      {/* ── READING SETTINGS MODAL ─────────────────────────────────────────── */}
-      <ReadingSettings isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
+
 
       {/* ── SEARCH OVERLAY ─────────────────────────────────────────────────── */}
       <SearchOverlay isOpen={isSearchOverlayOpen} onClose={() => setIsSearchOverlayOpen(false)} />
