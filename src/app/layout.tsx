@@ -29,6 +29,13 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:wght@600;700;800;900&display=swap" rel="stylesheet" />
       </head>
       <body className="antialiased">
+        <div className="gemini-bg" aria-hidden="true">
+          <div className="gemini-aura">
+            <div className="aura-spot spot-1" />
+            <div className="aura-spot spot-2" />
+            <div className="aura-spot spot-3" />
+          </div>
+        </div>
         <AppProviders>
           {children}
         </AppProviders>
