@@ -36,7 +36,7 @@ export default function FavorisPage() {
           <div className="py-32 text-center border border-white/5 rounded-[3rem] bg-white/[0.02]">
             <Icon name="bookmark_add" className="text-6xl text-white/10 mb-6 mx-auto block" />
             <p className="text-xl font-reading text-white/40 mb-8">Vous n'avez pas encore de passages sauvegardés.</p>
-            <Link href="/accueil" className="px-10 py-4 bg-gold text-[#241c07] rounded-2xl text-xs font-black uppercase hover:scale-105 transition-all">
+            <Link href="/" className="px-10 py-4 bg-gold text-[#241c07] rounded-2xl text-xs font-black uppercase hover:scale-105 transition-all">
               Découvrir les enseignements
             </Link>
           </div>

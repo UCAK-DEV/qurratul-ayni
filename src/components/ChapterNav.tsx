@@ -134,7 +134,7 @@ export const ChapterNav: React.FC<ChapterNavProps> = ({ prev, next, summarySlug 
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.97 }}
-                  onClick={() => router.push('/accueil')}
+                  onClick={() => router.push('/')}
                   className="group flex items-center gap-2 md:gap-3 flex-1 px-3 py-3 md:px-6 md:py-4 rounded-xl md:rounded-2xl bg-gold/10 border border-gold/30 hover:bg-gold/15 hover:border-gold/50 transition-all text-right justify-end min-w-0"
                   aria-label="Retour au sommaire général"
                 >

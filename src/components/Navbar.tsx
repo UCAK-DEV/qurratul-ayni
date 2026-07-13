@@ -485,7 +485,7 @@ export const Navbar = () => {
   }, []);
 
   // Active tab for mobile bottom bar
-  const activeMobileTab = pathname === '/accueil' ? 'home' : pathname.startsWith('/partie') ? 'chapters' : 'home';
+  const activeMobileTab = pathname === '/' ? 'home' : pathname.startsWith('/partie') ? 'chapters' : 'home';
 
   return (
     <>
@@ -520,12 +520,12 @@ export const Navbar = () => {
           <ul className="hidden md:flex items-center gap-8">
             <li>
               <Link
-                href="/accueil"
+                href="/"
                 className="text-sm font-medium flex items-center gap-2 transition-colors relative group py-2 px-3 rounded-xl hover:bg-white/[0.03]"
-                style={{ color: pathname === '/accueil' ? 'var(--accent)' : 'var(--text-secondary)' }}
+                style={{ color: pathname === '/' ? 'var(--accent)' : 'var(--text-secondary)' }}
               >
                 Accueil
-                <span className={`absolute bottom-0 left-3 right-3 h-0.5 bg-gold rounded-full transition-all ${pathname === '/accueil' ? 'w-[calc(100%-24px)]' : 'w-0 group-hover:w-[calc(100%-24px)]'}`} />
+                <span className={`absolute bottom-0 left-3 right-3 h-0.5 bg-gold rounded-full transition-all ${pathname === '/' ? 'w-[calc(100%-24px)]' : 'w-0 group-hover:w-[calc(100%-24px)]'}`} />
               </Link>
             </li>
             <li className="relative" ref={chaptersRef}>
@@ -656,7 +656,7 @@ export const Navbar = () => {
       >
 
         {/* Home */}
-        <Link href="/accueil" className={`bottom-tab-btn ${activeMobileTab === 'home' ? 'active' : ''}`}>
+        <Link href="/" className={`bottom-tab-btn ${activeMobileTab === 'home' ? 'active' : ''}`}>
           <Icon name="home" className="tab-icon" />
           <span className="tab-label">Accueil</span>
         </Link>

@@ -35,7 +35,7 @@ const AboutPage = () => {
           Étudiants à l'Université Cheikh Ahmadoul Khadim de Touba.
         </p>
 
-        <Link href="/accueil">
+        <Link href="/">
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}

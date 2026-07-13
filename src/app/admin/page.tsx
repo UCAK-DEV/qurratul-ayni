@@ -236,7 +236,7 @@ export default function AdminPage() {
           </form>
 
           <div className="text-center mt-8">
-            <Link href="/accueil" className="text-xs text-adaptive-muted hover:text-gold transition-colors">
+            <Link href="/" className="text-xs text-adaptive-muted hover:text-gold transition-colors">
               Retour à la bibliothèque
             </Link>
           </div>
@@ -276,7 +276,7 @@ export default function AdminPage() {
         <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-white/10">
           <div>
             <div className="flex items-center gap-3 mb-1">
-              <Link href="/accueil" className="flex items-center justify-center w-8 h-8 rounded-full bg-white/5 border border-white/10 hover:bg-gold/10 hover:border-gold/30 hover:text-gold transition-all">
+              <Link href="/" className="flex items-center justify-center w-8 h-8 rounded-full bg-white/5 border border-white/10 hover:bg-gold/10 hover:border-gold/30 hover:text-gold transition-all">
                 <Icon name="arrow_back" className="text-sm" />
               </Link>
               <span className="text-gold text-xs uppercase tracking-[0.4em] font-black">Espace Gestion</span>
