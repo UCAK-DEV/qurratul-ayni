@@ -56,106 +56,107 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
-   TOKENS — MODE CLAIR (parchemin éditorial)
+   TOKENS — MODE CLAIR (Portfolio Makhtar Wade UI/UX)
    ═══════════════════════════════════════════════════════════ */
 [data-theme="light"] {
-  --bg-base: #f4f0e6;
-  --bg-surface: #fbf8f1;
+  --bg-base: #ffffff;
+  --bg-surface: #f8fafc;
   --bg-elevated: #ffffff;
-  --bg-card: rgba(31, 41, 33, 0.035);
-  --bg-card-hover: rgba(31, 41, 33, 0.065);
-  --bg-nav: rgba(250, 247, 239, 0.82);
-  --bg-overlay: rgba(38, 44, 38, 0.34);
+  --bg-card: rgba(15, 23, 42, 0.035);
+  --bg-card-hover: rgba(15, 23, 42, 0.065);
+  --bg-nav: rgba(255, 255, 255, 0.72);
+  --bg-overlay: rgba(15, 23, 42, 0.34);
 
-  --text-primary: #23302a;
-  --text-secondary: #505d53;
-  --text-muted: rgba(35, 48, 42, 0.6);
-  --text-inverse: #fbf8f1;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: rgba(15, 23, 42, 0.58);
+  --text-inverse: #f8fafc;
 
-  --border-subtle: rgba(31, 41, 33, 0.1);
-  --border-medium: rgba(31, 41, 33, 0.17);
-  --border-gold: rgba(150, 112, 24, 0.35);
+  --border-subtle: rgba(15, 23, 42, 0.08);
+  --border-medium: rgba(15, 23, 42, 0.15);
+  --border-gold: rgba(217, 165, 78, 0.3);
 
-  --selection-bg: rgba(201, 169, 97, 0.3);
+  --selection-bg: rgba(217, 165, 78, 0.25);
 
-  --shadow-card: 0 12px 30px rgba(60, 50, 20, 0.09);
-  --shadow-nav: 0 -1px 0 rgba(31, 41, 33, 0.06);
-  --shadow-gold: 0 0 26px rgba(201, 169, 97, 0.22);
+  --shadow-card: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+  --shadow-nav: 0 -1px 0 rgba(15, 23, 42, 0.05);
+  --shadow-gold: 0 0 26px rgba(217, 165, 78, 0.18);
 
-  --accent: #8a6512; /* doré assombri pour contraste sur parchemin */
+  --accent: #c2773a; /* brand secondary (cuivré chaud) */
 
   color-scheme: light;
 
   /* Redefine Tailwind v4 theme colors for light mode to fix contrast on text and dynamic backgrounds */
-  --color-white: #23302a;
+  --color-white: #0f172a;
   --color-black: #ffffff;
+  --color-gold: #d9a54e; /* brand primary */
 }
 
 /* ═══════════════════════════════════════════════════════════
-   COUCHE D'ADAPTATION — MODE CLAIR
-   Remappe les couleurs "en dur" (blanc/noir/émeraude) vers de
-   l'encre vert profond, pour que les composants s'adaptent sans
-   être modifiés.
+   COUCHE D'ADAPTATION — MODE CLAIR (Portfolio Sync)
+   Remappe les couleurs "en dur" (blanc/noir/émeraude) vers les 
+   teintes de slate et de gold du portfolio, pour que les 
+   composants s'adaptent sans être modifiés.
    ═══════════════════════════════════════════════════════════ */
 
 /* Accent doré : plus foncé en mode clair (lisibilité) */
 [data-theme="light"] .text-gold { color: var(--accent); }
 [data-theme="light"] .eyebrow   { color: var(--accent); }
 [data-theme="light"] .gold-gradient-text {
-  background: linear-gradient(135deg, #8a6512 0%, #b8912f 50%, #8a6512 100%);
+  background: linear-gradient(135deg, #d9a54e 0%, #c2773a 100%);
   -webkit-background-clip: text;
   background-clip: text;
 }
 
-/* Texte blanc → encre */
-[data-theme="light"] .text-white        { color: #23302a; }
-[data-theme="light"] .text-white\/90     { color: rgba(35, 48, 42, 0.92); }
-[data-theme="light"] .text-white\/85     { color: rgba(35, 48, 42, 0.88); }
-[data-theme="light"] .text-white\/80     { color: rgba(35, 48, 42, 0.84); }
-[data-theme="light"] .text-white\/75     { color: rgba(35, 48, 42, 0.8); }
-[data-theme="light"] .text-white\/70     { color: rgba(35, 48, 42, 0.74); }
-[data-theme="light"] .text-white\/60     { color: rgba(35, 48, 42, 0.66); }
-[data-theme="light"] .text-white\/50     { color: rgba(35, 48, 42, 0.58); }
-[data-theme="light"] .text-white\/40     { color: rgba(35, 48, 42, 0.5); }
-[data-theme="light"] .text-white\/30     { color: rgba(35, 48, 42, 0.42); }
-[data-theme="light"] .text-white\/20     { color: rgba(35, 48, 42, 0.32); }
-[data-theme="light"] .text-white\/10     { color: rgba(35, 48, 42, 0.22); }
-[data-theme="light"] .text-white\/\[0\.07\] { color: rgba(35, 48, 42, 0.1); }
-[data-theme="light"] .text-white\/\[0\.03\] { color: rgba(35, 48, 42, 0.06); }
+/* Texte blanc → encre slate */
+[data-theme="light"] .text-white        { color: #0f172a; }
+[data-theme="light"] .text-white\/90     { color: rgba(15, 23, 42, 0.92); }
+[data-theme="light"] .text-white\/85     { color: rgba(15, 23, 42, 0.88); }
+[data-theme="light"] .text-white\/80     { color: rgba(15, 23, 42, 0.84); }
+[data-theme="light"] .text-white\/75     { color: rgba(15, 23, 42, 0.8); }
+[data-theme="light"] .text-white\/70     { color: rgba(15, 23, 42, 0.74); }
+[data-theme="light"] .text-white\/60     { color: rgba(15, 23, 42, 0.66); }
+[data-theme="light"] .text-white\/50     { color: rgba(15, 23, 42, 0.58); }
+[data-theme="light"] .text-white\/40     { color: rgba(15, 23, 42, 0.5); }
+[data-theme="light"] .text-white\/30     { color: rgba(15, 23, 42, 0.42); }
+[data-theme="light"] .text-white\/20     { color: rgba(15, 23, 42, 0.32); }
+[data-theme="light"] .text-white\/10     { color: rgba(15, 23, 42, 0.22); }
+[data-theme="light"] .text-white\/\[0\.07\] { color: rgba(15, 23, 42, 0.1); }
+[data-theme="light"] .text-white\/\[0\.03\] { color: rgba(15, 23, 42, 0.06); }
 
-/* Fonds blancs translucides → légers voiles d'encre */
+/* Fonds blancs translucides → légers voiles d'encre slate */
 [data-theme="light"] .bg-white           { background-color: #ffffff; }
-[data-theme="light"] .bg-white\/20        { background-color: rgba(31, 41, 33, 0.12); }
-[data-theme="light"] .bg-white\/10        { background-color: rgba(31, 41, 33, 0.08); }
-[data-theme="light"] .bg-white\/5         { background-color: rgba(31, 41, 33, 0.05); }
-[data-theme="light"] .bg-white\/\[0\.07\] { background-color: rgba(31, 41, 33, 0.07); }
-[data-theme="light"] .bg-white\/\[0\.06\] { background-color: rgba(31, 41, 33, 0.06); }
-[data-theme="light"] .bg-white\/\[0\.05\] { background-color: rgba(31, 41, 33, 0.055); }
-[data-theme="light"] .bg-white\/\[0\.04\] { background-color: rgba(31, 41, 33, 0.05); }
-[data-theme="light"] .bg-white\/\[0\.03\] { background-color: rgba(31, 41, 33, 0.042); }
-[data-theme="light"] .bg-white\/\[0\.02\] { background-color: rgba(31, 41, 33, 0.032); }
-[data-theme="light"] .bg-white\/\[0\.01\] { background-color: rgba(31, 41, 33, 0.022); }
+[data-theme="light"] .bg-white\/20        { background-color: rgba(15, 23, 42, 0.12); }
+[data-theme="light"] .bg-white\/10        { background-color: rgba(15, 23, 42, 0.08); }
+[data-theme="light"] .bg-white\/5         { background-color: rgba(15, 23, 42, 0.05); }
+[data-theme="light"] .bg-white\/\[0\.07\] { background-color: rgba(15, 23, 42, 0.07); }
+[data-theme="light"] .bg-white\/\[0\.06\] { background-color: rgba(15, 23, 42, 0.06); }
+[data-theme="light"] .bg-white\/\[0\.05\] { background-color: rgba(15, 23, 42, 0.055); }
+[data-theme="light"] .bg-white\/\[0\.04\] { background-color: rgba(15, 23, 42, 0.05); }
+[data-theme="light"] .bg-white\/\[0\.03\] { background-color: rgba(15, 23, 42, 0.042); }
+[data-theme="light"] .bg-white\/\[0\.02\] { background-color: rgba(15, 23, 42, 0.032); }
+[data-theme="light"] .bg-white\/\[0\.01\] { background-color: rgba(15, 23, 42, 0.022); }
 
-/* Bordures blanches → bordures d'encre */
-[data-theme="light"] .border-white\/20        { border-color: rgba(31, 41, 33, 0.2); }
-[data-theme="light"] .border-white\/10        { border-color: rgba(31, 41, 33, 0.13); }
-[data-theme="light"] .border-white\/5         { border-color: rgba(31, 41, 33, 0.09); }
-[data-theme="light"] .border-white\/\[0\.06\] { border-color: rgba(31, 41, 33, 0.1); }
+/* Bordures blanches → bordures d'encre slate */
+[data-theme="light"] .border-white\/20        { border-color: rgba(15, 23, 42, 0.2); }
+[data-theme="light"] .border-white\/10        { border-color: rgba(15, 23, 42, 0.13); }
+[data-theme="light"] .border-white\/5         { border-color: rgba(15, 23, 42, 0.09); }
+[data-theme="light"] .border-white\/\[0\.06\] { border-color: rgba(15, 23, 42, 0.1); }
 
 /* Fonds noirs (insets/overlays) → voiles clairs */
-[data-theme="light"] .bg-black\/5   { background-color: rgba(31, 41, 33, 0.04); }
-[data-theme="light"] .bg-black\/20  { background-color: rgba(31, 41, 33, 0.05); }
-[data-theme="light"] .bg-black\/40  { background-color: rgba(31, 41, 33, 0.06); }
-[data-theme="light"] .bg-black\/60  { background-color: rgba(255, 255, 255, 0.7); }
-[data-theme="light"] .bg-black\/80  { background-color: rgba(255, 255, 255, 0.85); }
+[data-theme="light"] .bg-black\/5   { background-color: rgba(15, 23, 42, 0.04); }
+[data-theme="light"] .bg-black\/20  { background-color: rgba(15, 23, 42, 0.05); }
+[data-theme="light"] .bg-black\/40  { background-color: rgba(15, 23, 42, 0.06); }
+[data-theme="light"] .bg-black\/60  { background-color: rgba(255, 255, 255, 0.75); }
+[data-theme="light"] .bg-black\/80  { background-color: rgba(255, 255, 255, 0.88); }
 
-/* Blocs de contenu émeraude → teinte verte douce */
-[data-theme="light"] .bg-emerald-950\/20 { background-color: rgba(6, 95, 70, 0.055); }
-[data-theme="light"] .bg-emerald-950\/25 { background-color: rgba(6, 95, 70, 0.07); }
-[data-theme="light"] .bg-emerald-950\/30 { background-color: rgba(6, 95, 70, 0.09); }
-[data-theme="light"] .border-emerald-900\/30 { border-color: rgba(6, 95, 70, 0.22); }
-[data-theme="light"] .border-emerald-700\/25 { border-color: rgba(6, 95, 70, 0.22); }
-[data-theme="light"] .text-emerald-400 { color: #0f7a53; }
+/* Blocs de contenu émeraude → teinte douce slate */
+[data-theme="light"] .bg-emerald-950\/20 { background-color: rgba(15, 23, 42, 0.03); }
+[data-theme="light"] .bg-emerald-950\/25 { background-color: rgba(15, 23, 42, 0.04); }
+[data-theme="light"] .bg-emerald-950\/30 { background-color: rgba(15, 23, 42, 0.05); }
+[data-theme="light"] .border-emerald-900\/30 { border-color: rgba(15, 23, 42, 0.1); }
+[data-theme="light"] .border-emerald-700\/25 { border-color: rgba(15, 23, 42, 0.1); }
+[data-theme="light"] .text-emerald-400 { color: #c2773a; }
 
 /* ═══════════════════════════════════════════════════════════
    BASE
