@@ -476,6 +476,9 @@ export const Navbar = () => {
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (chaptersRef.current && !chaptersRef.current.contains(e.target as Node)) setIsChaptersOpen(false);
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setIsSearchOpen(false);
+      }
     };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
@@ -548,46 +551,46 @@ export const Navbar = () => {
                 )}
               </AnimatePresence>
             </li>
-            <li className="relative" ref={searchRef}>
-              <button
-                onClick={() => setIsSearchOpen(!isSearchOpen)}
-                className="text-sm font-medium flex items-center gap-1.5 transition-colors cursor-pointer"
-                style={{ color: isSearchOpen ? 'var(--accent)' : 'var(--text-secondary)' }}
-                aria-expanded={isSearchOpen}
-                aria-haspopup="true"
+            <li className="relative flex items-center" ref={searchRef}>
+              <div 
+                className="flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all duration-300 w-36 focus-within:w-52 bg-white/[0.03] border-white/15 focus-within:border-gold/50 focus-within:bg-black/25 hover:bg-white/[0.06]"
               >
-                Chercher
-                <motion.span animate={{ rotate: isSearchOpen ? 180 : 0 }} className="inline-flex text-base">
-                  <Icon name="expand_more" />
-                </motion.span>
-              </button>
+                <Icon name="search" className="text-gold text-sm" />
+                <input
+                  type="text"
+                  placeholder="Rechercher..."
+                  value={searchQuery}
+                  onChange={e => {
+                    setSearchQuery(e.target.value);
+                    if (!isSearchOpen && e.target.value.length > 0) {
+                      setIsSearchOpen(true);
+                    }
+                  }}
+                  onFocus={() => setIsSearchOpen(true)}
+                  className="bg-transparent outline-none text-xs w-full text-white placeholder-white/40 font-medium"
+                />
+                {searchQuery && (
+                  <button 
+                    onClick={() => {
+                      setSearchQuery('');
+                      setIsSearchOpen(false);
+                    }} 
+                    className="text-gray-400 hover:text-gray-200 transition-colors"
+                  >
+                    <Icon name="close" className="text-[10px]" />
+                  </button>
+                )}
+              </div>
               <AnimatePresence>
-                {isSearchOpen && (
+                {isSearchOpen && searchQuery.length > 0 && (
                   <motion.div
                     initial={{ opacity: 0, y: 10, scale: 0.97 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.97 }}
                     transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                    className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-80 rounded-2xl border shadow-2xl p-3.5 z-50"
+                    className="absolute top-full right-0 mt-3 w-80 rounded-2xl border shadow-2xl p-3.5 z-50"
                     style={{ background: 'var(--bg-surface)', borderColor: 'var(--border-medium)' }}
                   >
-                    <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl border mb-3" style={{ background: 'var(--bg-card)', borderColor: 'var(--border-subtle)' }}>
-                      <Icon name="search" className="text-gold text-lg" />
-                      <input
-                        type="text"
-                        placeholder="Rechercher..."
-                        value={searchQuery}
-                        onChange={e => setSearchQuery(e.target.value)}
-                        className="bg-transparent outline-none text-xs w-full"
-                        style={{ color: 'var(--text-primary)' }}
-                        autoFocus
-                      />
-                      {searchQuery && (
-                        <button onClick={() => setSearchQuery('')} className="text-gray-400 hover:text-gray-200">
-                          <Icon name="close" className="text-sm" />
-                        </button>
-                      )}
-                    </div>
                     <div className="max-h-60 overflow-y-auto space-y-1">
                       {desktopResults.length > 0 ? (
                         desktopResults.map((c: Chapter) => (
@@ -604,13 +607,9 @@ export const Navbar = () => {
                             </div>
                           </Link>
                         ))
-                      ) : searchQuery.length > 1 ? (
+                      ) : (
                         <p className="text-center py-4 text-xs italic" style={{ color: 'var(--text-muted)' }}>
                           Aucun résultat pour « {searchQuery} »
-                        </p>
-                      ) : (
-                        <p className="text-center py-4 text-sm uppercase font-bold tracking-wider" style={{ color: 'var(--text-muted)' }}>
-                          Tapez pour rechercher...
                         </p>
                       )}
                     </div>
