@@ -180,9 +180,10 @@ export const BlockRenderer: React.FC<BlockRendererProps> = ({ blocks, slug = '',
           // ─────────────────────────────────────────────────────────────────────
           // TEXT BLOCK — bord gauche doré + fond émeraude subtil
           case 'text_block':
+            const textBlocks = Array.isArray(block.content) ? block.content : [block.content];
             return (
               <div key={index} className="space-y-4">
-                {block.content.map((text: string, idx: number) => {
+                {textBlocks.map((text: string, idx: number) => {
                   const itemId = `${slug}-${index}-${idx}`;
                   return (
                     <motion.section
