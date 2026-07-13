@@ -26,23 +26,23 @@
    ═══════════════════════════════════════════════════════════ */
 :root,
 [data-theme="dark"] {
-  /* Vert Touba nuit — mosquée au crépuscule, papier ancien */
-  --bg-base: #0b1710;
-  --bg-surface: #122019;
-  --bg-elevated: #182920;
-  --bg-card: rgba(240, 235, 221, 0.045);
-  --bg-card-hover: rgba(240, 235, 221, 0.075);
-  --bg-nav: rgba(11, 23, 16, 0.86);
-  --bg-overlay: rgba(5, 12, 8, 0.72);
+  /* Fond noir profond, surface charbon et papier ancien */
+  --bg-base: #000000;
+  --bg-surface: #0a0a0a;
+  --bg-elevated: #121212;
+  --bg-card: rgba(255, 255, 255, 0.045);
+  --bg-card-hover: rgba(255, 255, 255, 0.075);
+  --bg-nav: rgba(0, 0, 0, 0.86);
+  --bg-overlay: rgba(0, 0, 0, 0.75);
 
-  /* Texte — papier ancien sur vert nuit (WCAG AA+) */
-  --text-primary: #f0ebdd;
-  --text-secondary: #bcb8a8;
-  --text-muted: rgba(240, 235, 221, 0.58);
-  --text-inverse: #0b1710;
+  /* Texte — papier ancien sur fond noir (WCAG AAA+) */
+  --text-primary: #f5f2e9;
+  --text-secondary: #c5c2b5;
+  --text-muted: rgba(245, 242, 233, 0.58);
+  --text-inverse: #000000;
 
-  --border-subtle: rgba(240, 235, 221, 0.09);
-  --border-medium: rgba(240, 235, 221, 0.16);
+  --border-subtle: rgba(245, 242, 233, 0.09);
+  --border-medium: rgba(245, 242, 233, 0.16);
   --border-gold: rgba(201, 169, 97, 0.35);
 
   --selection-bg: rgba(201, 169, 97, 0.28);
@@ -57,7 +57,7 @@
 
   /* Accent interactif : vert Touba (lisible sur nuit) + dégradé signature */
   --accent: #5fa97c;
-  --accent-contrast: #0b1710;
+  --accent-contrast: #000000;
   --accent-soft: rgba(95, 169, 124, 0.14);
   --accent-gradient: linear-gradient(135deg, #1e7a46 0%, #7c9a3e 100%);
 
