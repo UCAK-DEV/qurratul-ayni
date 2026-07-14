@@ -3,7 +3,6 @@ import { PageContent, ContentBlock } from '@/types/content';
 import { Chapter } from '@/data/chapters';
 import { MOCK_CHAPTERS, MOCK_PAGES } from '@/data/mockChaptersData';
 import { NAFILA_RECOMMENDATIONS } from '@/data/nafilas';
-import { unstable_cache } from 'next/cache';
 
 let supabase: SupabaseClient | undefined;
 
@@ -70,11 +69,7 @@ const fetchChaptersInternal = async (): Promise<Chapter[]> => {
   }
 };
 
-export const fetchChapters = unstable_cache(
-  async () => fetchChaptersInternal(),
-  ['chapters'],
-  { revalidate: 3600 }
-);
+export const fetchChapters = fetchChaptersInternal;
 
 const loadMockChapters = (): Chapter[] => {
   return MOCK_CHAPTERS.map(c => ({
@@ -115,11 +110,7 @@ const fetchPageContentInternal = async (fullId: string): Promise<PageContent | n
   }
 };
 
-export const fetchPageContent = unstable_cache(
-  async (fullId: string) => fetchPageContentInternal(fullId),
-  ['page-content'],
-  { revalidate: 3600 }
-);
+export const fetchPageContent = fetchPageContentInternal;
 
 const extraPagesData: Record<string, { titleFr: string; audioUrl: string; description?: string; reward?: string }> = {
   "5-g": { titleFr: "L'usage du Siwak (Sotju)", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C007.mp3" },
