@@ -5,6 +5,9 @@ import './globals.css';
 export const metadata = {
   title: 'Qurratul Ayni Digital',
   description: 'Bibliothèque Spirituelle Digitale - Enseignements de Serigne Shouhaïbou Mbacké',
+  icons: {
+    icon: '/favicon.png',
+  },
 };
 
 export default function RootLayout({

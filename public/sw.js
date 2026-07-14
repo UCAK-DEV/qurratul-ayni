@@ -1,11 +1,11 @@
  
 
-const CACHE_NAME = 'qurratul-ayni-v2';
+const CACHE_NAME = 'qurratul-ayni-v3';
 // Only pre-cache static files that are guaranteed to succeed.
 // Avoid dynamic Next.js routes (e.g. /accueil) — they may redirect or fail.
 const STATIC_ASSETS = [
   '/manifest.json',
-  '/favicon.ico',
+  '/favicon.png',
   '/mosque-192.png',
   '/mosque-512.png',
 ];
