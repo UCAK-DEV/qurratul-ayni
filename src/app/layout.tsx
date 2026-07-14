@@ -8,7 +8,7 @@ export const metadata = {
   manifest: '/manifest.webmanifest',
   icons: {
     icon: '/favicon.png',
-    apple: '/mosque-192.png',
+    apple: '/apple-touch-icon.png',
   },
 };
 
@@ -33,7 +33,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="Qurratul Ayni" />
-        <link rel="apple-touch-icon" href="/mosque-192.png" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         {/* Inter = UI/texte lisible · Lora = lecture long format · Amiri = arabe */}

@@ -1,14 +1,14 @@
  
 
-const CACHE_NAME = 'qurratul-ayni-v4';
+const CACHE_NAME = 'qurratul-ayni-v5';
 // Only pre-cache static files that are guaranteed to succeed.
-// Avoid dynamic Next.js routes (e.g. /accueil) — they may redirect or fail.
 const STATIC_ASSETS = [
   '/manifest.json',
   '/manifest.webmanifest',
   '/favicon.png',
-  '/mosque-192.png',
-  '/mosque-512.png',
+  '/icon-192.png',
+  '/icon-512.png',
+  '/apple-touch-icon.png',
 ];
 
 self.addEventListener('install', (event) => {
