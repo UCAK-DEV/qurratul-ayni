@@ -11,6 +11,7 @@ import { AppPWAProvider } from '@/components/AppPWAProvider';
 
 import { Navbar } from '@/components/Navbar';
 import { Player } from '@/components/Player';
+import { PWAInstallPrompt } from '@/components/PWAInstallPrompt';
 
 function MainContent({ children }: { children: React.ReactNode }) {
   const { currentChapter } = useAudio();
@@ -29,7 +30,7 @@ export const AppProviders = ({ children }: { children: React.ReactNode }) => {
           <BookmarkProvider>
             <DataProvider>
               <AudioProvider>
-                <AppPWAProvider>
+                 <AppPWAProvider>
                   <div className="flex h-screen text-gray-900 dark:text-gray-100">
 
                     <div className="flex-1 flex flex-col overflow-hidden">
@@ -38,6 +39,7 @@ export const AppProviders = ({ children }: { children: React.ReactNode }) => {
                         {children}
                       </MainContent>
                       <Player />
+                      <PWAInstallPrompt />
                     </div>
                   </div>
                 </AppPWAProvider>

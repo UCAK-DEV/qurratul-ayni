@@ -118,6 +118,10 @@ import Festival from '@mui/icons-material/Festival';
 import Block from '@mui/icons-material/Block';
 import TrendingDown from '@mui/icons-material/TrendingDown';
 import HealthAndSafety from '@mui/icons-material/HealthAndSafety';
+import Share from '@mui/icons-material/Share';
+import Download from '@mui/icons-material/Download';
+import Android from '@mui/icons-material/Android';
+import Apple from '@mui/icons-material/Apple';
 
 // Map Google Material Symbols names to MUI SVG Icon components
 const iconMap: Record<string, SvgIconComponent> = {
@@ -241,6 +245,10 @@ const iconMap: Record<string, SvgIconComponent> = {
   block: Block,
   trending_down: TrendingDown,
   health_and_safety: HealthAndSafety,
+  share: Share,
+  download: Download,
+  android: Android,
+  apple: Apple,
 };
 
 interface IconProps {
