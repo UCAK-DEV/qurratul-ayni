@@ -1,26 +1,44 @@
 {
   "name": "Qurratul Ayni",
   "short_name": "Q. Ayni",
-  "description": "Une immersion spirituelle dans l’œuvre majeure de Serigne Chouhinbou Mbacké.",
+  "description": "Une immersion spirituelle dans l'œuvre majeure de Serigne Chouhinbou Mbacké.",
   "start_url": "/",
+  "scope": "/",
+  "id": "/",
   "display": "standalone",
-  "background_color": "#020504",
+  "background_color": "#0b1710",
   "theme_color": "#c9a961",
+  "orientation": "portrait-primary",
   "icons": [
     {
       "src": "/favicon.png",
       "sizes": "48x48",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "/mosque-192.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "192x192",
+      "purpose": "any"
     },
     {
       "src": "/mosque-512.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "purpose": "any"
+    },
+    {
+      "src": "/mosque-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/mosque-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
     }
   ]
 }
