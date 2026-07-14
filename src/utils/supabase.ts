@@ -1,5 +1,5 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { PageContent } from '@/types/content';
+import { PageContent, ContentBlock } from '@/types/content';
 import { Chapter } from '@/data/chapters';
 import { MOCK_CHAPTERS, MOCK_PAGES } from '@/data/mockChaptersData';
 import { NAFILA_RECOMMENDATIONS } from '@/data/nafilas';
@@ -181,7 +181,7 @@ const loadMockPage = (fullId: string): PageContent | null => {
       
       // Look up detailed recommendations
       const rec = NAFILA_RECOMMENDATIONS.find(r => r.month === 9 && r.day === day);
-      const blocks: any[] = [];
+      const blocks: ContentBlock[] = [];
       let customTitle = `Nafila Ramadan - Jour ${day}`;
       
       if (rec) {
@@ -218,7 +218,7 @@ const loadMockPage = (fullId: string): PageContent | null => {
     const parts = fullId.split('-');
     const chapterId = parts[0];
     const sectionId = parts[1] || "";
-    const blocks: any[] = [];
+    const blocks: ContentBlock[] = [];
     
     if (extra.description) {
       blocks.push({ type: "text_block" as const, content: extra.description });

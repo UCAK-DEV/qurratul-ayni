@@ -10,14 +10,6 @@ import { getSetting } from '@/utils/settings';
 import { getRecommendationForDate, NafilaRecommendation } from '@/data/nafilas';
 import Icon from '@/components/Icon';
 
-interface InAppNotification {
-  id: string;
-  title: string;
-  body: string;
-  time: string;
-  read: boolean;
-}
-
 export default function LibraryPage() {
   const { lastVisitedSlug, isCompleted } = useLearning();
   const { chapters, isLoading, error, retry } = useData();
@@ -26,14 +18,6 @@ export default function LibraryPage() {
   // Dashboard state variables
   const [hijriOffset, setHijriOffset] = useState<number>(0);
   const [selectedNafila, setSelectedNafila] = useState<NafilaRecommendation | null>(null);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setMounted(true);
-      initializeDashboard();
-    }, 0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   async function initializeDashboard() {
     // 1. Fetch Hijri Offset
@@ -49,6 +33,13 @@ export default function LibraryPage() {
       setSelectedNafila(recommendations[0]);
     }
   }
+
+  useEffect(() => {
+    setTimeout(() => {
+      setMounted(true);
+      initializeDashboard();
+    }, 0);
+  }, []);
 
   const lastChapter = lastVisitedSlug ? chapters.find(c => c.id === lastVisitedSlug.split('-')[0]) : null;
 

@@ -4,10 +4,19 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Icon from '@/components/Icon';
 
+interface BeforeInstallPromptEvent extends Event {
+  readonly platforms: string[];
+  readonly userChoice: Promise<{
+    outcome: 'accepted' | 'dismissed';
+    platform: string;
+  }>;
+  prompt(): Promise<void>;
+}
+
 export const PWAInstallPrompt = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'android' | 'ios'>('android');
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isStandalone, setIsStandalone] = useState(false);
 
   useEffect(() => {
@@ -15,7 +24,7 @@ export const PWAInstallPrompt = () => {
     const checkStandalone = () => {
       const isStandaloneMode = 
         window.matchMedia('(display-mode: standalone)').matches || 
-        (navigator as any).standalone === true;
+        (navigator as Navigator & { standalone?: boolean }).standalone === true;
       setIsStandalone(isStandaloneMode);
       return isStandaloneMode;
     };
@@ -28,7 +37,7 @@ export const PWAInstallPrompt = () => {
     // 3. Listen for the native beforeinstallprompt event (Android/Chrome)
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
-      setDeferredPrompt(e);
+      setDeferredPrompt(e as BeforeInstallPromptEvent);
       // Show the prompt if not already standalone and not dismissed
       if (!standalone && !isDismissed) {
         setIsOpen(true);
@@ -42,8 +51,8 @@ export const PWAInstallPrompt = () => {
     const timer = setTimeout(() => {
       if (!standalone && !isDismissed && !deferredPrompt) {
         // Auto-detect OS to set default tab
-        const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
-        if (/iPad|iPhone|iPod/.test(userAgent) && !(window as any).MSStream) {
+        const userAgent = navigator.userAgent || navigator.vendor || (window as Window & { opera?: string }).opera || '';
+        if (/iPad|iPhone|iPod/.test(userAgent) && !(window as Window & { MSStream?: unknown }).MSStream) {
           setActiveTab('ios');
         } else {
           setActiveTab('android');

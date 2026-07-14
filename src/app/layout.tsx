@@ -1,7 +1,29 @@
 import React from 'react';
 import type { Metadata } from 'next';
+import { Inter, Lora, Amiri } from 'next/font/google';
 import { AppProviders } from '@/components/AppProviders';
 import './globals.css';
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-sans-next',
+  weight: ['400', '500', '600', '700', '800'],
+  display: 'swap',
+});
+
+const lora = Lora({
+  subsets: ['latin'],
+  variable: '--font-serif-next',
+  weight: ['400', '500', '600'],
+  display: 'swap',
+});
+
+const amiri = Amiri({
+  subsets: ['arabic'],
+  variable: '--font-amiri-next',
+  weight: ['400', '700'],
+  display: 'swap',
+});
 
 const SITE_URL = 'https://qurratul-ayni.vercel.app';
 const OG_IMAGE = `${SITE_URL}/og-image.png`;
@@ -85,7 +107,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" className="scroll-smooth" data-theme="dark" suppressHydrationWarning>
+    <html lang="fr" className={`${inter.variable} ${lora.variable} ${amiri.variable} scroll-smooth`} data-theme="dark" suppressHydrationWarning>
       <head>
         {/* Applique le thème sauvegardé avant le premier rendu (anti-scintillement) */}
         <script
@@ -101,10 +123,6 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="Qurratul Ayni" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* Inter = UI/texte lisible · Lora = lecture long format · Amiri = arabe */}
-        <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
       </head>
       <body className="antialiased">
         <AppProviders>
