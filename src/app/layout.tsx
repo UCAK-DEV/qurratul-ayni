@@ -1,14 +1,81 @@
 import React from 'react';
+import type { Metadata } from 'next';
 import { AppProviders } from '@/components/AppProviders';
 import './globals.css';
 
-export const metadata = {
-  title: 'Qurratul Ayni Digital',
-  description: 'Bibliothèque Spirituelle Digitale - Enseignements de Serigne Shouhaïbou Mbacké',
+const SITE_URL = 'https://qurratul-ayni.vercel.app';
+const OG_IMAGE = `${SITE_URL}/og-image.png`;
+
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+
+  /* ── Titre & description ── */
+  title: {
+    default: 'Qurratul Ayni — قرة العين',
+    template: '%s · Qurratul Ayni',
+  },
+  description:
+    'Bibliothèque spirituelle digitale des enseignements de Serigne Shouhaïbou Mbacké — jurisprudence islamique, prières, nafilas quotidiennes.',
+  keywords: [
+    'Qurratul Ayni',
+    'قرة العين',
+    'Serigne Shouhaibou Mbacké',
+    'mouride',
+    'islam',
+    'jurisprudence islamique',
+    'nafilas',
+    'wird',
+    'bibliothèque islamique',
+  ],
+
+  /* ── Open Graph (WhatsApp · Telegram · Discord · iMessage) ── */
+  openGraph: {
+    type: 'website',
+    locale: 'fr_FR',
+    url: SITE_URL,
+    siteName: 'Qurratul Ayni',
+    title: 'Qurratul Ayni — قرة العين',
+    description:
+      'Enseignements spirituels de Serigne Shouhaïbou Mbacké. Jurisprudence, prières et nafilas quotidiennes.',
+    images: [
+      {
+        url: OG_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: 'Qurratul Ayni — Bibliothèque Spirituelle Digitale',
+        type: 'image/png',
+      },
+    ],
+  },
+
+  /* ── Twitter / X Card ── */
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Qurratul Ayni — قرة العين',
+    description:
+      'Enseignements de Serigne Shouhaïbou Mbacké. Jurisprudence, prières et nafilas quotidiennes.',
+    images: [OG_IMAGE],
+  },
+
+  /* ── Icônes & PWA ── */
   manifest: '/manifest.webmanifest',
   icons: {
-    icon: '/favicon.png',
-    apple: '/apple-touch-icon.png',
+    icon: [
+      { url: '/favicon.png', type: 'image/png' },
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+    shortcut: '/favicon.png',
+  },
+
+  /* ── Robots ── */
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
   },
 };
 
