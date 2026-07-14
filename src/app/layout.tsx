@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import { Inter, Lora, Amiri } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/next';
 import { AppProviders } from '@/components/AppProviders';
 import './globals.css';
 
@@ -128,6 +129,7 @@ export default function RootLayout({
         <AppProviders>
           {children}
         </AppProviders>
+        <Analytics />
       </body>
     </html>
   );
