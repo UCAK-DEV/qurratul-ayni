@@ -3,6 +3,7 @@ import { PageContent, ContentBlock } from '@/types/content';
 import { Chapter } from '@/data/chapters';
 import { MOCK_CHAPTERS, MOCK_PAGES } from '@/data/mockChaptersData';
 import { NAFILA_RECOMMENDATIONS } from '@/data/nafilas';
+import { unstable_cache } from 'next/cache';
 
 let supabase: SupabaseClient | undefined;
 
@@ -40,7 +41,7 @@ interface SupabaseChapter {
 }
 
 // Fonctions de récupération des données avec mapping Minuscules -> CamelCase
-export const fetchChapters = async (): Promise<Chapter[]> => {
+const fetchChaptersInternal = async (): Promise<Chapter[]> => {
   try {
     const client = getSupabaseClient();
     const { data, error } = await client
@@ -69,6 +70,12 @@ export const fetchChapters = async (): Promise<Chapter[]> => {
   }
 };
 
+export const fetchChapters = unstable_cache(
+  async () => fetchChaptersInternal(),
+  ['chapters'],
+  { revalidate: 3600 }
+);
+
 const loadMockChapters = (): Chapter[] => {
   return MOCK_CHAPTERS.map(c => ({
     ...c,
@@ -76,7 +83,7 @@ const loadMockChapters = (): Chapter[] => {
   }));
 };
 
-export const fetchPageContent = async (fullId: string): Promise<PageContent | null> => {
+const fetchPageContentInternal = async (fullId: string): Promise<PageContent | null> => {
   try {
     const client = getSupabaseClient();
     const { data, error } = await client
@@ -107,6 +114,12 @@ export const fetchPageContent = async (fullId: string): Promise<PageContent | nu
     return loadMockPage(fullId);
   }
 };
+
+export const fetchPageContent = unstable_cache(
+  async (fullId: string) => fetchPageContentInternal(fullId),
+  ['page-content'],
+  { revalidate: 3600 }
+);
 
 const extraPagesData: Record<string, { titleFr: string; audioUrl: string; description?: string; reward?: string }> = {
   "5-g": { titleFr: "L'usage du Siwak (Sotju)", audioUrl: "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C007.mp3" },
