@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" className="scroll-smooth" data-theme="dark">
+    <html lang="fr" className="scroll-smooth" data-theme="dark" suppressHydrationWarning>
       <head>
         {/* Applique le thème sauvegardé avant le premier rendu (anti-scintillement) */}
         <script
