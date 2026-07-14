@@ -120,8 +120,12 @@ export default function AdminPage() {
 
   const handleSaveOffset = async () => {
     try {
-      await setSetting('hijri_offset', hijriOffset.toString());
-      showNotification("Ajustement du calendrier musulman enregistré avec succès.");
+      const savedToDb = await setSetting('hijri_offset', hijriOffset.toString());
+      if (savedToDb) {
+        showNotification("Ajustement du calendrier musulman enregistré avec succès.");
+      } else {
+        showNotification("Réglage sauvegardé localement seulement — base de données injoignable.", "error");
+      }
     } catch {
       showNotification("Erreur lors de la sauvegarde du réglage.", "error");
     }

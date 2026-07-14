@@ -14,18 +14,19 @@ const getSafeSupabase = () => {
 // Avoids hammering the API with repeated failed requests in the same session.
 const failedKeys = new Set<string>();
 
-export async function getSetting(key: string, defaultValue: string): Promise<string> {
-  // Check localStorage first for instant client-side read
-  if (typeof window !== 'undefined') {
-    const cached = localStorage.getItem(`setting_${key}`);
-    if (cached !== null) return cached;
-  }
+// Dedupe concurrent fetches for the same key (Navbar + page can ask together).
+const inflight = new Map<string, Promise<string | null>>();
 
-  // If this key already failed (e.g. table doesn't exist), use the default.
-  if (failedKeys.has(key)) return defaultValue;
+const fetchSetting = (key: string): Promise<string | null> => {
+  if (failedKeys.has(key)) return Promise.resolve(null);
+
+  const pending = inflight.get(key);
+  if (pending) return pending;
 
   const supabase = getSafeSupabase();
-  if (supabase) {
+  if (!supabase) return Promise.resolve(null);
+
+  const request = (async () => {
     try {
       const { data, error } = await supabase
         .from('settings')
@@ -46,9 +47,26 @@ export async function getSetting(key: string, defaultValue: string): Promise<str
       console.warn(`Failed to fetch setting ${key} from Supabase, falling back to default/cache.`, e);
       failedKeys.add(key);
     }
+    return null;
+  })().finally(() => inflight.delete(key));
+
+  inflight.set(key, request);
+  return request;
+};
+
+export async function getSetting(key: string, defaultValue: string): Promise<string> {
+  // Serve the localStorage cache instantly, but revalidate in the background
+  // so admin changes (e.g. hijri_offset) reach returning visitors on next load.
+  if (typeof window !== 'undefined') {
+    const cached = localStorage.getItem(`setting_${key}`);
+    if (cached !== null) {
+      void fetchSetting(key);
+      return cached;
+    }
   }
 
-  return defaultValue;
+  const fresh = await fetchSetting(key);
+  return fresh ?? defaultValue;
 }
 
 export async function setSetting(key: string, value: string): Promise<boolean> {
