@@ -191,39 +191,6 @@
 [data-theme="light"] .text-emerald-400 { color: #14532d; }
 
 /* ═══════════════════════════════════════════════════════════
-   EXCEPTION — .force-dark
-   Cartes à fond photo sombre (ex : Nafila du jour) qui restent
-   « nuit » dans les deux thèmes : on annule la couche d'adaptation
-   clair ci-dessus pour que blanc et or restent lisibles.
-   ═══════════════════════════════════════════════════════════ */
-/* Les utilitaires Tailwind v4 (bg-black, from-black/80, …) résolvent
-   var(--color-*) : on rétablit les valeurs nuit dans la carte. */
-[data-theme="light"] .force-dark {
-  --color-white: #ffffff;
-  --color-black: #000000;
-  --color-gold: #c9a961;
-}
-
-[data-theme="light"] .force-dark .text-white     { color: #ffffff; }
-[data-theme="light"] .force-dark .text-white\/80 { color: rgba(255, 255, 255, 0.8); }
-[data-theme="light"] .force-dark .text-white\/70 { color: rgba(255, 255, 255, 0.7); }
-[data-theme="light"] .force-dark .text-white\/60 { color: rgba(255, 255, 255, 0.6); }
-[data-theme="light"] .force-dark .text-white\/50 { color: rgba(255, 255, 255, 0.5); }
-
-[data-theme="light"] .force-dark .text-gold      { color: #c9a961; }
-[data-theme="light"] .force-dark .text-gold\/90  { color: rgba(201, 169, 97, 0.9); }
-[data-theme="light"] .force-dark .text-gold\/60  { color: rgba(201, 169, 97, 0.6); }
-[data-theme="light"] .force-dark .text-gold\/50  { color: rgba(201, 169, 97, 0.5); }
-
-[data-theme="light"] .force-dark .border-white\/10 { border-color: rgba(255, 255, 255, 0.1); }
-[data-theme="light"] .force-dark .border-white\/5  { border-color: rgba(255, 255, 255, 0.07); }
-[data-theme="light"] .force-dark .border-gold\/30  { border-color: rgba(201, 169, 97, 0.35); }
-
-[data-theme="light"] .force-dark .hover\:bg-gold:hover     { background-color: #c9a961; }
-[data-theme="light"] .force-dark .hover\:text-black:hover  { color: #000000; }
-[data-theme="light"] .force-dark .hover\:border-gold:hover { border-color: #c9a961; }
-
-/* ═══════════════════════════════════════════════════════════
    BASE
    ═══════════════════════════════════════════════════════════ */
 html {

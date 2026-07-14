@@ -115,26 +115,14 @@ export default function LibraryPage() {
 
         {/* ─── Nafila du jour ─── */}
         <section>
-          <div className="force-dark relative p-10 md:p-12 rounded-3xl overflow-hidden border border-white/10 bg-black group transition-all duration-500 hover:shadow-2xl hover:shadow-gold/5">
-            {/* Background image blurred and darkened */}
-            <div 
-              className="absolute inset-0 transition-transform duration-700 group-hover:scale-105 pointer-events-none"
-              style={{ 
-                backgroundImage: 'url("/images/nafilah-bg.jpg")', 
-                backgroundSize: 'cover', 
-                backgroundPosition: 'center',
-                filter: 'blur(3px) brightness(0.35)'
-              }}
-            />
-            {/* Dark gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 pointer-events-none" />
-
-            <div className="relative z-10 space-y-6">
+          <div className="card relative p-10 md:p-12 overflow-hidden"
+            style={{ borderColor: 'var(--border-gold)', background: 'color-mix(in srgb, var(--accent) 5%, transparent)' }}>
+            <div className="space-y-6">
               {/* Header */}
               <div className="flex items-center justify-between gap-4">
                 <div className="flex items-center gap-2">
                   <span className="text-gold text-lg">❖</span>
-                  <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-gold/90">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-gold">
                     Recommandation du Jour
                   </span>
                 </div>
@@ -147,10 +135,10 @@ export default function LibraryPage() {
                 <div className="space-y-6">
                   {/* Title & Description */}
                   <div className="space-y-3 text-left">
-                    <h3 className="font-display text-3xl font-light tracking-tight text-white">
+                    <h3 className="font-display text-3xl font-light tracking-tight text-adaptive-primary">
                       {selectedNafila.title}
                     </h3>
-                    <p className="font-reading text-base text-white/70 leading-relaxed max-w-3xl">
+                    <p className="font-reading text-base text-adaptive-secondary leading-relaxed max-w-3xl">
                       {selectedNafila.description}
                     </p>
                   </div>
@@ -161,34 +149,32 @@ export default function LibraryPage() {
                       <span className="text-[9px] uppercase tracking-widest font-black text-gold/60 block">
                         Bienfaits & Grâce
                       </span>
-                      <p className="text-sm text-white/60 italic leading-relaxed max-w-3xl">
+                      <p className="text-sm text-adaptive-muted italic leading-relaxed max-w-3xl">
                         {selectedNafila.reward}
                       </p>
                     </div>
                   )}
 
                   {/* Actions / Wird */}
-                  <div className="flex items-center justify-between gap-6 flex-wrap pt-4 border-t border-white/5">
+                  <div className="flex items-center justify-between gap-6 flex-wrap pt-4"
+                    style={{ borderTop: '1px solid var(--border-subtle)' }}>
                     <div className="flex items-center gap-3">
                       {selectedNafila.wird && (
-                        <div className="flex items-center gap-2 text-xs text-white/50">
+                        <div className="flex items-center gap-2 text-xs text-adaptive-muted">
                           <span className="text-gold">❖</span>
-                          <span className="font-medium">Litanies : <span className="text-white/80">{selectedNafila.wird}</span></span>
+                          <span className="font-medium">Litanies : <span className="text-adaptive-primary">{selectedNafila.wird}</span></span>
                         </div>
                       )}
                     </div>
-                    
-                    <Link 
-                      href={getNafilaUrl(selectedNafila)} 
-                      className="px-6 py-2.5 rounded-lg border border-gold/30 text-gold text-xs font-bold uppercase tracking-wider hover:bg-gold hover:text-black hover:border-gold transition-all duration-300 flex items-center gap-2 active:scale-95"
-                    >
+
+                    <Link href={getNafilaUrl(selectedNafila)} className="btn-gold">
                       Ouvrir la Nafila
-                      <Icon name="arrow_forward" className="text-xs" />
+                      <Icon name="arrow_forward" className="text-lg" />
                     </Link>
                   </div>
                 </div>
               ) : (
-                <p className="font-reading text-sm text-white/50 italic leading-relaxed text-left">
+                <p className="font-reading text-sm text-adaptive-muted italic leading-relaxed text-left">
                   Retrouvez les wirds quotidiens et lectures recommandées aux Parties 17 et 19.
                 </p>
               )}
