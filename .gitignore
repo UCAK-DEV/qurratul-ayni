@@ -40,3 +40,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 *.swp
+
+# fichiers locaux non commités
+PROMPTS_PUB_IA.md
+conversation_details.txt

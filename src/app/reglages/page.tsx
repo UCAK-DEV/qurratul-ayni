@@ -1,9 +1,11 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useTheme } from '@/context/ThemeContext';
 import { useNotifications } from '@/context/NotificationContext';
+import { DEVELOPERS } from '@/utils/site';
 import Icon from '@/components/Icon';
 
 const FONT_SIZES = [90, 100, 115, 130, 145];
@@ -188,6 +190,39 @@ export default function SettingsPage() {
               Activer les notifications
             </button>
           )}
+        </section>
+
+        {/* Groupe : À propos */}
+        <section className="space-y-3">
+          <p className="one-ui-group-label">À propos</p>
+          <div className="one-ui-list">
+            <Link href="/a-propos" className="one-ui-row">
+              <div className="one-ui-row-icon">
+                <Icon name="info" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="one-ui-row-title">À propos des développeurs</p>
+                <p className="one-ui-row-sub">Qui a créé Qurratul Ayni</p>
+              </div>
+              <Icon name="chevron_right" className="text-adaptive-muted" />
+            </Link>
+
+            {DEVELOPERS.map(dev => (
+              <React.Fragment key={dev.name}>
+                <div className="one-ui-row-divider" />
+                <a href={dev.url} target="_blank" rel="noopener" className="one-ui-row">
+                  <div className="one-ui-row-icon">
+                    <Icon name="school" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="one-ui-row-title">{dev.name}</p>
+                    <p className="one-ui-row-sub">Portfolio · @{dev.alias}</p>
+                  </div>
+                  <Icon name="open_in_new" className="text-adaptive-muted text-base" />
+                </a>
+              </React.Fragment>
+            ))}
+          </div>
         </section>
 
         <p className="text-center text-sm text-adaptive-muted flex items-center justify-center gap-1.5 pt-2">

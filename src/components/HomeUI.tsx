@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useLearning } from '@/context/LearningContext';
 import { Chapter } from '@/data/chapters';
 import { NafilaRecommendation } from '@/data/nafilas';
+import { DEVELOPERS } from '@/utils/site';
 import Icon from '@/components/Icon';
 
 interface HomeUIProps {
@@ -207,6 +208,28 @@ export default function HomeUI({ chapters, selectedNafila, hijriFormatted }: Hom
         <div className="section-rule mb-6" />
         <p className="font-amiri text-xl text-gold/60 mb-2" dir="rtl">قرة العين</p>
         <p className="text-sm text-adaptive-muted">Projet Qurratul Ayni · 2026</p>
+        <p className="text-xs text-adaptive-muted mt-3">
+          Développé par{' '}
+          {DEVELOPERS.map((dev, i) => (
+            <React.Fragment key={dev.name}>
+              {i > 0 && ' & '}
+              <a
+                href={dev.url}
+                target="_blank"
+                rel="noopener"
+                className="text-gold/70 hover:text-gold underline-offset-2 hover:underline transition-colors"
+              >
+                {dev.name}
+              </a>
+            </React.Fragment>
+          ))}
+        </p>
+        <Link
+          href="/a-propos"
+          className="inline-block mt-2 text-xs text-adaptive-muted hover:text-gold transition-colors underline-offset-2 hover:underline"
+        >
+          À propos des développeurs
+        </Link>
       </footer>
     </div>
   );
