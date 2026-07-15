@@ -3,6 +3,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useTheme } from '@/context/ThemeContext';
+import { useNotifications } from '@/context/NotificationContext';
 import Icon from '@/components/Icon';
 
 const FONT_SIZES = [90, 100, 115, 130, 145];
@@ -12,6 +13,14 @@ const LINE_LABELS = ['Compact', 'Normal', 'Aéré', 'Large'];
 
 export default function SettingsPage() {
   const { readingSettings, setReadingSettings, theme, toggleTheme } = useTheme();
+  const {
+    notifications,
+    unreadCount,
+    permission: notificationPermission,
+    markAllAsRead,
+    clearAll,
+    requestPermission,
+  } = useNotifications();
   const router = useRouter();
 
   const fontIndex = Math.max(0, FONT_SIZES.indexOf(readingSettings.fontSize));
@@ -130,6 +139,55 @@ export default function SettingsPage() {
             </div>
 
           </div>
+        </section>
+
+        {/* Groupe : Notifications */}
+        <section className="space-y-3">
+          <div className="flex items-center justify-between">
+            <p className="one-ui-group-label">Notifications</p>
+            {notifications.length > 0 && (
+              <div className="flex gap-3 text-xs pr-1">
+                {unreadCount > 0 && (
+                  <button onClick={markAllAsRead} className="text-gold hover:underline">Tout lire</button>
+                )}
+                <button onClick={clearAll} className="text-gold hover:underline">Effacer</button>
+              </div>
+            )}
+          </div>
+          <div className="one-ui-list">
+            {notifications.length === 0 ? (
+              <p className="text-sm text-adaptive-muted italic text-center py-6">Aucune notification.</p>
+            ) : (
+              notifications.map((n, i) => (
+                <React.Fragment key={n.id}>
+                  {i > 0 && <div className="one-ui-row-divider" />}
+                  <div className="one-ui-row items-start">
+                    <div className="one-ui-row-icon mt-0.5">
+                      <Icon name="notifications" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex justify-between items-start gap-2">
+                        <p className="one-ui-row-title">{n.title}</p>
+                        <span className="text-[11px] text-adaptive-muted whitespace-nowrap shrink-0">{n.time}</span>
+                      </div>
+                      <p className="one-ui-row-sub leading-relaxed">{n.body}</p>
+                    </div>
+                    {!n.read && <span className="w-2 h-2 rounded-full bg-gold shrink-0 mt-1.5" />}
+                  </div>
+                </React.Fragment>
+              ))
+            )}
+          </div>
+
+          {notificationPermission === 'default' && (
+            <button
+              onClick={requestPermission}
+              className="w-full py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-gold transition-all"
+              style={{ background: 'rgba(212, 175, 55, 0.1)', border: '1px solid var(--border-gold)' }}
+            >
+              Activer les notifications
+            </button>
+          )}
         </section>
 
         <p className="text-center text-sm text-adaptive-muted flex items-center justify-center gap-1.5 pt-2">

@@ -6,6 +6,7 @@ import { ThemeProvider } from '@/context/ThemeContext';
 import { LearningProvider } from '@/context/LearningContext';
 import { BookmarkProvider } from '@/context/BookmarkContext';
 import { DataProvider } from '@/context/DataContext';
+import { NotificationProvider } from '@/context/NotificationContext';
 import { AudioProvider, useAudio } from '@/context/AudioContext';
 import { AppPWAProvider } from '@/components/AppPWAProvider';
 
@@ -29,21 +30,23 @@ export const AppProviders = ({ children }: { children: React.ReactNode }) => {
         <LearningProvider>
           <BookmarkProvider>
             <DataProvider>
-              <AudioProvider>
-                 <AppPWAProvider>
-                  <div className="flex h-screen text-gray-900 dark:text-gray-100">
+              <NotificationProvider>
+                <AudioProvider>
+                   <AppPWAProvider>
+                    <div className="flex h-screen text-gray-900 dark:text-gray-100">
 
-                    <div className="flex-1 flex flex-col overflow-hidden">
-                      <Navbar />
-                      <MainContent>
-                        {children}
-                      </MainContent>
-                      <Player />
-                      <PWAInstallPrompt />
+                      <div className="flex-1 flex flex-col overflow-hidden">
+                        <Navbar />
+                        <MainContent>
+                          {children}
+                        </MainContent>
+                        <Player />
+                        <PWAInstallPrompt />
+                      </div>
                     </div>
-                  </div>
-                </AppPWAProvider>
-              </AudioProvider>
+                  </AppPWAProvider>
+                </AudioProvider>
+              </NotificationProvider>
             </DataProvider>
           </BookmarkProvider>
         </LearningProvider>
