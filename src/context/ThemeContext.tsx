@@ -27,23 +27,17 @@ const THEME_COLORS: Record<Theme, string> = {
 
 const applyTheme = (t: Theme) => {
   const html = document.documentElement;
-  html.setAttribute('data-theme', t);
+  html.setAttribute('data-theme', 'dark');
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute('content', THEME_COLORS[t]);
+  if (meta) meta.setAttribute('content', THEME_COLORS['dark']);
 };
 
-// Résout le thème initial depuis le DOM (déjà positionné par le script
-// anti-scintillement dans <head>), sinon « sombre » par défaut.
 const getInitialTheme = (): Theme => {
-  if (typeof document !== 'undefined') {
-    const t = document.documentElement.getAttribute('data-theme');
-    if (t === 'light' || t === 'dark') return t;
-  }
   return 'dark';
 };
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [theme, setTheme] = useState<Theme>(getInitialTheme);
+  const [theme] = useState<Theme>('dark');
   const [isFocusMode, setIsFocusMode] = useState(false);
   const [readingSettings, setReadingSettings] = useState<ReadingSettings>({
     fontSize: 100,
@@ -51,9 +45,9 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   });
 
   useEffect(() => {
-    // Le thème est déjà résolu (script <head> + initialisation ci-dessus).
-    // On ne charge ici que les préférences de lecture (de façon différée
-    // pour ne pas déclencher de rendu en cascade).
+    applyTheme('dark');
+    try { localStorage.setItem('theme', 'dark'); } catch { /* ignore */ }
+    
     try {
       const saved = localStorage.getItem('readingSettings');
       if (saved) {
@@ -66,12 +60,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const toggleTheme = () => {
-    setTheme(prev => {
-      const next: Theme = prev === 'dark' ? 'light' : 'dark';
-      applyTheme(next);
-      try { localStorage.setItem('theme', next); } catch { /* ignore */ }
-      return next;
-    });
+    // Mode sombre uniquement, pas de basculement vers le mode clair.
   };
 
   const updateSettings = (newSettings: ReadingSettings) => {

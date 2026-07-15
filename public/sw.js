@@ -39,6 +39,11 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   const { request } = event;
 
+  // Only handle GET requests and http/https schemes
+  if (request.method !== 'GET' || !request.url.startsWith('http')) {
+    return;
+  }
+
   // 1. NE PAS intercepter l'audio (pour éviter les erreurs de streaming 206)
   // 2. NE PAS intercepter Supabase
   if (request.url.includes('.mp3') || request.url.includes('supabase.co')) {

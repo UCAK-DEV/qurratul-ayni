@@ -4,7 +4,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'Qurratul Ayni',
     short_name: 'Q. Ayni',
-    description: 'Enseignements de Serigne Shouhaïbou Mbacké',
+    description: "Une immersion spirituelle dans l'œuvre majeure de Serigne Chouhaïbou Mbacké.",
     start_url: '/',
     scope: '/',
     id: '/',
