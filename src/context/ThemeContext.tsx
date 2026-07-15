@@ -27,17 +27,22 @@ const THEME_COLORS: Record<Theme, string> = {
 
 const applyTheme = (t: Theme) => {
   const html = document.documentElement;
-  html.setAttribute('data-theme', 'dark');
+  html.setAttribute('data-theme', t);
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute('content', THEME_COLORS['dark']);
+  if (meta) meta.setAttribute('content', THEME_COLORS[t]);
 };
 
 const getInitialTheme = (): Theme => {
+  if (typeof window === 'undefined') return 'dark';
+  try {
+    const saved = localStorage.getItem('theme');
+    if (saved === 'light' || saved === 'dark') return saved;
+  } catch { /* ignore */ }
   return 'dark';
 };
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [theme] = useState<Theme>('dark');
+  const [theme, setTheme] = useState<Theme>(getInitialTheme);
   const [isFocusMode, setIsFocusMode] = useState(false);
   const [readingSettings, setReadingSettings] = useState<ReadingSettings>({
     fontSize: 100,
@@ -45,9 +50,11 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   });
 
   useEffect(() => {
-    applyTheme('dark');
-    try { localStorage.setItem('theme', 'dark'); } catch { /* ignore */ }
-    
+    applyTheme(theme);
+    try { localStorage.setItem('theme', theme); } catch { /* ignore */ }
+  }, [theme]);
+
+  useEffect(() => {
     try {
       const saved = localStorage.getItem('readingSettings');
       if (saved) {
@@ -60,7 +67,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const toggleTheme = () => {
-    // Mode sombre uniquement, pas de basculement vers le mode clair.
+    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
   };
 
   const updateSettings = (newSettings: ReadingSettings) => {

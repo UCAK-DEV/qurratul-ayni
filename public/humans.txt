@@ -1,0 +1,15 @@
+/* TEAM */
+Cofondateur & Développeur Full-Stack : Makhtar Wade (almuxtaardev)
+Portfolio : https://almuxtaardev.vercel.app
+
+Cofondateur & Développeur Full-Stack : Pape Makhtar Aidara
+Portfolio : https://pma-portfolio.vercel.app
+
+/* SITE */
+Nom : Qurratul Ayni (قرة العين)
+URL : https://qurratulayni.com
+Langues : Français, Arabe
+Technologies : Next.js, React, Supabase, Tailwind CSS
+Hébergement : Vercel
+
+Étudiants à l'Université Cheikh Ahmadoul Khadim (UCAK), Touba, Sénégal.

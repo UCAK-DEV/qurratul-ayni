@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { Inter, Lora, Amiri } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import { AppProviders } from '@/components/AppProviders';
+import { SITE_URL, SITE_NAME, SITE_TITLE, SITE_DESCRIPTION, OG_IMAGE, DEVELOPERS } from '@/utils/site';
 import './globals.css';
 
 const inter = Inter({
@@ -26,30 +27,102 @@ const amiri = Amiri({
   display: 'swap',
 });
 
-const SITE_URL = 'https://qurratul-ayni.vercel.app';
-const OG_IMAGE = `${SITE_URL}/og-image.png`;
+const SITE_JSON_LD = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': `${SITE_URL}/#website`,
+      url: SITE_URL,
+      name: SITE_NAME,
+      alternateName: 'قرة العين',
+      description: SITE_DESCRIPTION,
+      inLanguage: 'fr',
+      publisher: { '@id': `${SITE_URL}/#organization` },
+    },
+    {
+      '@type': 'Organization',
+      '@id': `${SITE_URL}/#organization`,
+      name: SITE_NAME,
+      url: SITE_URL,
+      logo: `${SITE_URL}/icon-512.png`,
+      founder: DEVELOPERS.map(dev => ({
+        '@type': 'Person',
+        name: dev.name,
+        alternateName: dev.alias,
+        url: dev.url,
+        jobTitle: dev.role,
+        sameAs: [dev.url],
+      })),
+    },
+    {
+      '@type': 'WebApplication',
+      name: SITE_NAME,
+      url: SITE_URL,
+      applicationCategory: 'EducationalApplication',
+      operatingSystem: 'Web',
+      inLanguage: 'fr',
+      description: SITE_DESCRIPTION,
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'XOF' },
+      author: DEVELOPERS.map(dev => ({
+        '@type': 'Person',
+        name: dev.name,
+        alternateName: dev.alias,
+        url: dev.url,
+      })),
+    },
+  ],
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
 
   /* ── Titre & description ── */
   title: {
-    default: 'Qurratul Ayni — قرة العين',
+    default: SITE_TITLE,
     template: '%s · Qurratul Ayni',
   },
-  description:
-    'Bibliothèque spirituelle digitale des enseignements de Serigne Shouhaïbou Mbacké — jurisprudence islamique, prières, nafilas quotidiennes.',
+  description: SITE_DESCRIPTION,
   keywords: [
     'Qurratul Ayni',
     'قرة العين',
     'Serigne Shouhaibou Mbacké',
+    'Serigne Shouhaïbou Mbacké',
     'mouride',
+    'mouridisme',
+    'Touba',
     'islam',
+    'fiqh',
     'jurisprudence islamique',
+    'piliers de l\'islam',
+    'prière en islam',
+    'salat',
+    'zakat',
+    'jeûne du ramadan',
+    'pèlerinage hajj',
+    'mariage en islam',
+    'divorce en islam',
+    'purification taharah',
     'nafilas',
+    'nafila ramadan',
     'wird',
+    'invocations islamiques',
     'bibliothèque islamique',
+    'enseignements islamiques en français',
   ],
+
+  /* ── Auteurs & application ── */
+  applicationName: SITE_NAME,
+  authors: DEVELOPERS.map(dev => ({ name: dev.name, url: dev.url })),
+  creator: 'Makhtar Wade (almuxtaardev) & Pape Makhtar Aidara',
+  publisher: SITE_NAME,
+  category: 'education',
+  alternates: {
+    canonical: '/',
+  },
+  formatDetection: {
+    telephone: false,
+  },
 
   /* ── Open Graph (WhatsApp · Telegram · Discord · iMessage) ── */
   openGraph: {
@@ -98,7 +171,18 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true },
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
+    },
+  },
+
+  /* ── Vérification moteurs de recherche (Search Console) ── */
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
   },
 };
 
@@ -126,6 +210,11 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
       </head>
       <body className="antialiased">
+        {/* Données structurées schema.org (WebSite + Organization + WebApplication) */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(SITE_JSON_LD) }}
+        />
         <AppProviders>
           {children}
         </AppProviders>

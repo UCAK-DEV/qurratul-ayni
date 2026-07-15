@@ -1,0 +1,36 @@
+# Qurratul Ayni (قرة العين)
+
+> Bibliothèque spirituelle digitale des enseignements de Serigne Shouhaïbou Mbacké : jurisprudence islamique (fiqh) selon le rite malikite, prières, wirds et nafilas quotidiennes, avec audiothèque intégrée. Application web progressive (PWA) gratuite, en français et en arabe.
+
+Site officiel : https://qurratulayni.com
+
+## À propos de la plateforme
+
+Qurratul Ayni est une plateforme éducative islamique qui numérise et structure l'œuvre « Qurratul Ayni » de Serigne Shouhaïbou Mbacké, érudit mouride de Touba (Sénégal). Elle couvre notamment :
+
+- La profession de foi (Chahada) et les fondements du Tawhid
+- La purification (Taharah) et les règles détaillées de la prière (Salat)
+- L'aumône légale (Zakat) et le jeûne du Ramadan (Sawm)
+- Le pèlerinage (Hajj et Umrah)
+- Le mariage, la vie familiale, le divorce et la retraite légale (Iddah)
+- Les transactions commerciales (Muamalat), la nourriture, les serments et vœux
+- Les nafilas quotidiennes et de Ramadan, les invocations et wirds
+- Une audiothèque complète des enseignements
+
+## Fondateurs
+
+La plateforme a été conçue et développée par deux étudiants de l'Université Cheikh Ahmadoul Khadim (UCAK, Touba, Sénégal) :
+
+- **Makhtar Wade** (pseudo : **almuxtaardev**) — Cofondateur & Développeur Full-Stack. Portfolio : https://almuxtaardev.vercel.app
+- **Pape Makhtar Aidara** — Cofondateur & Développeur Full-Stack. Portfolio : https://pma-portfolio.vercel.app
+
+## Pages principales
+
+- [Accueil](https://qurratulayni.com/) : sommaire des chapitres, nafila du jour, date hijri
+- [Audiothèque](https://qurratulayni.com/audio) : écoute des enseignements audio
+- [À propos](https://qurratulayni.com/a-propos) : présentation des développeurs
+- [Plan du site](https://qurratulayni.com/sitemap.xml) : toutes les pages de contenu
+
+## Technologies
+
+Next.js (App Router), React, Supabase, Tailwind CSS — déployée sur Vercel.
