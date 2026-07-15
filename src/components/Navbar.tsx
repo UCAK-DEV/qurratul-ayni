@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import Icon from '@/components/Icon';
 import { Chapter } from '@/data/chapters';
@@ -10,8 +11,10 @@ import { useTheme } from '@/context/ThemeContext';
 import { useData } from '@/context/DataContext';
 import { useLearning } from '@/context/LearningContext';
 import { useNotifications } from '@/context/NotificationContext';
-import Fuse from 'fuse.js';
 import { SearchOverlay } from './SearchOverlay';
+import { NotificationPanel } from './NotificationPanel';
+import { AudioLibrarySheet } from './AudioLibrarySheet';
+import { SearchBox } from './SearchBox';
 
 const GROUP_ORDER = ["Introduction", "Les Piliers", "Rites et Société", "Jurisprudence", "Spiritualité"];
 
@@ -422,97 +425,6 @@ const ChaptersBottomSheet: React.FC<{
   );
 };
 
-// ─── Mobile Search Sheet ───────────────────────────────────────────────────────
-const SearchSheet: React.FC<{
-  isOpen: boolean;
-  onClose: () => void;
-  chapters: Chapter[];
-}> = ({ isOpen, onClose, chapters }) => {
-  const router = useRouter();
-  const [query, setQuery] = useState('');
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  const fuse = useMemo(() => new Fuse(chapters, {
-    keys: ['titleFr', 'titleAr', 'desc'],
-    threshold: 0.35,
-  }), [chapters]);
-
-  const results = query.length > 1 ? fuse.search(query).map(r => r.item) : [];
-
-  useEffect(() => {
-    if (isOpen) {
-      setTimeout(() => inputRef.current?.focus(), 200);
-    } else {
-      // Reset query when sheet closes (deferred to avoid setState in effect body)
-      const timer = setTimeout(() => setQuery(''), 0);
-      return () => clearTimeout(timer);
-    }
-  }, [isOpen]);
-
-  return (
-    <AnimatePresence>
-      {isOpen && (
-        <>
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="bottom-sheet-backdrop" onClick={onClose} />
-          <motion.div
-            initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
-            transition={{ type: 'spring', damping: 32, stiffness: 280 }}
-            className="bottom-sheet-panel"
-            style={{ maxHeight: '75vh' }}
-          >
-            <div className="bottom-sheet-handle" />
-            <div className="px-4 py-3">
-              <div className="flex items-center gap-3 px-4 py-3 rounded-2xl" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-medium)' }}>
-                <Icon name="search" style={{ color: 'var(--accent)' }} />
-                <input
-                  ref={inputRef}
-                  type="text"
-                  placeholder="Rechercher un chapitre..."
-                  value={query}
-                  onChange={e => setQuery(e.target.value)}
-                  className="flex-1 bg-transparent text-sm outline-none"
-                  style={{ color: 'var(--text-primary)' }}
-                />
-                {query && (
-                  <button onClick={() => setQuery('')} style={{ color: 'var(--text-muted)' }}>
-                    <Icon name="close" className="text-base" />
-                  </button>
-                )}
-              </div>
-            </div>
-            <div className="flex-1 overflow-y-auto px-4 pt-2 pb-6" style={{ paddingBottom: 'calc(1.5rem + env(safe-area-inset-bottom))' }}>
-              {query.length > 1 && results.length === 0 && (
-                <p className="text-center py-8 text-sm font-reading" style={{ color: 'var(--text-muted)' }}>
-                  Aucun résultat pour « {query} »
-                </p>
-              )}
-              {results.map(chapter => (
-                <button
-                  key={chapter.id}
-                  onClick={() => { router.push(`/partie/${chapter.id}`); onClose(); }}
-                  className="w-full flex items-center gap-3 p-3 rounded-xl mb-2 text-left active:scale-[0.98] transition-all"
-                  style={{ background: 'var(--bg-card)' }}
-                >
-                  <Icon name={chapter.icon} className="text-gold text-lg" />
-                  <div>
-                    <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>{chapter.titleFr}</p>
-                    <p className="text-xs font-amiri" style={{ color: 'var(--text-muted)' }}>{chapter.titleAr}</p>
-                  </div>
-                </button>
-              ))}
-              {query.length <= 1 && (
-                <p className="text-center py-6 text-xs uppercase tracking-widest font-bold" style={{ color: 'var(--text-muted)' }}>
-                  Tapez pour rechercher
-                </p>
-              )}
-            </div>
-          </motion.div>
-        </>
-      )}
-    </AnimatePresence>
-  );
-};
 
 // ─── Main Navbar ───────────────────────────────────────────────────────────────
 export const Navbar = () => {
@@ -520,48 +432,36 @@ export const Navbar = () => {
   const [showNav, setShowNav] = useState(true);
   const lastScrollY = useRef(0);
   const [isChaptersOpen, setIsChaptersOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
   const [isSearchOverlayOpen, setIsSearchOverlayOpen] = useState(false);
   // settings state removed
-  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [mobileChaptersOpen, setMobileChaptersOpen] = useState(false);
+  const [mobileAudioOpen, setMobileAudioOpen] = useState(false);
+  const [mobileNotificationsOpen, setMobileNotificationsOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
   const pathname = usePathname();
   const chaptersRef = useRef<HTMLLIElement>(null);
-  const searchRef = useRef<HTMLLIElement>(null);
   const notificationsRef = useRef<HTMLDivElement>(null);
+  const mobileNotificationsRef = useRef<HTMLDivElement>(null);
   const { chapters } = useData();
   const { isCompleted } = useLearning();
-  const {
-    notifications: inAppNotifications,
-    unreadCount,
-    permission: notificationPermission,
-    markAllAsRead: markAllNotificationsAsRead,
-    clearAll: clearNotifications,
-    requestPermission: requestNotificationPermission,
-  } = useNotifications();
+  const { unreadCount } = useNotifications();
   const [showNotificationCenter, setShowNotificationCenter] = useState<boolean>(false);
 
   const groupedChapters = useMemo(() =>
     chapters.reduce((acc, c) => { (acc[c.group] = acc[c.group] || []).push(c); return acc; }, {} as Record<string, Chapter[]>)
   , [chapters]);
 
-  const desktopFuse = useMemo(() => new Fuse(chapters, {
-    keys: ['titleFr', 'titleAr', 'desc'],
-    threshold: 0.35,
-  }), [chapters]);
-
-  const desktopResults: Chapter[] = searchQuery.length > 1
-    ? desktopFuse.search(searchQuery).map(r => r.item)
-    : [];
-
   useEffect(() => {
+    // Le contenu défile en réalité dans le <main> interne (overflow-y-auto),
+    // pas dans window — on écoute donc le bon conteneur.
+    const scrollEl = document.querySelector('main');
+    const getScrollTop = () => scrollEl ? scrollEl.scrollTop : (window.scrollY || document.documentElement.scrollTop);
+
     const onScroll = () => {
-      const currentScrollY = window.scrollY || document.documentElement.scrollTop;
+      const currentScrollY = getScrollTop();
       setIsScrolled(currentScrollY > 50);
-      
+
       // Auto-hide logic (Mobile only)
       if (window.innerWidth < 768) {
         if (currentScrollY <= 50) {
@@ -579,18 +479,19 @@ export const Navbar = () => {
       }
       lastScrollY.current = currentScrollY;
     };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    const target: HTMLElement | Window = scrollEl ?? window;
+    target.addEventListener('scroll', onScroll, { passive: true });
+    return () => target.removeEventListener('scroll', onScroll);
   }, []);
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (chaptersRef.current && !chaptersRef.current.contains(e.target as Node)) setIsChaptersOpen(false);
-      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
-        setIsSearchOpen(false);
-      }
       if (notificationsRef.current && !notificationsRef.current.contains(e.target as Node)) {
         setShowNotificationCenter(false);
+      }
+      if (mobileNotificationsRef.current && !mobileNotificationsRef.current.contains(e.target as Node)) {
+        setMobileNotificationsOpen(false);
       }
     };
     document.addEventListener('mousedown', handler);
@@ -616,8 +517,8 @@ export const Navbar = () => {
 
           {/* ── LOGO DESKTOP ── */}
           <Link href="/" className="hidden md:flex items-center gap-3 z-50 group" aria-label="Accueil Qurratul Ayni">
-            <div className="w-10 h-10 border rounded-[0.85rem] flex items-center justify-center transition-all bg-gold/10 border-gold/30 group-hover:border-gold group-hover:bg-gold/20">
-              <Icon name="auto_stories" className="text-gold text-xl group-hover:scale-110 transition-transform" />
+            <div className="w-10 h-10 rounded-[0.85rem] overflow-hidden transition-transform group-hover:scale-110">
+              <Image src="/favicon.png" alt="" width={40} height={40} className="w-full h-full object-cover" priority />
             </div>
             <div className="flex flex-col opacity-90 group-hover:opacity-100 transition-opacity">
               <span className="font-amiri text-gold text-[12px] leading-none tracking-wider mb-0.5">
@@ -664,71 +565,8 @@ export const Navbar = () => {
                 )}
               </AnimatePresence>
             </li>
-            <li className="relative flex items-center" ref={searchRef}>
-              <div 
-                className="flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all duration-300 w-36 focus-within:w-52 bg-white/[0.03] border-white/15 focus-within:border-gold/50 focus-within:bg-black/25 hover:bg-white/[0.06]"
-              >
-                <Icon name="search" className="text-gold text-sm" />
-                <input
-                  type="text"
-                  placeholder="Rechercher..."
-                  value={searchQuery}
-                  onChange={e => {
-                    setSearchQuery(e.target.value);
-                    if (!isSearchOpen && e.target.value.length > 0) {
-                      setIsSearchOpen(true);
-                    }
-                  }}
-                  onFocus={() => setIsSearchOpen(true)}
-                  className="bg-transparent outline-none text-xs w-full text-white placeholder-white/40 font-medium"
-                />
-                {searchQuery && (
-                  <button 
-                    onClick={() => {
-                      setSearchQuery('');
-                      setIsSearchOpen(false);
-                    }} 
-                    className="text-gray-400 hover:text-gray-200 transition-colors"
-                  >
-                    <Icon name="close" className="text-[10px]" />
-                  </button>
-                )}
-              </div>
-              <AnimatePresence>
-                {isSearchOpen && searchQuery.length > 0 && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10, scale: 0.97 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 10, scale: 0.97 }}
-                    transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                    className="absolute top-full right-0 mt-3 w-80 rounded-2xl border shadow-2xl p-3.5 z-50"
-                    style={{ background: 'var(--bg-surface)', borderColor: 'var(--border-medium)' }}
-                  >
-                    <div className="max-h-60 overflow-y-auto space-y-1">
-                      {desktopResults.length > 0 ? (
-                        desktopResults.map((c: Chapter) => (
-                          <Link
-                            key={c.id}
-                            href={`/partie/${c.id}`}
-                            onClick={() => { setIsSearchOpen(false); setSearchQuery(''); }}
-                            className="flex items-center gap-3 p-2 rounded-lg hover:bg-[color-mix(in srgb, var(--accent) 5%, transparent)] transition-colors text-left"
-                          >
-                            <Icon name={c.icon} className="text-gold text-base" />
-                            <div className="min-w-0 flex-1">
-                              <p className="text-xs font-semibold truncate" style={{ color: 'var(--text-primary)' }}>{c.titleFr}</p>
-                              <p className="text-sm truncate" style={{ color: 'var(--text-muted)' }}>{c.titleAr}</p>
-                            </div>
-                          </Link>
-                        ))
-                      ) : (
-                        <p className="text-center py-4 text-xs italic" style={{ color: 'var(--text-muted)' }}>
-                          Aucun résultat pour « {searchQuery} »
-                        </p>
-                      )}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+            <li className="flex items-center">
+              <SearchBox pillClassName="w-36 focus-within:w-52" dropdownClassName="w-80 right-0" />
             </li>
           </ul>
 
@@ -757,42 +595,7 @@ export const Navbar = () => {
                   className="absolute right-0 top-[calc(100%+0.5rem)] w-80 rounded-2xl border p-4 z-50 backdrop-blur-xl text-left animate-in fade-in slide-in-from-top-1"
                   style={{ background: 'var(--bg-nav)', borderColor: 'var(--border-medium)' }}
                 >
-                  <div className="flex justify-between items-center pb-2 border-b mb-3" style={{ borderColor: 'var(--border-subtle)' }}>
-                    <h4 className="text-xs font-semibold text-gold">Notifications</h4>
-                    <div className="flex gap-2.5 text-[10px]">
-                      <button onClick={markAllNotificationsAsRead} className="text-white/40 hover:text-gold transition-colors">Tout lire</button>
-                      <button onClick={clearNotifications} className="text-white/40 hover:text-gold transition-colors">Effacer</button>
-                    </div>
-                  </div>
-                  <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
-                    {inAppNotifications.length === 0 ? (
-                      <p className="text-xs text-white/40 italic text-center py-4">Aucune notification.</p>
-                    ) : (
-                      inAppNotifications.map(notification => (
-                        <div key={notification.id}
-                          className="p-2.5 rounded-xl border transition-all"
-                          style={{
-                            background: notification.read ? 'transparent' : 'rgba(212, 175, 55, 0.05)',
-                            borderColor: notification.read ? 'var(--border-subtle)' : 'var(--border-gold)',
-                          }}>
-                          <div className="flex justify-between items-start gap-2 mb-1">
-                            <h5 className="text-[10px] font-bold text-white uppercase tracking-wider">{notification.title}</h5>
-                            <span className="text-[9px] text-white/40 whitespace-nowrap">{notification.time}</span>
-                          </div>
-                          <p className="text-xs text-white/70 leading-relaxed font-reading">{notification.body}</p>
-                        </div>
-                      ))
-                    )}
-                  </div>
-                  {notificationPermission === 'default' && (
-                    <button
-                      onClick={requestNotificationPermission}
-                      className="mt-3 w-full py-2 rounded-xl text-xs font-bold uppercase tracking-wider text-gold transition-all"
-                      style={{ background: 'rgba(212, 175, 55, 0.1)', border: '1px solid var(--border-gold)' }}
-                    >
-                      Activer les alertes
-                    </button>
-                  )}
+                  <NotificationPanel />
                 </motion.div>
               )}
             </AnimatePresence>
@@ -823,15 +626,60 @@ export const Navbar = () => {
         </div>
       </nav>
 
+      {/* ── MOBILE TOP BAR (logo + recherche + notifications) ────────────────── */}
+      <div
+        className={`md:hidden fixed top-0 inset-x-0 z-[100] flex items-center gap-2 px-4 pt-[calc(0.75rem+env(safe-area-inset-top))] pb-2 border-b transition-transform duration-500 ease-[cubic-bezier(0.33,1,0.68,1)] ${
+          !showNav && !mobileNotificationsOpen && !mobileChaptersOpen && !mobileAudioOpen ? '-translate-y-[150%]' : 'translate-y-0'
+        }`}
+        style={{ background: 'var(--bg-nav)', borderColor: 'var(--border-subtle)', backdropFilter: 'blur(20px)' }}
+      >
+        <Link href="/" className="flex-shrink-0 w-9 h-9 rounded-xl overflow-hidden" aria-label="Accueil Qurratul Ayni">
+          <Image src="/favicon.png" alt="" width={36} height={36} className="w-full h-full object-cover" />
+        </Link>
+
+        <div className="flex-1 min-w-0">
+          <SearchBox pillClassName="w-full" dropdownClassName="inset-x-0" />
+        </div>
+
+        <div className="relative flex-shrink-0" ref={mobileNotificationsRef}>
+          <button
+            onClick={() => setMobileNotificationsOpen(!mobileNotificationsOpen)}
+            aria-label="Centre de notifications"
+            className="w-9 h-9 liquid-glass-btn relative"
+          >
+            <Icon name="notifications" className="text-lg" />
+            {unreadCount > 0 && (
+              <span className="absolute -top-1 -right-1 min-w-4 h-4 px-1 rounded-full bg-gold text-[#241c07] font-bold text-[9px] flex items-center justify-center">
+                {unreadCount}
+              </span>
+            )}
+          </button>
+
+          <AnimatePresence>
+            {mobileNotificationsOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 12 }}
+                className="absolute right-0 top-[calc(100%+0.5rem)] w-[85vw] max-w-xs rounded-2xl border p-4 z-50 backdrop-blur-xl text-left"
+                style={{ background: 'var(--bg-nav)', borderColor: 'var(--border-medium)' }}
+              >
+                <NotificationPanel />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+
       {/* ── MOBILE BOTTOM TAB BAR ──────────────────────────────────────────── */}
       <nav
         className={`bottom-tab-bar md:hidden transition-transform duration-500 ease-[cubic-bezier(0.33,1,0.68,1)] ${
-          !showNav && !mobileChaptersOpen && !mobileSearchOpen && pathname !== '/reglages' ? 'translate-y-[150%]' : 'translate-y-0'
+          !showNav && !mobileChaptersOpen && !mobileAudioOpen && !mobileNotificationsOpen && pathname !== '/reglages' ? 'translate-y-[150%]' : 'translate-y-0'
         }`}
         aria-label="Navigation mobile"
       >
         {/* Home */}
-        <Link href="/" className={`bottom-tab-btn ${activeMobileTab === 'home' && !mobileChaptersOpen && !mobileSearchOpen ? 'active' : ''}`} onClick={() => { setMobileChaptersOpen(false); setMobileSearchOpen(false); }}>
+        <Link href="/" className={`bottom-tab-btn ${activeMobileTab === 'home' && !mobileChaptersOpen && !mobileAudioOpen ? 'active' : ''}`} onClick={() => { setMobileChaptersOpen(false); setMobileAudioOpen(false); }}>
           <Icon name="home" className="tab-icon" />
           <span className="tab-label">Accueil</span>
         </Link>
@@ -839,34 +687,31 @@ export const Navbar = () => {
         {/* Chapitres */}
         <button
           className={`bottom-tab-btn ${mobileChaptersOpen ? 'active' : ''}`}
-          onClick={() => { setMobileChaptersOpen(true); setMobileSearchOpen(false); }}
+          onClick={() => { setMobileChaptersOpen(true); setMobileAudioOpen(false); }}
           aria-label="Ouvrir les chapitres"
         >
           <Icon name="menu_book" className="tab-icon" />
           <span className="tab-label">Chapitres</span>
         </button>
 
-        {/* Search */}
+        {/* Audios */}
         <button
-          className={`bottom-tab-btn ${mobileSearchOpen ? 'active' : ''}`}
-          onClick={() => { setMobileSearchOpen(true); setMobileChaptersOpen(false); }}
-          aria-label="Rechercher"
+          className={`bottom-tab-btn ${mobileAudioOpen ? 'active' : ''}`}
+          onClick={() => { setMobileAudioOpen(true); setMobileChaptersOpen(false); }}
+          aria-label="Ouvrir la bibliothèque audio"
         >
-          <Icon name="search" className="tab-icon" />
-          <span className="tab-label">Chercher</span>
+          <Icon name="library_music" className="tab-icon" />
+          <span className="tab-label">Audios</span>
         </button>
 
-        {/* Settings — les notifications vivent désormais ici (badge discret) */}
+        {/* Settings */}
         <Link
           href="/reglages"
-          className={`bottom-tab-btn relative ${pathname === '/reglages' && !mobileChaptersOpen && !mobileSearchOpen ? 'active' : ''}`}
-          onClick={() => { setMobileChaptersOpen(false); setMobileSearchOpen(false); }}
-          aria-label={unreadCount > 0 ? `Réglages, ${unreadCount} notification(s) non lue(s)` : 'Réglages'}
+          className={`bottom-tab-btn ${pathname === '/reglages' && !mobileChaptersOpen && !mobileAudioOpen ? 'active' : ''}`}
+          onClick={() => { setMobileChaptersOpen(false); setMobileAudioOpen(false); }}
+          aria-label="Réglages"
         >
           <Icon name="tune" className="tab-icon" />
-          {unreadCount > 0 && (
-            <span className="absolute top-1.5 right-[calc(50%-14px)] w-2 h-2 rounded-full bg-gold" />
-          )}
           <span className="tab-label">Réglages</span>
         </Link>
       </nav>
@@ -878,10 +723,9 @@ export const Navbar = () => {
         groupedChapters={groupedChapters}
         isCompleted={isCompleted}
       />
-      <SearchSheet
-        isOpen={mobileSearchOpen}
-        onClose={() => setMobileSearchOpen(false)}
-        chapters={chapters}
+      <AudioLibrarySheet
+        isOpen={mobileAudioOpen}
+        onClose={() => setMobileAudioOpen(false)}
       />
 
       {/* ── SEARCH OVERLAY ─────────────────────────────────────────────────── */}

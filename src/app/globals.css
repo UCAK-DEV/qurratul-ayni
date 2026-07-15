@@ -542,6 +542,13 @@ a:focus-visible {
 }
 .animate-float-slow { animation: float-slow 9s ease-in-out infinite; }
 
+@keyframes vinyl-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.vinyl-disc { animation: vinyl-spin 6s linear infinite; }
+.vinyl-disc[data-paused="true"] { animation-play-state: paused; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;

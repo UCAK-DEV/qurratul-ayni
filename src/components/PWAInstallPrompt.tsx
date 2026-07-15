@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import Icon from '@/components/Icon';
 
 interface BeforeInstallPromptEvent extends Event {
@@ -117,11 +118,8 @@ export const PWAInstallPrompt = () => {
             {/* Header avec bouton fermer */}
             <div className="flex items-center justify-between pb-4 border-b border-white/5">
               <div className="flex items-center gap-2.5">
-                <div 
-                  className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                  style={{ background: 'var(--accent-gradient)' }}
-                >
-                  <Icon name="mosque" className="text-xl" style={{ color: 'var(--accent-contrast)' }} />
+                <div className="w-10 h-10 rounded-xl overflow-hidden flex-shrink-0">
+                  <Image src="/favicon.png" alt="" width={40} height={40} className="w-full h-full object-cover" />
                 </div>
                 <div className="text-left">
                   <h3 className="text-sm font-semibold tracking-wide text-white">
