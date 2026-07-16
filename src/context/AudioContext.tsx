@@ -307,8 +307,41 @@ export const AudioProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export const useAudio = () => {
+// Safe no-op fallback used during SSR (before AudioProvider mounts on the client)
+const AUDIO_FALLBACK: AudioContextType = {
+  currentChapter: null,
+  isPlaying: false,
+  progress: 0,
+  currentTime: 0,
+  duration: 0,
+  volume: 0.7,
+  playbackRate: 1.0,
+  isLooping: false,
+  isMuted: false,
+  isLoading: false,
+  error: null,
+  setChapter: () => {},
+  togglePlay: () => {},
+  seekTo: () => {},
+  setVolume: () => {},
+  toggleMute: () => {},
+  setPlaybackRate: () => {},
+  toggleLoop: () => {},
+  playNext: () => {},
+  playPrevious: () => {},
+  stop: () => {},
+  quitPlayback: () => {},
+  formatTime: (s: number) => {
+    if (isNaN(s)) return '00:00';
+    const m = Math.floor(s / 60);
+    const sec = Math.floor(s % 60);
+    return `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+  },
+};
+
+export const useAudio = (): AudioContextType => {
   const context = useContext(AudioContext);
-  if (!context) throw new Error("useAudio doit être utilisé dans un AudioProvider");
-  return context;
+  // During SSR or if the component renders before AudioProvider mounts,
+  // return a safe no-op object instead of crashing.
+  return context ?? AUDIO_FALLBACK;
 };
