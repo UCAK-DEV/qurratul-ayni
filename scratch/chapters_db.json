@@ -1,0 +1,192 @@
+[
+  {
+    "id": "1",
+    "titlear": "ملاحظات عن المؤلف",
+    "titlefr": "NOTES SUR L'AUTEUR",
+    "desc": "Biographie de Cheikh Abo Madyana Shouhaïbou Mbacké (1918-1991), éminent soufi et érudit de la Muridiyyah.",
+    "audiourl": "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C000.mp3",
+    "group": "Introduction",
+    "icon": "person",
+    "created_at": "2026-06-05T00:53:21.236463+00:00"
+  },
+  {
+    "id": "2",
+    "titlear": "مقدمة",
+    "titlefr": "PRÉFACE & AVANT - PROPOS",
+    "desc": "Cadre contextuel de la traduction du livre Khouratoul Ayni du Wolofal vers le français.",
+    "audiourl": "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C001.mp3",
+    "group": "Introduction",
+    "icon": "menu_book",
+    "created_at": "2026-06-05T00:53:21.236463+00:00"
+  },
+  {
+    "id": "3",
+    "titlear": "التوحيد",
+    "titlefr": "DE L'UNICITÉ DE DIEU",
+    "desc": "Enseignements sur l'Omnipotence, l'Omniscience et l'éternité de Dieu.",
+    "audiourl": "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C002.mp3",
+    "group": "Les Piliers",
+    "icon": "brightness_high",
+    "created_at": "2026-06-05T00:53:21.236463+00:00"
+  },
+  {
+    "id": "4",
+    "titlear": "محمد رسول الله",
+    "titlefr": "MOUHAMMADOUNE RASSOUL LOULAHI",
+    "desc": "Reconnaissance du Prophète Mouhammad (PSL) comme le Messager envoyé à toute l'humanité.",
+    "audiourl": "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C002.mp3",
+    "group": "Les Piliers",
+    "icon": "person",
+    "created_at": "2026-06-05T00:53:21.236463+00:00"
+  },
+  {
+    "id": "5",
+    "titlear": "العبادات",
+    "titlefr": "LES PRATIQUES RELIGIEUSES",
+    "desc": "Conditions de purification du corps, des habits et du lieu nécessaires à la prière.",
+    "audiourl": "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C003.mp3",
+    "group": "Les Piliers",
+    "icon": "spa",
+    "created_at": "2026-06-05T00:53:21.236463+00:00"
+  },
+  {
+    "id": "6",
+    "titlear": "الصلاة",
+    "titlefr": "LA PRIÈRE",
+    "desc": "Guide complet sur l'appel à la prière (Nodd), les obligations et les pratiques traditionnelles.",
+    "audiourl": "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C011.mp3",
+    "group": "Les Piliers",
+    "icon": "mosque",
+    "created_at": "2026-06-05T00:53:21.236463+00:00"
+  },
+  {
+    "id": "7",
+    "titlear": "المريض والميت",
+    "titlefr": "LE MALADE MOURANT",
+    "desc": "Règles sur l'accompagnement des mourants",
+    "audiourl": "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C026.mp3",
+    "group": "Rites et Société",
+    "icon": "personal_injury",
+    "created_at": "2026-06-05T00:53:21.236463+00:00"
+  },
+  {
+    "id": "8",
+    "titlear": "الميت",
+    "titlefr": "LE MORT",
+    "desc": "Le lavage mortuaire et l'inhumation.",
+    "audiourl": "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C028.mp3",
+    "group": "Rites et Société",
+    "icon": "nightlight",
+    "created_at": "2026-06-05T00:53:21.236463+00:00"
+  },
+  {
+    "id": "9",
+    "titlear": "الزكاة",
+    "titlefr": "LA ZAKAT : UNE OBLIGATION DIVINE",
+    "desc": "Prescriptions sur l'aumône légale concernant l'argent, les produits agricoles et le bétail.",
+    "audiourl": "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C032.mp3",
+    "group": "Les Piliers",
+    "icon": "volunteer_activism",
+    "created_at": "2026-06-05T00:53:21.236463+00:00"
+  },
+  {
+    "id": "10",
+    "titlear": "شهر رمضان",
+    "titlefr": "LE MOIS DE RAMADAN",
+    "desc": "Règles du jeûne, sa rupture et les prières surérogatoires (Nafilas).",
+    "audiourl": "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C035.mp3",
+    "group": "Les Piliers",
+    "icon": "nights_stay",
+    "created_at": "2026-06-05T00:53:21.236463+00:00"
+  },
+  {
+    "id": "11",
+    "titlear": "الحج",
+    "titlefr": "LE PELERINAGE A LA MECQUE",
+    "desc": "Conditions physiques et financières pour accomplir le fifth pilier de l'Islam.",
+    "audiourl": "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C041.mp3",
+    "group": "Les Piliers",
+    "icon": "directions_walk",
+    "created_at": "2026-06-05T00:53:21.236463+00:00"
+  },
+  {
+    "id": "12",
+    "titlear": "النكاح",
+    "titlefr": "LE MARIAGE",
+    "desc": "Jurisprudence sur l'union conjugale, le baptême, l'éducation des enfants",
+    "audiourl": "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C042.mp3",
+    "group": "Rites et Société",
+    "icon": "family_restroom",
+    "created_at": "2026-06-05T00:53:21.236463+00:00"
+  },
+  {
+    "id": "13",
+    "titlear": "الطلاق",
+    "titlefr": "LE DIVORCE",
+    "desc": "La séparation.",
+    "audiourl": "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C049.mp3",
+    "group": "Rites et Société",
+    "icon": "heart_broken",
+    "created_at": "2026-06-05T00:53:21.236463+00:00"
+  },
+  {
+    "id": "14",
+    "titlear": "المنتجات التي يُحظَر فيها البيع بالدَّيْن",
+    "titlefr": "DES PRODUITS DONT LE CRÉDIT EST PROHIBÉ",
+    "desc": "Dispositions juridiques relatives aux biens et produits pour lesquels la vente à crédit est interdite selon les principes de la jurisprudence islamique.",
+    "audiourl": "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C054.mp3",
+    "group": "Jurisprudence",
+    "icon": "gavel",
+    "created_at": "2026-06-05T00:53:21.236463+00:00"
+  },
+  {
+    "id": "15",
+    "titlear": "فيما يخصّ فعل الذبح",
+    "titlefr": "CONCERNANT L’ACTE D’ÉGORGER",
+    "desc": "Règles et conditions de l’abattage rituel islamique, incluant l’intention, les formules prescrites et les bonnes pratiques à respecter.",
+    "audiourl": "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C051.mp3",
+    "group": "Jurisprudence",
+    "icon": "rule",
+    "created_at": "2026-06-05T00:53:21.236463+00:00"
+  },
+  {
+    "id": "16",
+    "titlear": "في شأن הختان",
+    "titlefr": "DE LA CIRCONCISION",
+    "desc": "Enseignements relatifs à la circoncision, son statut religieux, ses conditions et son importance dans la tradition islamique.",
+    "audiourl": "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C053.mp3",
+    "group": "Rites et Société",
+    "icon": "cut",
+    "created_at": "2026-06-05T00:53:21.236463+00:00"
+  },
+  {
+    "id": "17",
+    "titlear": "نصائح عملية",
+    "titlefr": "CONSEILS PRATIQUES",
+    "desc": "Recommandations et orientations pratiques visant à adopter un comportement conforme à l’éthique et aux valeurs de l’Islam dans la vie quotidienne.",
+    "audiourl": "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C054.mp3",
+    "group": "Spiritualité",
+    "icon": "self_improvement",
+    "created_at": "2026-06-05T00:53:21.236463+00:00"
+  },
+  {
+    "id": "18",
+    "titlear": "النوافل في شهر رمضان",
+    "titlefr": "LES NAFILAS DU MOIS DE RAMADAN",
+    "desc": "Présentation des prières surérogatoires (nafilas) spécifiques au mois de Ramadan, leurs mérites et les moments propices pour les accomplir.",
+    "audiourl": "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C066.mp3",
+    "group": "Spiritualité",
+    "icon": "star",
+    "created_at": "2026-06-05T00:53:21.236463+00:00"
+  },
+  {
+    "id": "19",
+    "titlear": "بعض الأدعية والسور وفوائدها",
+    "titlefr": "QUELQUES INVOCATIONS ET SOURATES, ET LEURS UTILITÉS",
+    "desc": "Sélection d’invocations et de sourates du Coran, avec leurs bienfaits spirituels et leurs usages recommandés dans différentes situations.",
+    "audiourl": "https://yoonewi.net/res/audio/Al_Khouratoul_Ayni/C104.mp3",
+    "group": "Spiritualité",
+    "icon": "list_alt",
+    "created_at": "2026-06-05T00:53:21.236463+00:00"
+  }
+]
