@@ -116,9 +116,109 @@
 }
 
 /* ═══════════════════════════════════════════════════════════
+   TOKENS — MODE SÉPIA (Parchemin Ancien)
+   ═══════════════════════════════════════════════════════════ */
+[data-theme="sepia"] {
+  /* Parchemin chaud — ancien manuscrit */
+  --bg-base: #f5e6c8;
+  --bg-surface: #fdf3de;
+  --bg-elevated: #fffaef;
+  --bg-card: rgba(90, 55, 20, 0.05);
+  --bg-card-hover: rgba(90, 55, 20, 0.09);
+  --bg-nav: rgba(245, 230, 200, 0.92);
+  --bg-overlay: rgba(60, 35, 10, 0.45);
+
+  /* Encre sépia sombre — haut contraste sur fond parchemin (ratio > 7:1) */
+  --text-primary: #2d1a00;
+  --text-secondary: #5a3a14;
+  --text-muted: rgba(45, 26, 0, 0.62);
+  --text-inverse: #fdf3de;
+
+  --border-subtle: rgba(90, 55, 20, 0.12);
+  --border-medium: rgba(90, 55, 20, 0.22);
+  --border-gold: rgba(180, 130, 50, 0.45);
+
+  --selection-bg: rgba(201, 169, 97, 0.35);
+
+  /* Ombres chaleureuses */
+  --shadow-card: 0 10px 30px rgba(60, 35, 10, 0.18);
+  --shadow-nav: 0 -1px 0 rgba(90, 55, 20, 0.08);
+  --shadow-gold: 0 6px 22px rgba(60, 35, 10, 0.2);
+
+  /* Accent vert Touba foncé (lisible sur parchemin) */
+  --accent: #2d6a4f;
+  --accent-contrast: #fdf3de;
+  --accent-soft: rgba(45, 106, 79, 0.1);
+  --accent-gradient: linear-gradient(135deg, #1b4332 0%, #4a7c3e 100%);
+
+  /* Motif islamique — encre sépia légère */
+  --pattern-islamic: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke='rgba(90,55,20,0.08)' stroke-width='1'%3E%3Crect x='21' y='21' width='30' height='30'/%3E%3Crect x='21' y='21' width='30' height='30' transform='rotate(45 36 36)'/%3E%3Ccircle cx='36' cy='36' r='4'/%3E%3C/g%3E%3C/svg%3E");
+  --pattern-islamic-strong: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72'%3E%3Cg fill='none' stroke='rgba(180,130,50,0.18)' stroke-width='1'%3E%3Crect x='21' y='21' width='30' height='30'/%3E%3Crect x='21' y='21' width='30' height='30' transform='rotate(45 36 36)'/%3E%3Ccircle cx='36' cy='36' r='4'/%3E%3C/g%3E%3C/svg%3E");
+
+  color-scheme: light;
+
+  /* Réassignation des couleurs Tailwind pour le mode sépia */
+  --color-white: #2d1a00;
+  --color-black: #fdf3de;
+  --color-gold: #8a6020;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   COUCHE D'ADAPTATION — MODE SÉPIA
+   ═══════════════════════════════════════════════════════════ */
+[data-theme="sepia"] .text-gold { color: #8a6020; }
+[data-theme="sepia"] .eyebrow   { color: #8a6020; }
+[data-theme="sepia"] .gold-gradient-text {
+  background: linear-gradient(135deg, #8a6020 0%, #5a7a22 55%, #2d6a4f 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+[data-theme="sepia"] .text-white        { color: #2d1a00; }
+[data-theme="sepia"] .text-white\/90     { color: rgba(45, 26, 0, 0.94); }
+[data-theme="sepia"] .text-white\/85     { color: rgba(45, 26, 0, 0.9); }
+[data-theme="sepia"] .text-white\/80     { color: rgba(45, 26, 0, 0.86); }
+[data-theme="sepia"] .text-white\/75     { color: rgba(45, 26, 0, 0.82); }
+[data-theme="sepia"] .text-white\/70     { color: rgba(45, 26, 0, 0.76); }
+[data-theme="sepia"] .text-white\/60     { color: rgba(45, 26, 0, 0.68); }
+[data-theme="sepia"] .text-white\/50     { color: rgba(45, 26, 0, 0.6); }
+[data-theme="sepia"] .text-white\/40     { color: rgba(45, 26, 0, 0.52); }
+[data-theme="sepia"] .text-white\/30     { color: rgba(45, 26, 0, 0.44); }
+[data-theme="sepia"] .text-white\/20     { color: rgba(45, 26, 0, 0.34); }
+[data-theme="sepia"] .text-white\/10     { color: rgba(45, 26, 0, 0.24); }
+[data-theme="sepia"] .text-white\/\[0\.07\] { color: rgba(45, 26, 0, 0.12); }
+[data-theme="sepia"] .text-white\/\[0\.03\] { color: rgba(45, 26, 0, 0.08); }
+[data-theme="sepia"] .bg-white           { background-color: #fffaef; }
+[data-theme="sepia"] .bg-white\/20        { background-color: rgba(90, 55, 20, 0.1); }
+[data-theme="sepia"] .bg-white\/10        { background-color: rgba(90, 55, 20, 0.07); }
+[data-theme="sepia"] .bg-white\/5         { background-color: rgba(90, 55, 20, 0.04); }
+[data-theme="sepia"] .bg-white\/\[0\.07\] { background-color: rgba(90, 55, 20, 0.06); }
+[data-theme="sepia"] .bg-white\/\[0\.06\] { background-color: rgba(90, 55, 20, 0.055); }
+[data-theme="sepia"] .bg-white\/\[0\.05\] { background-color: rgba(90, 55, 20, 0.05); }
+[data-theme="sepia"] .bg-white\/\[0\.04\] { background-color: rgba(90, 55, 20, 0.045); }
+[data-theme="sepia"] .bg-white\/\[0\.03\] { background-color: rgba(90, 55, 20, 0.038); }
+[data-theme="sepia"] .bg-white\/\[0\.02\] { background-color: rgba(90, 55, 20, 0.028); }
+[data-theme="sepia"] .bg-white\/\[0\.01\] { background-color: rgba(90, 55, 20, 0.018); }
+[data-theme="sepia"] .border-white\/20        { border-color: rgba(90, 55, 20, 0.22); }
+[data-theme="sepia"] .border-white\/10        { border-color: rgba(90, 55, 20, 0.15); }
+[data-theme="sepia"] .border-white\/5         { border-color: rgba(90, 55, 20, 0.1); }
+[data-theme="sepia"] .border-white\/\[0\.06\] { border-color: rgba(90, 55, 20, 0.12); }
+[data-theme="sepia"] .bg-black\/5   { background-color: rgba(90, 55, 20, 0.04); }
+[data-theme="sepia"] .bg-black\/20  { background-color: rgba(90, 55, 20, 0.06); }
+[data-theme="sepia"] .bg-black\/40  { background-color: rgba(90, 55, 20, 0.08); }
+[data-theme="sepia"] .bg-black\/60  { background-color: rgba(245, 230, 200, 0.75); }
+[data-theme="sepia"] .bg-black\/80  { background-color: rgba(245, 230, 200, 0.9); }
+[data-theme="sepia"] .bg-emerald-950\/20 { background-color: rgba(45, 106, 79, 0.06); }
+[data-theme="sepia"] .bg-emerald-950\/25 { background-color: rgba(45, 106, 79, 0.08); }
+[data-theme="sepia"] .bg-emerald-950\/30 { background-color: rgba(45, 106, 79, 0.1); }
+[data-theme="sepia"] .border-emerald-900\/30 { border-color: rgba(45, 106, 79, 0.18); }
+[data-theme="sepia"] .border-emerald-700\/25 { border-color: rgba(45, 106, 79, 0.18); }
+[data-theme="sepia"] .text-emerald-400 { color: #2d6a4f; }
+
+/* ═══════════════════════════════════════════════════════════
    COUCHE D'ADAPTATION — MODE CLAIR (Portfolio Sync)
-   Remappe les couleurs "en dur" (blanc/noir/émeraude) vers les 
-   teintes de slate et de gold du portfolio, pour que les 
+   Remappe les couleurs "en dur" (blanc/noir/émeraude) vers les
+   teintes de slate et de gold du portfolio, pour que les
    composants s'adaptent sans être modifiés.
    ═══════════════════════════════════════════════════════════ */
 

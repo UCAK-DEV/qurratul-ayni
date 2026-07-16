@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { useChapterSearch } from '@/hooks/useChapterSearch';
+import { useData } from '@/context/DataContext';
+import { searchInPages, SearchResultItem } from '@/utils/searchIndex';
 import Icon from '@/components/Icon';
-import { Chapter } from '@/data/chapters';
+import { useDebounce } from '@/hooks/useDebounce';
 
 interface SearchOverlayProps {
   isOpen: boolean;
@@ -14,7 +15,8 @@ interface SearchOverlayProps {
 
 export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose }) => {
   const [query, setQuery] = useState('');
-  const results = useChapterSearch(query);
+  const debouncedQuery = useDebounce(query, 250);
+  const { pages, chapters } = useData();
   const router = useRouter();
 
   useEffect(() => {
@@ -32,9 +34,32 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
     }
   }, [isOpen]);
 
-  const handleResultClick = (chapter: Chapter) => {
-    router.push(`/partie/${chapter.id}`);
+  const results = useMemo(() => {
+    if (debouncedQuery.trim().length > 1) {
+      return searchInPages(debouncedQuery, pages, chapters);
+    }
+    return [];
+  }, [debouncedQuery, pages, chapters]);
+
+  const handleResultClick = (result: SearchResultItem) => {
+    const slugPath = result.id.replace(/-/g, '/');
+    router.push(`/partie/${slugPath}`);
     onClose();
+  };
+
+  const highlightText = (text: string, highlight: string) => {
+    if (!highlight.trim()) return <span>{text}</span>;
+    const regex = new RegExp(`(${highlight.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi');
+    const parts = text.split(regex);
+    return (
+      <>
+        {parts.map((part, i) => 
+          regex.test(part) 
+            ? <mark key={i} className="bg-gold/30 text-gold rounded-[2px] px-0.5 font-bold decoration-none">{part}</mark> 
+            : <span key={i}>{part}</span>
+        )}
+      </>
+    );
   };
 
   const overlayVariants = { hidden: { opacity: 0 }, visible: { opacity: 1 } };
@@ -71,7 +96,7 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 autoFocus
-                placeholder="Rechercher par titre ou description..."
+                placeholder="Rechercher dans tout le livre (ex: purification, menstrues...)"
                 className="w-full bg-transparent text-lg outline-none placeholder:text-white/30"
                 style={{ color: 'var(--text-primary)' }}
               />
@@ -84,18 +109,29 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ isOpen, onClose })
                 </div>
               )}
               <motion.ul variants={listVariants} initial="hidden" animate="visible">
-                {results.map((chapter) => (
-                  <motion.li key={chapter.id} variants={itemVariants}>
+                {results.map((res) => (
+                  <motion.li key={res.id} variants={itemVariants}>
                     <button
-                      onClick={() => handleResultClick(chapter)}
+                      onClick={() => handleResultClick(res)}
                       className="w-full text-left flex items-center gap-4 p-4 hover:bg-white/[0.02] border-l-2 border-transparent hover:border-gold rounded-xl transition-all group"
                     >
-                      <div className="w-10 h-10 rounded-xl bg-gold/10 border border-gold/25 flex items-center justify-center text-gold group-hover:scale-105 transition-all">
-                        <Icon name={chapter.icon} className="text-xl leading-none" />
+                      <div className="w-10 h-10 rounded-xl bg-gold/10 border border-gold/25 flex items-center justify-center text-gold group-hover:scale-105 transition-all flex-shrink-0">
+                        <Icon name="menu_book" className="text-xl leading-none" />
                       </div>
-                      <div className="flex-grow">
-                        <h3 className="font-bold text-white/90 group-hover:text-gold transition-colors">{chapter.titleFr}</h3>
-                        <p className="text-sm line-clamp-1" style={{ color: 'var(--text-secondary)' }}>{chapter.desc}</p>
+                      <div className="flex-grow min-w-0">
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] uppercase tracking-[0.2em] font-bold" style={{ color: 'var(--accent)' }}>
+                            {res.chapterTitleFr || `Chapitre ${res.chapterId}`}
+                          </span>
+                        </div>
+                        <h3 className="font-bold text-white/90 group-hover:text-gold transition-colors truncate">
+                          {res.titleFr}
+                        </h3>
+                        {res.excerpt && (
+                          <p className="text-xs mt-1 font-reading line-clamp-2" style={{ color: 'var(--text-secondary)' }}>
+                            {highlightText(res.excerpt, debouncedQuery)}
+                          </p>
+                        )}
                       </div>
                     </button>
                   </motion.li>

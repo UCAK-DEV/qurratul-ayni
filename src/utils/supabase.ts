@@ -64,7 +64,7 @@ const fetchChaptersInternal = async (): Promise<Chapter[]> => {
 
     return mapped.sort((a, b) => parseInt(a.id) - parseInt(b.id));
   } catch {
-    console.log('Supabase client failed initialization, using mock data.');
+    console.warn('Supabase client failed initialization, using mock data.');
     return loadMockChapters();
   }
 };
@@ -278,3 +278,41 @@ const loadMockPage = (fullId: string): PageContent | null => {
     ]
   };
 };
+
+export const fetchAllPages = async (): Promise<PageContent[]> => {
+  try {
+    const client = getSupabaseClient();
+    const { data, error } = await client
+      .from('pages')
+      .select('*');
+
+    if (error) {
+      console.warn('Supabase error fetching all pages:', error);
+      return Object.values(MOCK_PAGES).map(p => ({
+        ...p,
+        audioUrl: getLocalAudioUrl(`page_${p.id}`, p.audioUrl || "")
+      }));
+    }
+
+    if (!data) return [];
+
+    return data.map(p => ({
+      id: p.id,
+      chapterId: p.chapterid,
+      sectionId: p.sectionid,
+      titleFr: p.titlefr,
+      titleAr: p.titlear,
+      subtitleFr: p.subtitlefr,
+      basmala: p.basmala,
+      audioUrl: getLocalAudioUrl(`page_${p.id}`, p.audiourl || ""),
+      blocks: p.blocks
+    }));
+  } catch {
+    console.warn('Supabase client failed initialization, using mock pages.');
+    return Object.values(MOCK_PAGES).map(p => ({
+      ...p,
+      audioUrl: getLocalAudioUrl(`page_${p.id}`, p.audioUrl || "")
+    }));
+  }
+};
+

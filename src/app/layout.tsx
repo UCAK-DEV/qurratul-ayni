@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import { Inter, Lora, Amiri } from 'next/font/google';
-import { Analytics } from '@vercel/analytics/next';
+import { Analytics } from '@vercel/analytics/react';
 import { AppProviders } from '@/components/AppProviders';
 import { SITE_URL, SITE_NAME, SITE_TITLE, SITE_DESCRIPTION, OG_IMAGE, DEVELOPERS } from '@/utils/site';
 import './globals.css';

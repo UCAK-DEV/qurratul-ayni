@@ -2,7 +2,7 @@
 
 import React, { createContext, useEffect, useContext, useState, ReactNode } from 'react';
 
-export type Theme = 'dark' | 'light';
+export type Theme = 'dark' | 'light' | 'sepia';
 
 interface ReadingSettings {
   fontSize: number;   // In percentage (ex: 100, 110, 120)
@@ -16,6 +16,7 @@ interface ThemeContextType {
   setReadingSettings: (settings: ReadingSettings) => void;
   toggleFocusMode: () => void;
   toggleTheme: () => void;
+  setTheme: (t: Theme) => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -23,6 +24,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 const THEME_COLORS: Record<Theme, string> = {
   dark: '#0b1710',
   light: '#f7f4e9',
+  sepia: '#f5e6c8',
 };
 
 const applyTheme = (t: Theme) => {
@@ -36,13 +38,13 @@ const getInitialTheme = (): Theme => {
   if (typeof window === 'undefined') return 'dark';
   try {
     const saved = localStorage.getItem('theme');
-    if (saved === 'light' || saved === 'dark') return saved;
+    if (saved === 'light' || saved === 'dark' || saved === 'sepia') return saved;
   } catch { /* ignore */ }
   return 'dark';
 };
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [theme, setTheme] = useState<Theme>(getInitialTheme);
+  const [theme, setThemeState] = useState<Theme>(getInitialTheme);
   const [isFocusMode, setIsFocusMode] = useState(false);
   const [readingSettings, setReadingSettings] = useState<ReadingSettings>({
     fontSize: 100,
@@ -67,8 +69,10 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const toggleTheme = () => {
-    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
+    setThemeState(prev => (prev === 'dark' ? 'light' : prev === 'light' ? 'sepia' : 'dark'));
   };
+
+  const setTheme = (t: Theme) => setThemeState(t);
 
   const updateSettings = (newSettings: ReadingSettings) => {
     setReadingSettings(newSettings);
@@ -85,6 +89,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
       setReadingSettings: updateSettings,
       toggleFocusMode,
       toggleTheme,
+      setTheme,
     }}>
       {children}
     </ThemeContext.Provider>

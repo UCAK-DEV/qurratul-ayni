@@ -11,13 +11,13 @@ interface ReadingSettingsProps {
 }
 
 export const ReadingSettings: React.FC<ReadingSettingsProps> = ({ isOpen, onClose }) => {
-  const { readingSettings, setReadingSettings, theme, toggleTheme } = useTheme();
+  const { readingSettings, setReadingSettings, theme, setTheme } = useTheme();
 
   const fontSizes = [90, 100, 115, 130, 145];
   const lineHeights = [1.4, 1.6, 1.8, 2.0];
 
-  const selectTheme = (target: 'dark' | 'light') => {
-    if (theme !== target) toggleTheme();
+  const selectTheme = (target: 'dark' | 'light' | 'sepia') => {
+    setTheme(target);
   };
 
   return (
@@ -64,6 +64,7 @@ export const ReadingSettings: React.FC<ReadingSettingsProps> = ({ isOpen, onClos
                 <div className="flex gap-2">
                   {([
                     { key: 'light', label: 'Clair', icon: 'light_mode' },
+                    { key: 'sepia', label: 'Sépia', icon: 'auto_stories' },
                     { key: 'dark', label: 'Sombre', icon: 'dark_mode' },
                   ] as const).map(opt => (
                     <button
