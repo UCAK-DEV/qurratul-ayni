@@ -160,23 +160,6 @@ export const ClientPageUI: React.FC<ClientPageUIProps> = ({
       {!isFocusMode && <ReadingToolbar />}
 
       <div className={`max-w-6xl mx-auto relative z-10 transition-all duration-700 ${isFocusMode ? 'max-w-4xl' : ''}`}>
-        
-        {/* Focus Mode Toggle */}
-        <div className="fixed top-8 right-20 z-50 hidden md:block">
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={toggleFocusMode}
-            className={`p-4 rounded-2xl backdrop-blur-xl border transition-all ${
-              isFocusMode 
-              ? 'bg-gold border-gold text-black shadow-lg shadow-gold/20' 
-              : 'bg-white/5 border-white/10 text-white/40 hover:text-gold hover:border-gold/30'
-            }`}
-            aria-label={isFocusMode ? 'Quitter le mode focus' : 'Mode lecture immersive'}
-          >
-            <Icon name={isFocusMode ? 'visibility' : 'visibility_off'} />
-          </motion.button>
-        </div>
 
         {/* Page Header */}
         <header className="mb-16 flex flex-col items-center text-center">
