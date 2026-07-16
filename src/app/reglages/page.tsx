@@ -24,6 +24,11 @@ export default function SettingsPage() {
     requestPermission,
   } = useNotifications();
   const router = useRouter();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const fontIndex = Math.max(0, FONT_SIZES.indexOf(readingSettings.fontSize));
   const lineIndex = Math.max(0, LINE_HEIGHTS.indexOf(readingSettings.lineHeight));
@@ -58,18 +63,18 @@ export default function SettingsPage() {
           <div className="one-ui-list">
             <div className="one-ui-row">
               <div className="one-ui-row-icon">
-                <Icon name={theme === 'dark' ? 'dark_mode' : 'light_mode'} />
+                <Icon name={!mounted ? 'dark_mode' : theme === 'dark' ? 'dark_mode' : 'light_mode'} />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="one-ui-row-title">Mode sombre</p>
-                <p className="one-ui-row-sub">{theme === 'dark' ? 'Activé' : 'Désactivé — mode clair'}</p>
+                <p className="one-ui-row-sub">{!mounted ? 'Activé' : theme === 'dark' ? 'Activé' : 'Désactivé — mode clair'}</p>
               </div>
               <button
                 role="switch"
-                aria-checked={theme === 'dark'}
+                aria-checked={!mounted ? true : theme === 'dark'}
                 aria-label="Basculer le mode sombre"
                 className="one-toggle"
-                data-on={theme === 'dark'}
+                data-on={!mounted ? true : theme === 'dark'}
                 onClick={toggleTheme}
               >
                 <span className="one-toggle-thumb" />

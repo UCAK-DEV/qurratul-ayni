@@ -438,6 +438,11 @@ export const Navbar = () => {
   const [mobileAudioOpen, setMobileAudioOpen] = useState(false);
   const [mobileNotificationsOpen, setMobileNotificationsOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const pathname = usePathname();
   const chaptersRef = useRef<HTMLLIElement>(null);
@@ -602,14 +607,13 @@ export const Navbar = () => {
 
             <button
               onClick={toggleTheme}
-              aria-label={theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
-              title={theme === 'dark' ? 'Mode clair' : 'Mode sombre'}
+              aria-label={!mounted ? 'Passer en mode clair' : theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
+              title={!mounted ? 'Mode clair' : theme === 'dark' ? 'Mode clair' : 'Mode sombre'}
               className="w-9 h-9 liquid-glass-btn"
             >
               <Icon
-                name={theme === 'dark' ? 'light_mode' : 'dark_mode'}
+                name={!mounted ? 'light_mode' : theme === 'dark' ? 'light_mode' : 'dark_mode'}
                 className="text-lg"
-                suppressHydrationWarning
               />
             </button>
             <Link
