@@ -1,0 +1,16 @@
+<USER_REQUEST>
+mais les partie sont toujours resumé ce qui n'est pas normale ecrits tout 
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-07-16T02:38:02Z.
+
+The user's current state is as follows:
+Other open documents:
+- c:\Users\papem\OneDrive\Documents\Projet DAR\Qurratul Ayni\src\components\Navbar.tsx (LANGUAGE_TSX)
+- c:\Users\papem\OneDrive\Documents\Projet DAR\Qurratul Ayni\src\components\PWAInstallPrompt.tsx (LANGUAGE_TSX)
+- c:\Users\papem\OneDrive\Documents\Projet DAR\Qurratul Ayni\src\components\Icon.tsx (LANGUAGE_TSX)
+- c:\Users\papem\OneDrive\Documents\Projet DAR\Qurratul Ayni\src\components\Player.tsx (LANGUAGE_TSX)
+- c:\Users\papem\OneDrive\Documents\Projet DAR\Qurratul Ayni\src\components\ReadingSettings.tsx (LANGUAGE_TSX)
+Running terminal commands:
+- npm run dev (in c:\Users\papem\OneDrive\Documents\Projet DAR\Qurratul Ayni, running for 1h53m56s)
+</ADDITIONAL_METADATA>

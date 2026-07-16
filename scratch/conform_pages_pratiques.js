@@ -1,0 +1,473 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+/**
+ * Script de vérification et conformisation des pages 5, 5-a, 5-b, 5-c, 5-d, 5-e, 5-f
+ * Fidélité absolue au texte de référence fourni.
+ * Seules corrections : fautes typographiques (espaces brisés) et grammaticales pures.
+ */
+
+const { createClient } = require('@supabase/supabase-js');
+const fs = require('fs');
+const path = require('path');
+
+const envPath = path.join(__dirname, '..', '.env.local');
+const envContent = fs.readFileSync(envPath, 'utf8');
+const env = {};
+envContent.split('\n').forEach(line => {
+  const eqIdx = line.indexOf('=');
+  if (eqIdx > 0) env[line.slice(0, eqIdx).trim()] = line.slice(eqIdx + 1).trim();
+});
+
+const supabase = createClient(env['NEXT_PUBLIC_SUPABASE_URL'], env['NEXT_PUBLIC_SUPABASE_ANON_KEY']);
+
+// ─── PAGE 5 ─────────────────────────────────────────────────────────────────
+const page5_blocks = [
+  {
+    type: "text_block",
+    content: [
+      "La prière exige entre autres conditions la purification du corps, celle des habits, celle du lieu de prière."
+    ]
+  }
+];
+
+// ─── PAGE 5-a : LA PURIFICATION ─────────────────────────────────────────────
+const page5a_blocks = [
+  {
+    type: "text_block",
+    content: [
+      "Parmi les différentes sortes de purification, la plus importante est celle du corps (dianaba), lorsque cela s'impose. Toute personne majeure doit se purifier le corps chaque fois que de besoin. Celui qui nie cela est un mécréant ; qui s'y refuse consciemment et sans motif valable est un impie et il est sans crédibilité. S'il ne s'en repent pas, il sera précipité dans les feux de l'enfer."
+    ]
+  },
+  {
+    type: "procedure",
+    titleFr: "Les raisons d'une purification corporelle sont de 4 sortes",
+    titleAr: "موجبات الغسل",
+    content: [
+      "1°)- L'éjaculation consécutive à un grand plaisir ressenti à l'état de veille ou de sommeil. Celui qui constate du sperme sur ses habits après le réveil sans qu'il ne soit aperçu de son écoulement, doit se purifier et doit reprendre toutes les prières antérieures à cette constatation. Celui qui découvre après son réveil des taches suspectes sur son corps ou sur ses habits doit se purifier. Et doit reprendre toutes les prières antérieures à cette constatation.",
+      "2°)- Après les rapports sexuels, les deux personnes majeures doivent se purifier, même s'il n'y a pas eu éjaculation. S'il s'agit d'un homme majeur et d'une mineure, la purification est obligatoire pour l'homme. S'il s'agit d'une femme majeure, la purification ne s'impose pas s'il n'y a pas sécrétion. La purification demeure méritoire pour la personne mineure dans les deux cas.",
+      "3°)- Une femme en période menstruelle doit se purifier après, si petite soit la quantité de saignement.",
+      "4°)- La purification est obligatoire en cas d'accouchement, même si celui-ci n'est pas accompagné de saignement."
+    ]
+  },
+  {
+    type: "procedure",
+    titleFr: "Comment se purifier ?",
+    titleAr: "كيفية الغسل",
+    content: [
+      "- Se procurer de l'eau exempte de tout souillure, incolore, inodore et sans saveur.",
+      "- Se mettre dans un endroit décent et propre, se tourner vers l'Est (Kaaba) et dire « Bismillahi ».",
+      "- Se laver la main droite jusqu'au poignet 3 fois.",
+      "- Puis la main gauche de la même façon.",
+      "- Laver les parties souillées.",
+      "- Laver proprement le sexe et formuler intérieurement l'intention de se purifier conformément aux recommandations divines.",
+      "- Procéder au lavage une à une des différentes parties concernées par l'ablution à l'exception des pieds lesquels le seront à la fin.",
+      "- Prendre de l'eau dans ses mains et les passer sur ses cheveux, de la nuque vers le front.",
+      "- Se laver la tête trois fois en prenant soin de faire pénétrer l'eau partout à chaque fois.",
+      "- Laver les deux oreilles intérieurement et extérieurement en commençant par l'oreille droite.",
+      "- Se laver la nuque, le cou.",
+      "- Laver le côté droit du coude au genou.",
+      "- Procéder de même pour le côté gauche.",
+      "- Laver la jambe droite jusqu'à la cheville.",
+      "- Procéder de même pour la jambe gauche.",
+      "- Se laver entièrement le dos.",
+      "- Laver la poitrine et le ventre.",
+      "- Enfin, laver les deux pieds qui auraient dû l'être lors de l'ablution.",
+      "S'il s'agit de la purification en vue de la prière de vendredi les pieds doivent être lavés au moment de l'ablution. La grande ablution peut tenir lieu à la fois de lavage et d'ablution du vendredi, à condition que l'intention en soit formulée auparavant."
+    ]
+  },
+  {
+    type: "comparison",
+    content: [
+      {
+        titleFr: "Les pratiques obligatoires du lavage (farata) — Elles sont au nombre de cinq",
+        titleAr: "الفرائض",
+        items: [
+          "1. Formuler intérieurement l'intention",
+          "2. L'observance de l'ordre indiqué",
+          "3. Mouiller le corps intégralement",
+          "4. Se rincer le corps avec la main si possible ou avec tout autre moyen",
+          "5. Mouiller la tête jusqu'au cuir chevelu. Si des tresses empêchent une humectation totale, obligation est faite de les enlever."
+        ]
+      },
+      {
+        titleFr: "Les pratiques traditionnelles (souna) — Elles sont au nombre de cinq",
+        titleAr: "السنن",
+        items: [
+          "1. Commencer par laver les mains jusqu'aux poignets",
+          "2. Se rincer la bouche",
+          "3. Faire pénétrer l'eau dans les narines en aspirant",
+          "4. Faire sortir l'eau en soufflant par le nez",
+          "5. Faire passer l'eau par les oreilles en prenant soin de ne pas la trop faire pénétrer de peur d'avoir des ennuis d'audition.",
+          "S'assurer que les aisselles, les autres parties cachées du corps et les replis de la peau sont tous mouillés."
+        ]
+      }
+    ]
+  }
+];
+
+// ─── PAGE 5-b : LES ABLUTIONS ────────────────────────────────────────────────
+const page5b_blocks = [
+  {
+    type: "quote",
+    content: [
+      "Toute personne majeure doit faire ses ablutions avant de prier ou de toucher le Saint Coran. Quiconque le conteste est un mécréant. Celui qui transgresse cette prescription de façon délibérée et sans excuse est digne du plus grand mépris. S'il ne s'en repent pas avant sa mort, il sera précipité irrémédiablement en enfer."
+    ]
+  },
+  {
+    type: "procedure",
+    titleFr: "Après ablutions : causes pouvant rendre caduques les ablutions",
+    titleAr: "نواقض الوضوء",
+    content: [
+      "1. Le pet",
+      "2. Le fait d'aller à la selle",
+      "3. Le fait d'uriner",
+      "4. La sécrétion de liquide prostatique, consécutive à l'érection due à l'observation, à l'imagination, à l'attouchement. On devra dans ce cas, procéder au lavage du sexe entièrement après en avoir formulé l'intention. L'érection sans sécrétion n'annule pas l'ablution.",
+      "5. La sortie du « wadiyu » (liquide gluant) émis par l'homme et non accompagné de plaisir.",
+      "6. la sécrétion du sperme due à une maladie, à la fatigue ou à l'incontinence. Si cette sortie s'accompagne d'une jouissance sexuelle, la purification par le lavage est obligatoire.",
+      "7. la sécrétion du liquide précédant l'accouchement. En cas d'accouchement non accompagné de sang, le lavage s'impose. S'il est accompagné de sang, le lavage se fera après l'épanchement de sang.",
+      "8. crise d'épilepsie ou de folie",
+      "9. l'évanouissement",
+      "10. l'ivresse",
+      "11. le sommeil profond, si court soit-il. Il s'agit de sommeil pendant lequel un objet que l'on a dans sa main pourrait tomber sans qu'on s'en aperçoive ; ou durant lequel on serait amené à braver.",
+      "12. l'attouchement du corps d'une femme, de ses cheveux, de ses ongles, ou de ses habits par un homme majeur avec l'intention d'en jouir, qu'il y trouve ou non du plaisir, si cette femme est capable et est en âge de lui procurer du plaisir ; s'il y trouve du plaisir sans l'avoir cherché. Si le plaisir n'est ni recherché, ni obtenu, l'ablution n'est pas annulée. Cela s'applique aussi à la femme. L'attouchement entre mineur est sans effet.",
+      "13. Le baiser entre homme et femme, (bouche à bouche) qu'il soit suivi ou non de jouissance, qu'il y ait ou non l'intention, entraîne l'annulation de l'ablution. Si le baiser se fait entre majeur et mineur, il y a seulement annulation pour la personne majeure. S'il s'agit de deux enfants, il n'y a pas d'effet. Le baiser par le nez a le même effet que l'attouchement. Embrasser un enfant par commisération n'annule pas l'ablution. Embrasser son père ou sa propre mère, son supérieur (kilifa) ou son proche parent dans l'intention de l'honorer ou par compassion n'annule pas non plus l'ablution.",
+      "14. Le fait pour homme de toucher sa verge par la paume, les doigts ou le contour de la main annule l'ablution. L'attouchement de la verge même par-dessus les habits ne l'annule pas. L'attouchement des parties intimes en dehors de la verge ne l'annule pas. Quant à la femme qui touche son sexe, il n'y a pas d'annulation même si cela se fait par le doigt.",
+      "15. En cas d'incertitude à quelque niveau qu'elle se situe, l'ablution s'impose si la prière n'a pas encore été faite. Par exemple : A-t-on commis un acte postérieur aux ablutions et qui soit de nature à les annuler ? Ou enfin on est sûr d'avoir fait ses ablutions mais on doute de leur validité ? Si le doute subsiste avant la prière, on doit reprendre les ablutions. Si le doute subsiste encore pendant la prière, il convient de l'interrompre et de reprendre les ablutions. Si le doute n'existe plus, il n'y a pas lieu de reprendre les ablutions tant qu'on n'est pas sûr qu'il y avait une cause d'annulation. En cas de certitude d'une cause d'annulation des ablutions, on doit reprendre et les ablutions et la prière."
+    ]
+  },
+  {
+    type: "split_text",
+    content: [
+      {
+        label: "« Le Siwou » (lavage des parties intimes)",
+        paragraphs: [
+          "Consiste à laver proprement les parties intimes avec de l'eau non souillée, non altérée dans sa couleur, sa saveur et dans son odeur avant de quitter les lieux de toilettes.",
+          "Il est donc conseillé d'y aller avec de l'eau. S'il s'agit de toilette, il est méritoire d'introduire le pied gauche et dire avant d'entrer : « Bismilahi allahouma iniya a hons oubika minal khouboussi wal khabâ issi. » Une fois à l'intérieur, on ne prononce plus la formule. Il est aussi méritoire de sortir par le pied droit et dire : « Bismilahi alhamdoulilahi lazi azhaba anil âzâ wa hâfâni. »",
+          "Si c'est en plein air, la formule d'entrée doit se dire avant de découvrir et la formule de sortie après le besoin.",
+          "Si la précaution d'emporter de l'eau n'a pas été prise, il y a risque de souillure des vêtements, ce qui est de nature à annuler la prière ultérieure ; c'est la raison pour laquelle, le « siwou » revêt une importance capitale.",
+          "Il faudra avant de s'y employer, s'assurer qu'il ne reste plus aucune goutte d'urine dans ce canal qu'on appelle urètre. La durée de l'évacuation varie suivant les hommes. Chez certains, il est nécessaire de faire quelques pas avant de procéder au lavage de la verge, car la sécrétion d'urine survenue après le lavage de la verge due à un manque de patience est de ces péchés susceptibles de provoquer des châtiments dans la tombe. C'est seulement après le « siwou » que l'on doit procéder à l'ablution."
+        ]
+      }
+    ]
+  },
+  {
+    type: "procedure",
+    titleFr: "Pratique de l'ablution",
+    titleAr: "صفة الوضوء",
+    content: [
+      "Chercher de l'eau non souillée ; s'asseoir dans un lieu propre de toute souillure ; se tourner vers la Kaaba (l'Est) ; dire Bismillahi et se rincer la bouche (emploi de cure-dents).",
+      "- Se laver les mains (3 fois) jusqu'aux poignets en commençant par la main droite.",
+      "- Se rincer la bouche (3 fois).",
+      "- Aspirer l'eau par les narines et l'en rejeter en soufflant par le nez (3 fois) : aspirer avec la main droite, rejeter avec la main gauche.",
+      "- Se laver le visage (3 fois) en formulant intérieurement l'intention de faire l'ablution selon les obligations divines.",
+      "- Se laver l'avant-bras droit, puis l'avant-bras gauche (chacun 3 fois).",
+      "- Faire passer l'eau sur la tête du front à la nuque, puis de la nuque au front.",
+      "- Se laver les oreilles.",
+      "- Enfin se laver le pied droit (3 fois), puis le pied gauche de la même façon.",
+      "Après cela, lever la tête vers le ciel et dire ceci : Achadouane lahilaha illalah wahdahô la charika lahô wa ach hadou annas seydina Mouhamadane sala lahô tahala aleyhi wassalama. Abdouho wa rassoulouhou ala houmadj halna minattawa bîna wadj halna minal moutatakhirina wadj halna mine ibadika sahilina wa add khilnâfildjanati wa bahidna mina nâri allahouma sali al la seydina Mouhamadine wa alla ali seydina Mouhamadine wa salim."
+    ]
+  },
+  {
+    type: "comparison",
+    content: [
+      {
+        titleFr: "Les pratiques obligatoires de l'ablution (farata) — Elles sont au nombre de huit (8)",
+        titleAr: "فرائض الوضوء",
+        items: [
+          "1°)- Formuler intérieurement l'intention de s'acquitter de cette obligation au moment de se laver le visage.",
+          "2°)- Se laver entièrement le visage",
+          "3°)- Se laver les avant-bras, jusqu'aux coudes",
+          "4°)- Laver les doigts séparément",
+          "5°)- Faire passer l'eau sur l'ensemble des cheveux. • Si les cheveux sont tressés sans aucune matière artificielle, il n'est pas nécessaire de les détresser. • Si par contre, une quelconque matière artificielle est rajoutée aux cheveux, il faut défaire les tresses pour que les cheveux puissent être entièrement mouillés. D'ailleurs, l'utilisation de cheveux artificiels est une mauvaise chose (P.12). Cela n'est valable que pour la petite ablution. Si l'épaisseur des tresses est de nature à empêcher l'eau d'atteindre le cuir chevelu, il faut les défaire dans le cas de la purification par lavage même si les tresses ne sont faites qu'avec des cheveux naturels.",
+          "6°)- Laver entièrement les pieds jusqu'aux chevilles en rinçant chaque orteil.",
+          "7°)- Frotter chaque partie au moment de son lavage en utilisant une quantité d'eau strictement nécessaire.",
+          "8°)- observer rigoureusement l'ordre tel qu'il est établi ; ne pas trop attendre entre le lavage des différentes parties sous peine d'annulation de l'ablution (ne pas attendre qu'un membre se sèche avant de passer à l'autre). Si, après l'ablution, on se souvient d'avoir oublié une partie, on doit procéder à son lavage si les membres lavés sont déjà secs. Si on s'en souvient tout juste (avant l'assèchement des parties lavées), on reprend l'opération à partir de la partie omise jusqu'à la fin."
+        ]
+      },
+      {
+        titleFr: "Les pratiques traditionnelles de l'ablution (Souna) — Elles sont au nombre de huit (8)",
+        titleAr: "سنن الوضوء",
+        items: [
+          "1°) – Commencer par se laver les mains jusqu'aux poignets",
+          "2°) – Se rincer la bouche",
+          "3°) – Faire pénétrer l'eau dans les narines en aspirant",
+          "4°) – L'en faire sortir en soufflant par les narines",
+          "5°) – Puis passer les mains à l'intérieur et à l'extérieur des oreilles",
+          "6°) – Se mouiller à nouveau les mains avant de les faire passer sur les oreilles",
+          "7°) – Ramener les mains au front après les avoir portées à la nuque",
+          "8°) – Ne pas inverser l'ordre établi concernant les pratiques obligatoires."
+        ]
+      }
+    ]
+  },
+  {
+    type: "procedure",
+    titleFr: "Les mérites de l'ablution",
+    titleAr: "فضائل الوضوء",
+    content: [
+      "L'ablution est recommandée à qui veut : • Réciter le Coran, les hadiths ou les connaissances religieuses • Invoquer les noms d'Allah • Rendre visite à un saint homme • Aller dans un marché • S'endormir",
+      "Il est méritoire de renouveler fréquemment ses ablutions. A l'occasion, il est recommandé de formuler l'intention de s'acquitter d'une prière obligatoire au moment du renouvellement. Si cette précaution n'est pas prise, l'ablution ne pourra pas servir à une prière obligatoire ou une prière surérogatoire et fait le tour de la Kaaba. Si l'ablution n'a servi qu'à la lecture du Coran, on peut se passer de la renouveler.",
+      "L'emploi du cure-dent (soocu) est méritoire, si possible avant la prière.",
+      "Il est conseillé de se curer les dents, cela permet de : • S'attirer les grâces de Dieu • Provoquer l'irritation et la colère de satan • Se rappeler le nom de Dieu dans l'article de la mort • Conserver sa foi jusqu'au dernier soupir • Rentrer dans les bonnes grâces des deux (2) anges gardiens • Atténuer les affres de l'agonie • Multiplier nos chances d'avoir de la fortune • Aiguiser l'intelligence • Améliorer la vue • Faciliter l'expression • Faciliter la digestion • Rendre les dents plus solides et la bouche plus propre • Embellir la chevelure et retarder la vieillesse."
+    ]
+  }
+];
+
+// ─── PAGE 5-c : LE TAYAMOUM ──────────────────────────────────────────────────
+const page5c_blocks = [
+  {
+    type: "text_block",
+    content: [
+      "La lustration pulvérale est autorisée à celui qui veut effectuer sa prière ou lire ou écrire le Coran ou pour toute autre pratique similaire lorsqu'il est dans l'impossibilité totale de trouver l'eau pour se purifier (ablutions ou lavage). Elle intervient au début de l'heure prescrite pour la prière, si on est sûr et certain du manque d'eau. En cas de doute, elle intervient au milieu de l'intervalle de temps prescrit.",
+      "a. – On peut pratiquer la lustration pulvérale au début de l'heure si on est certain de ne pas avoir de l'eau.",
+      "b. – Dans l'incertitude, on l'effectue au milieu de l'intervalle de temps prescrit ;",
+      "c. – S'il y a toujours de l'espoir d'en trouver, on peut attendre jusqu'à la limite extrême.",
+      "Cependant, on ne doit sous aucun prétexte retarder les prières.",
+      "Si on souffre d'une maladie que l'eau est susceptible d'aggraver, on peut la faire chauffer ou y mettre du sel. Si malgré tous les risques d'aggravation de la maladie demeurent, on peut procéder à la lustration pulvérale.",
+      "Mais celui qui pratique la lustration pulvérale en dehors des conditions énumérées ci-dessus, est digne du plus grand mépris ; la prière effectuée est nulle et doit être refaite ; celui-là ne peut en aucun cas servir ni d'imam, ni de témoin ; s'il ne s'en repent pas jusqu'à sa mort, il sera précipité en enfer."
+    ]
+  },
+  {
+    type: "procedure",
+    titleFr: "Comment pratiquer la lustration pulvérale ?",
+    titleAr: "كيفية التيمم",
+    content: [
+      "Attendre le moment précis pour la prière ; la faire sur du sable non souillé, sur une pierre naturelle à l'exclusion du ciment, de la chaux éteinte, des carreaux, etc.",
+      "Y bien appuyer les paumes, les doigts tendus bien joints.",
+      "Bien frotter tout le visage en commençant par la main droite, sans en enlever les grains de sable qui pourraient s'y trouver.",
+      "Formuler intérieurement en ce moment, l'intention de la faire tenir lieu de grande ablution ou petite ablution en vue de s'acquitter d'une prière.",
+      "Remettre les paumes sur le sable en appuyant et en écartant légèrement les doigts.",
+      "Placer le dos de la main droite dans la main de la main gauche puis frotter à partir de l'extrémité des doigts jusqu'aux coudes.",
+      "Ensuite frotter l'intérieur de l'avant-bras jusqu'aux poignets.",
+      "Frotter l'intérieur du pouce droit avec l'intérieure du pouce gauche, faire de même pour la main gauche.",
+      "Frotter les deux (2) paumes et entrecroiser les doigts.",
+      "La lustration pulvérale ne peut servir qu'à une seule prière obligatoire. Cependant, on pourra s'en servir après pour une prière surérogatoire, pour lire le Coran ou pour toute autre pratique traditionnelle si l'intention en a été formulée. Donc à chaque pratique obligatoire sa lustration pulvérale. Celui qui n'a pas d'eau et qui n'est ni malade, ni en déplacement, n'a le droit de pratiquer la lustration pulvérale en vue de prier sur un mort que lorsqu'il n'a que lui pour le faire. Il ne peut non plus procéder à la lustration pulvérale pour une prière surérogatoire qui n'est pas consécutive à une prière obligatoire. Celui qui pratique la lustration pulvérale pour lire le Coran ou pour toute autre pratique traditionnelle doit formuler intérieurement l'intention de s'en servir pour lire le Coran ou faire la pratique en question et s'y mettre immédiatement, faute de quoi, la lustration n'est plus valable."
+    ]
+  },
+  {
+    type: "comparison",
+    content: [
+      {
+        titleFr: "Les pratiques obligatoires de la lustration pulvérale — au nombre de huit (8)",
+        titleAr: "فرائض التيمم",
+        items: [
+          "1. En formuler intérieurement d'abord l'intention afin de s'acquitter d'une prière ou de toute autre pratique.",
+          "2. Appuyer les mains sur le sol une première fois",
+          "3. Frotter l'ensemble du visage",
+          "4. Frotter entièrement les mains jusqu'aux poignets",
+          "5. Veiller à la propreté du lieu (ou de la pierre)",
+          "6. Respecter l'ordre établi avec rapidité pour éviter la nullité de la lustration",
+          "7. Accomplir aussitôt après ce pourquoi on a fait la lustration sous peine de nullité",
+          "8. Faire la lustration à l'heure prescrite pour la prière. Si on la fait avant, la prière est nulle."
+        ]
+      },
+      {
+        titleFr: "Les pratiques traditionnelles — au nombre de quatre (4)",
+        titleAr: "سنن التيمم",
+        items: [
+          "1. Respecter l'ordre établi, recommencer si par mégarde, on intervertit l'ordre.",
+          "2. Poser les mains une deuxième fois",
+          "3. Frotter les avant-bras à partir du poignet",
+          "4. Frotter les différentes parties sans enlever la poussière"
+        ]
+      }
+    ]
+  }
+];
+
+// ─── PAGE 5-d : LES SOUILLURES ───────────────────────────────────────────────
+const page5d_blocks = [
+  {
+    type: "split_text",
+    content: [
+      {
+        label: "LES SOUILLURES — Règle générale",
+        paragraphs: [
+          "Obligation est faite à tout croyant d'enlever les souillures laissées sur son corps, sur ses habits, sur les lieux de prière dès qu'il s'en aperçoit. S'il a des doutes, il doit laver la partie présumée souillée. S'il constate des taches sur ses habits ou sur son corps et dont il ignore la nature, il n'est pas tenu de les enlever.",
+          "Pour enlever les souillures liquides constatées sur le sol, on doit y verser une quantité d'eau importante. S'il s'agit de souillures non liquides, il faut les faire disparaître."
+        ]
+      },
+      {
+        label: "Le récipient et le chien",
+        paragraphs: [
+          "Lorsqu'un chien boit dans un récipient contenant une quantité d'eau égale ou inférieure à deux litres, cette eau devient impropre à la purification et il est méritoire de la verser, on pourrait tout au plus l'utiliser mais uniquement à des fins profanes. Cependant, il vaut mieux la verser. Il est aussi méritoire de laver le récipient sept (7) fois sans employer du sable avant un nouvel usage. Si le chien trempe la langue sans la remuer ou s'il salive dans le récipient ou s'il se contente seulement de le lécher, dans ce cas, l'eau comme le récipient est utilisable. Il en est de même s'il s'agit de récipient contenant un aliment liquide comme le lait caillé, il en est aussi de même si la quantité d'eau excède deux litres."
+        ]
+      },
+      {
+        label: "Les eaux courantes et les sources",
+        paragraphs: [
+          "S'il s'agit d'une eau courante comme celle des marigots, des lacs, des citernes ou des bassins, si un animal tombe dans cette eau et y meurt sans l'altérer, il est recommandé d'enlever la partie de l'eau susceptible de contenir quelque chose qui provient de l'animal. Tout cela dépend de la taille de l'animal et de la quantité de l'eau.",
+          "S'il s'agit d'une eau courante ou d'une eau provenant d'une source, si elle n'est pas altérée, on ne doit pas non plus procéder à son dragage.",
+          "Mais si l'eau est altérée on est obligé de procéder à ces opérations (prélèvement de la partie souillée, dragage) sauf si la chute de l'animal dans l'eau n'a pas entraîné sa mort. Il en est de même si la mort de l'animal est antérieure à la chute et que l'eau n'est pas altérée."
+        ]
+      },
+      {
+        label: "Les aliments",
+        paragraphs: [
+          "Tout aliment susceptible d'altération, quelle que soit l'importance de la quantité (lait caillé, bouillie, huile, etc.…) et quelque négligeable que soit la souillure doit être jeté. Si l'aliment n'est pas altéré et que la souillure n'y a pas duré au point de le pénétrer, on peut se contenter d'enlever la souillure et tout ce qui l'entoure. Si la durée est suffisamment longue au point de devoir altérer l'aliment, il faut alors le jeter."
+        ]
+      },
+      {
+        label: "Les blessures et les pansements",
+        paragraphs: [
+          "Celui qui a une égratignure, une blessure, un abcès, une plaie, doit au moment des ablutions, faire passer la main dessus s'il craint d'aggraver la plaie ou de se faire mal et laver les autres parties. S'il ne peut pas supporter le massage, il effleure la rugosité, si cela n'est pas possible, il ne peut l'effleurer par-dessus une bande d'étoffe ou encore doubler la bande autant de fois qu'il le jugera nécessaire, s'il n'en est pas du tout capable, alors, il peut sauter la partie douloureuse et se contenter de se laver ou de faire ses ablutions."
+        ]
+      },
+      {
+        label: "La conjonctivite grave",
+        paragraphs: [
+          "En cas de conjonctivite grave, on doit faire passer la main sur les yeux ou sur le front, si cela n'est pas possible, on peut passer la main sur une bande d'étoffe posée sur les yeux, doubler la bande au besoin, si malgré tout on ne supporte pas le massage, on peut alors se contenter de laver les autres parties du corps. Si la bande se déplaçait ou arrivait à tomber, qu'on lui remette le plus rapidement possible et que on reprenne l'opération, faute de quoi, l'ablution devient nulle."
+        ]
+      }
+    ]
+  }
+];
+
+// ─── PAGE 5-e : LES MENSTRUES ────────────────────────────────────────────────
+const page5e_blocks = [
+  {
+    type: "text_block",
+    content: [
+      "C'est l'écoulement de sang propre à la femme de 9 ans au moins et de 70 ans au plus ; cet écoulement est périodique et non provoqué.",
+      "On distingue là, trois (3) catégories de femmes : a. celle à qui cela vient d'arriver, b. celle qui en est habituée, c. la femme enceinte."
+    ]
+  },
+  {
+    type: "split_text",
+    content: [
+      {
+        label: "1°)- Celle à qui cela vient d'arriver",
+        paragraphs: [
+          "Pour la première, la durée de l'écoulement n'excède pas quinze jours ; si elle excède quinze jours, il ne s'agit plus de menstrues mais d'une maladie, alors la femme pourra se purifier, faire ses prières, jeûner éventuellement et reprendre ses rapports avec son mari.",
+          "Si après une interruption les menstrues reprennent, la femme doit faire la somme des jours d'écoulement. Si cette somme excède quinze jours cela signifie qu'il ne s'agit plus de menstrues mais d'une maladie. Alors elle pourra se purifier, faire ses prières, jeûner et reprendre ses rapports sexuels avec son mari. Pendant les jours d'interruption, elle doit se purifier, faire ses prières, jeûner et reprendre ses rapports avec son mari. Si la somme égale quinze, il s'agit bien de menstrues et non d'une maladie car quinze (15) jours c'est la durée minimale de l'état de pureté d'une femme. Tout état de pureté de moins de quinze (15) jours peut faire penser à une maladie mais si cela dure quinze (15) jours de pureté, tout nouvel écoulement provient des menstrues."
+        ]
+      },
+      {
+        label: "2°)- Celle qui en est habituée",
+        paragraphs: [
+          "Si l'écoulement se manifeste plus longtemps que d'habitude, elle attend trois (3) jours au-delà desquels elle devra se laver, faire ses prières, jeûner et reprendre ses rapports. L'attente de trois (3) jours n'est valable que si la durée totale de l'écoulement n'excède pas quinze (15) jours.",
+          "• Si la période dure habituellement treize (13) jours, l'attente devra durer deux (2) jours.",
+          "• Si la période dure habituellement quatorze (14) jours, elle attend un (1) jour.",
+          "• Si la durée habituelle est de quinze (15) jours, elle n'attend pas, même en cas de non-interruption de l'écoulement, car il s'agit alors là de maladie."
+        ]
+      },
+      {
+        label: "3°)- La femme enceinte",
+        paragraphs: [
+          "On rencontre rarement l'écoulement de sang chez la femme enceinte. • Si cela arrivait, les menstrues interviennent rarement avant les deux premiers mois de la grossesse. • Entre le deuxième et le sixième mois, cet écoulement ne peut excéder vingt (20) jours. • Au-delà des 20 jours, elle doit se laver, faire ses prières, jeûner et reprendre ses rapports.",
+          "• S'il y a interruption et reprise des menstrues sans que l'interruption ne dure quinze (15) jours, elle fait la somme des jours d'écoulement jusqu'à concurrence des vingt (20) jours au-delà desquels il ne s'agit plus de menstrues mais de maladie. Après constat de cette maladie pendant les jours d'interruption, elle peut se laver, faire ses prières, jeûner et reprendre ses rapports.",
+          "Entre le sixième et le terme de la grossesse, l'écoulement ne peut excéder trente (30) jours. Si la durée excède trente (30) jours il ne s'agit plus de menstrues mais de maladie. Elle peut se laver, faire ses prières, jeûner et reprendre ses rapports. S'il y a interruption reprise des menstrues, et que l'interruption ne dure pas quinze (15) jours, elle fait la somme des jours de l'écoulement jusqu'à concurrence de trente (30) jours. Si l'écoulement dure plus de 30 jours, il ne s'agit plus alors de menstrues mais plutôt de maladie. Pendant les jours d'interruption, elle peut se laver, faire ses prières, jeûner et reprendre ses rapports."
+        ]
+      },
+      {
+        label: "Il y a deux façons de reconnaître l'arrêt des menstrues",
+        paragraphs: [
+          "1. Lorsqu'après introduction d'un morceau d'étoffe ou de coton dans le sexe pendant une certaine durée, l'on constate qu'il n'y a pas de trace de sang neuf même si ces objets sont mouillés.",
+          "2. Lorsqu'on constate l'écoulement d'un liquide blanc semblable au sperme.",
+          "Toute femme dont l'apparition de pertes blanches signale l'arrêt des menstrues peut le cas échéant se purifier immédiatement sans attendre la siccité (l'assèchement du sexe).",
+          "Les femmes dont la siccité du sexe précède l'apparition de pertes blanches peuvent se purifier même s'il leur arrive d'observer le phénomène inverse (pertes blanches avant l'assèchement).",
+          "Les femmes dont la siccité du sexe est antérieure à l'apparition de pertes blanches doivent se purifier après avoir attendu la fin du Mokhtar (temps idéal pendant lequel on doit effectuer une prière rituelle). Si l'apparition de pertes blanches survient après la purification, la femme n'est pas tenue de renouveler cette purification, étant entendu qu'elle avait déjà attendu la fin du « Mokhtar ». Elle devra reprendre la purification si elle n'a pas attendu la fin du « Mokhtar ».",
+          "La femme doit se purifier immédiatement après la siccité du sexe si habituellement cette siccité n'est pas suivie de pertes blanches.",
+          "* La femme qui vient de voir pour la première fois ses menstrues doit se purifier immédiatement après la siccité ou immédiatement après l'apparition de pertes blanches."
+        ]
+      },
+      {
+        label: "Les interdits en période de menstrues",
+        paragraphs: [
+          "* La femme en période de menstrues ne doit pas faire ses prières et n'est pas tenue de les effectuer après en guise de compensation.",
+          "- Elle ne doit pas jeûner mais doit obligatoirement s'en acquitter à titre compensatoire.",
+          "- Elle ne doit pas faire le tour de la Kaaba.",
+          "- Elle ne doit pas observer de retraite d'adoration « lihtikaf ».",
+          "- Elle ne peut pas avoir de rapports sexuels.",
+          "- Elle ne doit pas être répudiée.",
+          "- On ne doit pas flirter avec elle ni chercher à tirer du plaisir de la partie du corps comprise entre le nombril et les genoux.",
+          "- Elle ne doit pas entrer dans une mosquée.",
+          "- Elle ne doit toucher au Coran que pour l'enseigner ou l'étudier.",
+          "- Elle peut le réciter.",
+          "- La prière, le jeûne, le tour de la Kaaba, la retraite, le flirt, les rapports sexuels, la répudiation et toute autre pratique, ne lui sont possibles qu'après l'arrêt des menstrues, ces interdits demeurent jusqu'à ce que la purification soit faite.",
+          "La femme en période de menstrues doit vérifier à chaque moment, s'il y a arrêt des menstrues.",
+          "• Si l'arrêt des menstrues intervient après l'aurore (fadiar), elle doit effectuer la prière du matin, si elle dispose d'un temps suffisant pour se purifier et effectuer ne serait-ce qu'une rakka avant le lever du soleil. Si ce temps s'avère insuffisant, il ne s'agit plus d'une obligation.",
+          "• Si l'arrêt des menstrues survient et qu'elle dispose d'un temps suffisant pour se purifier et effectuer cinq (5) rakkas avant le coucher du soleil, elle doit s'acquitter des prières de Zohr et Asr (tisbar et takoussane).",
+          "• Si l'arrêt des menstrues intervient avant l'aurore (fadiar) et qu'elle dispose d'un temps suffisant pour effectuer les quatre (4) rakkas de l'aurore (fadiar), elle doit s'acquitter de sa prière de Maghreb (timis) et de Icha (guéwé).",
+          "• Par ailleurs, il est obligatoire pour la femme de connaître avec précision le début de ses menstrues.",
+          "• Si les menstrues surviennent après l'aurore (fadiar) et qu'elle dispose de temps pour effectuer une (1) rakka en état d'impureté avant le lever du soleil, elle n'est pas tenue de s'en acquitter après purification.",
+          "• Si les menstrues surviennent le soir et qu'elle dispose d'un temps suffisant pour effectuer cinq (5) rakkas en état d'impureté avant le coucher du soleil, elle n'a pas à s'acquitter des prières de Zohr et Asr (tisbar et takoussane). Si elle ne peut effectuer que quatre (4) rakkas, alors elle doit s'acquitter de la prière de Zohr (tisbar).",
+          "• Si les menstrues surviennent à l'aube et qu'elle dispose d'un temps suffisant pour effectuer plus de trois (3) rakkas, elle n'a pas à s'acquitter de la prière de Icha (guéwé), mais doit s'acquitter de la prière de Maghreb (timis)."
+        ]
+      },
+      {
+        label: "En période de jeûne",
+        paragraphs: [
+          "La femme doit vérifier l'arrêt des menstrues avant l'aurore (fadiar).",
+          "• Si l'arrêt survient avant l'aurore (fadiar), la femme doit jeûner.",
+          "• Si l'arrêt des menstrues survient après l'aurore (fadiar), elle ne doit pas jeûner.",
+          "• Si elle ne sait pas si l'arrêt des menstrues a eu lieu avant ou après l'aurore, elle devra jeûner ce jour, retenir cette date et procéder plus tard à un jeûne de compensation."
+        ]
+      }
+    ]
+  }
+];
+
+// ─── PAGE 5-f : LES LOCHIES ──────────────────────────────────────────────────
+const page5f_blocks = [
+  {
+    type: "split_text",
+    content: [
+      {
+        label: "LES LOCHIES — Définition et durée",
+        paragraphs: [
+          "L'accouchement s'accompagne de sang. Ce saignement peut être simultané ou postérieur à l'accouchement, mais n'est jamais antérieur à celui-ci. Si le saignement est antérieur à l'accouchement, si petit soit-il, il s'agit des menstrues.",
+          "La durée maximale des lochies n'excède jamais soixante (60) jours. Si elle dépasse soixante jours, il ne s'agit plus de lochies, mais d'une maladie. La femme doit alors se purifier, s'acquitter de ses prières, jeûner et reprendre ses rapports sexuels.",
+          "S'il y a interruption et reprise des lochies et que cette interruption reste inférieure à quinze (15) jours, elle décompte les jours de saignement jusqu'à concurrence de soixante (60) jours.",
+          "Si la durée de cette reprise excède soixante jours, il ne s'agit plus de lochies mais d'une maladie ; elle doit alors se purifier, faire ses prières, jeûner et reprendre ses rapports sexuels.",
+          "S'il y a interruption et reprise des lochies et que la durée de cette interruption égale quinze (15) jours, il ne s'agit plus de lochies, ni d'une maladie, mais de menstrues.",
+          "La femme en période de lochies et la femme en période de menstrues sont astreintes aux mêmes interdits, aux mêmes obligations et aux mêmes pratiques."
+        ]
+      },
+      {
+        label: "Pratiques méritoires après purification",
+        paragraphs: [
+          "Il est méritoire pour ces deux (2) femmes, après purification, d'introduire un morceau d'étoffe ou de coton parfumé dans le vagin à trois (3) reprises afin de faire disparaître toute odeur et toute humidité. Cela n'est pas une obligation, mais une pratique méritoire.",
+          "Il est aussi méritoire pour une femme après accouchement d'observer quarante (40) jours après purification avant de reprendre ses rapports sexuels. Cela n'est pas une obligation, mais simplement méritoire."
+        ]
+      },
+      {
+        label: "Recommandations pour la femme enceinte",
+        paragraphs: [
+          "Il est recommandé à la femme en état de grossesse d'éviter un excès d'activités, de soulever des poids lourds, de lever la main pour toucher des choses trop élevées, et de manger ou de boire des aliments amers (aigres, acides, etc.).",
+          "Si la durée de la grossesse n'atteint pas six (6) mois, elle ne doit pas se purger.",
+          "Si la durée de la grossesse égale six (6) mois, elle pourra se purger en utilisant une décoction légère de plante laxative (laydour).",
+          "Si la durée de la grossesse n'atteint pas quatre (4) mois, elle ne doit pas prendre de nivaquines.",
+          "Si la durée atteint quatre (4) mois, elle peut prendre des nivaquines à raison de un (1) comprimé par jour jusqu'à l'accouchement.",
+          "Il est recommandé à la femme en grossesse de limiter ses rapports sexuels, surtout aux 2e, 3e, 5e, 7e et 9e mois de grossesse. Pendant ces mois, les rapports lui sont préjudiciables, qu'elle en soit consciente ou non."
+        ]
+      }
+    ]
+  }
+];
+
+// ─── Fonction de mise à jour ─────────────────────────────────────────────────
+async function upsert(id, blocks) {
+  const { error } = await supabase
+    .from('pages')
+    .update({ blocks })
+    .eq('id', id);
+  if (error) {
+    console.error(`❌ Erreur page ${id}:`, error.message);
+  } else {
+    console.log(`✅ Page ${id} conforme et mise à jour.`);
+  }
+}
+
+async function main() {
+  console.log('🔍 Conformisation des pages pratiques religieuses (5, 5-a → 5-f)...\n');
+  await upsert('5',   page5_blocks);
+  await upsert('5-a', page5a_blocks);
+  await upsert('5-b', page5b_blocks);
+  await upsert('5-c', page5c_blocks);
+  await upsert('5-d', page5d_blocks);
+  await upsert('5-e', page5e_blocks);
+  await upsert('5-f', page5f_blocks);
+  console.log('\n✅ Conformisation complète ! Toutes les pages sont fidèles au texte de référence.');
+}
+
+main().catch(console.error);

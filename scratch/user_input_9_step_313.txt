@@ -1,0 +1,21 @@
+<USER_REQUEST>
+@[update_db_strict_text.js:current_problems] 
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-07-16T00:56:47Z.
+
+The user's current state is as follows:
+Other open documents:
+- c:\Users\papem\OneDrive\Documents\Projet DAR\Qurratul Ayni\src\components\Sidebar.tsx (LANGUAGE_TSX)
+- c:\Users\papem\OneDrive\Documents\Projet DAR\Qurratul Ayni\src\components\SearchOverlay.tsx (LANGUAGE_TSX)
+- c:\Users\papem\OneDrive\Documents\Projet DAR\Qurratul Ayni\src\context\AudioContext.tsx (LANGUAGE_TSX)
+- c:\Users\papem\OneDrive\Documents\Projet DAR\Qurratul Ayni\src\app\partie\[...slug]\page.tsx (LANGUAGE_TSX)
+- c:\Users\papem\OneDrive\Documents\Projet DAR\Qurratul Ayni\src\components\AppPWAProvider.tsx (LANGUAGE_TSX)
+Running terminal commands:
+- npm run dev (in c:\Users\papem\OneDrive\Documents\Projet DAR\Qurratul Ayni, running for 12m41s)
+
+The user has mentioned some items in the form @[ITEM]. Here is extra information about the items that were mentioned by the user, in the order that they appear:
+
+@[update_db_strict_text.js:current_problems] is a [Text Block]:
+The IDE found these problems in the file c:\Users\papem\OneDrive\Documents\Projet DAR\Qurratul Ayni\scratch\update_db_strict_text.js. Any line numbers in the following JSON are 1-based. Problems in JSON format: [{"path":"c:\\Users\\papem\\OneDrive\\Documents\\Projet DAR\\Qurratul Ayni\\scratch\\update_db_strict_text.js","message":"A `require()` style import is forbidden.","severity":"error","startLine":6,"endLine":6},{"path":"c:\\Users\\papem\\OneDrive\\Documents\\Projet DAR\\Qurratul Ayni\\scratch\\update_db_strict_text.js","message":"A `require()` style import is forbidden.","severity":"error","startLine":7,"endLine":7},{"path":"c:\\Users\\papem\\OneDrive\\Documents\\Projet DAR\\Qurratul Ayni\\scratch\\update_db_strict_text.js","message":"A `require()` style import is forbidden.","severity":"error","startLine":8,"endLine":8}]
+</ADDITIONAL_METADATA>

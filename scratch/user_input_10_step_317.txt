@@ -1,0 +1,36 @@
+<USER_REQUEST>
+## Error Type
+Runtime Error
+
+## Error Message
+useAudio doit être utilisé dans un AudioProvider
+
+
+    at useAudio (src\context\AudioContext.tsx:312:23)
+    at ClientPageUI (src\components\ClientPageUI.tsx:117:73)
+
+## Code Frame
+  310 | export const useAudio = () => {
+  311 |   const context = useContext(AudioContext);
+> 312 |   if (!context) throw new Error("useAudio doit être utilisé dans un AudioProvider");
+      |                       ^
+  313 |   return context;
+  314 | };
+  315 |
+
+Next.js version: 16.1.4 (Turbopack)
+
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-07-16T00:58:06Z.
+
+The user's current state is as follows:
+Other open documents:
+- c:\Users\papem\OneDrive\Documents\Projet DAR\Qurratul Ayni\src\components\PWAInstallPrompt.tsx (LANGUAGE_TSX)
+- c:\Users\papem\OneDrive\Documents\Projet DAR\Qurratul Ayni\src\components\Icon.tsx (LANGUAGE_TSX)
+- c:\Users\papem\OneDrive\Documents\Projet DAR\Qurratul Ayni\src\components\Player.tsx (LANGUAGE_TSX)
+- c:\Users\papem\OneDrive\Documents\Projet DAR\Qurratul Ayni\src\components\ReadingSettings.tsx (LANGUAGE_TSX)
+- c:\Users\papem\OneDrive\Documents\Projet DAR\Qurratul Ayni\src\components\BlockRenderer.tsx (LANGUAGE_TSX)
+Running terminal commands:
+- npm run dev (in c:\Users\papem\OneDrive\Documents\Projet DAR\Qurratul Ayni, running for 14m0s)
+</ADDITIONAL_METADATA>

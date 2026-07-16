@@ -1,0 +1,90 @@
+<USER_REQUEST>
+## Error Type
+Console Error
+
+## Error Message
+A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+https://react.dev/link/hydration-mismatch
+
+  ...
+    <BookmarkProvider>
+      <DataProvider>
+        <NotificationProvider>
+          <AudioProvider>
+            <AppPWAProvider>
+              <div className="flex h-scr...">
+                <div className="flex-1 fle...">
+                  <Navbar>
+                    <nav aria-label="Navigation..." className="hidden md:..." style={{...}}>
+                      <div className="px-6 flex ...">
+                        <LinkComponent>
+                        <ul>
+                        <div className="hidden md:..." ref={{current:null}}>
+                          <button>
+                          <AnimatePresence>
+                          <button
+                            onClick={function t6}
++                           aria-label="Passer en mode sombre"
+-                           aria-label="Passer en mode clair"
++                           title="Mode sombre"
+-                           title="Mode clair"
+                            className="w-9 h-9 liquid-glass-btn"
+                          >
+                            ...
+                              <SvgIcon data-testid="DarkModeIcon" ref={null} className="text-lg" style={undefined} ...>
+                                <MuiSvgIcon-root as="svg" className="MuiSvgIcon..." focusable="false" color={undefined} ...>
+                                  <Insertion>
+                                  <svg className="MuiSvgIcon..." focusable="false" color={undefined} aria-hidden={true} ...>
+                                    <path
++                                     d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37..."
+-                                     d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5M2 13h2c.55 0 1-.45 ..."
+                                    >
+                          ...
+                    ...
+                  ...
+            ...
+
+
+
+    at createConsoleError (file://C:/Users/papem/OneDrive/Documents/Projet DAR/Qurratul Ayni/.next/dev/static/chunks/node_modules_next_dist_f3530cac._.js:2199:71)
+    at handleConsoleError (file://C:/Users/papem/OneDrive/Documents/Projet DAR/Qurratul Ayni/.next/dev/static/chunks/node_modules_next_dist_f3530cac._.js:2980:54)
+    at console.error (file://C:/Users/papem/OneDrive/Documents/Projet DAR/Qurratul Ayni/.next/dev/static/chunks/node_modules_next_dist_f3530cac._.js:3124:57)
+    at <unknown> (file://C:/Users/papem/OneDrive/Documents/Projet DAR/Qurratul Ayni/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:3469:25)
+    at runWithFiberInDEV (file://C:/Users/papem/OneDrive/Documents/Projet DAR/Qurratul Ayni/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:965:74)
+    at emitPendingHydrationWarnings (file://C:/Users/papem/OneDrive/Documents/Projet DAR/Qurratul Ayni/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:3468:13)
+    at completeWork (file://C:/Users/papem/OneDrive/Documents/Projet DAR/Qurratul Ayni/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:6897:102)
+    at runWithFiberInDEV (file://C:/Users/papem/OneDrive/Documents/Projet DAR/Qurratul Ayni/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:965:131)
+    at completeUnitOfWork (file://C:/Users/papem/OneDrive/Documents/Projet DAR/Qurratul Ayni/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:9627:23)
+    at performUnitOfWork (file://C:/Users/papem/OneDrive/Documents/Projet DAR/Qurratul Ayni/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:9564:28)
+    at workLoopConcurrentByScheduler (file://C:/Users/papem/OneDrive/Documents/Projet DAR/Qurratul Ayni/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:9558:58)
+    at renderRootConcurrent (file://C:/Users/papem/OneDrive/Documents/Projet DAR/Qurratul Ayni/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:9541:71)
+    at performWorkOnRoot (file://C:/Users/papem/OneDrive/Documents/Projet DAR/Qurratul Ayni/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:9068:150)
+    at performWorkOnRootViaSchedulerTask (file://C:/Users/papem/OneDrive/Documents/Projet DAR/Qurratul Ayni/.next/dev/static/chunks/node_modules_next_dist_compiled_react-dom_1e674e59._.js:10230:9)
+    at MessagePort.performWorkUntilDeadline (file://C:/Users/papem/OneDrive/Documents/Projet DAR/Qurratul Ayni/.next/dev/static/chunks/node_modules_next_dist_compiled_a0e4c7b4._.js:2647:64)
+    at path (<anonymous>:null:null)
+
+Next.js version: 16.1.4 (Turbopack)
+
+</USER_REQUEST>
+<ADDITIONAL_METADATA>
+The current local time is: 2026-07-16T00:45:07Z.
+
+The user's current state is as follows:
+Other open documents:
+- c:\Users\papem\OneDrive\Documents\Projet DAR\Qurratul Ayni\package.json (LANGUAGE_JSON)
+- c:\Users\papem\OneDrive\Documents\Projet DAR\Qurratul Ayni\.env.local (LANGUAGE_UNSPECIFIED)
+- c:\Users\papem\OneDrive\Documents\Projet DAR\Qurratul Ayni\src\app\manifest.ts (LANGUAGE_TYPESCRIPT)
+- c:\Users\papem\OneDrive\Documents\Projet DAR\Qurratul Ayni\src\components\ClientPageUI.tsx (LANGUAGE_TSX)
+- c:\Users\papem\OneDrive\Documents\Projet DAR\Qurratul Ayni\src\components\ReadingProgress.tsx (LANGUAGE_TSX)
+Running terminal commands:
+- npm run dev (in c:\Users\papem\OneDrive\Documents\Projet DAR\Qurratul Ayni, running for 1m1s)
+</ADDITIONAL_METADATA>
